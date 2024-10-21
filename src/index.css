@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+  font-family: 'Aqum'; 
+  src: url('../src/fonts/Aqum-font.ttf') format('truetype'); 
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Tahoma'; 
+  src: url('../src/fonts/Tahoma.ttf') format('truetype'); 
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.aqum {
+  font-family: 'Aqum', sans-serif; 
+}
+
+.tahoma {
+  font-family: 'Tahoma', sans-serif; 
+}
+
+
+
