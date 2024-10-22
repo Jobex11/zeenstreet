@@ -4,7 +4,7 @@ import { Rewards } from "./screens/rewards";
 import { Socials } from "./screens/socials";
 import { WelcomeUser } from "./screens/welcome-user";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
-import { IconButton } from "../../common/buttons/Iconbutton";
+// import { IconButton } from "../../common/buttons/Iconbutton";
 import logo from "../../../assets/images/icons/Logo.png"
 import dottedBg from "../../../assets/images/dotted-bg.png"
 
@@ -23,7 +23,7 @@ export default function ZeenAppIntro() {
          if(screens === "welcome-user") {
             setTimeout(() => {
                 setScreens("check-account")
-            },3000)
+            },5000)
          }else return;
     })
     return (
@@ -40,9 +40,9 @@ export default function ZeenAppIntro() {
                         <h1 className="text-[#D25804] uppercase font-bold text-lg aqum">Zenblox</h1>
                     </div>
                     : <div/>}
-                <IconButton className="bg-transparent hover:bg-transparent border-none z-50 shadow-none w-fit">
-                    <HiOutlineMenuAlt4 size={30} color={"white"} />
-                </IconButton>
+                {/* <IconButton className="bg-transparent hover:bg-transparent border-none z-50 shadow-none w-auto text-5xl"> */}
+                    <HiOutlineMenuAlt4 size={25} color={"white"} />
+                {/* </IconButton> */}
             </header>
 
             {/* nav contents contents */}

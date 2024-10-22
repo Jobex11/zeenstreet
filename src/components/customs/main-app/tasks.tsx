@@ -100,7 +100,7 @@ function Tasks() {
                                 {task.isTime && (
                                     <>
                                         <Progress.Root
-                                            className="relative h-[9px] w-full overflow-hidden rounded-full bg-white my-2"
+                                            className="relative h-[9px] w-full overflow-hidden rounded-full bg-white my-1"
                                             style={{
                                                 transform: "translateZ(0)",
                                             }}
@@ -122,7 +122,7 @@ function Tasks() {
                                 )}
                             </CardContent>
                             <hr className="mx-3" />
-                            <CardFooter className="pt-3 px-3 flex items-center justify-between">
+                            <CardFooter className="py-2 px-3 flex items-center justify-between">
                                 <CardTitle className="text-[11px] font-bold text-white">Continue</CardTitle>
                                 <Button disabled className="rounded-[5px] h-5 text-[10px] font-[500] bg-[#D25804]">Confirm</Button>
                             </CardFooter>

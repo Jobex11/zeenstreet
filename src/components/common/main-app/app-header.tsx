@@ -12,7 +12,7 @@ function Header() {
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover"
         }} className='h-fit w-full top-0 sticky z-50'>
-            <header className='flex items-center justify-between w-full py-10 px-3'>
+            <header className='flex items-center justify-between w-full py-5 px-3'>
                 <div className='flex items-center gap-4'>
 
                     <div>
@@ -29,7 +29,7 @@ function Header() {
                         <span className='text-[9px] work-sans font-medium text-white'>@Alex</span>
                     </Button>
                     <div>
-                        <img src={mailIcon} alt='main icon' className='h-5 w-5' />
+                        <img src={mailIcon} alt='main icon' className='h-5 w-7' />
                     </div>
                 </div>
             </header>

@@ -5,9 +5,9 @@ import { Fade } from "react-awesome-reveal";
 
 export const WelcomeUser = () => {
     return (
-        <div className="flex flex-col w-full h-full min-h-[812px] p-4 relative">
+        <div className="flex flex-col w-full h-full flex-1 min-h-[812px] p-4 relative">
               <Fade>
-            <h1 className="text-6xl font-bold aqum uppercase text-[#FFFFFF]">
+            <h1 className="text-4xl font-bold aqum uppercase text-[#FFFFFF]">
                 THE
                 <br /> FUTURE
                 <br /> of web3.

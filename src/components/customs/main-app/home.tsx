@@ -17,11 +17,11 @@ function Home() {
             }} className='flex flex-col flex-1 py-3 '>
                 {/* user rewards */}
                 <div>
-                    <h1 className='uppercase aqum font-bold text-xl text-white text-center'>Total $shares</h1>
-                    <h1 className='text-6xl font-bold aqum text-white pb-6 text-center'>100,000 </h1>
+                    <h1 className='uppercase aqum font-bold text-lg text-white text-center'>Total $shares</h1>
+                    <h1 className='text-4xl font-bold aqum text-white pb-6 text-center'>100,000 </h1>
                 </div>
                 {/* latest cards */}
-                <div className="flex items-center overflow-x-auto flex-nowrap w-full h-auto gap-3">
+                <div className="flex items-center overflow-x-auto flex-nowrap w-full h-auto gap-3 px-4">
                     <TaskCard >
                         <h1 className="py-10">Heading</h1>
                     </TaskCard>

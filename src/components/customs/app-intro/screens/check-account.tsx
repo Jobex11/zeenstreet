@@ -40,7 +40,7 @@ export const CheckAccount = ({ setScreens }: { setScreens?: (value: React.SetSta
                                 <h1 className="uppercase text-sm font-bold text-[#FFFFFFCC] aqum">{item.title}</h1>
                                 <span><LuCheckCircle color={'#D25804'} size={25} /></span>
                             </div>
-                            <Progress value={item.progress} className="splash-screen-progress w-full h-4 bg-[#D258041F]" />
+                            <Progress value={item.progress} className="splash-screen-progress w-full h-3 bg-[#D258041F]" />
                         </div>
                     ))}
                 </div>

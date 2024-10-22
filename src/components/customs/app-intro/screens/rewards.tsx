@@ -43,7 +43,7 @@ export const Rewards = (
                         <h1>$SHARES</h1>
                     </Card>
 
-                    <blockquote className="tahoma max-w-[286px] mx-auto text-xs font-medium text-center py-2 text-[#C2C2C2]">
+                    <blockquote className="tahoma max-w-[286px] uppercase mx-auto text-xs font-medium text-center py-2 text-[#C2C2C2]">
                         Complete the quests in the next page to claim your shares
                     </blockquote>
                 </div>
