@@ -11,7 +11,7 @@ import dottedBg from "../../../assets/images/dotted-bg.png"
 
 
 export default function ZeenAppIntro() {
-    const [screens, setScreens] = useState<string>("rewards");
+    const [screens, setScreens] = useState<string>("welcome-user");
    console.log("Users");
    
     const user = {
