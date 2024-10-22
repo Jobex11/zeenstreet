@@ -1,12 +1,13 @@
 import MainappLayout from "../../components/common/main-app/main-app-layout"
+import Tasks from "../../components/customs/main-app/tasks"
 
 
-function Tasks() {
+function TasksPage() {
   return (
     <MainappLayout>
-      <div>Tasks</div>
+      <Tasks/>
     </MainappLayout>
   )
 }
 
-export default Tasks
+export default TasksPage

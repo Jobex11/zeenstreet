@@ -3,6 +3,7 @@ import medalIcon from "../../../assets/images/icons/medal.svg"
 import dropbox from "../../../assets/images/icons/dropbox (2).svg";
 import profilePlaceholder from "../../../assets/images/icons/user-placeholder.svg";
 import mailIcon from "../../../assets/images/icons/mail-icon.svg";
+import { Button } from "../../ui/button";
 
 function Header() {
     return (
@@ -15,7 +16,7 @@ function Header() {
                 <div className='flex items-center gap-4'>
 
                     <div>
-                        <img src={medalIcon} alt='medial icon' className='h-5 w-5' />
+                        <img src={medalIcon} alt='medial icon' className='h-[21px] w-5' />
                     </div>
                     <div>
                         <img src={dropbox} alt='dropbox' className='h-5 w-5' />
@@ -23,10 +24,10 @@ function Header() {
                 </div>
 
                 <div className='flex items-center gap-4'>
-                    <div className='flex items-center'>
+                    <Button className='flex items-center bg-transparent border hover:bg-transparent min-w-[62px]'>
                         <img src={profilePlaceholder} alt='user placeholder' className='h-5 w-5' />
-                        <span className='text-sm font-medium text-white'>@Alex</span>
-                    </div>
+                        <span className='text-[9px] work-sans font-medium text-white'>@Alex</span>
+                    </Button>
                     <div>
                         <img src={mailIcon} alt='main icon' className='h-5 w-5' />
                     </div>

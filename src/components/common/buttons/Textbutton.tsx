@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "../../ui/button";
 import arrowIcon from "../../../assets/images/icons/arrow-icon.svg"
 import Image from "next/image";
 
@@ -35,7 +35,7 @@ export const TextButton = (
             className={`aqum flex items-center justify-between max-w-full text-[13px] h-[51px] rounded-xl bg-[#D25804] duration-200 hover:bg-orange-600 ${className}`}>
             <div></div>
             {isLoading ? "Please wait..." : name}
-            <Image src={arrowIcon} alt="arrow image" className="h-[17px] w-[37px]" />
+            <Image src={arrowIcon} alt="arrow image" width={100} height={100} className="h-[17px] w-[37px]" />
         </Button>
     );
 };

@@ -1,15 +1,16 @@
-import { TextButton } from "@/components/common/buttons/Textbutton";
+import { TextButton } from "../../../common/buttons/Textbutton";
 import { LuCheckCircle } from "react-icons/lu";
 import Logo from "../../../../assets/images/icons/Logo.png"
-import { Progress } from "@/components/ui/progress"
+import { Progress } from "../../../ui/progress";
 import { useState, useEffect } from "react";
+
 
 export const CheckAccount = ({ setScreens }: { setScreens?: (value: React.SetStateAction<string>) => void }) => {
     const [progressValues, setProgressValues] = useState([
-        { title: "Telegram age", progress: 60 },
+        { title: "Telegram age", progress: 20 },
         { title: "Activity level analyzed", progress: 40 },
-        { title: "Telegram Premium checked", progress: 30 },
-        { title: "OG Status confirmed", progress: 10 },
+        { title: "Telegram Premium checked", progress: 80 },
+        { title: "OG Status confirmed", progress: 90 },
     ]);
 
     useEffect(() => {
@@ -39,7 +40,7 @@ export const CheckAccount = ({ setScreens }: { setScreens?: (value: React.SetSta
                                 <h1 className="uppercase text-sm font-bold text-[#FFFFFFCC] aqum">{item.title}</h1>
                                 <span><LuCheckCircle color={'#D25804'} size={25} /></span>
                             </div>
-                            <Progress value={item.progress} className="w-full custom-progress h-4 bg-[#D258041F]" />
+                            <Progress value={item.progress} className="splash-screen-progress w-full h-4 bg-[#D258041F]" />
                         </div>
                     ))}
                 </div>

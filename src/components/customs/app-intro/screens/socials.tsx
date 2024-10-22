@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { SiTelegram } from "react-icons/si";
 import { RiTwitterXLine } from "react-icons/ri";
-import { TextButton } from "@/components/common/buttons/Textbutton";
+import { TextButton } from "../../../common/buttons/Textbutton";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../../assets/images/icons/Logo.png"
-import { Button } from "@/components/ui/button";
-
+import { Button } from "../../../ui/button";
+import { Fade } from "react-awesome-reveal";
 
 export const Socials = () => {
     const navigate = useNavigate()
@@ -27,7 +27,7 @@ export const Socials = () => {
 
     const socialHandles = [
         {
-            name: "Youtube",
+            name: "Subscribe",
             icon: (
                 <svg width="117" height="26" viewBox="0 0 117 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M36.2134 4.07133C36.001 3.28434 35.5866 2.56686 35.0116 1.99038C34.4365 1.4139 33.7208 0.998535 32.9358 0.785656C30.0619 0 18.4965 0 18.4965 0C18.4965 0 6.93055 0.0238422 4.05708 0.809498C3.27211 1.02241 2.55649 1.43779 1.98148 2.01427C1.40647 2.59075 0.992149 3.30821 0.779778 4.09518C-0.0894882 9.21443 -0.426731 17.0145 0.803559 21.9287C1.01593 22.7156 1.43025 23.4331 2.00526 24.0096C2.58027 24.586 3.2959 25.0014 4.08086 25.2143C6.95456 26 18.5202 26 18.5202 26C18.5202 26 30.0859 26 32.9596 25.2143C33.7446 25.0014 34.4602 24.586 35.0352 24.0096C35.6102 23.4331 36.0245 22.7156 36.2369 21.9287C37.1535 16.8024 37.4362 9.00712 36.2131 4.07156" fill="#FF0000" />
@@ -70,6 +70,11 @@ export const Socials = () => {
             [name]: true
         }));
     };
+    useEffect(() => {
+        console.log(confirmedAccounts);  // Check if all accounts are updated
+        console.log(allConfirmed);       // Check if all are confirmed
+    }, [confirmedAccounts, allConfirmed]);
+    
 
     return (
         <div className="flex flex-col flex-1  w-full min-h-full p-4">
@@ -78,11 +83,11 @@ export const Socials = () => {
                     <img src={Logo} alt="" className="h-full w-full" />
                 </div>
             </div>
-
+            <Fade>
             <div className="flex flex-col gap-2">
                 {/* Social media handles */}
                 {socialHandles.map((handles) => (
-                    <div key={handles.name} className="flex flex-col items-center mb-6 gap-2 w-full">
+                    <div key={handles.name} className="flex flex-col items-center mb-8 gap-2 w-full">
                         <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
                             <div className="flex items-center w-[60%] p-5 gap-2">
                                 <span>{handles.icon}</span>
@@ -109,14 +114,14 @@ export const Socials = () => {
                 ))}
 
                 <blockquote className="tahoma text-xs font-medium text-center py-2 uppercase text-[#C2C2C2]">
-                    Complete these quests to claim your shares and Proceed
+                    Complete these quests to claim your <br/> shares and Proceed
                 </blockquote>
             </div>
-
+            </Fade>
             {/* Proceed Button */}
             <TextButton
                 name={"Proceed"}
-                disabled={!allConfirmed} // Enable only if all accounts are confirmed
+                // disabled={allConfirmed}
                 onClick={() => navigate("/home")}
                 className={"uppercase mt-16"}
             />

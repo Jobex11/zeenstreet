@@ -11,6 +11,7 @@ import Tasks from './pages/tasks/page';
 import Marketplace from './pages/marketplace/page';
 import Teams from './pages/teams/page';
 import Games from './pages/games/page';
+// import ZeenAppIntro from "./components/customs/app-intro";
 
 const router = createBrowserRouter([
   {
@@ -40,5 +41,8 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <RouterProvider router={router} />
-);
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+); 
+
