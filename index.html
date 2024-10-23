@@ -1,33 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="The Future of web3">
-  <meta property="og:title" content="ZenStreet - The Future of Web3">
-  <meta property="og:description" content="Discover the future of decentralized web at ZenStreet.">
-  <!-- <meta property="og:image" content="/assets/og-image.png"> -->
-  <!-- <meta property="og:url" content="https://www.zenstreet.com"> -->
-  <!-- <meta property="og:type" content="website"> -->
-  <!-- <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ZenStreet - The Future of Web3">
-  <meta name="twitter:description" content="Discover the future of decentralized web at ZenStreet.">
-  <meta name="twitter:image" content="/src/assets/images/icons/Logo.png"> -->
-  <link rel="icon" type="image/svg+xml" href="/src/assets/images/icons/Logo.png">
-  <meta name="theme-color" content="#ffffff">
-  <title>ZenStreet</title>
-  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://trustedsource.com"> -->
-  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
-</head>
-<body>
-  <main id="root" role="main"></main>
-  <script src="/src/main.tsx" type="module"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
-        console.log('Service Worker registered with scope:', reg.scope);
-      });
-    }
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Future of web3">
+    <meta property="og:title" content="ZenStreet - The Future of Web3">
+    <meta property="og:description" content="Discover the future of decentralized web at ZenStreet.">
+    <link rel="icon" type="image/svg+xml" href="/src/assets/images/icons/Logo.png" />
+    <title>ZenStreet</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
