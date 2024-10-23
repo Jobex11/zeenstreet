@@ -14,16 +14,12 @@
   <meta name="twitter:description" content="Discover the future of decentralized web at ZenStreet.">
   <meta name="twitter:image" content="/src/assets/images/icons/Logo.png">
   <link rel="icon" type="image/svg+xml" href="/src/assets/images/icons/Logo.png">
-  <link rel="stylesheet" href="/src/index.css">
   <meta name="theme-color" content="#ffffff">
   <title>ZenStreet</title>
   <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://trustedsource.com"> -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 </head>
 <body>
-    <div id="preloader">
-       <p class="text-white aqum text-3xl font-bold">Loading....</p> 
-   </div>
   <main id="root" role="main"></main>
   <script src="/src/main.tsx" type="module"></script>
   <script>
@@ -32,12 +28,6 @@
         console.log('Service Worker registered with scope:', reg.scope);
       });
     }
-
-    window.addEventListener('load', () => {
-        const preloader = document.getElementById('preloader');
-        preloader.classList.add('hidden');
-      });
-
   </script>
 </body>
 </html>
