@@ -16,7 +16,7 @@ export default function ZeenAppIntro() {
    
     const user = {
         year: "4",
-        shares: "100,000"
+        shares: 100000
     }
 
     useEffect(() => {

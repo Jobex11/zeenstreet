@@ -11,7 +11,10 @@ import Tasks from './pages/tasks/page';
 import Marketplace from './pages/marketplace/page';
 import Teams from './pages/teams/page';
 import Games from './pages/games/page';
-// import ZeenAppIntro from "./components/customs/app-intro";
+import ReduxProvider from "./components/common/provider";
+import ReferralPage from "./pages/referral/page";
+import ProfilePage from "./pages/profile/page";
+import RankPage from "./pages/ranks/page";
 
 const router = createBrowserRouter([
   {
@@ -38,11 +41,25 @@ const router = createBrowserRouter([
     path: "/games",
     element: <Games />,
   },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
+  },
+  {
+    path: "/referral",
+    element: <ReferralPage />,
+  },
+  {
+    path: "/ranks",
+    element: <RankPage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ReduxProvider>
+      <RouterProvider router={router} />
+    </ReduxProvider>
   </React.StrictMode>
-); 
+);
 

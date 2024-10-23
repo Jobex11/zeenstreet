@@ -55,7 +55,7 @@ const tasks = [
 ];
 
 function Tasks() {
-    const [tabs, setTabs] = useState("All");
+    const [tabs, setTabs] = useState<string>("All");
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
 
     const handleActiveTabs = (name: string) => {
@@ -107,7 +107,7 @@ function Tasks() {
                                             value={task.progressValue}
                                         >
                                             <Progress.Indicator
-                                                className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] size-full bg-[#D25804] rounded-r-full transition-transform duration-[660ms]"
+                                                className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] size-full bg-[#D25804] rounded-r-full transition-transform duration-200"
                                                 style={{ transform: `translateX(-${100 - task.progressValue}%)` }}
                                             />
                                         </Progress.Root>

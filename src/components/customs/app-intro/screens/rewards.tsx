@@ -3,10 +3,11 @@ import { Card } from "../../../ui/card";
 import medal from "../../../../assets/images/icons/medal.png"
 import Logo from "../../../../assets/images/icons/Logo.png"
 import { Fade, Zoom } from "react-awesome-reveal";
+import { ShareFormatter } from "../../../common/shareFormatter";
 
 interface RewardsProps {
     year: string;
-    shares: string
+    shares: number
 }
 
 export const Rewards = (
@@ -39,7 +40,7 @@ export const Rewards = (
                     <h1 className="capitalise text-lg font-bold text-white text-center py-3 aqum">Here is your Reward</h1>
 
                     <Card className="aqum flex w-56 h-[89px] mx-auto border-none flex-col rounded-xl items-center justify-center gap-2 p-3 bg-[#D25804] text-white">
-                        <h1>{user?.shares}</h1>
+                        <h1> {ShareFormatter(user?.shares)}</h1>
                         <h1>$SHARES</h1>
                     </Card>
 

@@ -27,7 +27,8 @@ export const Socials = () => {
 
     const socialHandles = [
         {
-            name: "",
+            name: "Youtube",
+            title:"",
             icon: (
                 <svg width="117" height="26" viewBox="0 0 117 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M36.2134 4.07133C36.001 3.28434 35.5866 2.56686 35.0116 1.99038C34.4365 1.4139 33.7208 0.998535 32.9358 0.785656C30.0619 0 18.4965 0 18.4965 0C18.4965 0 6.93055 0.0238422 4.05708 0.809498C3.27211 1.02241 2.55649 1.43779 1.98148 2.01427C1.40647 2.59075 0.992149 3.30821 0.779778 4.09518C-0.0894882 9.21443 -0.426731 17.0145 0.803559 21.9287C1.01593 22.7156 1.43025 23.4331 2.00526 24.0096C2.58027 24.586 3.2959 25.0014 4.08086 25.2143C6.95456 26 18.5202 26 18.5202 26C18.5202 26 30.0859 26 32.9596 25.2143C33.7446 25.0014 34.4602 24.586 35.0352 24.0096C35.6102 23.4331 36.0245 22.7156 36.2369 21.9287C37.1535 16.8024 37.4362 9.00712 36.2131 4.07156" fill="#FF0000" />
@@ -44,6 +45,7 @@ export const Socials = () => {
         },
         {
             name: "Telegram",
+            title:"Telegram",
             icon: <SiTelegram size={30} color={"#229ED9"} />,
             path: "t.me/thezenstreet",
             tag: "Join",
@@ -54,6 +56,7 @@ export const Socials = () => {
         },
         {
             name: "X",
+            title:"X",
             icon: <RiTwitterXLine size={30} color={"black"} />,
             path: "x.com/thezenstreet?t=KBcpyrKI6WgVMCaXndVK5g&s=09",
             tag: "Follow",
@@ -87,15 +90,15 @@ export const Socials = () => {
             <div className="flex flex-col gap-2">
                 {/* Social media handles */}
                 {socialHandles.map((handles) => (
-                    <div key={handles.name} className="flex flex-col items-center mb-8 gap-2 w-full">
+                    <div key={handles.tag} className="flex flex-col items-center mb-8 gap-2 w-full">
                         <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
                             <div className="flex items-center w-[60%] p-5 gap-2">
                                 <span>{handles.icon}</span>
-                                <h1 className={handles.style.text}>{handles.name}</h1>
+                                <h1 className={handles.style.text}>{handles.title}</h1>
                             </div>
                             <Link to={`https://${handles.path}`} target="_blank" className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}>
                                 <Button
-                                    onClick={() => handleConfirm(handles.tag)}
+                                    onClick={() => handleConfirm(handles.name)}
                                     className="bg-transparent hover:bg-transparent shadow-none text-white aqum text-[13px] font-bold"
                                 >
                                     {handles.tag}
@@ -105,7 +108,7 @@ export const Socials = () => {
 
                         {/* Confirm Button */}
                         <Button
-                            disabled={!confirmedAccounts[handles.tag]}
+                            disabled={!confirmedAccounts[handles.name]}
                             className="bg-[#D25804] hover:bg-orange-600 text-sm mt-3 uppercase font-medium max-w-[85px] h-6 mx-auto text-white" >
                             Confirm
                         </Button>
@@ -121,7 +124,7 @@ export const Socials = () => {
             {/* Proceed Button */}
             <TextButton
                 name={"Proceed"}
-                // disabled={allConfirmed}
+                disabled={!allConfirmed}
                 onClick={() => navigate("/home")}
                 className={"uppercase mt-16"}
             />
