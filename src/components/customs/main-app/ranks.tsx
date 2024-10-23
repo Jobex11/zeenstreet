@@ -53,7 +53,7 @@ function Ranks() {
                   </div>
                   <h1 className="text-[#FFFFFF] text-[17px] font-bold jakarta">{rank.rank}</h1>
                 </div>
-                <div><h1 className="font-semibold text-[17px] jakarta flex items-center gap-1 text-white"><img src={goldCoin} alt="gold" className="h-[15px] w-[15px] object-cover object-center" />{ShareFormatter(rank.shares)} Gold</h1></div>
+                <div><h1 className="font-medium text-[17px] jakarta flex items-center gap-1 text-white"><img src={goldCoin} alt="gold" className="h-[15px] w-[15px] object-cover object-center" />{ShareFormatter(rank.shares)} Gold</h1></div>
               </div>
             ))}
 

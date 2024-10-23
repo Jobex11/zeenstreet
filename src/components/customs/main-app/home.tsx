@@ -44,13 +44,13 @@ function Home() {
                             <h1 className="text-[#FEFEFF] text-lg font-semibold">Today&apos;s Tasks</h1>
                             <h1 className="text-[#FFFFFF] text-sm">18 Tasks Pending</h1>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
                             <Link to={"/"}>
                                 <span>
                                     <img src={filter} alt="filter" className="" />
                                 </span>
                             </Link>
-                            <div className="h-11 w-[1px] border border-[#E4E4E4]" />
+                            <div className="h-8 w-[1px] border border-[#E4E4E4]" />
                             <Link to={"/"}>
                                 <span><IoAdd color="white" size={26} /></span>
                             </Link>

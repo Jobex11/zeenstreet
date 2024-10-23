@@ -1,9 +1,8 @@
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { LuCheckCircle } from "react-icons/lu";
-import Logo from "../../../../assets/images/icons/Logo.png"
+import Logo from "../../../../assets/images/icons/Logo.png";
 import { Progress } from "../../../ui/progress";
 import { useState, useEffect } from "react";
-
 
 export const CheckAccount = ({ setScreens }: { setScreens?: (value: React.SetStateAction<string>) => void }) => {
     const [progressValues, setProgressValues] = useState([
@@ -15,32 +14,34 @@ export const CheckAccount = ({ setScreens }: { setScreens?: (value: React.SetSta
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setProgressValues((prevProgress) => prevProgress.map((item, index) => ({
-                ...item,
-                progress: item.progress + (index + 1) * 10
-            })));
+            setProgressValues((prevProgress) =>
+                prevProgress.map((item, index) => ({
+                    ...item,
+                    progress: item.progress + (index + 1) * 10,
+                }))
+            );
         }, 500);
         return () => clearTimeout(timer);
     }, []);
 
     return (
-        <div className="flex flex-col justify-around min-h-full p-4">
-            <div className="flex flex-col items-center">
+          <div  className="flex flex-col flex-1 justify-evenly w-full min-h-full p-4 relative flex-grow ">
+            <div className="flex flex-col items-center justify-center "> 
                 {/* Logo */}
                 <div className="relative h-[94px] w-[94px]">
-                    <img src={Logo}  alt="Zenstreet Logo" className="h-full w-full" />
+                    <img src={Logo} alt="Zenstreet Logo" className="h-full w-full" />
                 </div>
                 <h1 className="text-xl font-bold text-[#FFFFFF] uppercase py-4 aqum">Checking account</h1>
 
-                {/* Map over progress items */}
+                {/* Progress items */}
                 <div className="flex flex-col gap-10 w-full py-2">
                     {progressValues.map((item, index) => (
                         <div key={index} className="flex flex-col gap-2 py-2">
                             <div className="flex items-center justify-between w-full">
                                 <h1 className="uppercase text-sm font-bold text-[#FFFFFFCC] aqum">{item.title}</h1>
-                                <span><LuCheckCircle color={'#D25804'} size={25} /></span>
+                                <span><LuCheckCircle color={'#D25804'} size={20} /></span>
                             </div>
-                            <Progress value={item.progress} className="splash-screen-progress w-full h-3 bg-[#D258041F]" />
+                            <Progress value={item.progress} className="w-full h-3 bg-[#D258041F]" />
                         </div>
                     ))}
                 </div>
@@ -55,5 +56,5 @@ export const CheckAccount = ({ setScreens }: { setScreens?: (value: React.SetSta
                 className="mt-16"
             />
         </div>
-    )
-}
+    );
+};

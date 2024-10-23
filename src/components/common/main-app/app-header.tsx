@@ -3,7 +3,6 @@ import medalIcon from "../../../assets/images/icons/medal.svg"
 import dropbox from "../../../assets/images/icons/dropbox (2).svg";
 import profilePlaceholder from "../../../assets/images/icons/user-placeholder.svg";
 import mailIcon from "../../../assets/images/icons/mail-icon.svg";
-import { Button } from "../../ui/button";
 import { Link } from "react-router-dom";
 
 function Header() {
@@ -26,16 +25,15 @@ function Header() {
 
                 <div className='flex items-center gap-4'>
                     <Link to={"/profile"}>
-                        <Button className='flex items-center bg-transparent border hover:bg-transparent min-w-[62px]'>
-                            <img src={profilePlaceholder} alt='user placeholder' className='h-5 w-5' />
+                        <div className='flex items-center bg-transparent border hover:bg-transparent px-2 py-1 rounded-md gap-2 min-w-[62px]'>
+                            <img src={profilePlaceholder} alt='user placeholder' className='h-7 w-7' />
                             <span className='text-[9px] work-sans font-medium text-white'>@Alex</span>
-                        </Button>
+                        </div>
                     </Link>
-                    
-                    <div className="relative">
+                    <Link to={"/notifications"} className="relative">
                         <img src={mailIcon} alt='main icon' className='h-5 w-7' />
                         <div className="h-[9.2px] w-[9.2px] bg-[#D36519] rounded-full absolute -top-1 -left-1 z-20" />
-                    </div>
+                    </Link>
                 </div>
             </header>
 

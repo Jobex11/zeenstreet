@@ -20,7 +20,7 @@ export const Rewards = (
     }
 ) => {
     return (
-        <div className="flex flex-col  w-full min-h-[812px] p-4">
+        <div className="flex flex-col flex-1 w-full min-h-full p-4">
             <Fade cascade >
                 <div className="aqum flex flex-col gap-4 items-center">
                     <div className="relative h-[94px] w-[94px]">

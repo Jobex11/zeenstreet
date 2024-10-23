@@ -15,6 +15,7 @@ import ReduxProvider from "./components/common/provider";
 import ReferralPage from "./pages/referral/page";
 import ProfilePage from "./pages/profile/page";
 import RankPage from "./pages/ranks/page";
+import Notificaions from "./pages/main-notification/page";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
   {
     path: "/ranks",
     element: <RankPage />,
+  },
+  {
+    path: "/notifications",
+    element: <Notificaions />,
   },
 ]);
 

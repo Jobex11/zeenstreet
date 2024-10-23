@@ -86,7 +86,7 @@ function Referral() {
 
                     <div>
                         {/* tab buttons */}
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between py-2">
                             {btnTabs.map((tab) => (
                                 <Button
                                     style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
@@ -156,7 +156,7 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
                 {/* shares */}
                 <div className="flex flex-col gap-1">
                     <h1 className="text-white text-xs font-bold">{referrals.rewardedShares}</h1>
-                    <GoTriangleUp size={18} color={"#00D95F"} />
+                   <span className='flex items-center  justify-end'> <GoTriangleUp size={18} color={"#00D95F"} /></span>
                 </div>
             </div>
         </>

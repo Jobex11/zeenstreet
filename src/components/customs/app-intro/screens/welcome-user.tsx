@@ -2,49 +2,42 @@ import visionImage from "../../../../assets/images/vision.png";
 import handwave from "../../../../assets/images/icons/hand-wave.png";
 import { IconButton } from "../../../common/buttons/Iconbutton";
 import { Fade } from "react-awesome-reveal";
+import zenoblox from "../../../../assets/images/ZENBOC.png"
 
 export const WelcomeUser = () => {
     return (
-        <div className="flex flex-col w-full h-full flex-1 min-h-[812px] p-4 relative">
-              <Fade>
-            <h1 className="text-4xl font-bold aqum uppercase text-[#FFFFFF]">
-                THE
-                <br /> FUTURE
-                <br /> of web3.
-            </h1>
+        <div style={{
+            backgroundImage: `url(${zenoblox})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "contain",
+            backgroundPosition: 'center',
+            backgroundBlendMode: "multiply",
+        }}
+            className="flex flex-col flex-1 w-full min-h-full p-3 relative">
+            <Fade className="px-3">
+                <h1 className="text-6xl font-bold aqum uppercase text-[#FFFFFF]">
+                    THE
+                    <br /> FUTURE
+                    <br /> of web3.
+                </h1>
             </Fade>
 
-            <p className="pt-4 text-[#FFFFFF] text-sm md:text-base lg:text-lg tahoma">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus delectus aliquam voluptates facilis ab temporibus deserunt enim placeat. Adipisci rerum molestiae amet veritatis non quisquam fugit consequuntur nam, explicabo recusandae!
+            <p className="p-4 text-[#FFFFFF] font-normal text-sm lg:text-lg tahoma leading-5">
+                The world is at your feet, Climb the ranks, accumulate riches, and claim your spot among the elite, and <span className="uppercase">MAY THE ZEN BE WITH YOU</span>
             </p>
-
-            {/* Image Container */}
-            <div className="min-h-[516px] bg-transparent absolute bottom-1 left-0 right-0 z-[99]">
-                <div className="relative h-full w-full">
-                    {/* Ensure the image scales properly on mobile */}
-                    <img
-                        src={visionImage}
-                        alt="vision image"
-                        className="h-auto w-full object-center object-cover"
-                    />
+            <div className=" absolute bottom-0 right-0 left-0 w-full z-40">
+                <img src={visionImage} alt="vision image" className="h-full w-full" />
+            </div>
+            <div className="absolute bottom-0 right-0 left-0 w-full  z-50 bg-gradient-to-b from-[rgba(0,0,0,0.1)] to-[#000000] flex items-center justify-between p-4">
+                <div className="flex items-center text-white gap-3 text-sm">
+                    Twitter / Youtube / Telegram
                 </div>
 
-                {/* Overlay with icons and button */}
-                <div className="relative">
-                    <div className="absolute bottom-0 w-full h-auto bg-gradient-to-b from-[rgba(0,0,0,0.1)] to-[#000000] flex items-center flex-col justify-end">
-                        <div className="flex items-center justify-between w-full p-4">
-                            <div className="flex items-center text-white gap-3 text-sm">
-                                Twitter / Youtube / Telegram
-                            </div>
-
-
-                            <IconButton className="h-[50px] w-[50px] md:h-[63px] md:w-[63px] rounded-full bg-[rgba(210,88,4,1)] text-3xl">
-                                <img src={handwave} alt="handwave" className="h-full w-full" />
-                            </IconButton>
-                        </div>
-                    </div>
-                </div>
+                <IconButton className="h-[50px] w-[50px] md:h-[63px] md:w-[63px] rounded-full bg-[rgba(210,88,4,1)] text-3xl">
+                    <img src={handwave} alt="handwave" className="h-full w-full" />
+                </IconButton>
             </div>
         </div>
     );
 };
+
