@@ -35,7 +35,7 @@ export default function ZeenAppIntro() {
     }, [screens, isUser, navigate])
 
     return (
-        <section className="bg-gradient-to-b from-[#292734] to-[#000000]">
+        <section className="flex flex-col min-h-screen w-full bg-gradient-to-b from-[#292734] to-[#000000] ">
             <div
                 style={{
                     backgroundImage: `${screens === "rewards" ? `url(${confetti}), url(${dottedBg})` : `url(${dottedBg})`}`,
@@ -43,7 +43,7 @@ export default function ZeenAppIntro() {
                     backgroundPosition: "top center, bottom center", 
                     backgroundSize: "contain, cover",
                 }}
-                className="min-h-screen w-full flex flex-col flex-1 max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000]"
+                className="min-h-screen w-full flex flex-col flex-1 mx-auto"
             >
                 {/* top header */}
                 <header className={`flex items-center justify-between bg-transparent w-full h-auto border-none m-0 p-3`}>
