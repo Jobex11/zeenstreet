@@ -126,7 +126,7 @@ export const Socials = () => {
                 name={"Proceed"}
                 disabled={!allConfirmed}
                 onClick={() => navigate("/home")}
-                className={"uppercase mt-16"}
+                className={"uppercase mt-10"}
             />
         </div>
     );

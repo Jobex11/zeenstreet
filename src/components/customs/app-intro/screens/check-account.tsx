@@ -25,7 +25,7 @@ export const CheckAccount = ({ setScreens }: { setScreens?: (value: React.SetSta
     }, []);
 
     return (
-          <div  className="flex flex-col flex-1 justify-evenly w-full min-h-full p-4 relative flex-grow ">
+          <div  className="flex flex-col flex-1  w-full min-h-full p-4 relative">
             <div className="flex flex-col items-center justify-center "> 
                 {/* Logo */}
                 <div className="relative h-[94px] w-[94px]">

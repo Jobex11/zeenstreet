@@ -13,8 +13,8 @@ export const WelcomeUser = () => {
             backgroundPosition: 'center',
             backgroundBlendMode: "multiply",
         }}
-            className="flex flex-col flex-1 w-full min-h-full p-3 relative">
-            <Fade className="px-3">
+            className="flex flex-col flex-1 w-full min-h-full p-4 relative">
+            <Fade className="">
                 <h1 className="text-6xl font-bold aqum uppercase text-[#FFFFFF]">
                     THE
                     <br /> FUTURE
@@ -22,10 +22,10 @@ export const WelcomeUser = () => {
                 </h1>
             </Fade>
 
-            <p className="p-4 text-[#FFFFFF] font-normal text-sm lg:text-lg tahoma leading-5">
+            <p className="text-[#C2C2C2] font-normal text-sm lg:text-lg tahoma leading-6 pt-5">
                 The world is at your feet, Climb the ranks, accumulate riches, and claim your spot among the elite, and <span className="uppercase">MAY THE ZEN BE WITH YOU</span>
             </p>
-            <div className=" absolute bottom-0 right-0 left-0 w-full z-40">
+            <div className=" absolute bottom-0 right-0 left-0 w-full z-40 h-[516px] ">
                 <img src={visionImage} alt="vision image" className="h-full w-full" />
             </div>
             <div className="absolute bottom-0 right-0 left-0 w-full  z-50 bg-gradient-to-b from-[rgba(0,0,0,0.1)] to-[#000000] flex items-center justify-between p-4">

@@ -84,7 +84,7 @@ function MailNotification() {
           </div>
 
           {/* notifications */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 pb-[8rem]">
             {notifications.map((notify, id) => (
               <div key={id} className="py-5 flex items-center gap-3 border-b border-[#3E3D3D] inter">
                 <div className=" rounded-full h-[50px] w-[50px]">
@@ -94,7 +94,7 @@ function MailNotification() {
                 <div>
                   <h1 className="text-[#D25804] text-[8px] pb-1 font-medium">{notify.date}</h1>
                   <h1 className="text-[8px] font-semibold text-[#FFFFFF] line-clamp-1">{notify.title} <span className="text-[#9EA6FF] text-[8px] font-semibold">{notify.username}</span></h1>
-                  <h1 className="text-xs font-bold text-[#FFFFFF] py-2 line-clamp-1">{notify.subtitle}</h1>
+                  <h1 className="text-xs font-bold text-[#FFFFFF] line-clamp-1">{notify.subtitle}</h1>
                   <h1 className="text-[8px] italic text-[#FFFFFF] font-normal line-clamp-1">{notify.description}</h1>
                 </div>
               </div>
