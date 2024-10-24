@@ -4,12 +4,23 @@ import Logo from "../../../../assets/images/icons/Logo.png";
 import { Progress } from "../../../ui/progress";
 import { useState, useEffect } from "react";
 
-export const CheckAccount = ({ setScreens }: { setScreens?: (value: React.SetStateAction<string>) => void }) => {
+
+interface CheckAccountProps {
+    userInfo:{
+       telegramAge:number,
+       activityLevel:number,
+       isPremium:number,
+       ogStatus:number
+    };
+    setScreens?: (value: React.SetStateAction<string>) => void 
+}
+
+export const CheckAccount = ({ setScreens, userInfo  }:CheckAccountProps) => {
     const [progressValues, setProgressValues] = useState([
-        { title: "Telegram age", progress: 20 },
-        { title: "Activity level analyzed", progress: 40 },
-        { title: "Telegram Premium checked", progress: 80 },
-        { title: "OG Status confirmed", progress: 90 },
+        { title: "Telegram age", progress: userInfo.telegramAge },
+        { title: "Activity level analyzed", progress: userInfo.activityLevel },
+        { title: "Telegram Premium checked", progress: userInfo.isPremium },
+        { title: "OG Status confirmed", progress: userInfo.ogStatus },
     ]);
 
     useEffect(() => {
@@ -26,7 +37,7 @@ export const CheckAccount = ({ setScreens }: { setScreens?: (value: React.SetSta
 
     return (
           <div  className="flex flex-col flex-1  w-full min-h-full p-4 relative">
-            <div className="flex flex-col items-center justify-center "> 
+            <div className="flex flex-col items-center "> 
                 {/* Logo */}
                 <div className="relative h-[94px] w-[94px]">
                     <img src={Logo} alt="Zenstreet Logo" className="h-full w-full" />

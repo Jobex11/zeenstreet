@@ -7,14 +7,25 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { Button } from "../../ui/button";
 import filter from "../../../assets/images/icons/filter.svg"
 import { ShareFormatter } from "../../common/shareFormatter";
+import { useEffect, useRef } from "react";
 
 function Home() {
-
+    const middleCardRef = useRef<HTMLDivElement>(null);
     const todayTask = [
         { title: "Ongoing Project", name: "Refer Friends", shares: 10202000, type: "Daily Task" },
         { title: "Ongoing Project", name: "Refer Friends", shares: 10000400, type: "Daily Task" },
         { title: "Ongoing Project", name: "Refer Friends", shares: 10030000, type: "Daily Task" }
     ]
+
+    useEffect(() => {
+        if (middleCardRef.current) {
+            middleCardRef.current.scrollIntoView({
+                behavior: "smooth",
+                inline: "center",
+                block: "nearest",
+            });
+        }
+    }, []);
     return (
         <div className='flex flex-col min-h-full'>
             <div style={{
@@ -32,7 +43,11 @@ function Home() {
                     <TaskCard >
                         <h1 className="py-10">Heading</h1>
                     </TaskCard>
-                    <TaskCard >Card</TaskCard>
+                    <div ref={middleCardRef}>
+                    <TaskCard > {/* Reference to middle card */}
+                        <h1 className="py-10">Middle Card</h1>
+                    </TaskCard>
+                    </div>
                     <TaskCard >Card</TaskCard>
                 </div>
 
@@ -79,7 +94,7 @@ function Home() {
                                 </CardFooter>
                             </TaskCard>
 
-                        ))} 
+                        ))}
                     </div>
                 </div>
             </div>

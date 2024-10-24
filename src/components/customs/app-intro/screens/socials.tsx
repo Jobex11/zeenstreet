@@ -80,7 +80,7 @@ export const Socials = () => {
     
 
     return (
-        <div className="flex flex-col flex-1  w-full min-h-full p-4">
+        <div className="flex flex-col flex-1 w-full min-h-full p-4">
             <div className="flex flex-col gap-4 items-center">
                 <div className="relative h-[94px] w-[94px]">
                     <img src={Logo} alt="" className="h-full w-full" />
