@@ -6,16 +6,16 @@ import { useState, useEffect } from "react";
 
 
 interface CheckAccountProps {
-    userInfo:{
-       telegramAge:number,
-       activityLevel:number,
-       isPremium:number,
-       ogStatus:number
+    userInfo: {
+        telegramAge: number,
+        activityLevel: number,
+        isPremium: number,
+        ogStatus: number
     };
-    setScreens?: (value: React.SetStateAction<string>) => void 
+    setScreens?: (value: React.SetStateAction<string>) => void
 }
 
-export const CheckAccount = ({ setScreens, userInfo  }:CheckAccountProps) => {
+export const CheckAccount = ({ setScreens, userInfo }: CheckAccountProps) => {
     const [progressValues, setProgressValues] = useState([
         { title: "Telegram age", progress: userInfo.telegramAge },
         { title: "Activity level analyzed", progress: userInfo.activityLevel },
@@ -36,8 +36,8 @@ export const CheckAccount = ({ setScreens, userInfo  }:CheckAccountProps) => {
     }, []);
 
     return (
-          <div  className="flex flex-col flex-1  w-full min-h-full p-4 relative">
-            <div className="flex flex-col items-center "> 
+        <div className="flex flex-col flex-1  w-full min-h-full p-4 relative">
+            <div className="flex flex-col items-center ">
                 {/* Logo */}
                 <div className="relative h-[94px] w-[94px]">
                     <img src={Logo} alt="Zenstreet Logo" className="h-full w-full" />
