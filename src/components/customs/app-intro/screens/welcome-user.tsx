@@ -22,7 +22,7 @@ export const WelcomeUser = () => {
                 <img src={logo} alt="" className="h-[219px] w-[219px] object-contain object-center" />
             </div>
             <Fade>
-                <h1 className="text-6xl font-bold aqum uppercase text-[#FFFFFF]">
+                <h1 className="text-4xl font-bold aqum uppercase text-[#FFFFFF]">
                     THE
                     <br /> FUTURE
                     <br /> of web3.

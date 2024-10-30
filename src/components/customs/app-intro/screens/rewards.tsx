@@ -20,7 +20,7 @@ export const Rewards = (
     }
 ) => {
     return (
-        <div className="flex flex-col justify-evenly flex-1 w-full min-h-full p-4">
+        <div className="flex flex-col flex-1 justify-around  w-full min-h-full p-4 relative">
             <Fade>
                 <div className="aqum flex flex-col gap-4 items-center">
                     <div className="relative h-[139px] w-[139px]">
@@ -53,7 +53,7 @@ export const Rewards = (
                 name={"Proceed"}
                 disabled={false}
                 onClick={() => setScreens && setScreens("socials")}
-                className={"uppercase mt-10"}
+                className={"uppercase"}
             />
         </div>
     )
