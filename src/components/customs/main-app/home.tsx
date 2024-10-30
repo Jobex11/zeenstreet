@@ -41,14 +41,16 @@ function Home() {
                 {/* latest cards */}
                 <div className="flex items-center overflow-x-auto flex-nowrap w-full h-auto gap-3 px-4">
                     <TaskCard >
-                        <h1 className="py-10">Heading</h1>
+                        <h1 className="py-10 text-center text-white work-sans text-2xl font-semibold">Card 1</h1>
                     </TaskCard>
                     <div ref={middleCardRef}>
-                    <TaskCard > {/* Reference to middle card */}
-                        <h1 className="py-10">Middle Card</h1>
-                    </TaskCard>
+                        <TaskCard >
+                            <h1 className="py-10 text-center text-white work-sans text-2xl font-semibold">Card 2</h1>
+                        </TaskCard>
                     </div>
-                    <TaskCard >Card</TaskCard>
+                    <TaskCard >
+                        <h1 className="py-10 text-center text-white work-sans text-2xl font-semibold">Card 3</h1>
+                    </TaskCard>
                 </div>
 
 

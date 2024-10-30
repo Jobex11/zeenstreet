@@ -18,7 +18,7 @@ function Header() {
                     <Link to={"/ranks"}>
                         <img src={medalIcon} alt='medial icon' className='h-[21px] w-5' />
                     </Link>
-                    <Link to={"/"}>
+                    <Link to={"/referral"}>
                         <img src={dropbox} alt='dropbox' className='h-5 w-5' />
                     </Link>
                 </div>

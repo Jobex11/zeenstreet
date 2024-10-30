@@ -1,6 +1,6 @@
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { LuCheckCircle } from "react-icons/lu";
-import Logo from "../../../../assets/images/icons/Logo.png";
+import Logo from "../../../../assets/images/icons/ravegene_logo_lg.png";
 import { Progress } from "../../../ui/progress";
 import { useState, useEffect } from "react";
 
@@ -20,7 +20,7 @@ export const CheckAccount = ({ setScreens, userInfo }: CheckAccountProps) => {
         { title: "Telegram age", progress: userInfo.telegramAge },
         { title: "Activity level analyzed", progress: userInfo.activityLevel },
         { title: "Telegram Premium checked", progress: userInfo.isPremium },
-        { title: "OG Status confirmed", progress: userInfo.ogStatus },
+        { title: "Telegram stars Purchased", progress: userInfo.ogStatus },
     ]);
 
     useEffect(() => {
@@ -36,11 +36,11 @@ export const CheckAccount = ({ setScreens, userInfo }: CheckAccountProps) => {
     }, []);
 
     return (
-        <div className="flex flex-col flex-1  w-full min-h-full p-4 relative">
+        <div className="flex flex-col flex-1 justify-around  w-full min-h-full p-4 relative">
             <div className="flex flex-col items-center ">
                 {/* Logo */}
-                <div className="relative h-[94px] w-[94px]">
-                    <img src={Logo} alt="Zenstreet Logo" className="h-full w-full" />
+                <div className="relative h-[139px] w-[139px]">
+                    <img src={Logo} alt="Zenstreet Logo" className="h-full w-full object-contain" />
                 </div>
                 <h1 className="text-xl font-bold text-[#FFFFFF] uppercase py-4 aqum">Checking account</h1>
 
@@ -64,7 +64,7 @@ export const CheckAccount = ({ setScreens, userInfo }: CheckAccountProps) => {
                 disabled={false}
                 onClick={() => setScreens && setScreens("rewards")}
                 type={"button"}
-                className="mt-16"
+                className="mt-1"
             />
         </div>
     );

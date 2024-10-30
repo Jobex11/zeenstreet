@@ -3,7 +3,7 @@ import { SiTelegram } from "react-icons/si";
 import { RiTwitterXLine } from "react-icons/ri";
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../../../assets/images/icons/Logo.png"
+import Logo from "../../../../assets/images/icons/ravegene_logo_lg.png";
 import { Button } from "../../../ui/button";
 import { Fade } from "react-awesome-reveal";
 
@@ -80,10 +80,10 @@ export const Socials = () => {
     
 
     return (
-        <div className="flex flex-col flex-1 w-full min-h-full p-4">
+        <div className="flex flex-col justify-evenly flex-1 w-full min-h-full p-4">
             <div className="flex flex-col gap-4 items-center">
-                <div className="relative h-[94px] w-[94px]">
-                    <img src={Logo} alt="" className="h-full w-full" />
+                <div className="relative h-[139px] w-[139px]">
+                    <img src={Logo} alt="" className="h-full w-full object-contain" />
                 </div>
             </div>
             <Fade>

@@ -1,7 +1,7 @@
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { Card } from "../../../ui/card";
 import medal from "../../../../assets/images/icons/medal.png"
-import Logo from "../../../../assets/images/icons/Logo.png"
+import Logo from "../../../../assets/images/icons/ravegene_logo_lg.png";
 import { Fade, Zoom } from "react-awesome-reveal";
 import { ShareFormatter } from "../../../common/shareFormatter";
 
@@ -20,10 +20,10 @@ export const Rewards = (
     }
 ) => {
     return (
-        <div className="flex flex-col flex-1 w-full min-h-full p-4">
+        <div className="flex flex-col justify-evenly flex-1 w-full min-h-full p-4">
             <Fade>
                 <div className="aqum flex flex-col gap-4 items-center">
-                    <div className="relative h-[94px] w-[94px]">
+                    <div className="relative h-[139px] w-[139px]">
                         <img src={Logo} alt="" className="h-full w-full" />
                     </div>
                     <h1 className="text-7xl text-[#D25804] font-extrabold">{user?.year}</h1>

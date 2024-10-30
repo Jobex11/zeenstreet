@@ -2,7 +2,7 @@ import { useState } from 'react'
 import dotsbg from "../../../assets/images/dotted-bg.png";
 import logo from "../../../assets/images/icons/Logo.png";
 import TaskCard from "../../common/cards/Tasxcard";
-import { CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
+import { CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { Button } from "../../ui/button";
 import wavybg from "../../../assets/images/card_bg.svg";
 import avatarImage from "../../../assets/images/icons/avatar_img.png";
@@ -27,14 +27,14 @@ function Referral() {
 
     const tier1Referrals = [
         { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-3-2023", rewardedShares: "1124", isTier2: false },
-        { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-3-2023", rewardedShares: "1124", isTier2: false },
-        { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-3-2023", rewardedShares: "1124", isTier2: false }
+        { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-2-2023", rewardedShares: "1124", isTier2: false },
+        { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-5-2023", rewardedShares: "1124", isTier2: false }
     ]
 
     const tier2Referrals = [
-        { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-3-2023", rewardedShares: "1124", isTier2: true },
-        { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-3-2023", rewardedShares: "1124", isTier2: true },
-        { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-3-2023", rewardedShares: "1124", isTier2: true }
+        { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-6-2023", rewardedShares: "1124", isTier2: true },
+        { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-7-2023", rewardedShares: "1124", isTier2: true },
+        { userLogo: avatarImage, name: "sebastian", userName: "@Benjamin", createdAt: "12-9-2023", rewardedShares: "1124", isTier2: true }
     ]
 
     const handleCopyReferralLink = (link: string) => {
@@ -61,7 +61,7 @@ function Referral() {
                         </CardHeader>
                         <CardContent className='flex flex-col items-center'>
                             <CardTitle className="uppercase text-[11px] text-center font-bold text-white aqum py-2">expand your empire!<br /> grow your team to join the wealth<br /> rush and earn exclusive rewards</CardTitle>
-                            <CardDescription className="flex flex-col items-center">
+                            <div className="flex flex-col items-center">
                                 <div className='flex flex-col items-center justify-center'>
                                     <h1 className="aqum text-[11px] text-center font-bold text-white pt-2">Referral Link:</h1>
                                     <div className='flex  items-center gap-2'>
@@ -76,10 +76,10 @@ function Referral() {
                                     </div>
                                 </div>
                                 <div className='flex flex-col items-center'>
-                                    <h1 className="aqum text-[13px] font-bold text-center items-top flex  text-white py-2"><span><MdInfo color='#D25804' size={10} /></span> You&apos;ve been awared<br/> {ShareFormatter(100000000)} $shares</h1>
+                                    <h1 className="aqum text-[13px] font-bold text-center items-top flex  text-white py-2"><span><MdInfo color='#D25804' size={10} /></span> You&apos;ve been awared<br /> {ShareFormatter(100000000)} $shares</h1>
                                     <Button className='w-[111.2px] h-[30px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins'>Claim now</Button>
                                 </div>
-                            </CardDescription>
+                            </div>
                         </CardContent>
                     </TaskCard>
 
@@ -101,21 +101,24 @@ function Referral() {
                         </div>
 
                         {/* Referral list */}
-
                         <>
                             {tabs === "Tier 1" &&
                                 <>
-                                    {tier1Referrals.length === 0 && <div className='p-4 text-center'>No Referrals yet</div>}
-                                    {tier1Referrals.map((ref) => (
-                                        <Referrals referrals={ref} />
-                                    ))}</>}
+                                    {tier1Referrals.length > 0 ? tier1Referrals.map((ref) => (<Referrals key={ref.createdAt} referrals={ref} />))
+                                        :
+                                        <div className='p-4 text-center'>No Referrals yet</div>
+                                    }
+                                </>
+                            }
 
                             {tabs === "Tier 2" &&
                                 <>
-                                    {tier2Referrals.length === 0 && <div className='p-4 text-center'>No Referrals yet</div>}
-                                    {tier2Referrals.map((ref) => (
-                                        <Referrals referrals={ref} />
-                                    ))}</>}
+                                    {tier2Referrals.length > 0 ? tier2Referrals.map((ref) => (<Referrals key={ref.createdAt} referrals={ref} />))
+                                        :
+                                        <div className='p-4 text-center'>No Referrals yet</div>
+                                    }
+                                </>
+                            }
                         </>
                     </div>
                 </div>
@@ -156,7 +159,7 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
                 {/* shares */}
                 <div className="flex flex-col gap-1">
                     <h1 className="text-white text-xs font-bold">{referrals.rewardedShares}</h1>
-                   <span className='flex items-center  justify-end'> <GoTriangleUp size={18} color={"#00D95F"} /></span>
+                    <span className='flex items-center  justify-end'> <GoTriangleUp size={18} color={"#00D95F"} /></span>
                 </div>
             </div>
         </>

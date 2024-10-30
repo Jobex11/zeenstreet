@@ -3,9 +3,9 @@ import { CheckAccount } from "./screens/check-account";
 import { Rewards } from "./screens/rewards";
 import { Socials } from "./screens/socials";
 import { WelcomeUser } from "./screens/welcome-user";
-import { HiOutlineMenuAlt4 } from "react-icons/hi";
+// import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import confetti from "../../../assets/images/confetti.png"
-import logo from "../../../assets/images/icons/Logo.png"
+// import logo from "../../../assets/images/icons/ravegene-logo.png"
 import dottedBg from "../../../assets/images/dotted-bg.png"
 import { useNavigate } from "react-router-dom";
 
@@ -45,12 +45,12 @@ export default function ZeenAppIntro() {
                 backgroundImage: `${screens === "rewards" ? `url(${confetti}), url(${dottedBg})` : `url(${dottedBg})`}`,
                 backgroundRepeat: `no-repeat, no-repeat`,
                 backgroundPosition: "top center, bottom center",
-                backgroundSize: `${screens === "rewards" ? "contain, cover" : "cover, cover" } `,
+                backgroundSize: `${screens === "rewards" ? "contain, cover" : "cover, cover"} `,
             }}
             className="min-h-screen w-full flex flex-col flex-1 max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000]"
         >
-            <div className="flex flex-col min-h-screen w-full">
-                {/* top header */}
+            {/* <div className="flex flex-col min-h-screen w-full">
+                top header
                 <header className={`flex items-center justify-between bg-transparent w-full h-auto border-none m-0 p-3`}>
                     {screens === "welcome-user" ? (
                         <div className="flex flex-col gap-0">
@@ -59,14 +59,14 @@ export default function ZeenAppIntro() {
                         </div>
                     ) : <div />}
                     <HiOutlineMenuAlt4 size={25} color={"white"} />
-                </header>
+                </header> */}
 
-                {/* rendered screens */}
-                {screens === "welcome-user" && <WelcomeUser />}
-                {screens === "check-account" && <CheckAccount userInfo={userAccountInfo} setScreens={setScreens} />}
-                {screens === "rewards" && <Rewards user={user} setScreens={setScreens} />}
-                {screens === "socials" && <Socials />}
-            </div>
+            {/* rendered screens */}
+            {screens === "welcome-user" && <WelcomeUser />}
+            {screens === "check-account" && <CheckAccount userInfo={userAccountInfo} setScreens={setScreens} />}
+            {screens === "rewards" && <Rewards user={user} setScreens={setScreens} />}
+            {screens === "socials" && <Socials />}
+            {/* </div> */}
 
         </section>
 
