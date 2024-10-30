@@ -16,17 +16,17 @@ function Header() {
                 <div className='flex items-center gap-4'>
 
                     <Link to={"/ranks"}>
-                        <img src={medalIcon} alt='medial icon' className='h-[21px] w-5' />
+                        <img src={medalIcon} alt='medial icon' className='h-6 w-6' />
                     </Link>
                     <Link to={"/referral"}>
-                        <img src={dropbox} alt='dropbox' className='h-5 w-5' />
+                        <img src={dropbox} alt='dropbox' className='h-6 w-6' />
                     </Link>
                 </div>
 
                 <div className='flex items-center gap-4'>
                     <Link to={"/profile"}>
-                        <div className='flex items-center bg-transparent border hover:bg-transparent px-2 py-1 rounded-md gap-2 min-w-[62px]'>
-                            <img src={profilePlaceholder} alt='user placeholder' className='h-7 w-7' />
+                    <div className='flex items-center bg-transparent border hover:bg-transparent px-2 rounded-md gap-2 h-[30px] min-w-[62px]'>
+                            <img src={profilePlaceholder} alt='user placeholder' className='h-6 w-6' />
                             <span className='text-[9px] work-sans font-medium text-white'>@Alex</span>
                         </div>
                     </Link>
@@ -36,7 +36,6 @@ function Header() {
                     </Link>
                 </div>
             </header>
-
         </div>
     )
 }

@@ -100,7 +100,7 @@ function Profile() {
                                             <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1">{item.name}</h1>
                                         </div>
                                     </DrawerTrigger>
-                                    <DrawerContent aria-describedby={undefined} aria-description="dialog" className="flex flex-col min-h-fit bg-[#1C1B23] border-none px-3 gap-3">
+                                    <DrawerContent aria-describedby={undefined} aria-description="dialog" className="flex rounded-t-[35px] flex-col min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3">
                                         <DialogTitle className="sr-only" />
                                         <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">
                                             <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
@@ -138,7 +138,7 @@ function Profile() {
                                                 </Card>
                                             </div>
                                         </DrawerTrigger>
-                                        <DrawerContent aria-describedby={undefined} aria-description="dialog" className="flex flex-col min-h-fit bg-[#1C1B23] border-none px-3 gap-3">
+                                        <DrawerContent aria-describedby={undefined} aria-description="dialog" className="flex flex-col rounded-t-[35px] min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3">
                                             <DialogTitle className="sr-only" />
                                             <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">
                                                 <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
@@ -171,7 +171,7 @@ function Profile() {
                                                     <h1 className="work-sans text-[6px] text-[#FEFEFF] font-medium">{a.name}</h1>
                                                 </div>
                                             </DrawerTrigger>
-                                            <DrawerContent aria-describedby={undefined} aria-description="dialog" className="flex flex-col min-h-fit bg-[#1C1B23] border-none px-3 gap-3">
+                                            <DrawerContent aria-describedby={undefined} aria-description="dialog" className="flex flex-col rounded-t-[35px] min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3">
                                                 <DialogTitle className="sr-only" />
                                                 <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">
                                                     <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
