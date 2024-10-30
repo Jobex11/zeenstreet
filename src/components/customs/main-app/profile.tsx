@@ -87,16 +87,34 @@ function Profile() {
                         <h1 className='work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2'>Wealth class</h1>
                         <div className='w-full flex items-center pb-4 gap-4 overflow-x-auto'>
                             {wealthClass.map((item) => (
-                                <div key={item.name}>
-                                    <Card style={{
-                                        backgroundImage: `url(${wavybg})`,
-                                        backgroundRepeat: "no-repeat",
-                                        backgroundSize: "cover"
-                                    }} className='h-[48px] min-w-[70px] w-full rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold'>
-                                        <img src={item.img} alt="" className="h-full w-full object-cover" />
-                                    </Card>
-                                    <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1">{item.name}</h1>
-                                </div>
+                                <Drawer key={item.name}>
+                                    <DrawerTrigger asChild>
+                                        <div>
+                                            <Card style={{
+                                                backgroundImage: `url(${wavybg})`,
+                                                backgroundRepeat: "no-repeat",
+                                                backgroundSize: "cover"
+                                            }} className='h-[48px] min-w-[70px] w-full rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold'>
+                                                <img src={item.img} alt="" className="h-full w-full object-cover" />
+                                            </Card>
+                                            <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1">{item.name}</h1>
+                                        </div>
+                                    </DrawerTrigger>
+                                    <DrawerContent aria-describedby={undefined} aria-description="dialog" className="flex flex-col min-h-fit bg-[#1C1B23] border-none px-3 gap-3">
+                                        <DialogTitle className="sr-only" />
+                                        <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">
+                                            <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
+                                                <IoIosClose size={30} color="#A4A4A7" />
+                                            </DialogClose>
+                                            <img src={item.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
+                                            <h1 className="text-white work-sans font-semibold text-[15px] capitalize">{item.name}</h1>
+                                            <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ 3000 <img src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
+                                            <Button disabled={false} className="bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans">
+                                                Claim shares
+                                            </Button>
+                                        </div>
+                                    </DrawerContent>
+                                </Drawer>
                             ))}
                         </div>
                     </div>
@@ -108,15 +126,33 @@ function Profile() {
                             <h1 className="text-[#FEFEFF] text-[15px] font-semibold work-sans py-2">Cards collected</h1>
                             <div className='w-full flex items-center pb-4 gap-4 overflow-x-auto'>
                                 {collected.map((item) => (
-                                    <div key={item.name}>
-                                        <Card style={{
-                                            backgroundImage: `url(${wavybg})`,
-                                            backgroundRepeat: "no-repeat",
-                                            backgroundSize: "cover"
-                                        }} className='h-[95px] min-w-[70px] w-full rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold'>
-                                            <img src={item.img} alt="" className="h-full w-full object-cover" />
-                                        </Card>
-                                    </div>
+                                    <Drawer key={item.name}>
+                                        <DrawerTrigger asChild>
+                                            <div key={item.name}>
+                                                <Card style={{
+                                                    backgroundImage: `url(${wavybg})`,
+                                                    backgroundRepeat: "no-repeat",
+                                                    backgroundSize: "cover"
+                                                }} className='h-[95px] min-w-[70px] w-full rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold'>
+                                                    <img src={item.img} alt="" className="h-full w-full object-cover" />
+                                                </Card>
+                                            </div>
+                                        </DrawerTrigger>
+                                        <DrawerContent aria-describedby={undefined} aria-description="dialog" className="flex flex-col min-h-fit bg-[#1C1B23] border-none px-3 gap-3">
+                                            <DialogTitle className="sr-only" />
+                                            <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">
+                                                <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
+                                                    <IoIosClose size={30} color="#A4A4A7" />
+                                                </DialogClose>
+                                                <img src={item.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
+                                                <h1 className="text-white work-sans font-semibold text-[15px] capitalize">Some information about this card</h1>
+                                                <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ 3000 <img src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
+                                                <Button disabled={true} className="bg-[#D36519] hover:bg-orange-500 text-center py-4 h-12 w-full text-white work-sans">
+                                                    Claim shares
+                                                </Button>
+                                            </div>
+                                        </DrawerContent>
+                                    </Drawer>
                                 ))}
                             </div>
                         </div>
@@ -124,9 +160,9 @@ function Profile() {
                         {/* Achievments */}
                         <div>
                             <h1 className="text-[#FEFEFF] text-[15px] font-semibold work-sans py-2">Achievments</h1>
-                            <Card className="bg-[#171717] rounded-lg h-[171px] min-w-[326px] w-full p-2">
+                            <Card className="bg-[#171717] rounded-lg min-h-[171px] min-w-[326px] w-full p-2">
                                 <h1 className="work-sans text-[11px] text-[#FEFEFF] font-medium" >Referrals</h1>
-                                <div className="grid grid-cols-5 gap-4 place-content-center place-items-center">
+                                <div className="grid grid-cols-4 gap-4 place-content-center place-items-center">
                                     {achievement.map((a, i) => (
                                         <Drawer key={i}>
                                             <DrawerTrigger asChild>
@@ -144,7 +180,7 @@ function Profile() {
                                                     <img src={a.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
                                                     <h1 className="text-white work-sans font-semibold text-[15px]">{a.name}</h1>
                                                     <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ {a.reward} <img src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
-                                                    <Button disabled={false} className="bg-[#D36519] hover:bg-orange-500 text-center py-4 h-12 w-full text-white work-sans">
+                                                    <Button disabled={false} className="bg-[#D36519] hover:bg-orange-500 text-center rounded-lg py-4 h-12 w-full text-white work-sans">
                                                         Check
                                                     </Button>
                                                 </div>
@@ -159,7 +195,7 @@ function Profile() {
                 </div>
 
             </div>
-        </div>
+        </div >
     )
 }
 
