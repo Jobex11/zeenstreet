@@ -1,6 +1,6 @@
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { LuCheckCircle } from "react-icons/lu";
-import Logo from "../../../../assets/images/icons/ravegene_logo_lg.png";
+import Logo from "../../../../assets/images/icons/ravegenie_logo.png";
 import { Progress } from "../../../ui/progress";
 import { useState, useEffect } from "react";
 

@@ -7,7 +7,7 @@ import youtubeLogo from "../../../assets/images/icons/youtube_logo.svg";
 import TaskCard from "../../common/cards/Tasxcard";
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../ui/card";
 import { GoClockFill } from "react-icons/go";
-import zeenStreetLogo from "../../../assets/images/icons/Logo.png"
+import zeenStreetLogo from "../../../assets/images/icons/zenstreet_logo.png"
 import * as Progress from "@radix-ui/react-progress";
 
 const tasks = [
@@ -77,7 +77,7 @@ function Tasks() {
                 <div className='relative'>
                     <div className='flex items-center gap-6 overflow-x-auto max-w-full h-auto p-5 sticky top-32 z-50 '>
                         {btnTabs.map((tab) => (
-                            <Button style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }} key={tab} onClick={() => handleActiveTabs(tab)} className={`poppins object-cover duration-300 transition-all w-[88px] h-8 px-10 hover:bg-transparent capitalize ${tabs === tab ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7]" : "bg-opacity-75  rounded-none outline-none border-none "}`}>
+                            <Button style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }} key={tab} onClick={() => handleActiveTabs(tab)}   className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] hover:bg-transparent capitalize ${tabs === tab ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm" : " bg-opacity-10 rounded-none outline-none ring-0 border-nonefont-normal text-[11px] "}`}>
                                 {tab}
                             </Button>
                         ))}
@@ -87,10 +87,10 @@ function Tasks() {
                 <div className='flex flex-col gap-5 pt-6 pb-[7rem]'>
                     {tasks.map((task, index) => (
                         <TaskCard key={index}>
-                            <CardHeader className="flex flex-row justify-between items-center py-0 px-3">
+                            <CardHeader className="flex flex-row justify-between items-center py-2 px-3">
                                 <CardTitle className="text-[#FFFFFF] text-[11px] font-medium p-0">{task.cardHeader}</CardTitle>
                                 <div className="flex flex-col">
-                                    <img src={task.logo} alt="logo" className="h-[54px] w-[75.78px]" />
+                                    <img src={task.logo} alt="logo" className="max-h-[54px] max-w-[75.78px] w-fit h-fit object-contain object-center" />
                                     <h1 className="text-[11px] poppins text-[#FFFFFF] font-medium">{task.task}</h1>
                                 </div>
                             </CardHeader>

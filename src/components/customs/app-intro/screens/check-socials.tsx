@@ -1,34 +1,33 @@
-// import { useState, useEffect } from "react";
+
+import { useState, useEffect } from "react";
 import { SiTelegram } from "react-icons/si";
 import { RiTwitterXLine } from "react-icons/ri";
 import { TextButton } from "../../../common/buttons/Textbutton";
-import {
-    // Link,
-    useNavigate
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Logo from "../../../../assets/images/icons/ravegenie_logo.png";
 import { Button } from "../../../ui/button";
 import { Fade } from "react-awesome-reveal";
+import {Input} from "../../../ui/input";
+import {toast} from "sonner"
 
-export const Socials = () => {
-    const navigate = useNavigate()
+interface SocialHandle {
+    name: string;
+    title: string;
+    path: string
+    tag: string;
+    icon: JSX.Element;
+    urlPattern: RegExp;
+    style: {
+        bg: string,
+        text: string
+    }
+}
 
-    // Load persisted state from localStorage
-    // const loadConfirmedAccounts = () => {
-    //     const storedState = localStorage.getItem("confirmedAccounts");
-    //     return storedState ? JSON.parse(storedState) : { Youtube: false, Telegram: false, X: false };
-    // };
+export const CheckSocialAccounts = ({ setScreens }: { setScreens?: (value: React.SetStateAction<string>) => void }) => {
+    // const navigate = useNavigate();
 
-    // const [confirmedAccounts, setConfirmedAccounts] = useState<Record<string, boolean>>(loadConfirmedAccounts);
-
-    // Persist state to localStorage on change
-    // useEffect(() => {
-    //     localStorage.setItem("confirmedAccounts", JSON.stringify(confirmedAccounts));
-    // }, [confirmedAccounts]);
-
-    // const allConfirmed = Object.values(confirmedAccounts).every(Boolean);
-
-    const socialHandles = [
+    // Define the social media tasks and URL patterns for validation
+    const socialHandles: SocialHandle[] = [
         {
             name: "Youtube",
             title: "",
@@ -44,7 +43,8 @@ export const Socials = () => {
             style: {
                 bg: "bg-[#FF0000] hover:bg-red-600",
                 text: "text-black font-bold text-2xl aqum"
-            }
+            },
+            urlPattern: /^(https?:\/\/)?(www\.)?youtube\.com\/.+$/,
         },
         {
             name: "Telegram",
@@ -55,7 +55,8 @@ export const Socials = () => {
             style: {
                 bg: "bg-[#229ED9] hover:bg-[#1c86b7] ",
                 text: "text-blue-400 uppercase font-bold text-[13px] aqum"
-            }
+            },
+            urlPattern: /^(https?:\/\/)?(www\.)?t\.me\/.+$/,
         },
         {
             name: "X",
@@ -66,20 +67,49 @@ export const Socials = () => {
             style: {
                 bg: "bg-[#0F0F0F] hover:bg-black",
                 text: "text-white "
-            }
+            },
+            urlPattern: /^(https?:\/\/)?(www\.)?twitter\.com\/.+$/,
         }
     ];
 
-    // const handleConfirm = (name: string) => {
-    //     setConfirmedAccounts(prevState => ({
-    //         ...prevState,
-    //         [name]: true
-    //     }));
-    // };
-    // useEffect(() => {
-    //     console.log(confirmedAccounts); 
-    //     console.log(allConfirmed);       
-    // }, [confirmedAccounts, allConfirmed]);
+    // Load persisted state from localStorage
+    const loadConfirmedAccounts = () => {
+        const storedState = localStorage.getItem("confirmedAccounts");
+        return storedState
+            ? JSON.parse(storedState)
+            : {
+                Youtube: false,
+                Telegram: false,
+                X: false,
+            };
+    };
+
+    const [confirmedAccounts, setConfirmedAccounts] = useState<Record<string, boolean>>(loadConfirmedAccounts);
+    const [inputUrls, setInputUrls] = useState<Record<string, string>>({
+        Youtube: "",
+        Telegram: "",
+        X: "",
+    });
+
+    // Persist state to localStorage on change
+    useEffect(() => {
+        localStorage.setItem("confirmedAccounts", JSON.stringify(confirmedAccounts));
+    }, [confirmedAccounts]);
+
+    const allConfirmed = Object.values(confirmedAccounts).every(Boolean);
+
+    const handleUrlChange = (name: string, value: string) => {
+        setInputUrls((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleVerify = (name: string, urlPattern: RegExp) => {
+        if (urlPattern.test(inputUrls[name])) {
+            setConfirmedAccounts((prev) => ({ ...prev, [name]: true }));
+        } else {
+            toast.warning(`Invalid link`)
+        }
+    };
+
 
 
     return (
@@ -90,51 +120,53 @@ export const Socials = () => {
                 </div>
             </div>
             <Fade>
-                <div className="flex flex-col gap-2">
-                    {/* Social media handles */}
-                    {socialHandles.map((handles) => (
-                        <div key={handles.tag} className="flex flex-col items-center mb-8 gap-2 w-full">
+                {socialHandles.map((handle) => (
+                    <div key={handle.name} className="flex flex-col">
+                        <div key={handle.tag} className="flex flex-col items-center gap-2 w-full">
                             <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
                                 <div className="flex items-center w-[60%] p-5 gap-2">
-                                    <span>{handles.icon}</span>
-                                    <h1 className={handles.style.text}>{handles.title}</h1>
+                                    <span>{handle.icon}</span>
+                                    <h1 className={handle.style.text}>{handle.title}</h1>
                                 </div>
-                                <div className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}>
-                                    {/* <Link to={`https://${handles.path}`} target="_blank" className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}> */}
+                                <Link to={`https://${handle.path}`} target="_blank" className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handle.style.bg}`}>
                                     <Button
-                                        // onClick={() => handleConfirm(handles.name)}
                                         className="bg-transparent hover:bg-transparent shadow-none text-white aqum text-[13px] font-bold"
                                     >
-                                        {handles.tag}
+                                        {handle.tag}
                                     </Button>
-                                    {/* </Link> */}
-                                </div>
+                                </Link>
                             </div>
 
-                            {/* Confirm Button */}
-                            <Button
-                                // disabled={!confirmedAccounts[handles.name]}
-                                className="bg-[#D25804] hover:bg-orange-600 text-sm mt-3 uppercase font-medium max-w-[85px] h-6 mx-auto text-white" >
-                                Confirm
-                            </Button>
-
+                            
                         </div>
-                    ))}
-
-                    <blockquote className="tahoma text-xs font-medium text-center py-2 uppercase text-[#C2C2C2]">
-                        Complete these quests to claim your <br /> shares and Proceed
-                    </blockquote>
-                </div>
+                        <div className="flex items-center justify-center py-2 gap-2">
+                            <Input
+                                type="text"
+                                value={inputUrls[handle.name]}
+                                placeholder={`Enter ${handle.name} URL`}
+                                onChange={(e) => handleUrlChange(handle.name, e.target.value)}
+                                disabled={confirmedAccounts[handle.name]}
+                                className="bg-[#D25804] h-[24px] rounded-[5px] placeholder:uppercase aqum text-sm outline-none border-none w-[174px]"
+                            />
+                            <Button
+                                onClick={() => handleVerify(handle.name, handle.urlPattern)}
+                                disabled={confirmedAccounts[handle.name]}
+                                className={` disabled:bg-[#D25804]/50 h-[24px] rounded-[5px] bg-[#D25804] hover:bg-orange-400 aqum text-xs text-center ${confirmedAccounts[handle.name] ? "verified" : ""}`}
+                            >
+                                {confirmedAccounts[handle.name] ? "Verified" : "Verify"}
+                            </Button>
+                        </div>
+                    </div>
+                ))}
             </Fade>
             {/* Proceed Button */}
             <TextButton
                 name={"Proceed"}
-                // disabled={!allConfirmed}
-                onClick={() => navigate("/home")}
+                disabled={!allConfirmed}
+                onClick={() => setScreens && setScreens("socials")}
                 className={"uppercase"}
             />
         </div>
     );
 };
-
 

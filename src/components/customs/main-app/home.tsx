@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import dotsbg from "../../../assets/images/dotted-bg.png";
-import logo from "../../../assets/images/icons/Logo.png";
+import logo from "../../../assets/images/icons/zenstreet_logo.png";
 import TaskCard from "../../common/cards/Tasxcard";
 import { IoAdd } from "react-icons/io5";
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../ui/card";
@@ -8,6 +8,7 @@ import { Button } from "../../ui/button";
 import filter from "../../../assets/images/icons/filter.svg"
 import { ShareFormatter } from "../../common/shareFormatter";
 import { useEffect, useRef } from "react";
+import Loader from "../../common/Loader";
 
 function Home() {
     const middleCardRef = useRef<HTMLDivElement>(null);
@@ -26,6 +27,14 @@ function Home() {
             });
         }
     }, []);
+
+    const isLoading = false;
+
+    if (isLoading) {
+        return (
+            <Loader />
+        )
+    }
     return (
         <div className='flex flex-col min-h-full'>
             <div style={{
@@ -55,7 +64,6 @@ function Home() {
 
 
                 <div className='flex flex-col pt-10 px-4 gap-5'>
-
                     <div className="flex items-center justify-between">
                         <div className="flex flex-col gap-2 work-sans">
                             <h1 className="text-[#FEFEFF] text-lg font-semibold">Today&apos;s Tasks</h1>

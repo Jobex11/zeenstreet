@@ -54,13 +54,13 @@ function Referral() {
 
                     {/* top card */}
                     <TaskCard>
-                        <CardHeader className="flex flex-col items-center">
+                        <CardHeader className="flex flex-col items-center py-0">
                             <div className='h-[84px] w-[92px]'>
                                 <img src={logo} alt="zeen streeet logo" className={"min-h-full object-cover object-center w-full"} />
                             </div>
                         </CardHeader>
                         <CardContent className='flex flex-col items-center'>
-                            <CardTitle className="uppercase text-[11px] text-center font-bold text-white aqum py-2">expand your empire!<br /> grow your team to join the wealth<br /> rush and earn exclusive rewards</CardTitle>
+                            <CardTitle className="uppercase text-[12.5px] text-center font-bold text-white aqum py-2">expand your empire!<br /> <span className="text-[11.5px]">grow your team to join the wealth<br /> rush and earn exclusive rewards</span></CardTitle>
                             <div className="flex flex-col items-center">
                                 <div className='flex flex-col items-center justify-center'>
                                     <h1 className="aqum text-[11px] text-center font-bold text-white pt-2">Referral Link:</h1>
@@ -86,15 +86,16 @@ function Referral() {
 
                     <div>
                         {/* tab buttons */}
-                        <div className="flex items-center justify-between py-2">
+                        <div className="flex items-center justify-between py-4">
                             {btnTabs.map((tab) => (
                                 <Button
-                                    style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
+                                    style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition:"center" }}
                                     key={tab.name}
                                     // disabled={tabs !== tab.name}
                                     onClick={() => handleActiveTabs(tab.name)}
-                                    className={`poppins object-cover duration-300 transition-all w-[88px] h-8 px-10 bg-[#171717] hover:bg-transparent capitalize ${tabs === tab.name ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7]" : "bg-opacity-75  rounded-none outline-none border-none "}`}>
+                                    className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm" : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "}`}>
                                     {tab.name}
+                                   {tabs !== tab.name &&  <div className='bg-black/20 bg-opacity-50 absolute h-full w-full z-10'/>}
                                 </Button>
                             ))}
 

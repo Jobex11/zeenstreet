@@ -1,9 +1,9 @@
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { Card } from "../../../ui/card";
 import medal from "../../../../assets/images/icons/medal.png"
-import Logo from "../../../../assets/images/icons/ravegene_logo_lg.png";
+import Logo from "../../../../assets/images/icons/ravegenie_logo.png";
 import { Fade, Zoom } from "react-awesome-reveal";
-import { ShareFormatter } from "../../../common/shareFormatter";
+
 
 interface RewardsProps {
     year: string;
@@ -41,7 +41,7 @@ export const Rewards = (
                         <h1 className="capitalise text-lg font-bold text-white text-center py-3 aqum">Here is your Reward</h1>
 
                         <Card className="aqum flex w-56 h-[89px] mx-auto border-none flex-col rounded-xl items-center justify-center gap-2 p-3 bg-[#D25804] text-white">
-                            <h1> {ShareFormatter(user?.shares)}</h1>
+                            <h1>111000</h1>
                             <h1>$SHARES</h1>
                         </Card>
 
@@ -54,8 +54,8 @@ export const Rewards = (
             <TextButton
                 name={"Proceed"}
                 disabled={false}
-                onClick={() => setScreens && setScreens("socials")}
-                className={"uppercase"}
+                onClick={() => setScreens && setScreens("check-socials")}
+                className={"uppercase mt-2"}
             />
         </div>
     )
