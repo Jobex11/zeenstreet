@@ -95,10 +95,9 @@ function Referral() {
                                     onClick={() => handleActiveTabs(tab.name)}
                                     className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm" : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "}`}>
                                     {tab.name}
-                                   {tabs !== tab.name &&  <div className='bg-black/20 bg-opacity-50 absolute h-full w-full z-10'/>}
+                                   {tabs !== tab.name &&  <div className='bg-black/20 absolute right-0 left-0 h-full w-full z-10'/>}
                                 </Button>
                             ))}
-
                         </div>
 
                         {/* Referral list */}

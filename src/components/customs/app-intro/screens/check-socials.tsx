@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 import Logo from "../../../../assets/images/icons/ravegenie_logo.png";
 import { Button } from "../../../ui/button";
 import { Fade } from "react-awesome-reveal";
-import {Input} from "../../../ui/input";
-import {toast} from "sonner"
+import { Input } from "../../../ui/input";
+import { toast } from "sonner"
 
 interface SocialHandle {
     name: string;
@@ -78,9 +78,9 @@ export const CheckSocialAccounts = ({ setScreens }: { setScreens?: (value: React
         return storedState
             ? JSON.parse(storedState)
             : {
-                Youtube: false,
-                Telegram: false,
-                X: false,
+                SubscribeYoutube: false,
+                JoinTelegram: false,
+                FollowX: false,
             };
     };
 
@@ -113,7 +113,7 @@ export const CheckSocialAccounts = ({ setScreens }: { setScreens?: (value: React
 
 
     return (
-        <div className="flex flex-col flex-1 justify-around  w-full min-h-full p-4 relative">
+        <div className="flex flex-col flex-1 justify-between  w-full min-h-full p-4 relative">
             <div className="flex flex-col gap-4 items-center">
                 <div className="relative h-[139px] w-[139px]">
                     <img src={Logo} alt="" className="h-full w-full object-contain" />
@@ -137,16 +137,16 @@ export const CheckSocialAccounts = ({ setScreens }: { setScreens?: (value: React
                                 </Link>
                             </div>
 
-                            
+
                         </div>
                         <div className="flex items-center justify-center py-2 gap-2">
                             <Input
                                 type="text"
                                 value={inputUrls[handle.name]}
-                                placeholder={`Enter ${handle.name} URL`}
+                                placeholder={`Enter Link`}
                                 onChange={(e) => handleUrlChange(handle.name, e.target.value)}
                                 disabled={confirmedAccounts[handle.name]}
-                                className="bg-[#D25804] h-[24px] rounded-[5px] placeholder:uppercase aqum text-sm outline-none border-none w-[174px]"
+                                className="bg-[#D25804] h-[24px] rounded-[5px] inter placeholder:uppercase text-sm font-normal px-1 outline-none border-none w-[174px]"
                             />
                             <Button
                                 onClick={() => handleVerify(handle.name, handle.urlPattern)}
@@ -158,6 +158,9 @@ export const CheckSocialAccounts = ({ setScreens }: { setScreens?: (value: React
                         </div>
                     </div>
                 ))}
+                 <blockquote className="tahoma text-xs font-medium text-center py-2 uppercase text-[#C2C2C2]">
+                        Complete these quests to claim your <br /> shares and Proceed
+                    </blockquote>
             </Fade>
             {/* Proceed Button */}
             <TextButton

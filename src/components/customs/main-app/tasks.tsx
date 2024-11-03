@@ -75,10 +75,16 @@ function Tasks() {
 
                 {/* task tabs */}
                 <div className='relative'>
-                    <div className='flex items-center gap-6 overflow-x-auto max-w-full h-auto p-5 sticky top-32 z-50 '>
+                    <div className='flex items-center gap-6 overflow-x-auto max-w-full h-auto py-5 '>
                         {btnTabs.map((tab) => (
-                            <Button style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }} key={tab} onClick={() => handleActiveTabs(tab)}   className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] hover:bg-transparent capitalize ${tabs === tab ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm" : " bg-opacity-10 rounded-none outline-none ring-0 border-nonefont-normal text-[11px] "}`}>
+                            <Button
+                                style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}
+                                key={tab}
+                                // disabled={tabs !== tab.name}
+                                onClick={() => handleActiveTabs(tab)}
+                                className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm" : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "}`}>
                                 {tab}
+                                {tabs !== tab && <div className='bg-black/10 absolute right-0 left-0 h-full w-full z-10' />}
                             </Button>
                         ))}
                     </div>

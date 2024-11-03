@@ -3,7 +3,7 @@ import { Card } from "../../../ui/card";
 import medal from "../../../../assets/images/icons/medal.png"
 import Logo from "../../../../assets/images/icons/ravegenie_logo.png";
 import { Fade, Zoom } from "react-awesome-reveal";
-
+import CountUp from "react-countup"
 
 interface RewardsProps {
     year: string;
@@ -20,7 +20,7 @@ export const Rewards = (
     }
 ) => {
     return (
-        <div className="flex flex-col flex-1 justify-around  w-full min-h-full p-4 relative">
+        <div className="flex flex-col flex-1 justify-between pb-16  w-full min-h-full p-4 relative">
             <div>
                 <Fade>
                     <div className="aqum flex flex-col gap-4 items-center">
@@ -41,11 +41,11 @@ export const Rewards = (
                         <h1 className="capitalise text-lg font-bold text-white text-center py-3 aqum">Here is your Reward</h1>
 
                         <Card className="aqum flex w-56 h-[89px] mx-auto border-none flex-col rounded-xl items-center justify-center gap-2 p-3 bg-[#D25804] text-white">
-                            <h1>111000</h1>
+                            <h1 className=""><CountUp start={0} separator=","  end={100000}/></h1>
                             <h1>$SHARES</h1>
                         </Card>
 
-                        <blockquote className="tahoma max-w-[286px] uppercase mx-auto text-xs font-medium text-center py-2 text-[#C2C2C2]">
+                        <blockquote className="tahoma max-w-[286px] uppercase pt-5 mx-auto text-xs font-medium text-center py-2 text-[#C2C2C2]">
                             Complete the quests in the next page to claim your shares
                         </blockquote>
                     </div>
