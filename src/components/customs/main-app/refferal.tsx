@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import dotsbg from "../../../assets/images/dotted-bg.png";
-import logo from "../../../assets/images/icons/Logo.png";
+import logo from "../../../assets/images/icons/zenstreet_logo.png";
 import TaskCard from "../../common/cards/Tasxcard";
 import { CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { Button } from "../../ui/button";
@@ -16,11 +16,13 @@ import { ShareFormatter } from "../../common/shareFormatter";
 
 
 function Referral() {
+    
     const [tabs, setTabs] = useState<string>("Tier 1");
     const btnTabs = [
         { name: "Tier 1" },
         { name: "Tier 2" }
     ]
+
     const handleActiveTabs = (name: string) => {
         setTabs(name)
     }

@@ -19,7 +19,7 @@ const ComingSoon = ({ image, alt,name }: Props) => {
 
                 {/* Description */}
                 <p className="text-gray-100 text-lg work-sans">
-                    We're working hard to bring something amazing in our {name}! Stay tuned for updates.
+                    We're working hard to bring you something amazing with our {name}.
                 </p>
             </div>
             <div/>

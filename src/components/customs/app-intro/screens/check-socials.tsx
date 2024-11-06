@@ -113,54 +113,56 @@ export const CheckSocialAccounts = ({ setScreens }: { setScreens?: (value: React
 
 
     return (
-        <div className="flex flex-col flex-1 justify-between  w-full min-h-full p-4 relative">
-            <div className="flex flex-col gap-4 items-center">
-                <div className="relative h-[139px] w-[139px]">
-                    <img src={Logo} alt="" className="h-full w-full object-contain" />
-                </div>
-            </div>
+        <div className="flex flex-col flex-1 gap-10  w-full min-h-full p-4 relative">
             <Fade>
-                {socialHandles.map((handle) => (
-                    <div key={handle.name} className="flex flex-col">
-                        <div key={handle.tag} className="flex flex-col items-center gap-2 w-full">
-                            <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
-                                <div className="flex items-center w-[60%] p-5 gap-2">
-                                    <span>{handle.icon}</span>
-                                    <h1 className={handle.style.text}>{handle.title}</h1>
-                                </div>
-                                <Link to={`https://${handle.path}`} target="_blank" className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handle.style.bg}`}>
-                                    <Button
-                                        className="bg-transparent hover:bg-transparent shadow-none text-white aqum text-[13px] font-bold"
-                                    >
-                                        {handle.tag}
-                                    </Button>
-                                </Link>
-                            </div>
-
-
-                        </div>
-                        <div className="flex items-center justify-center py-2 gap-2">
-                            <Input
-                                type="text"
-                                value={inputUrls[handle.name]}
-                                placeholder={`Enter Link`}
-                                onChange={(e) => handleUrlChange(handle.name, e.target.value)}
-                                disabled={confirmedAccounts[handle.name]}
-                                className="bg-[#D25804] h-[24px] rounded-[5px] inter placeholder:uppercase text-sm font-normal px-1 outline-none border-none w-[174px]"
-                            />
-                            <Button
-                                onClick={() => handleVerify(handle.name, handle.urlPattern)}
-                                disabled={confirmedAccounts[handle.name]}
-                                className={` disabled:bg-[#D25804]/50 h-[24px] rounded-[5px] bg-[#D25804] hover:bg-orange-400 aqum text-xs text-center ${confirmedAccounts[handle.name] ? "verified" : ""}`}
-                            >
-                                {confirmedAccounts[handle.name] ? "Verified" : "Verify"}
-                            </Button>
+                <div className="flex flex-col  flex-1 justify-between gap-10">
+                    <div className="flex flex-col gap-4 items-center">
+                        <div className="relative h-[139px] w-[139px]">
+                            <img src={Logo} alt="" className="h-full w-full object-contain" />
                         </div>
                     </div>
-                ))}
-                 <blockquote className="tahoma text-xs font-medium text-center py-2 uppercase text-[#C2C2C2]">
+                    {socialHandles.map((handle) => (
+                        <div key={handle.name} className="flex flex-col">
+                            <div key={handle.tag} className="flex flex-col items-center gap-2 w-full">
+                                <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
+                                    <div className="flex items-center w-[60%] p-5 gap-2">
+                                        <span>{handle.icon}</span>
+                                        <h1 className={handle.style.text}>{handle.title}</h1>
+                                    </div>
+                                    <Link to={`https://${handle.path}`} target="_blank" className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handle.style.bg}`}>
+                                        <Button
+                                            className="bg-transparent hover:bg-transparent shadow-none text-white aqum text-[13px] font-bold"
+                                        >
+                                            {handle.tag}
+                                        </Button>
+                                    </Link>
+                                </div>
+
+
+                            </div>
+                            <div className="flex items-center justify-center py-2 gap-2">
+                                <Input
+                                    type="text"
+                                    value={inputUrls[handle.name]}
+                                    placeholder={`Enter Link`}
+                                    onChange={(e) => handleUrlChange(handle.name, e.target.value)}
+                                    disabled={confirmedAccounts[handle.name]}
+                                    className="bg-[#D25804] h-[24px] rounded-[5px] inter placeholder:uppercase text-sm font-normal px-1 outline-none border-none w-[174px]"
+                                />
+                                <Button
+                                    onClick={() => handleVerify(handle.name, handle.urlPattern)}
+                                    disabled={confirmedAccounts[handle.name]}
+                                    className={` disabled:bg-[#D25804]/50 h-[24px] rounded-[5px] bg-[#D25804] hover:bg-orange-400 aqum text-xs text-center ${confirmedAccounts[handle.name] ? "verified" : ""}`}
+                                >
+                                    {confirmedAccounts[handle.name] ? "Verified" : "Verify"}
+                                </Button>
+                            </div>
+                        </div>
+                    ))}
+                    <blockquote className="tahoma text-xs font-medium text-center py-2 uppercase text-[#C2C2C2]">
                         Complete these quests to claim your <br /> shares and Proceed
                     </blockquote>
+                </div>
             </Fade>
             {/* Proceed Button */}
             <TextButton

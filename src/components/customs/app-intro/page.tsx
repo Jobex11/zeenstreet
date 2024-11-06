@@ -27,10 +27,13 @@ export default function ZeenAppIntro() {
         isPremium: 60,
         ogStatus: 90
     }
+
+    // will add a condition to check if the user has a username and has accessed the First task screen(socials) let him remian there else continue
+     
     useEffect(() => {
         if (screens === "welcome-user" && !isUser) {
             setTimeout(() => {
-                setScreens("check-account");
+                setScreens("create-username");
             }, 5000);
         } else if (screens === "welcome-user" && isUser) {
             setTimeout(() => {
@@ -47,14 +50,15 @@ export default function ZeenAppIntro() {
                 backgroundPosition: "top center, bottom center",
                 backgroundSize: `${screens === "rewards" ? "contain, cover" : "cover, cover"} `,
             }}
-            className="min-h-screen w-full flex flex-col flex-1 max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000]"
+            className="min-h-screen w-full flex flex-col max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000]"
         >
             {screens === "welcome-user" && <WelcomeUser />}
+            {screens === "create-username" && <CreateUsername setScreens={setScreens} />}
             {screens === "check-account" && <CheckAccount userInfo={userAccountInfo} setScreens={setScreens} />}
             {screens === "rewards" && <Rewards user={user} setScreens={setScreens} />}
             {screens === "check-socials" && <CheckSocialAccounts setScreens={setScreens} />}
             {screens === "socials" && <Socials />}
-            {screens === "create-username" && <CreateUsername />}
+           
 
         </section>
 

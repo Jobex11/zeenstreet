@@ -20,13 +20,17 @@ export const Rewards = (
     }
 ) => {
     return (
-        <div className="flex flex-col flex-1 justify-between pb-16  w-full min-h-full p-4 relative">
-            <div>
-                <Fade>
+        <div className="flex flex-col flex-1  w-full min-h-full p-4 relative">
+            
+                <div className="relative h-[139px] w-[139px] mx-auto">
+                    <img src={Logo} alt="" className="h-full w-full object-contain" />
+                </div>
+          
+
+            <div className="flex flex-col flex-1 justify-around">
+               <div>
+               <Fade>
                     <div className="aqum flex flex-col gap-4 items-center">
-                        <div className="relative h-[139px] w-[139px]">
-                            <img src={Logo} alt="" className="h-full w-full" />
-                        </div>
                         <h1 className="text-7xl text-[#D25804] font-extrabold aqum">{user?.year}</h1>
                         <h1 className="text-[#D25804] text-2xl">Years</h1>
 
@@ -50,13 +54,16 @@ export const Rewards = (
                         </blockquote>
                     </div>
                 </Zoom>
-            </div>
-            <TextButton
+               </div>
+
+               <TextButton
                 name={"Proceed"}
                 disabled={false}
                 onClick={() => setScreens && setScreens("check-socials")}
-                className={"uppercase mt-2"}
+                className={"uppercase mt-4"}
             />
+            </div>
+            
         </div>
     )
 }

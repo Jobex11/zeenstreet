@@ -13,19 +13,17 @@ export const WelcomeUser = () => {
             className="flex flex-col flex-1 w-full min-h-full p-4 relative">
             <div className="flex flex-col relative">
                 <img src={Zenlogo} alt="Zenstreet logo" className="h-[94px] w-[94px] object-contain object-center absolute top-0" />
-                <img src={logo} alt="Ravgenie logo" className="h-[219px] w-[219px] object-contain object-center" />
+                <img src={logo} alt="Ravgenie logo" className="h-[200px] w-[139px] object-contain object-center" />
             </div>
             <Fade>
-                <h1 className="text-6xl font-bold aqum uppercase text-[#FFFFFF]">
+                <h1 className="text-5xl font-bold aqum leading-none uppercase text-[#FFFFFF]">
                     THE
                     <br /> FUTURE
-                    <br /> of web3.
+                    <br /> of Gaming.
                 </h1>
             </Fade>
+            <div />
 
-            {/* <p className="text-[#C2C2C2] font-normal text-sm lg:text-lg tahoma leading-6 pt-5">
-                The world is at your feet, Climb the ranks, accumulate riches, and claim your spot among the elite, and <span className="uppercase">MAY THE ZEN BE WITH YOU</span>
-            </p> */}
             <div
                 style={{
                     backgroundImage: `url(${rave}), url(${genie})`,
@@ -34,8 +32,8 @@ export const WelcomeUser = () => {
                     backgroundPosition: "top, center",
                     backgroundBlendMode: "multiply",
                 }}
-                className=" absolute bottom-0 right-0 left-0 w-full z-40 h-[516px] ">
-                <img src={visionImage} alt="vision image" className="h-full w-full object-center" />
+                className="absolute bottom-0 right-0 left-0 w-full z-40 h-[490px] overflow-hidden">
+                <img src={visionImage} alt="vision image" className="min-h-full w-full object-cover object-center" />
             </div>
             <div className="absolute bottom-0 right-0 left-0 w-full  z-50 bg-gradient-to-b from-[rgba(0,0,0,0.1)] to-[#000000] flex items-center justify-between p-4">
                 <div className="flex items-center text-white gap-3 text-sm">

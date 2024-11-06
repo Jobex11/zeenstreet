@@ -83,56 +83,59 @@ export const Socials = () => {
 
 
     return (
-        <div className="flex flex-col flex-1 justify-around  w-full min-h-full p-4 relative">
+        <div className="flex flex-col flex-1 w-full min-h-full p-4 relative">
             <div className="flex flex-col gap-4 items-center">
                 <div className="relative h-[139px] w-[139px]">
                     <img src={Logo} alt="" className="h-full w-full object-contain" />
                 </div>
             </div>
-            <Fade>
-                <div className="flex flex-col gap-2">
-                    {/* Social media handles */}
-                    {socialHandles.map((handles) => (
-                        <div key={handles.tag} className="flex flex-col items-center mb-8 gap-2 w-full">
-                            <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
-                                <div className="flex items-center w-[60%] p-5 gap-2">
-                                    <span>{handles.icon}</span>
-                                    <h1 className={handles.style.text}>{handles.title}</h1>
+
+            <div className="flex flex-col flex-1 justify-around">
+                <Fade>
+                    <div className="flex flex-col gap-2">
+                        {/* Social media handles */}
+                        {socialHandles.map((handles) => (
+                            <div key={handles.tag} className="flex flex-col items-center mb-8 gap-2 w-full">
+                                <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
+                                    <div className="flex items-center w-[60%] p-5 gap-2">
+                                        <span>{handles.icon}</span>
+                                        <h1 className={handles.style.text}>{handles.title}</h1>
+                                    </div>
+                                    <div className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}>
+                                        {/* <Link to={`https://${handles.path}`} target="_blank" className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}> */}
+                                        <Button
+                                            // onClick={() => handleConfirm(handles.name)}
+                                            className="bg-transparent hover:bg-transparent shadow-none text-white aqum text-[13px] font-bold"
+                                        >
+                                            {handles.tag}
+                                        </Button>
+                                        {/* </Link> */}
+                                    </div>
                                 </div>
-                                <div className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}>
-                                    {/* <Link to={`https://${handles.path}`} target="_blank" className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}> */}
-                                    <Button
-                                        // onClick={() => handleConfirm(handles.name)}
-                                        className="bg-transparent hover:bg-transparent shadow-none text-white aqum text-[13px] font-bold"
-                                    >
-                                        {handles.tag}
-                                    </Button>
-                                    {/* </Link> */}
-                                </div>
+
+                                {/* Confirm Button */}
+                                <Button
+                                    // disabled={!confirmedAccounts[handles.name]}
+                                    className="bg-[#D25804] hover:bg-orange-600 text-sm mt-3 uppercase font-medium max-w-[85px] h-6 mx-auto text-white" >
+                                    Confirm
+                                </Button>
+
                             </div>
+                        ))}
 
-                            {/* Confirm Button */}
-                            <Button
-                                // disabled={!confirmedAccounts[handles.name]}
-                                className="bg-[#D25804] hover:bg-orange-600 text-sm mt-3 uppercase font-medium max-w-[85px] h-6 mx-auto text-white" >
-                                Confirm
-                            </Button>
-
-                        </div>
-                    ))}
-
-                    <blockquote className="tahoma text-xs font-medium text-center py-2 uppercase text-[#C2C2C2]">
-                        Complete these quests to claim your <br /> shares and Proceed
-                    </blockquote>
-                </div>
-            </Fade>
-            {/* Proceed Button */}
-            <TextButton
-                name={"Proceed"}
-                // disabled={!allConfirmed}
-                onClick={() => navigate("/home")}
-                className={"uppercase"}
-            />
+                        <blockquote className="tahoma text-xs font-medium text-center py-2 uppercase text-[#C2C2C2]">
+                            Complete these quests to claim your <br /> shares and Proceed
+                        </blockquote>
+                    </div>
+                </Fade>
+                {/* Proceed Button */}
+                <TextButton
+                    name={"Proceed"}
+                    // disabled={!allConfirmed}
+                    onClick={() => navigate("/home")}
+                    className={"uppercase mt-6"}
+                />
+            </div>
         </div>
     );
 };

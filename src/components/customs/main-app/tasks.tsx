@@ -1,14 +1,16 @@
 
 import { Button } from '../../ui/button';
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dotsbg from "../../../assets/images/dotted-bg.png";
 import wavybg from "../../../assets/images/card_bg.svg";
 import youtubeLogo from "../../../assets/images/icons/youtube_logo.svg";
 import TaskCard from "../../common/cards/Tasxcard";
-import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../ui/card";
 import { GoClockFill } from "react-icons/go";
 import zeenStreetLogo from "../../../assets/images/icons/zenstreet_logo.png"
+import carousel_img from "../../../assets/images/cards/carousel_img.png"
 import * as Progress from "@radix-ui/react-progress";
+
 
 const tasks = [
     {
@@ -55,26 +57,74 @@ const tasks = [
 ];
 
 function Tasks() {
+    const middleCardRef = useRef<HTMLDivElement>(null);
     const [tabs, setTabs] = useState<string>("All");
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
 
     const handleActiveTabs = (name: string) => {
         setTabs(name)
     }
+    const images = [
+        { carousel_img, },
+        { carousel_img, },
+        { carousel_img },
+        { carousel_img, ref: middleCardRef },
+        { carousel_img, },
+        { carousel_img, },
+    ]
+
+    useEffect(() => {
+        if (middleCardRef.current) {
+            middleCardRef.current.scrollIntoView({
+                behavior: "smooth",
+                inline: "center",
+                block: "nearest",
+            });
+        }
+    }, []);
+
     return (
-        <div className='flex flex-col h-full  '>
+        <div className='flex flex-col min-h-full w-full'>
             <div style={{
                 backgroundImage: `url(${dotsbg})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover"
-            }} className='flex flex-col py-3 h-full px-3 '>
+            }} className=' py-3 h-full px-3 w-full '>
                 {/* task header */}
-                <div>
 
+                <header className="flex flex-col gap-3">
+                <div className="relative flex items-center justify-center gap-10 w-full pb-5  overflow-x-auto px-4">
+                    {images.map((img, id) => (
+                        <Card key={id} ref={img.ref} className='flex-shrink-0 group  rounded-md w-[200px] h-[140px]'>
+                            <img src={img.carousel_img} alt='card img' className='h-full w-full group-hover:scale-110 duration-200 transition-transform  object-cover object-center' />
+                        </Card>
+                    ))}
                 </div>
+                <div className="flex items-center justify-between text-[#FFFFFF]">
+                    <h1 className="aqum text-[9px] font-semibold">Daily task</h1>
+                    <h1 className="aqum text-[9px] font-semibold">1624 / 2000</h1>
+                </div>
+                <Progress.Root
+                    className="relative h-[9px] w-full overflow-hidden rounded-full bg-white my-1"
+                    style={{
+                        transform: "translateZ(0)",
+                    }}
+                    value={100}
+                >
+                    <Progress.Indicator
+                        className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] size-full bg-[#D25804] rounded-r-full transition-transform duration-200"
+                        style={{
+                            transform: `translateX(-${100 - 50}%)`,
+                            background:
+                              "linear-gradient(#D25804, #fff0), repeating-linear-gradient(135deg, rgb(232,6,6) 0 7px, #0000 0 20px), #D25804",
+                          }}
+                    />
+                </Progress.Root>
+                </header>
 
-                {/* task tabs */}
-                <div className='relative'>
+
+                <div className='h-auto w-full'>
+                    {/* task tabs */}
                     <div className='flex items-center gap-6 overflow-x-auto max-w-full h-auto py-5 '>
                         {btnTabs.map((tab) => (
                             <Button
@@ -89,6 +139,9 @@ function Tasks() {
                         ))}
                     </div>
                 </div>
+
+
+
                 {/* task cards */}
                 <div className='flex flex-col gap-5 pt-6 pb-[7rem]'>
                     {tasks.map((task, index) => (

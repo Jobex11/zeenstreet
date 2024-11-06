@@ -36,7 +36,7 @@ function Ranks() {
             backgroundBlendMode: "multiply",
           }} className='h-[271px] flex flex-col items-center justify-center'>
             <img src={trophy} alt="Rank Trophy" className='h-full w-full object-center object-contain' />
-            <h1 className="text-[#FEFEFF] text-xl font-semibold work-sans py-1">Rank 0</h1>
+            <h1 className="text-[#FEFEFF] text-xl font-semibold work-sans py-1">Leaderboard</h1>
           </div>
      
         </div>
