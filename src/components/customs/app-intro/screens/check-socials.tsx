@@ -113,19 +113,19 @@ export const CheckSocialAccounts = ({ setScreens }: { setScreens?: (value: React
 
 
     return (
-        <div className="flex flex-col flex-1 gap-10  w-full min-h-full p-4 relative">
+        <div className="flex flex-col flex-1  justify-around  w-full min-h-full p-4 relative">
             <Fade>
-                <div className="flex flex-col  flex-1 justify-between gap-10">
-                    <div className="flex flex-col gap-4 items-center">
-                        <div className="relative h-[139px] w-[139px]">
+                <div className="flex flex-col flex-1 justify-evenly gap-7">
+                    <div className="flex flex-col items-center">
+                        <div className="relative max-h-[139px] w-[139px]">
                             <img src={Logo} alt="" className="h-full w-full object-contain" />
                         </div>
                     </div>
                     {socialHandles.map((handle) => (
-                        <div key={handle.name} className="flex flex-col">
+                        <div key={handle.name} className="flex flex-col justify-normal">
                             <div key={handle.tag} className="flex flex-col items-center gap-2 w-full">
                                 <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
-                                    <div className="flex items-center w-[60%] p-5 gap-2">
+                                    <div className="flex items-center min-w-[60%] p-5 gap-2">
                                         <span>{handle.icon}</span>
                                         <h1 className={handle.style.text}>{handle.title}</h1>
                                     </div>
@@ -137,9 +137,8 @@ export const CheckSocialAccounts = ({ setScreens }: { setScreens?: (value: React
                                         </Button>
                                     </Link>
                                 </div>
-
-
                             </div>
+
                             <div className="flex items-center justify-center py-2 gap-2">
                                 <Input
                                     type="text"
