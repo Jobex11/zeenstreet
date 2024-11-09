@@ -58,8 +58,6 @@ export default function ZeenAppIntro() {
             {screens === "rewards" && <Rewards user={user} setScreens={setScreens} />}
             {screens === "check-socials" && <CheckSocialAccounts setScreens={setScreens} />}
             {screens === "socials" && <Socials />}
-           
-
         </section>
 
     )

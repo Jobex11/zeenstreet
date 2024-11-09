@@ -101,16 +101,16 @@ function Tasks() {
                             <Card
                                 key={id}
                                 ref={img.ref}
-                                className={`${!img.isLocked ? "shadow-2xl shadow-slate-300" : "scale-90"} group rounded-md min-w-[180px] h-[140px] relative snap-center`}
+                                className={`${!img.isLocked ? "shadow-xl shadow-slate-400 rounded-lg" : "scale-90 rounded-md"} group  min-w-[180px] h-[140px] relative snap-center`}
                             >
                                 <img
                                     src={img.carousel_img}
                                     alt={`card img ${id}`}
-                                    className={`h-full w-full ${!img.isLocked ? "group-hover:scale-105 duration-200 transition-transform scale-110 rounded-md" : "scale-90"} object-cover object-center`}
+                                    className={`h-full w-full ${!img.isLocked ? "group-hover:scale-105 duration-200 transition-transform scale-110 rounded-lg" : "scale-90 rounded-md"} object-cover object-center`}
                                 />
                                 {img.isLocked && (
                                     <div className="absolute bg-black/95 z-20 top-0 h-full w-full rounded-md flex flex-col justify-center items-center">
-                                        <h3 className="text-white">Card {id + 1}</h3>
+                                        {/* <h3 className="text-white">Card {id + 1}</h3> */}
                                         <SlLock size={50} color="white" />
                                     </div>
                                 )}

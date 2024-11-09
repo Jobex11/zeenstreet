@@ -11,8 +11,8 @@ export const WelcomeUser = () => {
     return (
         <div
             className="flex flex-col flex-1 w-full min-h-full p-4 relative">
-            <div className="flex flex-col relative gap-4">
-                <img src={Zenlogo} alt="Zenstreet logo" className="max-h-[94px] w-[94px] object-contain object-center absolute -top-5" />
+            <div className="flex flex-col gap-3 pb-2">
+                <img src={Zenlogo} alt="Zenstreet logo" className="max-h-[94px] w-[94px] object-contain object-center" />
                 <img src={logo} alt="Ravgenie logo" className="max-h-[200px] w-[139px] object-contain object-center" />
             </div>
             <Fade>

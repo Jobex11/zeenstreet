@@ -39,7 +39,7 @@ export const CheckAccount = ({ setScreens, userInfo }: CheckAccountProps) => {
 
     return (
         <div className="flex flex-col flex-1 justify-start  w-full min-h-full p-4 relative">
-            <div className="flex flex-col justify-evenly flex-1 pb-10">
+            <div className="flex flex-col justify-stretch flex-1 pb-10">
                 <div className="flex flex-col items-center justify-start flex-1">
                     {/* Logo */}
                     <div className="relative h-[139px] w-[139px]">
