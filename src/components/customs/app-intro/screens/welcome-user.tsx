@@ -11,12 +11,12 @@ export const WelcomeUser = () => {
     return (
         <div
             className="flex flex-col flex-1 w-full min-h-full p-4 relative">
-            <div className="flex flex-col relative">
-                <img src={Zenlogo} alt="Zenstreet logo" className="h-[94px] w-[94px] object-contain object-center absolute top-0" />
-                <img src={logo} alt="Ravgenie logo" className="h-[200px] w-[139px] object-contain object-center" />
+            <div className="flex flex-col relative gap-4">
+                <img src={Zenlogo} alt="Zenstreet logo" className="max-h-[94px] w-[94px] object-contain object-center absolute -top-5" />
+                <img src={logo} alt="Ravgenie logo" className="max-h-[200px] w-[139px] object-contain object-center" />
             </div>
             <Fade>
-                <h1 className="text-5xl font-bold aqum leading-none uppercase text-[#FFFFFF]">
+                <h1 className="text-5xl font-bold aqum  uppercase text-[#FFFFFF]">
                     THE
                     <br /> FUTURE
                     <br /> of Gaming.
@@ -29,10 +29,10 @@ export const WelcomeUser = () => {
                     backgroundImage: `url(${rave}), url(${genie})`,
                     backgroundRepeat: "no-repeat, no-repeat",
                     backgroundSize: "contain, contain",
-                    backgroundPosition: "top, center",
+                    backgroundPosition: "top, bottom",
                     backgroundBlendMode: "multiply",
                 }}
-                className="absolute bottom-0 right-0 left-0 w-full z-40 h-[490px] overflow-hidden">
+                className="absolute bottom-0 right-0 left-0 w-full z-40 max-h-[470px] overflow-hidden">
                 <img src={visionImage} alt="vision image" className="min-h-full w-full object-cover object-center" />
             </div>
             <div className="absolute bottom-0 right-0 left-0 w-full  z-50 bg-gradient-to-b from-[rgba(0,0,0,0.1)] to-[#000000] flex items-center justify-between p-4">

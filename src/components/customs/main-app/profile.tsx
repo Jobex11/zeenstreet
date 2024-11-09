@@ -188,7 +188,7 @@ function Profile() {
                                                     <div className="flex flex-col relative gap-1 min-w-fit">
                                                         <img src={a.img} alt="Refferal Images" className="max-h-[58px] max-w-[46px] object-cover object-center" />
                                                         {/* This div with lock icon will be rendered on a condition to check if the card is locked or not */}
-                                                        <div className="absolute h-full w-full rounded-md  bg-black/40 z-40 flex flex-col items-center justify-center"><SlLock size={25} color="white" /></div>
+                                                        <div className="absolute h-full w-full rounded-md  bg-black/40 z-20 flex flex-col items-center justify-center"><SlLock size={25} color="white" /></div>
                                                     </div>
                                                     <h1 className="work-sans text-[6px] text-[#FEFEFF] font-medium whitespace-nowrap">{a.name}</h1>
                                                 </div>
