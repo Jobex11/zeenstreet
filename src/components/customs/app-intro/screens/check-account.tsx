@@ -38,11 +38,11 @@ export const CheckAccount = ({ setScreens, userInfo }: CheckAccountProps) => {
     // }, []);
 
     return (
-        <div className="flex flex-col flex-1 justify-start  w-full min-h-full p-4 relative">
-            <div className="flex flex-col justify-stretch flex-1 pb-10">
-                <div className="flex flex-col items-center justify-start flex-1">
+        <div className="flex flex-col flex-1  w-full min-h-full p-4 relative">
+            <div className="flex flex-col justify-between gap-4">
+                <div className="flex flex-col items-center justify-around h-full gap-10">
                     {/* Logo */}
-                    <div className="relative h-[139px] w-[139px]">
+                    <div className="relative h-fit w-[139px]">
                         <img src={Logo} alt="Zenstreet Logo" className="h-full w-full object-contain" />
                     </div>
                     <h1 className="text-xl font-bold text-[#FFFFFF] uppercase py-4 aqum">Checking account</h1>

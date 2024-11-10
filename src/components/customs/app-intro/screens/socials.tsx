@@ -13,21 +13,6 @@ import { Fade } from "react-awesome-reveal";
 export const Socials = () => {
     const navigate = useNavigate()
 
-    // Load persisted state from localStorage
-    // const loadConfirmedAccounts = () => {
-    //     const storedState = localStorage.getItem("confirmedAccounts");
-    //     return storedState ? JSON.parse(storedState) : { Youtube: false, Telegram: false, X: false };
-    // };
-
-    // const [confirmedAccounts, setConfirmedAccounts] = useState<Record<string, boolean>>(loadConfirmedAccounts);
-
-    // Persist state to localStorage on change
-    // useEffect(() => {
-    //     localStorage.setItem("confirmedAccounts", JSON.stringify(confirmedAccounts));
-    // }, [confirmedAccounts]);
-
-    // const allConfirmed = Object.values(confirmedAccounts).every(Boolean);
-
     const socialHandles = [
         {
             name: "Youtube",
@@ -83,14 +68,14 @@ export const Socials = () => {
 
 
     return (
-        <div className="flex flex-col flex-1 justify-stretch w-full min-h-full p-4 relative">
-            <div className="flex flex-col gap-4 items-center">
-                <div className="relative h-[139px] w-[139px]">
+        <div className="flex flex-col flex-1 justify-self-start w-full min-h-full p-4 relative">
+            <div className="flex flex-col gap-4 items-center mb-10">
+                <div className="relative h-fit w-[139px]">
                     <img src={Logo} alt="" className="h-full w-full object-contain" />
                 </div>
             </div>
 
-            <div className="flex flex-col flex-1 gap-3 justify-around">
+            <div className="flex flex-col gap-3 justify-evenly">
                 <Fade>
                     <div className="flex flex-col gap-2">
                         {/* Social media handles */}

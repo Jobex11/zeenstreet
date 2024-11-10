@@ -21,8 +21,8 @@ export const Rewards = (
 ) => {
     return (
         <div className="flex flex-col flex-1  justify-stretch gap-10 w-full min-h-full p-4 relative">
-            <div className="flex  flex-col justify-stretch">
-                <div className="relative h-[94px] w-[139px] mx-auto">
+            <div className="flex  flex-col justify-stretch gap-5">
+                <div className="relative h-fit w-[139px] mx-auto">
                     <img src={Logo} alt="" className="h-full w-full object-contain" />
                 </div>
 
