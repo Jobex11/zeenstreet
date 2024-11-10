@@ -16,6 +16,7 @@ import ReferralPage from "./pages/referral/page";
 import ProfilePage from "./pages/profile/page";
 import RankPage from "./pages/ranks/page";
 import Notificaions from "./pages/main-notification/page";
+import { init, backButton, setMiniAppHeaderColor } from '@telegram-apps/sdk-react';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,13 @@ const router = createBrowserRouter([
     element: <Notificaions />,
   },
 ]);
+// Initialize the package.
+init();
+
+// Mount the Back Button, so we will work with 
+// the actual component properties.
+setMiniAppHeaderColor('#292734');
+backButton.mount();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
