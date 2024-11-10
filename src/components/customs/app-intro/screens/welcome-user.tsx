@@ -4,7 +4,7 @@ import { IconButton } from "../../../common/buttons/Iconbutton";
 import { Fade } from "react-awesome-reveal";
 import rave from "../../../../assets/images/icons/Rave.png";
 import genie from "../../../../assets/images/icons/GENIE.png";
-import logo from "../../../../assets/images/icons/ravegenie_logo.png";
+import logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import Zenlogo from "../../../../assets/images/icons/Logo.png"
 
 export const WelcomeUser = () => {

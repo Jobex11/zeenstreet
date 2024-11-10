@@ -1,14 +1,13 @@
 import MainappLayout from "../../components/common/main-app/main-app-layout"
-import ScrollableComponent from "../../components/common/scrollenable"
+import TelegramLayout from "../../components/common/Telegram.app.layout"
 import Home from "../../components/customs/main-app/home"
 
 
 function HomePage() {
   return (
     <MainappLayout>
-      <ScrollableComponent>
-         <Home/>
-      </ScrollableComponent>
+        <TelegramLayout><Home/></TelegramLayout>
+        
     </MainappLayout>
 
   )

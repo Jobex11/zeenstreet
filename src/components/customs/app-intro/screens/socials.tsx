@@ -6,7 +6,7 @@ import {
     // Link,
     useNavigate
 } from "react-router-dom";
-import Logo from "../../../../assets/images/icons/ravegenie_logo.png";
+import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import { Button } from "../../../ui/button";
 import { Fade } from "react-awesome-reveal";
 

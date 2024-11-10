@@ -1,7 +1,7 @@
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { Card } from "../../../ui/card";
 import medal from "../../../../assets/images/icons/medal.png"
-import Logo from "../../../../assets/images/icons/ravegenie_logo.png";
+import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import { Fade, Zoom } from "react-awesome-reveal";
 import CountUp from "react-countup"
 

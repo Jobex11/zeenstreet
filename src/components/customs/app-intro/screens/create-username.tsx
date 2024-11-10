@@ -1,4 +1,4 @@
-import Logo from "../../../../assets/images/icons/ravegenie_logo.png";
+import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { Input } from "../../../ui/input";
 import smily_man from "../../../../assets/images/smily_man.png"

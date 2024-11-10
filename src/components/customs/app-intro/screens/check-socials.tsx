@@ -4,7 +4,7 @@ import { SiTelegram } from "react-icons/si";
 import { RiTwitterXLine } from "react-icons/ri";
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { Link } from "react-router-dom";
-import Logo from "../../../../assets/images/icons/ravegenie_logo.png";
+import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import { Button } from "../../../ui/button";
 import { Fade } from "react-awesome-reveal";
 import { Input } from "../../../ui/input";
