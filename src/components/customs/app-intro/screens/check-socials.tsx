@@ -106,16 +106,17 @@ export const CheckSocialAccounts = ({ setScreens }: { setScreens?: (value: React
         if (urlPattern.test(inputUrls[name])) {
             setConfirmedAccounts((prev) => ({ ...prev, [name]: true }));
         } else {
-            toast.warning(`Invalid link`)
+
+            toast.warning(`Invalid link`);
         }
     };
 
 
 
     return (
-        <div className="flex flex-col flex-1  justify-around  w-full min-h-full p-4 relative">
+        <div className="flex flex-col flex-1  justify-stretch gap-7  w-full min-h-full p-4 relative">
             <Fade>
-                <div className="flex flex-col flex-1 justify-evenly gap-7">
+                <div className="flex flex-col justify-stretch gap-7">
                     <div className="flex flex-col items-center">
                         <div className="relative max-h-[139px] w-[139px]">
                             <img src={Logo} alt="" className="h-full w-full object-contain" />

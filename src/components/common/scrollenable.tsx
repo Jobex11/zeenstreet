@@ -39,10 +39,7 @@ const ScrollableComponent = ({ children }:Props) => {
   return (
     <div
       ref={scrollableElementRef}
-      style={{
-        overflowY: 'scroll',
-        height: '100%',
-      }}
+      className='overflow-y-scroll min-h-screen'
     >
       {children}
     </div>

@@ -83,14 +83,14 @@ export const Socials = () => {
 
 
     return (
-        <div className="flex flex-col flex-1 w-full min-h-full p-4 relative">
+        <div className="flex flex-col flex-1 justify-stretch w-full min-h-full p-4 relative">
             <div className="flex flex-col gap-4 items-center">
                 <div className="relative h-[139px] w-[139px]">
                     <img src={Logo} alt="" className="h-full w-full object-contain" />
                 </div>
             </div>
 
-            <div className="flex flex-col flex-1 justify-around">
+            <div className="flex flex-col flex-1 gap-3 justify-around">
                 <Fade>
                     <div className="flex flex-col gap-2">
                         {/* Social media handles */}
