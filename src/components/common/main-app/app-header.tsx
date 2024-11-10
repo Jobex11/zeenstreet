@@ -12,7 +12,7 @@ function Header() {
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover"
         }} className='h-fit w-full top-0 sticky z-50'>
-            <header className='flex items-center justify-between w-full py-6 px-3'>
+            <header className='flex items-center justify-between w-full py-[17px] px-3'>
                 <div className='flex items-center gap-4'>
 
                     {/* <Link to={"/"}> */}
