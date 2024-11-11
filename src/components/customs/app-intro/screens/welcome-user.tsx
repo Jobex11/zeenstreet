@@ -16,7 +16,7 @@ export const WelcomeUser = () => {
                 <img src={logo} alt="Ravgenie logo" className="h-fit w-[139px] object-cover object-center" />
             </div>
             <Fade cascade>
-                <h1 className="text-5xl mt-2 font-bold aqum  uppercase text-[#FFFFFF]">
+                <h1 className="text-5xl mt-2 font-bold aqum  leading-[60px] uppercase text-[#FFFFFF]">
                     THE
                     <br /> FUTURE
                     <br /> of Gaming.
@@ -31,7 +31,7 @@ export const WelcomeUser = () => {
                     backgroundPosition: "center, bottom",
                     backgroundBlendMode: "multiply",
                 }}
-                className="absolute bottom-0 right-0 left-0 w-full z-40 h-[60%] overflow-hidden">
+                className="absolute bottom-0 right-0 left-0 w-full z-40 h-[65%] overflow-hidden">
                 <img src={visionImage} alt="vision image" className="min-h-full w-full object-contain object-center" />
             </div>
             <div className="absolute bottom-0 bg-opacity-40 right-0 left-0 w-full  z-50 bg-gradient-to-b from-[rgba(0,0,0,0.1)] to-[#000000] flex items-center justify-between p-4">
