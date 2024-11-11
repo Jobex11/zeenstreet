@@ -40,9 +40,7 @@ export function CreateUsername({
                         <Typewriter
                             options={{
                                 strings: [
-                                    "But first, tell me your name...",
-                                    "I'll help you climb the ranks...",
-                                    "Accumulate riches and claim your spot among the Stars..."
+                                    "But first, tell me your name, and I'll help you climb the ranks, Accumulate riches and claim your spot among the Stars...",
                                 ],
                                 autoStart: true,
                                 loop: true,
