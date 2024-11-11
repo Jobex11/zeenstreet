@@ -4,16 +4,16 @@ import { IconButton } from "../../../common/buttons/Iconbutton";
 import { Fade } from "react-awesome-reveal";
 import rave from "../../../../assets/images/icons/Rave.png";
 import genie from "../../../../assets/images/icons/GENIE.png";
-import logo from "../../../../assets/images/icons/ravenenie_logo.png";
-import Zenlogo from "../../../../assets/images/icons/Logo.png"
+import logo from "../../../../assets/images/icons/ravegenie_logo_main.png";
+
 
 export const WelcomeUser = () => {
     return (
         <div
-            className="flex flex-col flex-1 justify-stretch w-full min-h-full px-4 relative">
-            <div className="flex flex-col">
-                <img src={Zenlogo} alt="Zenstreet logo" className="h-fit w-[94px] object-s object-center" />
-                <img src={logo} alt="Ravgenie logo" className="h-fit w-[139px] object-contain object-center" />
+            className="flex flex-col flex-1 justify-stretch w-full gap-3 min-h-full px-4 relative">
+            <div className="flex flex-col pt-2">
+                {/* <img src={Zenlogo} alt="Zenstreet logo" className="h-fit w-[94px] object-s object-center" /> */}
+                <img src={logo} alt="Ravgenie logo" className="h-fit w-[139px] object-cover object-center" />
             </div>
             <Fade cascade>
                 <h1 className="text-5xl mt-2 font-bold aqum  uppercase text-[#FFFFFF]">
@@ -28,10 +28,10 @@ export const WelcomeUser = () => {
                     backgroundImage: `url(${rave}), url(${genie})`,
                     backgroundRepeat: "no-repeat, no-repeat",
                     backgroundSize: "contain, contain",
-                    backgroundPosition: "top, center",
+                    backgroundPosition: "center, bottom",
                     backgroundBlendMode: "multiply",
                 }}
-                className="absolute bottom-0 right-0 left-0 w-full z-40 h-[49%] overflow-hidden">
+                className="absolute bottom-0 right-0 left-0 w-full z-40 h-[60%] overflow-hidden">
                 <img src={visionImage} alt="vision image" className="min-h-full w-full object-contain object-center" />
             </div>
             <div className="absolute bottom-0 bg-opacity-40 right-0 left-0 w-full  z-50 bg-gradient-to-b from-[rgba(0,0,0,0.1)] to-[#000000] flex items-center justify-between p-4">

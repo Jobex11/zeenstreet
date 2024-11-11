@@ -4,7 +4,6 @@ import { Rewards } from "./screens/rewards";
 import { Socials } from "./screens/socials";
 import { WelcomeUser } from "./screens/welcome-user";
 import { CreateUsername } from "./screens/create-username";
-import { CheckSocialAccounts } from "./screens/check-socials";
 import confetti from "../../../assets/images/confetti.png"
 import dottedBg from "../../../assets/images/dotted-bg.png"
 import { useNavigate } from "react-router-dom";
@@ -56,8 +55,10 @@ export default function ZeenAppIntro() {
             {screens === "create-username" && <CreateUsername setScreens={setScreens} />}
             {screens === "check-account" && <CheckAccount userInfo={userAccountInfo} setScreens={setScreens} />}
             {screens === "rewards" && <Rewards user={user} setScreens={setScreens} />}
-            {screens === "check-socials" && <CheckSocialAccounts setScreens={setScreens} />}
             {screens === "socials" && <Socials />}
+            {/* pls leave all commented codes for future reffernce */}
+            {/* {screens === "check-socials" && <CheckSocialAccounts setScreens={setScreens} />} */}
+         
         </section>
 
     )

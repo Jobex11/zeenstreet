@@ -1,14 +1,16 @@
-// import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { SiTelegram } from "react-icons/si";
 import { RiTwitterXLine } from "react-icons/ri";
 import { TextButton } from "../../../common/buttons/Textbutton";
 import {
+    Link,
     // Link,
     useNavigate
 } from "react-router-dom";
 import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import { Button } from "../../../ui/button";
 import { Fade } from "react-awesome-reveal";
+
 
 export const Socials = () => {
     const navigate = useNavigate()
@@ -55,16 +57,36 @@ export const Socials = () => {
         }
     ];
 
-    // const handleConfirm = (name: string) => {
-    //     setConfirmedAccounts(prevState => ({
-    //         ...prevState,
-    //         [name]: true
-    //     }));
-    // };
-    // useEffect(() => {
-    //     console.log(confirmedAccounts); 
-    //     console.log(allConfirmed);       
-    // }, [confirmedAccounts, allConfirmed]);
+    const loadConfirmedAccounts = () => {
+        const storedState = localStorage.getItem("confirmedAccounts");
+        return storedState
+            ? JSON.parse(storedState)
+            : {
+                Youtube: false,
+                Telegram: false,
+                X: false,
+            };
+    };
+
+    const [confirmedAccounts, setConfirmedAccounts] = useState<Record<string, boolean>>(loadConfirmedAccounts);
+
+    // Persist state to localStorage on change
+    useEffect(() => {
+        localStorage.setItem("confirmedAccounts", JSON.stringify(confirmedAccounts));
+    }, [confirmedAccounts]);
+
+    const allConfirmed = Object.values(confirmedAccounts).every(Boolean);
+
+    const handleConfirm = (name: string) => {
+        setConfirmedAccounts(prevState => ({
+            ...prevState,
+            [name]: true
+        }));
+    };
+    useEffect(() => {
+        console.log(confirmedAccounts); 
+        console.log(allConfirmed);       
+    }, [confirmedAccounts, allConfirmed]);
 
 
     return (
@@ -80,27 +102,27 @@ export const Socials = () => {
                     <div className="flex flex-col gap-2">
                         {/* Social media handles */}
                         {socialHandles.map((handles) => (
-                            <div key={handles.tag} className="flex flex-col items-center mb-8 gap-2 w-full">
+                            <div key={handles.tag} className="flex flex-col items-center justify-around gap-8 w-full">
                                 <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
                                     <div className="flex items-center w-[60%] p-5 gap-2">
                                         <span>{handles.icon}</span>
                                         <h1 className={handles.style.text}>{handles.title}</h1>
                                     </div>
                                     <div className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}>
-                                        {/* <Link to={`https://${handles.path}`} target="_blank" className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}> */}
+                                        <Link to={`https://${handles.path}`} target="_blank" className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}>
                                         <Button
-                                            // onClick={() => handleConfirm(handles.name)}
+                                            onClick={() => handleConfirm(handles.name)}
                                             className="bg-transparent hover:bg-transparent shadow-none text-white aqum text-[13px] font-bold"
                                         >
                                             {handles.tag}
                                         </Button>
-                                        {/* </Link> */}
+                                        </Link>
                                     </div>
                                 </div>
 
                                 {/* Confirm Button */}
                                 <Button
-                                    // disabled={!confirmedAccounts[handles.name]}
+                                    disabled={!confirmedAccounts[handles.name]}
                                     className="bg-[#D25804] hover:bg-orange-600 text-sm mt-3 uppercase font-medium max-w-[85px] h-6 mx-auto text-white" >
                                     Confirm
                                 </Button>
@@ -116,7 +138,7 @@ export const Socials = () => {
                 {/* Proceed Button */}
                 <TextButton
                     name={"Proceed"}
-                    // disabled={!allConfirmed}
+                    disabled={!allConfirmed}
                     onClick={() => navigate("/home")}
                     className={"uppercase mt-6"}
                 />

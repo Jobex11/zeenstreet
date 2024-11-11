@@ -59,7 +59,7 @@ export const Rewards = (
                 <TextButton
                     name={"Proceed"}
                     disabled={false}
-                    onClick={() => setScreens && setScreens("check-socials")}
+                    onClick={() => setScreens && setScreens("socials")}
                     className={"uppercase mt-4"}
                 />
             
