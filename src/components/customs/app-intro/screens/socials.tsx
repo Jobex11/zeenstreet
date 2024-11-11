@@ -102,7 +102,7 @@ export const Socials = () => {
                     <div className="flex flex-col gap-2">
                         {/* Social media handles */}
                         {socialHandles.map((handles) => (
-                            <div key={handles.tag} className="flex flex-col items-center justify-around gap-8 w-full">
+                            <div key={handles.tag} className="flex flex-col items-center justify-around mb-6 w-full">
                                 <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
                                     <div className="flex items-center w-[60%] p-5 gap-2">
                                         <span>{handles.icon}</span>
