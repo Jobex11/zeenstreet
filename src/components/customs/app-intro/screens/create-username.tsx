@@ -23,45 +23,22 @@ export function CreateUsername({
 
                 <div className="absolute right-0 top-2 border border-white bg-[#292734] rounded-r-xl rounded-tl-xl w-[50%] min-h-[210px] py-3 px-2 z-30 h-fit">
                     <h1 className="text-sm inter text-gray-300">
-                        Hi! I'm <strong className="text-orange-600 pt-3">Mr. G</strong>, 
                         <Typewriter
                             options={{
-                                strings: ["your friendly Genie and I'm here to grant all your wishes."],
+                                strings: [`
+                                    Hi! I'm Mr. G your friendly Genie and I'm here to grant all your wishes.
+                                    But first, tell me your name, and I'll help you climb the ranks, Accumulate riches and claim your spot among the-elite.
+                                    `],
                                 autoStart: true,
-                                loop: true,
-                                delay:75
+                                delay: 75
                             }}
                         />
-                         
+
                     </h1>
 
-                    {/* Typewriter Effect for Introduction */}
-                    <p className="pt-2 text-sm inter text-gray-300">
-                        <Typewriter
-                            options={{
-                                strings: [
-                                    "But first, tell me your name, and I'll help you climb the ranks, Accumulate riches and claim your spot among the Stars...",
-                                ],
-                                autoStart: true,
-                                loop: true,
-                                delay: 50,
-                                deleteSpeed: 400,
-                            }}
-                        
-                        />
-                    </p>
-
-                    {/* Typewriter Effect for Closing Statement */}
-                    <p className="pt-2 text-sm inter text-gray-300 uppercase">
-                        <Typewriter
-                            options={{
-                                strings: ["And May The Zen Be With You!"],
-                                autoStart: true,
-                                loop: true,
-                                delay: 75,
-                            }}
-                        />
-                    </p>
+                    <strong className="pt-2 text-sm inter text-gray-300 uppercase">
+                        And May <span className="text-orange-600">The Zen</span> Be With You!
+                    </strong>
                 </div>
 
                 <div style={{}} className="flex flex-col gap-5 bg-[#000000]/80 bg-opacity-25 absolute right-0 min-h-auto left-0 bottom-0 justify-center w-full">
