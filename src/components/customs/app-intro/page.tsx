@@ -9,7 +9,6 @@ import dottedBg from "../../../assets/images/dotted-bg.png"
 import { useNavigate } from "react-router-dom";
 
 
-
 export default function ZeenAppIntro() {
     const [screens, setScreens] = useState<string>("welcome-user");
     const navigate = useNavigate()

@@ -13,7 +13,7 @@ export const WelcomeUser = () => {
             className="flex flex-col flex-1 justify-stretch w-full gap-3 min-h-full px-4 relative">
             <div className="flex flex-col pt-2">
                 {/* <img src={Zenlogo} alt="Zenstreet logo" className="h-fit w-[94px] object-s object-center" /> */}
-                <img src={logo} alt="Ravgenie logo" className="h-fit w-[139px] object-cover object-center" />
+                <img src={logo} alt="Ravgenie logo" className="h-fit w-[160px] object-cover object-center" />
             </div>
             <Fade cascade>
                 <h1 className="text-5xl mt-2 font-bold aqum  leading-[60px] uppercase text-[#FFFFFF]">
