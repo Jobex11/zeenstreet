@@ -6,6 +6,9 @@ export default defineConfig({
   define: {
     'process.env': {}
   },
+  // optimizeDeps: {
+  //   include: ['@telegram-apps/sdk-react'],
+  // },
   plugins: [react()],
   resolve: {
     alias: {

@@ -2,9 +2,7 @@ import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { Input } from "../../../ui/input";
 import smily_man from "../../../../assets/images/smily_man.png"
-// import dottedBg from "../../../../assets/images/dotted-bg.png"
-import Typewriter from 'typewriter-effect';
-
+import Typewriter from "../../../common/typewriter";
 
 export function CreateUsername({
     setScreens
@@ -21,23 +19,16 @@ export function CreateUsername({
             <div className="relative overflow-hidden" >
                 <img src={smily_man} alt="" className="object-contain max-h-[514px]" />
 
-                <div className="absolute right-0 top-2 border border-white bg-[#292734] rounded-r-xl rounded-tl-xl w-[50%] min-h-[210px] py-3 px-2 z-30 h-fit">
+                <div className="absolute right-0 top-2 border  border-white bg-[#292734] rounded-r-xl rounded-tl-xl w-[50%] min-h-[210px] py-3 px-2 z-30 h-fit">
                     <h1 className="text-sm inter text-gray-300">
                         <Typewriter
-                            options={{
-                                strings: [`
-                                    Hi! I'm Mr. G your friendly Genie and I'm here to grant all your wishes.
-                                    But first, tell me your name, and I'll help you climb the ranks, Accumulate riches and claim your spot among the-elite.
-                                    `],
-                                autoStart: true,
-                                delay: 75
-                            }}
+                            text={`Hi! I'm Mr. G, your friendly Genie, and I'm here to grant all your wishes. But first, tell me your name, and I'll help you climb the ranks, accumulate riches, and claim your spot among the Stars...`}
+                            speed={75}
+                            className="text-sm inter text-gray-300"
                         />
-
                     </h1>
-
                     <strong className="pt-2 text-sm inter text-gray-300 uppercase">
-                        And May <span className="text-orange-600">The Zen</span> Be With You!
+                        ...and May <strong className="text-orange-600">The Zen</strong> Be With You!
                     </strong>
                 </div>
 
