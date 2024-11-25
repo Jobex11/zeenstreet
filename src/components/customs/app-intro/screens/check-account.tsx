@@ -20,7 +20,7 @@ export const CheckAccount = ({ setScreens, userInfo }: CheckAccountProps) => {
         { title: "Telegram age", progress: userInfo.telegramAge },
         { title: "Activity level analyzed", progress: userInfo.activityLevel },
         { title: "Telegram Premium checked", progress: userInfo.isPremium },
-        { title: "Telegram stars Purchased", progress: userInfo.ogStatus },
+        { title: "Bonus eligibility checked", progress: userInfo.ogStatus },
     ];
 
     // I simply removed the useEffect for now

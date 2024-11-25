@@ -66,14 +66,14 @@ function Tasks() {
     }
     const images = [
         { carousel_img, isLocked: false, ref: middleCardRef },
+        { carousel_img, isLocked: true, },
+        { carousel_img, isLocked: true },
+        { carousel_img, isLocked: true, },
         { carousel_img, isLocked: true },
         { carousel_img, isLocked: true },
         { carousel_img, isLocked: true },
         { carousel_img, isLocked: true },
-        { carousel_img, isLocked: true },
-        { carousel_img, isLocked: true },
-        { carousel_img, isLocked: true },
- 
+
     ]
 
     useEffect(() => {
@@ -96,27 +96,43 @@ function Tasks() {
                 {/* task header */}
 
                 <header className="flex flex-col gap-3 w-full">
-                    <div className="relative flex items-center  gap-10  pb-5 mb-4 overflow-x-auto px-4 snap-x snap-mandatory">
-                        {images.map((img, id) => (
-                            <Card
-                                key={id}
-                                ref={img.ref}
-                                className={`${!img.isLocked ? "shadow-xl shadow-slate-400 rounded-lg" : "scale-90 rounded-md"} group  min-w-[180px] h-[140px] relative snap-center`}
-                            >
-                                <img
-                                    src={img.carousel_img}
-                                    alt={`card img ${id}`}
-                                    className={`h-full w-full ${!img.isLocked ? "group-hover:scale-105 duration-200 transition-transform scale-110 rounded-lg" : "scale-90 rounded-md"} object-cover object-center`}
-                                />
-                                {img.isLocked && (
-                                    <div className="absolute bg-black/95 z-20 top-0 h-full w-full rounded-md flex flex-col justify-center items-center">
-                                        {/* <h3 className="text-white">Card {id + 1}</h3> */}
-                                        <SlLock size={50} color="white" />
-                                    </div>
-                                )}
-                            </Card>
-                        ))}
+                    <div className={`relative flex items-center gap-16 pb-5 mb-4 ${images.filter((image) => !image.isLocked).length > 1 ? "overflow-x-auto " : "overflow-x-hidden"} px-4 snap-x snap-mandatory`}>
+                        {images.slice(0, 2).map((img, id) => {
+                            // Determine if it's the first unlocked card
+                            const firstUnlockedIndex = images.findIndex((image) => !image.isLocked);
+                            const isFirstUnlocked = id === firstUnlockedIndex;
+                            const unlockedCount = images.filter((image) => !image.isLocked).length; // total number of unlocked cards
+
+                            return (
+                                <Card
+                                    key={id}
+                                    ref={img.ref}
+                                    className={`group relative snap-center ${!img.isLocked
+                                        ? isFirstUnlocked
+                                            ? "min-w-[85%] shadow-xl shadow-slate-400 rounded-lg"  // First unlocked card takes 85% of the screen
+                                            : "min-w-[70%] shadow-xl shadow-slate-400 rounded-lg" // Subsequent unlocked cards take 70% of the screen
+                                        : "scale-90 rounded-lg min-w-[70%]" // Locked cards
+                                        } h-[150px] `}
+                                >
+                                    <img
+                                        src={img.carousel_img}
+                                        alt={`card img ${id}`}
+                                        className={`h-full w-full object-cover object-center ${!img.isLocked
+                                            ? "group-hover:scale-105 duration-200 transition-transform scale-110 rounded-lg"
+                                            : "scale-90 rounded-lg"
+                                            }`}
+                                    />
+                                    {img.isLocked && (
+                                        <div className="absolute bg-black/95 z-20 top-0 h-full w-full rounded-md flex flex-col justify-center items-center">
+                                            <SlLock size={50} color="white" />
+                                            {unlockedCount}
+                                        </div>
+                                    )}
+                                </Card>
+                            );
+                        })}
                     </div>
+
 
                     <Progress.Root
                         className="relative h-[9px] w-full overflow-hidden rounded-full bg-white my-1"

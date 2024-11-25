@@ -109,7 +109,7 @@ function Profile() {
                                                 <img src={item.img} alt={`wealth class ${item.name}`} className="h-full w-full object-cover rounded-md" />
 
                                                 {/* This div with lock icon will be rendered on a condition to check if the card is locked or not */}
-                                                <div className="absolute top-0 h-full w-full rounded-md inset-0 hover:bg-black/50 bg-black/55 z-40 flex flex-col items-center justify-center"><SlLock size={27} /></div>
+                                              <div className="absolute h-full w-full rounded-md  bg-black/55 z-20 flex flex-col items-center justify-center"><SlLock size={25} color="white" /></div>
                                             </Card>
                                             <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1 whitespace-nowrap">{item.name}</h1>
                                         </div>
