@@ -65,15 +65,10 @@ function Tasks() {
         setTabs(name)
     }
     const images = [
+        // will add new object in the array by unshifting
+        // { carousel_img, isLocked: false,},
         { carousel_img, isLocked: false, ref: middleCardRef },
         { carousel_img, isLocked: true, },
-        { carousel_img, isLocked: true },
-        { carousel_img, isLocked: true, },
-        { carousel_img, isLocked: true },
-        { carousel_img, isLocked: true },
-        { carousel_img, isLocked: true },
-        { carousel_img, isLocked: true },
-
     ]
 
     useEffect(() => {
@@ -86,6 +81,8 @@ function Tasks() {
         }
     }, []);
 
+    // const unlockedCount = images.filter((image) => !image.isLocked).length;
+    // const lockedCount = images.filter((image) => image.isLocked).length;
     return (
         <div className='flex flex-col min-h-full w-full'>
             <div style={{
@@ -94,38 +91,36 @@ function Tasks() {
                 backgroundSize: "cover"
             }} className=' py-3 h-full px-3 min-w-full '>
                 {/* task header */}
-
                 <header className="flex flex-col gap-3 w-full">
-                    <div className={`relative flex items-center gap-16 pb-5 mb-4 ${images.filter((image) => !image.isLocked).length > 1 ? "overflow-x-auto " : "overflow-x-hidden"} px-4 snap-x snap-mandatory`}>
-                        {images.slice(0, 2).map((img, id) => {
+                    <div className={`relative flex items-center gap-16 pb-5 mb-4 ${images.filter((image) => !image.isLocked).length >= 1 ? "overflow-x-auto " : "overflow-x-hidden"} px-4 snap-x snap-mandatory`}>
+                        {images.map((img, id) => {
                             // Determine if it's the first unlocked card
                             const firstUnlockedIndex = images.findIndex((image) => !image.isLocked);
                             const isFirstUnlocked = id === firstUnlockedIndex;
-                            const unlockedCount = images.filter((image) => !image.isLocked).length; // total number of unlocked cards
-
+                          // total number of unlocked cards
+                                    
                             return (
                                 <Card
                                     key={id}
                                     ref={img.ref}
-                                    className={`group relative snap-center ${!img.isLocked
+                                    className={`group bg-slate-800 relative rounded-lg snap-center ${!img.isLocked
                                         ? isFirstUnlocked
-                                            ? "min-w-[85%] shadow-xl shadow-slate-400 rounded-lg"  // First unlocked card takes 85% of the screen
-                                            : "min-w-[70%] shadow-xl shadow-slate-400 rounded-lg" // Subsequent unlocked cards take 70% of the screen
-                                        : "scale-90 rounded-lg min-w-[70%]" // Locked cards
-                                        } h-[150px] `}
+                                            ? "min-w-[85%] shadow-xl shadow-slate-700"  // First unlocked card takes 85% of the screen
+                                            : "min-w-[70%] shadow-xl shadow-slate-700" // Subsequent unlocked cards take 70% of the screen
+                                        : " rounded-lg min-w-[70%]" // Locked cards
+                                        } h-32 `}
                                 >
                                     <img
                                         src={img.carousel_img}
                                         alt={`card img ${id}`}
-                                        className={`h-full w-full object-cover object-center ${!img.isLocked
-                                            ? "group-hover:scale-105 duration-200 transition-transform scale-110 rounded-lg"
-                                            : "scale-90 rounded-lg"
+                                        className={`h-full w-full object-cover object-center  rounded-lg ${!img.isLocked
+                                            ? "duration-200 transition-transform "
+                                            : "scale-90"
                                             }`}
                                     />
                                     {img.isLocked && (
                                         <div className="absolute bg-black/95 z-20 top-0 h-full w-full rounded-md flex flex-col justify-center items-center">
                                             <SlLock size={50} color="white" />
-                                            {unlockedCount}
                                         </div>
                                     )}
                                 </Card>

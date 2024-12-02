@@ -76,7 +76,7 @@ export function CreateUsername({
                             <Input
                                 {...field}
                                 type="text"
-                                placeholder="Choose your Unique Username"
+                                placeholder="Choose Your Unique Username"
                                 className="bg-[#22140B] text-[#FFFFFF59] outline-none text-sm poppins  border-none ring-0 rounded-[10px] h-[65px] min-w-[306px] mx-auto w-full"
                             />
                         )}
@@ -87,7 +87,6 @@ export function CreateUsername({
 
                     <TextButton
                         name="Proceed"
-                        disabled={!!errors.username}
                         onClick={handleSubmit(onSubmit)}
                         className="uppercase mt-2"
                     />

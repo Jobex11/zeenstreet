@@ -27,7 +27,7 @@ export const TextButton = ({
                 onClick && onClick(event);
                 navigator.vibrate([50, 50]);
             }}
-            className={`aqum flex items-center justify-between px-3 text-center w-full min-w-[331px] text-[13px] h-[51px] rounded-xl bg-[#D25804] duration-200 hover:bg-orange-600 ${className}`}
+            className={`aqum flex items-center justify-between px-3 text-center w-full max-w-full text-[13px] h-[51px] rounded-xl bg-[#D25804] duration-200 hover:bg-orange-600 ${className}`}
         >
               <div/>
                 <span className="ml-10">{isLoading ? "Please wait..." : name}</span>
