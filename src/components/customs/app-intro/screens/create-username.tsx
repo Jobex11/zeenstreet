@@ -42,27 +42,34 @@ export function CreateUsername({
   const onSubmit = async (data: CreateUsernameFormValues) => {
     setIsSubmitting(true);
     try {
-      const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id; // Replace with actual Telegram ID fetching logic
-      const response = await fetch(
-        "https://ravegenie-vgm7.onrender.com/api/username/set",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            telegram_id: telegramId,
-            preferred_username: data.username,
-          }),
-        }
-      );
+      if (
+        typeof window !== "undefined" &&
+        window.Telegram?.WebApp?.initDataUnsafe?.user?.id
+      ) {
+        const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
+        const response = await fetch(
+          "https://ravegenie-vgm7.onrender.com/api/username/set",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              telegram_id: telegramId,
+              preferred_username: data.username,
+            }),
+          }
+        );
 
-      if (!response.ok) {
-        const result = await response.json();
-        alert(result.error || "Failed to update username.");
+        if (!response.ok) {
+          const result = await response.json();
+          alert(result.error || "Failed to update username.");
+        } else {
+          alert("Username successfully updated!");
+          setScreens && setScreens("check-account");
+        }
       } else {
-        alert("Username successfully updated!");
-        setScreens && setScreens("check-account");
+        alert("Telegram WebApp is not available.");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
