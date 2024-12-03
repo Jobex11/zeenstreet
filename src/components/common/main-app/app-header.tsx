@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import dotsbg from "../../../assets/images/dotted-bg.png";
 import medalIcon from "../../../assets/images/icons/medal.svg";
@@ -24,9 +24,12 @@ function Header() {
         }
 
         // Fetch username from backend
-        const response = await axios.post("/api/username/get", {
-          telegram_id: telegramId,
-        });
+        const response = await axios.post(
+          "https://ravegenie-vgm7.onrender.com/api/username/get",
+          {
+            telegram_id: telegramId,
+          }
+        );
 
         const { preferred_username } = response.data;
         setUsername(preferred_username || "User"); // Fallback to 'User' if not set
