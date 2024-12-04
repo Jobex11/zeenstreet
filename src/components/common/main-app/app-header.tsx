@@ -8,27 +8,31 @@ import mailIcon from "../../../assets/images/icons/mail-icon.svg";
 import { Link } from "react-router-dom";
 function Header() {
   /*backend functions */
+  /* State variables */
   const [username, setUsername] = useState<string | null>(null);
-
   const [profileImage, setProfileImage] = useState<string>(profilePlaceholder);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const telegramData = window.Telegram.WebApp.initDataUnsafe.user;
-        const telegramId = telegramData.id;
+        // Retrieve Telegram user data
+        const telegramData = window.Telegram.WebApp.initDataUnsafe?.user;
+        const telegramId = telegramData?.id;
+
+        if (!telegramId) {
+          console.error("Telegram ID not found");
+          setUsername("User"); // Fallback username
+          return;
+        }
 
         // Set Telegram profile photo or fallback to placeholder
         if (telegramData.photo_url) {
           setProfileImage(telegramData.photo_url);
         }
 
-        // Fetch username from backend
-        const response = await axios.post(
-          "https://ravegenie-vgm7.onrender.com/api/username/get",
-          {
-            telegram_id: telegramId,
-          }
+        // Fetch the preferred username from the backend using GET request
+        const response = await axios.get(
+          `https://ravegenie-vgm7.onrender.com/api/username/${telegramId}`
         );
 
         const { preferred_username } = response.data;
