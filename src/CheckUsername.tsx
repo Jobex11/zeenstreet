@@ -18,7 +18,9 @@ const CheckUsername: React.FC = () => {
         }
 
         // Fetch the preferred username status
-        const response = await fetch(`/api/username/has/${telegramId}`);
+        const response = await fetch(
+          `https://ravegenie-vgm7.onrender.com/api/username/has/${telegramId}`
+        );
         const data = await response.json();
 
         if (response.ok && data.hasPreferredUsername) {
