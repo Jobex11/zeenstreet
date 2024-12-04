@@ -1,8 +1,8 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import "../src/index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Intro from "./pages/app-intro/page";
+import CheckUsername from "./CheckUsername";
 import Home from "./pages/home/page";
 import Tasks from "./pages/tasks/page";
 import Marketplace from "./pages/marketplace/page";
@@ -12,14 +12,12 @@ import ReduxProvider from "./components/common/provider";
 import ReferralPage from "./pages/referral/page";
 import ProfilePage from "./pages/profile/page";
 import RankPage from "./pages/ranks/page";
-import Notificaions from "./pages/main-notification/page";
-import AppWrapper from "./AppWrapper";
+import Notifications from "./pages/main-notification/page";
 
-// Define routes using createBrowserRouter
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Intro />,
+    element: <CheckUsername />,
   },
   {
     path: "/home",
@@ -55,17 +53,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/notifications",
-    element: <Notificaions />,
+    element: <Notifications />,
   },
 ]);
 
-// Render the app
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ReduxProvider>
-      <AppWrapper>
-        <RouterProvider router={router} />
-      </AppWrapper>
+      <RouterProvider router={router} />
     </ReduxProvider>
   </React.StrictMode>
 );
@@ -73,23 +68,19 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 /*
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import '../src/index.css'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import Intro from './pages/app-intro/page';
-import Home from './pages/home/page';
-import Tasks from './pages/tasks/page';
-import Marketplace from './pages/marketplace/page';
-import Teams from './pages/teams/page';
-import Games from './pages/games/page';
+import "../src/index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Intro from "./pages/app-intro/page";
+import Home from "./pages/home/page";
+import Tasks from "./pages/tasks/page";
+import Marketplace from "./pages/marketplace/page";
+import Teams from "./pages/teams/page";
+import Games from "./pages/games/page";
 import ReduxProvider from "./components/common/provider";
 import ReferralPage from "./pages/referral/page";
 import ProfilePage from "./pages/profile/page";
 import RankPage from "./pages/ranks/page";
 import Notificaions from "./pages/main-notification/page";
-
 
 const router = createBrowserRouter([
   {
@@ -141,6 +132,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     </ReduxProvider>
   </React.StrictMode>
 );
-
 
 */
