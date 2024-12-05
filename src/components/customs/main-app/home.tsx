@@ -18,11 +18,9 @@ import Loader from "../../common/Loader";
 
 function Home() {
   const [shares, setShares] = useState(null); // State to store user shares
-  const [isLoading, setIsLoading] = useState(true); // State for loading
-  const [error, setError] = useState(null); // State for error
   const [telegramId, setTelegramId] = useState(null);
 
-  const middleCardRef = useRef<HTMLDivElement>(null);
+  const middleCardRef = useRef<HTMLDivElemaent>(null);
   const todayTask = [
     {
       title: "Ongoing Project",
