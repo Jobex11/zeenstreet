@@ -18,9 +18,10 @@ import Loader from "../../common/Loader";
 
 function Home() {
   const [shares, setShares] = useState(null); // State to store user shares
-  const [telegramId, setTelegramId] = useState(null);
+  const [telegramId, setTelegramId] = useState<string | null>(null);
 
-  const middleCardRef = useRef<HTMLDivElemaent>(null);
+
+  const middleCardRef = useRef<HTMLDivElement>(null);
   const todayTask = [
     {
       title: "Ongoing Project",
@@ -69,16 +70,17 @@ function Home() {
     if (telegramId) {
       const fetchShares = async () => {
         try {
-          const response = await fetch(`/api/shares/${telegramId}`);
+          const response = await fetch(`https://ravegenie-vgm7.onrender.com/api/shares/${telegramId}`);
           if (!response.ok) {
             throw new Error("Failed to fetch shares");
           }
           const data = await response.json();
           setShares(data.shares);
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setIsLoading(false);
+        } catch (err) {if (err instanceof Error) {
+          console.error(err.message); // Handle the error
+        } else {
+          console.error("An unknown error occurred"); // Handle non-Error objects
+        }
         }
       };
 
