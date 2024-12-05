@@ -17,9 +17,8 @@ import { useEffect, useRef, useState } from "react";
 import Loader from "../../common/Loader";
 
 function Home() {
-  const [shares, setShares] = useState(null); // State to store user shares
+  const [shares, setShares] = useState(null);
   const [telegramId, setTelegramId] = useState<string | null>(null);
-
 
   const middleCardRef = useRef<HTMLDivElement>(null);
   const todayTask = [
@@ -56,38 +55,38 @@ function Home() {
   // ====>> BACKEND STARTS
 
   useEffect(() => {
-    // Check if we are in the Telegram Web App context
     if (window.Telegram && window.Telegram.WebApp) {
       const telegramUserId = window.Telegram.WebApp.initDataUnsafe?.user?.id;
       if (telegramUserId) {
-        setTelegramId(telegramUserId); // Set the telegram_id
+        setTelegramId(telegramUserId);
       }
     }
   }, []);
 
   useEffect(() => {
-    // Only fetch shares if telegramId is available
     if (telegramId) {
       const fetchShares = async () => {
         try {
-          const response = await fetch(`https://ravegenie-vgm7.onrender.com/api/shares/${telegramId}`);
+          const response = await fetch(
+            `https://ravegenie-vgm7.onrender.com/api/shares/${telegramId}`
+          );
           if (!response.ok) {
             throw new Error("Failed to fetch shares");
           }
           const data = await response.json();
           setShares(data.shares);
-        } catch (err) {if (err instanceof Error) {
-          console.error(err.message); // Handle the error
-        } else {
-          console.error("An unknown error occurred"); // Handle non-Error objects
-        }
+        } catch (err: unknown) {
+          if (err instanceof Error) {
+            console.error(err.message);
+          } else {
+            console.error("An unknown error occurred");
+          }
         }
       };
 
       fetchShares();
     }
-  }, [telegramId]); // Fetch shares when telegram_id is set
-
+  }, [telegramId]);
   const isLoading = false;
 
   if (isLoading) {
