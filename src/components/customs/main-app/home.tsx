@@ -1,22 +1,37 @@
-import { Link } from "react-router-dom";
 import dotsbg from "../../../assets/images/dotted-bg.png";
 import logo from "../../../assets/images/icons/zenstreet_logo.png";
+import bell_icon from "../../../assets/images/bell_icon.png"
 import TaskCard from "../../common/cards/Tasxcard";
 import { IoAdd } from "react-icons/io5";
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../ui/card";
 import { Button } from "../../ui/button";
 import filter from "../../../assets/images/icons/filter.svg"
 import { ShareFormatter } from "../../common/shareFormatter";
-import { useEffect, useRef } from "react";
-import Loader from "../../common/Loader";
+import { useEffect, useRef, useState } from "react";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "../../ui/dropdown-menu"
+// import { useGoldFormatter } from "../../../hooks/useGoldformatter";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+const todayTask = [
+    { title: "Ongoing Project", name: "Refer Friends", shares: 10202000, type: "Special" },
+    { title: "Ongoing Project", name: "Refer Friends", shares: 10000400, type: "Events" },
+    { title: "Ongoing Project", name: "Refer Friends", shares: 10030000, type: "Referral" }
+]
 
 function Home() {
     const middleCardRef = useRef<HTMLDivElement>(null);
-    const todayTask = [
-        { title: "Ongoing Project", name: "Refer Friends", shares: 10202000, type: "Daily Task" },
-        { title: "Ongoing Project", name: "Refer Friends", shares: 10000400, type: "Daily Task" },
-        { title: "Ongoing Project", name: "Refer Friends", shares: 10030000, type: "Daily Task" }
-    ]
+    const [selectedFilter, setSelectedFilter] = useState<string | null>("Events");
+    const filteredTasks = selectedFilter
+        ? todayTask.filter((task) => task.type === selectedFilter)
+        : todayTask;
+
+    // Filter the tasks based on the selected filter
+
 
     useEffect(() => {
         if (middleCardRef.current) {
@@ -28,13 +43,8 @@ function Home() {
         }
     }, []);
 
-    const isLoading = false;
 
-    if (isLoading) {
-        return (
-            <Loader />
-        )
-    }
+
     return (
         <div className='flex flex-col min-h-full'>
             <div style={{
@@ -70,32 +80,56 @@ function Home() {
                             <h1 className="text-[#FFFFFF] text-sm">18 Tasks Pending</h1>
                         </div>
                         <div className="flex items-center gap-3">
-                            <Link to={"/"}>
-                                <span>
-                                    <img src={filter} alt="filter" className="" />
-                                </span>
-                            </Link>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                    <span>
+                                        <LazyLoadImage effect="blur" src={filter} alt="filter" className="" />
+                                    </span>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="bg-orange-500 rounded text-white border-none tahoma">
+                                    <DropdownMenuItem className={`${selectedFilter === "All" && "bg-white text-black"}`} onClick={() => setSelectedFilter(null)} >All</DropdownMenuItem>
+                                    <DropdownMenuItem className={`${selectedFilter == "Special" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Special")} >Special</DropdownMenuItem>
+                                    <DropdownMenuItem className={`${selectedFilter === "Events" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Events")} >Events</DropdownMenuItem>
+                                    <DropdownMenuItem className={`${selectedFilter === "Referral" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Referral")} >Referral</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+
                             <div className="h-8 w-[1px] border border-[#E4E4E4]" />
-                            <Link to={"/"}>
-                                <span><IoAdd color="white" size={26} /></span>
-                            </Link>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                    <span><IoAdd color="white" size={26} /></span>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent side="left" className="bg-orange-600 rounded text-white border-none tahoma p-2">
+                                    <div className="flex items-center gap-4">
+                                        <h1 className="text-sm poppins">Send a ping notification<br /> to your team</h1>
+                                        <div className="h-10 w-10">
+                                            <button>
+                                                <LazyLoadImage effect="blur" src={bell_icon} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+
                         </div>
                     </div>
 
 
                     <div className="flex flex-col gap-5 pb-[8rem]">
-                        {todayTask.map((task) => (
+                        {filteredTasks.map((task) => (
                             <TaskCard key={task.shares}>
                                 <CardHeader className="flex flex-row justify-between items-center py-0 px-3">
                                     <CardTitle className="text-[#FFFFFF] text-[11px] font-medium">{task.title}</CardTitle>
                                     <div className="flex flex-col">
-                                        <img src={logo} alt="logo" className="h-[54px] w-[54px]" />
+                                        <LazyLoadImage effect="blur" src={logo} alt="logo" className="h-[54px] w-[54px]" />
                                         <h1 className="text-[11px] poppins text-[#FFFFFF] font-medium">{task.type}</h1>
                                     </div>
                                 </CardHeader>
                                 <CardContent className="px-3">
                                     <CardTitle className="text-xl font-bold text-white">{task.name}</CardTitle>
-                                    <CardDescription className="text-[11px] font-bold text-white">{ShareFormatter(task.shares)} $Shares</CardDescription>
+                                    <CardDescription className="text-[11px] font-bold text-white">
+                                        {task.shares}
+                                        $Shares</CardDescription>
                                 </CardContent>
                                 <hr className="mx-3" />
                                 <CardFooter className="pt-3 px-3 flex items-center justify-between">

@@ -29,6 +29,7 @@ import { IoIosClose } from "react-icons/io";
 import { DialogClose, DialogTitle } from "../../ui/dialog";
 import goldCoin from "../../../assets/images/icons/gold_coin.svg";
 import { SlLock } from "react-icons/sl";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function Profile() {
     const wealthClass = [
@@ -75,7 +76,7 @@ function Profile() {
                             <CardContent className='flex  justify-between items-end  px-2 py-0'>
                                 <div className='flex items-center'>
                                     <div className='h-[99px] w-[106px]'>
-                                        <img src={profileImage} alt='profile aimated image' className='h-full w-full object-cover object-center' />
+                                        <LazyLoadImage effect="blur" src={profileImage} alt='profile aimated image' className='h-full w-full object-cover object-center' />
                                     </div>
                                     <div className='flex flex-col pb-4'>
                                         <h1 className='text-white text-base font-bold aqum'>Hi Alex</h1>
@@ -86,7 +87,7 @@ function Profile() {
                                     </div>
                                 </div>
                                 <div className='h-[52px] w-[52px] mb-4 relative flex items-center justify-center'>
-                                    <img src={profileBadge} alt="rank badge" className='h-full w-full object-cover object-center' />
+                                    <LazyLoadImage effect="blur" src={profileBadge} alt="rank badge" className='h-full w-full object-cover object-center' />
                                     <span className="text-[#EBB26D] absolute text-[13px] font-medium top-[10px] work-sans">1</span>
                                 </div>
                             </CardContent>
@@ -106,7 +107,7 @@ function Profile() {
                                                 backgroundRepeat: "no-repeat",
                                                 backgroundSize: "cover"
                                             }} className='h-[48px] min-w-[70px] w-full relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold'>
-                                                <img src={item.img} alt={`wealth class ${item.name}`} className="h-full w-full object-cover rounded-md" />
+                                                <LazyLoadImage effect="blur" src={item.img} alt={`wealth class ${item.name}`} className="h-full w-full object-cover rounded-md" />
 
                                                 {/* This div with lock icon will be rendered on a condition to check if the card is locked or not */}
                                               <div className="absolute h-full w-full rounded-md  bg-black/55 z-20 flex flex-col items-center justify-center"><SlLock size={25} color="white" /></div>
@@ -120,9 +121,9 @@ function Profile() {
                                             <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                 <IoIosClose size={30} color="#A4A4A7" />
                                             </DialogClose>
-                                            <img src={item.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
+                                            <LazyLoadImage effect="blur" src={item.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
                                             <h1 className="text-white work-sans font-semibold text-[15px] capitalize">{item.name}</h1>
-                                            <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ 3000 <img src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
+                                            <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ 3000 <LazyLoadImage effect="blur" src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
                                             
                                             {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
                                             <Button disabled={true} className="bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans">
@@ -151,7 +152,7 @@ function Profile() {
                                                     backgroundRepeat: "no-repeat",
                                                     backgroundSize: "cover"
                                                 }} className='h-[95px] min-w-[70px] w-full rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold'>
-                                                    <img src={item.img} alt="" className="h-full w-full object-cover rounded-md" />
+                                                    <LazyLoadImage effect="blur" src={item.img} alt="" className="h-full w-full object-cover rounded-md" />
                                                 </Card>
                                             </div>
                                         </DrawerTrigger>
@@ -161,9 +162,9 @@ function Profile() {
                                                 <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                     <IoIosClose size={30} color="#A4A4A7" />
                                                 </DialogClose>
-                                                <img src={item.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
+                                                <LazyLoadImage effect="blur" src={item.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
                                                 <h1 className="text-white work-sans font-semibold text-[15px] capitalize">Some information about this card</h1>
-                                                <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ 3000 <img src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
+                                                <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ 3000 <LazyLoadImage effect="blur" src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
                                                  {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
                                                 <Button disabled={true} className="bg-[#D36519] hover:bg-orange-500 text-center py-4 h-12 w-full text-white work-sans">
                                                     Claim shares
@@ -186,7 +187,7 @@ function Profile() {
                                             <DrawerTrigger asChild>
                                                 <div className="flex flex-col items-center gap-3">
                                                     <div className="flex flex-col relative gap-1 min-w-fit">
-                                                        <img src={a.img} alt="Refferal Images" className="max-h-[58px] max-w-[46px] object-cover object-center" />
+                                                        <LazyLoadImage effect="blur" src={a.img} alt="Refferal Images" className="max-h-[58px] max-w-[46px] object-cover object-center" />
                                                         {/* This div with lock icon will be rendered on a condition to check if the card is locked or not */}
                                                         <div className="absolute h-full w-full rounded-md  bg-black/40 z-20 flex flex-col items-center justify-center"><SlLock size={25} color="white" /></div>
                                                     </div>
@@ -199,9 +200,9 @@ function Profile() {
                                                     <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                         <IoIosClose size={30} color="#A4A4A7" />
                                                     </DialogClose>
-                                                    <img src={a.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
+                                                    <LazyLoadImage effect="blur" src={a.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
                                                     <h1 className="text-white work-sans font-semibold text-[15px]">{a.name}</h1>
-                                                    <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ {a.reward} <img src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
+                                                    <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ {a.reward} <LazyLoadImage effect="blur" src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
                                                     {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
                                                     <Button disabled={true} className="bg-[#D36519] hover:bg-orange-500 text-center rounded-lg py-4 h-12 w-full text-white work-sans">
                                                         Check

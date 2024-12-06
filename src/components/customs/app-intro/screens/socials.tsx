@@ -10,6 +10,7 @@ import {
 import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import { Button } from "../../../ui/button";
 import { Fade } from "react-awesome-reveal";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export const Socials = () => {
     const navigate = useNavigate()
@@ -99,7 +100,8 @@ export const Socials = () => {
         <div className="flex flex-col flex-1 justify-self-start w-full min-h-full p-4 relative">
             <div className="flex flex-col gap-4 items-center mb-10">
                 <div className="relative h-fit w-[139px]">
-                    <img src={Logo} alt="" className="h-full w-full object-contain" />
+                    <LazyLoadImage
+                     effect="blur" src={Logo} alt="" className="h-full w-full object-contain" />
                 </div>
             </div>
 

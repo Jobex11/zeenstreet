@@ -7,6 +7,7 @@ import { TextButton } from "../../../common/buttons/Textbutton";
 import { Input } from "../../../ui/input";
 import smily_man from "../../../../assets/images/smily_man.png";
 import Typewriter from "../../../common/typewriter";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 // Define Zod schema
 const schema = z.object({
@@ -47,13 +48,13 @@ export function CreateUsername({
             {/* Logo */}
             <div className="flex items-center mx-auto">
                 <div className="relative max-h-[139px] max-w-[139px]">
-                    <img src={Logo} alt="Zenstreet Logo" className="h-full w-full object-contain mx-auto" />
+                    <LazyLoadImage effect="blur" src={Logo} alt="Zenstreet Logo" className="h-full w-full object-contain mx-auto" />
                 </div>
             </div>
 
             {/* Genie Speech */}
             <div className="relative overflow-hidden">
-                <img src={smily_man} alt="Smily Man" className="object-contain max-h-[514px]" />
+                <LazyLoadImage effect="blur" src={smily_man} alt="Smily Man" className="object-contain max-h-[514px]" />
                 <div className="absolute right-0 top-2 border border-white bg-[#292734] rounded-r-xl rounded-tl-xl w-[50%] min-h-[210px] py-3 px-2 z-30 h-fit">
                     <h1 className="text-sm inter text-gray-300">
                         <Typewriter

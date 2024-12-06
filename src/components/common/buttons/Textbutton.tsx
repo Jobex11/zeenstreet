@@ -1,5 +1,6 @@
 import { Button } from "../../ui/button";
 import arrowIcon from "../../../assets/images/icons/arrow-icon.svg";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface ButtonProps {
     name: string;
@@ -31,7 +32,7 @@ export const TextButton = ({
         >
               <div/>
                 <span className="ml-10">{isLoading ? "Please wait..." : name}</span>
-                <img src={arrowIcon} alt="arrow image" className="h-[17px] ml-2" />
+                <LazyLoadImage effect="blur" src={arrowIcon} alt="arrow image" className="h-[17px] ml-2" />
         </Button>
     );
 };

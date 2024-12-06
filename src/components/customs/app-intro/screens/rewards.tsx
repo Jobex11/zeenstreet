@@ -4,6 +4,7 @@ import medal from "../../../../assets/images/icons/medal.png"
 import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import { Fade, Zoom } from "react-awesome-reveal";
 import CountUp from "react-countup"
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface RewardsProps {
     year: string;
@@ -23,7 +24,7 @@ export const Rewards = (
         <div className="flex flex-col flex-1  justify-stretch gap-10 w-full min-h-full p-4 relative">
             <div className="flex  flex-col justify-stretch gap-5">
                 <div className="relative h-fit w-[139px] mx-auto">
-                    <img src={Logo} alt="" className="h-full w-full object-contain" />
+                    <LazyLoadImage effect="blur" src={Logo} alt="" className="h-full w-full object-contain" />
                 </div>
 
                 <div className="flex flex-col flex-1 justify-stretch">
@@ -34,7 +35,7 @@ export const Rewards = (
                                 <h1 className="text-[#D25804] text-2xl">Years</h1>
 
                                 <div className="relative h-28 w-28">
-                                    <img src={medal} alt="" className="h-full w-full object-contain object-center" />
+                                    <LazyLoadImage effect="blur" src={medal} alt="" className="h-full w-full object-contain object-center" />
                                 </div>
 
                             </div>

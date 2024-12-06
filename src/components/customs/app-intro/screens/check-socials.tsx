@@ -9,6 +9,7 @@ import { Button } from "../../../ui/button";
 import { Fade } from "react-awesome-reveal";
 import { Input } from "../../../ui/input";
 import { toast } from "sonner"
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface SocialHandle {
     name: string;
@@ -119,7 +120,7 @@ export const CheckSocialAccounts = ({ setScreens }: { setScreens?: (value: React
                 <div className="flex flex-col justify-stretch gap-7">
                     <div className="flex flex-col items-center">
                         <div className="relative max-h-[139px] w-[139px]">
-                            <img src={Logo} alt="" className="h-full w-full object-contain" />
+                            <LazyLoadImage effect="blur" src={Logo} alt="" className="h-full w-full object-contain" />
                         </div>
                     </div>
                     {socialHandles.map((handle) => (

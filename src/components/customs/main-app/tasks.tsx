@@ -10,6 +10,7 @@ import zeenStreetLogo from "../../../assets/images/icons/zenstreet_logo.png";
 import TaskCard from "../../common/cards/Tasxcard";
 import { Button } from '../../ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../ui/card";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
 const tasks = [
@@ -110,7 +111,7 @@ function Tasks() {
                                         : " rounded-lg min-w-[70%]" // Locked cards
                                         } h-32 `}
                                 >
-                                    <img
+                                    <LazyLoadImage effect="blur"
                                         src={img.carousel_img}
                                         alt={`card img ${id}`}
                                         className={`h-full w-full object-cover object-center  rounded-lg ${!img.isLocked
@@ -174,7 +175,7 @@ function Tasks() {
                             <CardHeader className="flex flex-row justify-between items-center py-2 px-3">
                                 <CardTitle className="text-[#FFFFFF] text-[11px] font-medium p-0">{task.cardHeader}</CardTitle>
                                 <div className="flex flex-col">
-                                    <img src={task.logo} alt="logo" className="max-h-[54px] max-w-[75.78px] w-fit h-fit object-contain object-center" />
+                                    <LazyLoadImage effect="blur" src={task.logo} alt="logo" className="max-h-[54px] max-w-[75.78px] w-fit h-fit object-contain object-center" />
                                     <h1 className="text-[11px] poppins text-[#FFFFFF] font-medium">{task.task}</h1>
                                 </div>
                             </CardHeader>

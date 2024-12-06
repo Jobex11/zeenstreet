@@ -2,6 +2,7 @@ import { TextButton } from "../../../common/buttons/Textbutton";
 import { LuCheckCircle } from "react-icons/lu";
 import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import { Progress } from "../../../ui/progress";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 // import { useState, useEffect } from "react";
 
 
@@ -43,7 +44,7 @@ export const CheckAccount = ({ setScreens, userInfo }: CheckAccountProps) => {
                 <div className="flex flex-col items-center justify-around h-full gap-10">
                     {/* Logo */}
                     <div className="relative h-fit w-[139px]">
-                        <img src={Logo} alt="Zenstreet Logo" className="h-full w-full object-contain" />
+                        <LazyLoadImage effect="blur" src={Logo} alt="Zenstreet Logo" className="h-full w-full object-contain" />
                     </div>
                     <h1 className="text-xl font-bold text-[#FFFFFF] uppercase aqum">Checking account</h1>
 

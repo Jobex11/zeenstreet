@@ -16,7 +16,7 @@ import ReferralPage from "./pages/referral/page";
 import ProfilePage from "./pages/profile/page";
 import RankPage from "./pages/ranks/page";
 import Notificaions from "./pages/main-notification/page";
-
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const router = createBrowserRouter([
   {

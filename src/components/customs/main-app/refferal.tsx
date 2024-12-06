@@ -13,6 +13,7 @@ import { IconButton } from '../../common/buttons/Iconbutton';
 import { MdInfo } from "react-icons/md";
 import { IoCopy } from "react-icons/io5";
 import { ShareFormatter } from "../../common/shareFormatter";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 
 function Referral() {
@@ -58,7 +59,7 @@ function Referral() {
                     <TaskCard>
                         <CardHeader className="flex flex-col items-center py-0">
                             <div className='h-[84px] w-[92px]'>
-                                <img src={logo} alt="zeen streeet logo" className={"min-h-full object-cover object-center w-full"} />
+                                <LazyLoadImage effect="blur" src={logo} alt="zeen streeet logo" className={"min-h-full object-cover object-center w-full"} />
                             </div>
                         </CardHeader>
                         <CardContent className='flex flex-col items-center'>
@@ -151,7 +152,7 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
                 {/* user info */}
                 <div className='flex items-center gap-2'>
                     <div className="h-[50px] w-[50px] rounded-full">
-                        <img src={referrals.userLogo} alt={referrals.name + "Logo"} className='h-full w-full rounded-s-none object-cover object-center' />
+                        <LazyLoadImage effect="blur" src={referrals.userLogo} alt={referrals.name + "Logo"} className='h-full w-full rounded-s-none object-cover object-center' />
                     </div>
                     <div className='flex flex-col'>
                         <h1 className='text-xs font-medium font-mono text-white'>{referrals.name}</h1>

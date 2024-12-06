@@ -1,3 +1,4 @@
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import dotsbg from "../../../assets/images/dotted-bg.png";
 import notificationImage from "../../../assets/images/notification_img.png"
 
@@ -88,7 +89,7 @@ function MailNotification() {
             {notifications.map((notify, id) => (
               <div key={id} className="py-5 flex items-center gap-3 border-b border-[#3E3D3D] inter">
                 <div className=" rounded-full h-[50px] w-[50px]">
-                  <img src={notify.img} alt="" className="h-full w-full object-cover object-center" />
+                  <LazyLoadImage effect="blur" src={notify.img} alt="" className="h-full w-full object-cover object-center" />
                 </div>
 
                 <div>
