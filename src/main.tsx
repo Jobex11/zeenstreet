@@ -17,6 +17,7 @@ import ProfilePage from "./pages/profile/page";
 import RankPage from "./pages/ranks/page";
 import Notificaions from "./pages/main-notification/page";
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import TelegramWrapper from "./components/common/Telegram.app.layout";
 
 const router = createBrowserRouter([
   {
@@ -64,7 +65,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ReduxProvider>
-      <RouterProvider router={router} />
+      <TelegramWrapper>
+        <RouterProvider router={router} />
+      </TelegramWrapper>
     </ReduxProvider>
   </React.StrictMode>
 );

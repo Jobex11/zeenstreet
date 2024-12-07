@@ -1,6 +1,3 @@
-// global.d.ts
-export {};
-
 declare global {
   interface Window {
     Telegram: {
@@ -14,7 +11,38 @@ declare global {
             photo_url?: string;
           };
         };
+        //to handle more functionalities(tasks, user experience)
+        version: string;
+        platform: string;
+        colorScheme: string;
+        viewportHeight: number;
+        viewportStableHeight: number;
+        isClosingConfirmationEnabled: boolean;
+        isVerticalSwipesEnabled: boolean;
+        isExpanded: boolean;
+        isFullscreen: boolean;
+        headerColor: string;
+        backgroundColor: string;
+        bottomBarColor: string;
+        isVersionAtLeast: (version: string) => boolean;
+        expand: () => void;
+        requestFullscreen: () => void;
+        exitFullscreen: () => void;
+        addToHomeScreen: () => void;
+        checkHomeScreenStatus: (callback?: (isAdded: boolean) => void) => void;
+        shareToStory: (mediaUrl: string, params?: object) => void;
+        onEvent: (eventType: string, eventHandler: () => void) => void;
+        offEvent: (eventType: string, eventHandler: () => void) => void;
+        ready: () => void;
+        setBottomBarColor: (color: string) => void;
+        setHeaderColor: (color: string) => void;
+        enableClosingConfirmation: () => void;
+        disableClosingConfirmation: () => void;
+        enableVerticalSwipes: () => void;
+        disableVerticalSwipes: () => void;
       };
     };
   }
 }
+
+export {};
