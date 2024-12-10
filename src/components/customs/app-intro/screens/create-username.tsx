@@ -72,7 +72,7 @@ export function CreateUsername({
           setScreens && setScreens("check-account");
         }
       } else {
-        alert("Telegram WebApp is not available.");
+        toast.error("Telegram WebApp is not available.");
       }
     } catch (error) {
       console.error("Error submitting form:", error);

@@ -44,7 +44,7 @@ function BottmNavigation() {
             path: "/games"
         },
     ];
-    // #A4A4A7
+
     return (
         <div className='fixed bottom-0 mx-auto max-w-xl w-full right-0 left-0 h-auto py-2 px-2 z-30 bg-black/95'>
             <div className='bg-[#1C1B23] rounded-[15px] h-16 w-full shadow-md '>

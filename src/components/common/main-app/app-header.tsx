@@ -6,6 +6,7 @@ import dropbox from "../../../assets/images/icons/dropbox (2).svg";
 import profilePlaceholder from "../../../assets/images/icons/user-placeholder.svg";
 import mailIcon from "../../../assets/images/icons/mail-icon.svg";
 import { Link } from "react-router-dom";
+
 import { LazyLoadImage } from "react-lazy-load-image-component";
 function Header() {
   /*backend functions */
@@ -69,11 +70,11 @@ function Header() {
 
         <div className="flex items-center gap-4">
           <Link to={"/profile"}>
-            <div className="flex items-center bg-transparent border hover:bg-transparent px-2 rounded-md gap-2 h-[30px] min-w-[62px]">
+            <div className="flex items-center bg-transparent border hover:bg-transparent pr-2 rounded-md gap-2 h-[30px] min-w-[62px]">
               <LazyLoadImage effect="blur"
                 src={profileImage}
                 alt="user placeholder"
-                className="h-6 w-6"
+                className="h-6 w-6 rounded-r-full"
               />
               <span className="text-[9px] work-sans font-medium text-white">
                 @{username || "Loading..."}

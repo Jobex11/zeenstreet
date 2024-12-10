@@ -1,14 +1,14 @@
 import { TextButton } from "../../../common/buttons/Textbutton";
 import { Card } from "../../../ui/card";
-import medal from "../../../../assets/images/icons/medal.png"
+import medal from "../../../../assets/images/icons/medal.png";
 import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
 import { Fade, Zoom } from "react-awesome-reveal";
 import CountUp from "react-countup"
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface RewardsProps {
-    year: string;
-    shares: number
+  year: string;
+  shares: number;
 }
 
 export const Rewards = (
@@ -49,22 +49,20 @@ export const Rewards = (
                                     <h1>$SHARES</h1>
                                 </Card>
 
-                                <blockquote className="tahoma max-w-[286px] uppercase pt-5 mx-auto text-xs font-medium text-center py-2 text-[#C2C2C2]">
-                                    Complete the quests in the next page to claim your shares
-                                </blockquote>
-                            </div>
-                        </Zoom>
-                    </div>
-                </div>
-                </div>
-                <TextButton
-                    name={"Proceed"}
-                    disabled={false}
-                    onClick={() => setScreens && setScreens("socials")}
-                    className={"uppercase mt-4"}
-                />
-            
-
+                <blockquote className="tahoma max-w-[286px] uppercase pt-5 mx-auto text-xs font-medium text-center py-2 text-[#C2C2C2]">
+                  Complete the quests in the next page to claim your shares
+                </blockquote>
+              </div>
+            </Zoom>
+          </div>
         </div>
-    )
-}
+      </div>
+      <TextButton
+        name={"Proceed"}
+        disabled={false}
+        onClick={() => setScreens && setScreens("socials")}
+        className={"uppercase mt-4"}
+      />
+    </div>
+  );
+};
