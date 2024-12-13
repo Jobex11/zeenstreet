@@ -16,13 +16,12 @@ const SCREENS = {
     SOCIALS: "socials",
 };
 
-const TIMEOUT = 5000;
+const TIMEOUT = 4000;
 
 export default function ZeenAppIntro() {
     
     const [currentScreen, setCurrentScreen] = useState<string>(SCREENS.WELCOME);
     const [loading, setLoading] = useState(false);
-
     const navigate = useNavigate();
 
     const user = {

@@ -72,11 +72,15 @@ function Profile() {
 
                     {/* card */}
                     <div>
-                        <TaskCard className='min-h-[130px] flex flex-col w-full justify-end p-0'>
-                            <CardContent className='flex  justify-between items-end  px-2 py-0'>
+                        <TaskCard className='min-h-32 flex flex-col w-full justify-end p-0'>
+                            <CardContent className='flex  justify-between px-2 py-0'>
                                 <div className='flex items-center'>
-                                    <div className='h-[99px] w-[106px]'>
-                                        <LazyLoadImage effect="blur" src={profileImage} alt='profile aimated image' className='h-full w-full object-cover object-center' />
+                                    <div className='h-28 w-[106px]'>
+                                        <LazyLoadImage
+                                            effect="blur"
+                                            src={profileImage}
+                                            alt='profile image'
+                                            className='w-full object-contain object-center rounded-full' />
                                     </div>
                                     <div className='flex flex-col pb-4'>
                                         <h1 className='text-white text-base font-bold aqum'>Hi Alex</h1>
@@ -102,15 +106,23 @@ function Profile() {
                                 <Drawer key={item.name}>
                                     <DrawerTrigger asChild>
                                         <div>
-                                            <Card style={{
-                                                backgroundImage: `url(${wavybg})`,
-                                                backgroundRepeat: "no-repeat",
-                                                backgroundSize: "cover"
-                                            }} className='h-[48px] min-w-[70px] w-full relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold'>
-                                                <LazyLoadImage effect="blur" src={item.img} alt={`wealth class ${item.name}`} className="h-full w-full object-cover rounded-md" />
-
-                                                {/* This div with lock icon will be rendered on a condition to check if the card is locked or not */}
-                                              <div className="absolute h-full w-full rounded-md  bg-black/55 z-20 flex flex-col items-center justify-center"><SlLock size={25} color="white" /></div>
+                                            <Card
+                                                style={{
+                                                    backgroundImage: `url(${wavybg})`,
+                                                    backgroundRepeat: "no-repeat",
+                                                    backgroundSize: "cover"
+                                                }}
+                                                className='h-12 min-w-[70px] w-full relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold overflow-hidden'
+                                            >
+                                                <LazyLoadImage
+                                                    effect="blur"
+                                                    src={item.img}
+                                                    alt={`wealth class ${item.name}`}
+                                                    className="h-full w-full object-cover object-center rounded-md"
+                                                />
+                                                <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
+                                                    <SlLock size={25} color="white" />
+                                                </div>
                                             </Card>
                                             <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1 whitespace-nowrap">{item.name}</h1>
                                         </div>
@@ -124,7 +136,7 @@ function Profile() {
                                             <LazyLoadImage effect="blur" src={item.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
                                             <h1 className="text-white work-sans font-semibold text-[15px] capitalize">{item.name}</h1>
                                             <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ 3000 <LazyLoadImage effect="blur" src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
-                                            
+
                                             {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
                                             <Button disabled={true} className="bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans">
                                                 Claim shares
@@ -165,7 +177,7 @@ function Profile() {
                                                 <LazyLoadImage effect="blur" src={item.img} alt="Refferal Images" className="h-[100px] w-[100px] object-contain object-center" />
                                                 <h1 className="text-white work-sans font-semibold text-[15px] capitalize">Some information about this card</h1>
                                                 <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">+ 3000 <LazyLoadImage effect="blur" src={goldCoin} alt="coin" className="h-5 w-5 object-contain" /> </h1>
-                                                 {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
+                                                {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
                                                 <Button disabled={true} className="bg-[#D36519] hover:bg-orange-500 text-center py-4 h-12 w-full text-white work-sans">
                                                     Claim shares
                                                 </Button>
@@ -187,7 +199,11 @@ function Profile() {
                                             <DrawerTrigger asChild>
                                                 <div className="flex flex-col items-center gap-3">
                                                     <div className="flex flex-col relative gap-1 min-w-fit">
-                                                        <LazyLoadImage effect="blur" src={a.img} alt="Refferal Images" className="max-h-[58px] max-w-[46px] object-cover object-center" />
+                                                        <LazyLoadImage
+                                                            effect="blur"
+                                                            src={a.img}
+                                                            alt="Refferal Images"
+                                                            className="max-h-[58px] max-w-[46px] object-cover object-center" />
                                                         {/* This div with lock icon will be rendered on a condition to check if the card is locked or not */}
                                                         <div className="absolute h-full w-full rounded-md  bg-black/40 z-20 flex flex-col items-center justify-center"><SlLock size={25} color="white" /></div>
                                                     </div>

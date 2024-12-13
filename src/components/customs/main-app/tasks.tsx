@@ -70,6 +70,7 @@ function Tasks() {
         // { carousel_img, isLocked: false,},
         { carousel_img, isLocked: false, ref: middleCardRef },
         { carousel_img, isLocked: true, },
+
     ]
 
     useEffect(() => {
@@ -98,24 +99,25 @@ function Tasks() {
                             // Determine if it's the first unlocked card
                             const firstUnlockedIndex = images.findIndex((image) => !image.isLocked);
                             const isFirstUnlocked = id === firstUnlockedIndex;
-                          // total number of unlocked cards
-                                    
+
                             return (
                                 <Card
                                     key={id}
                                     ref={img.ref}
                                     className={`group bg-slate-800 relative rounded-lg snap-center ${!img.isLocked
                                         ? isFirstUnlocked
-                                            ? "min-w-[85%] shadow-xl shadow-slate-700"  // First unlocked card takes 85% of the screen
-                                            : "min-w-[70%] shadow-xl shadow-slate-700" // Subsequent unlocked cards take 70% of the screen
-                                        : " rounded-lg min-w-[70%]" // Locked cards
-                                        } h-32 `}
+                                            ? "min-w-[85%] shadow-xl shadow-slate-700"
+                                            : "min-w-[70%] shadow-xl shadow-slate-700"
+                                        : "rounded-lg min-w-[70%]"
+                                        } max-h-32 w-full overflow-hidden`} // Added overflow-hidden
                                 >
-                                    <LazyLoadImage effect="blur"
+                                    {/* LazyLoadImage
+                                    effect="blur" */}
+                                    <img
                                         src={img.carousel_img}
                                         alt={`card img ${id}`}
-                                        className={`h-full w-full object-cover object-center  rounded-lg ${!img.isLocked
-                                            ? "duration-200 transition-transform "
+                                        className={`h-32 !w-full object-cover rounded-lg ${!img.isLocked
+                                            ? "duration-200 transition-transform"
                                             : "scale-90"
                                             }`}
                                     />

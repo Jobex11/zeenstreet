@@ -45,13 +45,13 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
         }
     }, []);
 
-    if (isTelegram) {
+    if (!isTelegram) {
         return <>{children}</>;
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600">
-            <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full text-center">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 p-4">
+            <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full text-center">
                 <div className="mb-6 flex items-center justify-center">
                     <LazyLoadImage
                         effect="blur"
