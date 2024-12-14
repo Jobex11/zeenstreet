@@ -1,5 +1,5 @@
-import MainappLayout from "../../components/common/main-app/main-app-layout"
-import Referral from "../../components/customs/main-app/refferal"
+import MainappLayout from "@components/common/main-app/main-app-layout"
+import Referral from "@components/customs/main-app/refferal"
 
 
 function ReferralPage() {

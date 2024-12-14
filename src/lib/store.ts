@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
 // Or from '@reduxjs/toolkit/query/react'
 import { setupListeners } from '@reduxjs/toolkit/query'
-import { usersApi } from '../hooks/redux/users'
-import { sharesApi } from '../hooks/redux/shares'
+import { usersApi } from '@hooks/redux/users'
+import { sharesApi } from '@hooks/redux/shares'
 
 export const store = configureStore({
   reducer: {

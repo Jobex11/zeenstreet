@@ -145,7 +145,7 @@ export const Socials = () => {
                             </div>
                         ))}
 
-                        <blockquote className=" py-2 uppercase text-[#C2C2C2] text-center">
+                        <blockquote className="py-2 uppercase text-[#C2C2C2] text-center">
                             Complete these quests to claim your <br /> shares and Proceed
                         </blockquote>
                     </div>

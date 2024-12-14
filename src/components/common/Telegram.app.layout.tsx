@@ -25,10 +25,10 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
 
 
             if (tg.headerColor !== "#FFFFFF") {
-                tg.setHeaderColor("#1C1B23");
+                tg.setHeaderColor("#292734");
             }
             if (tg.bottomBarColor !== "#000000") {
-                tg.setBottomBarColor("#1C1B23");
+                tg.setBottomBarColor("#000000");
             }
 
             if (tg.isVerticalSwipesEnabled) {
@@ -62,7 +62,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
         };
     }, []);
 
-    if (isTelegram) {
+    if (!isTelegram) {
         return <>{children}</>;
     }
     return (

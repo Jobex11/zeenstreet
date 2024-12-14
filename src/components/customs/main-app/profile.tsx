@@ -177,7 +177,7 @@ function Profile() {
                                     <DrawerContent
                                         aria-describedby={undefined}
                                         aria-description="dialog"
-                                        className="flex rounded-t-[35px] flex-col min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
+                                        className="flex flex-col  min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                     >
                                         <DialogTitle className="sr-only" />
                                         <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">
@@ -248,7 +248,7 @@ function Profile() {
                                         <DrawerContent
                                             aria-describedby={undefined}
                                             aria-description="dialog"
-                                            className="flex flex-col rounded-t-[35px] min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
+                                            className="flex flex-col min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                         >
                                             <DialogTitle className="sr-only" />
                                             <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">
@@ -321,7 +321,7 @@ function Profile() {
                                             <DrawerContent
                                                 aria-describedby={undefined}
                                                 aria-description="dialog"
-                                                className="flex flex-col rounded-t-[35px] min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
+                                                className="flex flex-col min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                             >
                                                 <DialogTitle className="sr-only" />
                                                 <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">

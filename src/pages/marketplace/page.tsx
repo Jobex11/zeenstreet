@@ -1,6 +1,6 @@
-import ComingSoon from "../../components/common/main-app/coming-soon";
-import MainappLayout from "../../components/common/main-app/main-app-layout";
-import marketImg from "../../assets/images/icons/market_place.svg";
+import ComingSoon from "@components/common/main-app/coming-soon";
+import MainappLayout from "@components/common/main-app/main-app-layout";
+import marketImg from "@assets/images/icons/market_place.svg";
 
 function Marketplace() {
   return (
