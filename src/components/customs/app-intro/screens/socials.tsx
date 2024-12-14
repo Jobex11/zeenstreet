@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { SiTelegram } from "react-icons/si";
 import { RiTwitterXLine } from "react-icons/ri";
-import { TextButton } from "../../../common/buttons/Textbutton";
+import { TextButton } from "@components/common/buttons/Textbutton";
 import {
     Link,
-    // Link,
     useNavigate
 } from "react-router-dom";
-import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
-import { Button } from "../../../ui/button";
+import Logo from "@assets/images/icons/ravenenie_logo.png";
+import { Button } from "@components/ui/button";
 import { Fade } from "react-awesome-reveal";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
@@ -83,7 +82,7 @@ export const Socials = () => {
                 ...prevState,
                 [name]: true
             }));
-        }, 3000);
+        }, 5000);
 
     };
 
@@ -101,7 +100,7 @@ export const Socials = () => {
             <div className="flex flex-col gap-4 items-center mb-10">
                 <div className="relative h-fit w-[139px]">
                     <LazyLoadImage
-                     effect="blur" src={Logo} alt="" className="h-full w-full object-contain" />
+                        effect="blur" src={Logo} alt="" className="h-full w-full object-contain" />
                 </div>
             </div>
 
@@ -111,19 +110,19 @@ export const Socials = () => {
                         {socialHandles.map((handles) => (
                             <div key={handles.tag} className="flex flex-col items-center justify-around mb-6 gap-2 w-full">
                                 <div className="flex rounded-xl items-center gap-2 h-16 w-full max-w-[282.67px]  bg-white">
-                                    <div className="flex items-center w-[60%] p-5 gap-2">
+                                    <div className="flex items-center w-3/5 p-5 gap-2">
                                         <span>{handles.icon}</span>
                                         <h1 className={handles.style.text}>{handles.title}</h1>
                                     </div>
-                                    <div className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}>
+                                    <div className={`w-2/5 flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}>
                                         <Link
                                             to={`https://${handles.path}`}
                                             target="_blank"
-                                            className={`w-[40%] flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}
+                                            className={`w-2/5 flex items-center justify-center rounded-l-none rounded-r-xl border-none h-full ${handles.style.bg}`}
                                             onClick={() => handleAction(handles.name)}
                                         >
                                             <Button
-                                                className="bg-transparent hover:bg-transparent shadow-none text-white aqum text-[13px] font-bold"
+                                                className="bg-transparent hover:bg-transparent shadow-none text-white aqum text-sm font-bold"
                                             >
                                                 {handles.tag}
                                             </Button>

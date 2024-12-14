@@ -1,12 +1,13 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { CheckAccount } from "./screens/check-account";
 import { Rewards } from "./screens/rewards";
 import { Socials } from "./screens/socials";
 import { WelcomeUser } from "./screens/welcome-user";
 import { CreateUsername } from "./screens/create-username";
-import confetti from "../../../assets/images/confetti.png";
-import dottedBg from "../../../assets/images/dotted-bg.png";
+import confetti from "@assets/images/confetti.png";
+import dottedBg from "@assets/images/dotted-bg.png";
 import { useNavigate } from "react-router-dom";
+import { useCheckUsernameQuery } from "@hooks/redux/users";
 
 const SCREENS = {
     WELCOME: "welcome-user",
@@ -18,59 +19,52 @@ const SCREENS = {
 
 const TIMEOUT = 4000;
 
+const user = {
+    year: "4",
+    shares: 100000,
+};
+
+const userAccountInfo = {
+    telegramAge: 20,
+    activityLevel: 30,
+    isPremium: 60,
+    ogStatus: 90,
+};
+
+
 export default function ZeenAppIntro() {
-    
+
     const [currentScreen, setCurrentScreen] = useState<string>(SCREENS.WELCOME);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const user = {
-        year: "4",
-        shares: 100000,
-    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const telegramId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id;
 
-    const userAccountInfo = {
-        telegramAge: 20,
-        activityLevel: 30,
-        isPremium: 60,
-        ogStatus: 90,
-    };
-
-    const checkUsername = useCallback(async () => {
-        setLoading(true);
-        try {
-            // Get Telegram ID from Telegram WebApp
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const telegram = (window as any).Telegram?.WebApp;
-            const telegramId = telegram?.initDataUnsafe?.user?.id;
-
-            if (!telegramId && currentScreen === SCREENS.WELCOME) {
-                setTimeout(() => setCurrentScreen(SCREENS.CREATE_USERNAME), TIMEOUT);
-                return;
-            }
-
-            const response = await fetch(
-                `https://ravegenie-vgm7.onrender.com/api/username/has/${telegramId}`
-            );
-            const data = await response.json();
-
-            if (response.ok && data.hasPreferredUsername) {
-                setLoading(false);
-                setTimeout(() => navigate("/home"), TIMEOUT);
-            } else {
-                setTimeout(() => setCurrentScreen(SCREENS.CREATE_USERNAME), TIMEOUT);
-            }
-        } catch (error) {
-            console.error("Error checking username:", error);
-            setTimeout(() => setCurrentScreen(SCREENS.WELCOME), TIMEOUT);
-        } finally {
-            setLoading(false);
-        }
-    }, [currentScreen, navigate]);
+    // Use RTK Query hook for checking the username
+    const { data, isLoading, } = useCheckUsernameQuery(telegramId ?? "", {
+        skip: !telegramId, 
+    });
 
     useEffect(() => {
-        checkUsername();
-    }, [checkUsername]);
+        if (isLoading) {
+            setLoading(true);
+        } else {
+            setLoading(false);
+            if (data?.hasPreferredUsername) {
+                setTimeout(() => navigate("/home"), TIMEOUT);
+            } else if  (!telegramId && currentScreen === SCREENS.WELCOME) {
+                setTimeout(() => setCurrentScreen(SCREENS.CREATE_USERNAME), TIMEOUT);
+            } 
+        }
+    }, [isLoading, data, telegramId, navigate, currentScreen]);
+
+    // useEffect(() => {
+    //     if (!telegramId && currentScreen === SCREENS.WELCOME) {
+    //         setTimeout(() => setCurrentScreen(SCREENS.CREATE_USERNAME), TIMEOUT);
+    //     }
+    // }, [telegramId, currentScreen]);
+
 
     const getBackgroundStyles = () => {
         const isRewardsScreen = currentScreen === SCREENS.REWARDS;

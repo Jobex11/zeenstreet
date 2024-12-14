@@ -1,5 +1,5 @@
-import { Button } from "../../ui/button";
-import arrowIcon from "../../../assets/images/icons/arrow-icon.svg";
+import { Button } from "@components/ui/button";
+import arrowIcon from "@assets/images/icons/arrow-icon.svg";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface ButtonProps {
@@ -28,11 +28,11 @@ export const TextButton = ({
                 onClick && onClick(event);
                 navigator.vibrate([50, 50]);
             }}
-            className={`aqum flex items-center justify-between px-3 text-center w-full max-w-full text-[13px] h-[51px] rounded-xl bg-[#D25804] duration-200 hover:bg-orange-600 ${className}`}
+            className={`aqum flex items-center justify-between px-3 text-center w-full max-w-full text-sm h-[51px] rounded-xl bg-[#D25804] duration-200 hover:bg-orange-600 ${className}`}
         >
               <div/>
                 <span className="ml-10">{isLoading ? "Please wait..." : name}</span>
-                <LazyLoadImage effect="blur" src={arrowIcon} alt="arrow image" className="h-[17px] ml-2" />
+                <LazyLoadImage effect="blur" src={arrowIcon} alt="arrow image" className="h-4 ml-2" />
         </Button>
     );
 };

@@ -24,6 +24,7 @@ declare global {
         headerColor: string;
         backgroundColor: string;
         bottomBarColor: string;
+        BackButton;
         isVersionAtLeast: (version: string) => boolean;
         expand: () => void;
         requestFullscreen: () => void;

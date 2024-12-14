@@ -1,9 +1,8 @@
-import { TextButton } from "../../../common/buttons/Textbutton";
+import { TextButton } from "@components/common/buttons/Textbutton";
 import { LuCheckCircle } from "react-icons/lu";
-import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
-import { Progress } from "../../../ui/progress";
+import Logo from "@assets/images/icons/ravenenie_logo.png";
+import { Progress } from "@components/ui/progress";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-// import { useState, useEffect } from "react";
 
 
 interface CheckAccountProps {
@@ -24,19 +23,6 @@ export const CheckAccount = ({ setScreens, userInfo }: CheckAccountProps) => {
         { title: "Bonus eligibility checked", progress: userInfo.ogStatus },
     ];
 
-    // I simply removed the useEffect for now
-
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         setProgressValues((prevProgress) =>
-    //             prevProgress.map((item, index) => ({
-    //                 ...item,
-    //                 progress: item.progress + (index + 1) * 10,
-    //             }))
-    //         );
-    //     }, 500);
-    //     return () => clearTimeout(timer);
-    // }, []);
 
     return (
         <div className="flex flex-col flex-1  w-full min-h-full p-4 relative">
@@ -68,7 +54,6 @@ export const CheckAccount = ({ setScreens, userInfo }: CheckAccountProps) => {
                     disabled={false}
                     onClick={() => setScreens && setScreens("rewards")}
                     type={"button"}
-                    className=""
                 />
             </div>
         </div>

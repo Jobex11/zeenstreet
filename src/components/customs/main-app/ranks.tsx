@@ -1,10 +1,10 @@
-import dotsbg from "../../../assets/images/dotted-bg.png";
-import trophy from "../../../assets/images/icons/trophy.png";
-import sprinkledStars from "../../../assets/images/icons/sprinkled_stars.png";
-import rankBadge from "../../../assets/images/icons/rank_badge.svg";
-import goldCoin from "../../../assets/images/icons/gold_coin.svg";
-import eclipse from "../../../assets/images/eclipse.png"
-import { ShareFormatter } from "../../common/shareFormatter";
+import dotsbg from "@assets/images/dotted-bg.png";
+import trophy from "@assets/images/icons/trophy.png";
+import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
+import rankBadge from "@assets/images/icons/rank_badge.svg";
+import goldCoin from "@assets/images/icons/gold_coin.svg";
+import eclipse from "@assets/images/eclipse.png"
+import { ShareFormatter } from "@components/common/shareFormatter";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
@@ -42,7 +42,7 @@ function Ranks() {
      
         </div>
 
-        <div className='px-4 flex flex-col gap-8 pb-[8rem]'>
+        <div className='px-4 flex flex-col gap-8 py-[7rem]'>
 
           {/* rank lists */}
           <div className="flex flex-col mt-3">

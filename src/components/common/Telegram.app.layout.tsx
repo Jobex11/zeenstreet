@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Button } from "../ui/button";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import zeenstreetLogo from "../../assets/images/icons/zenstreet_logo.png";
+import { useEffect, useState } from "react";
+import { Button } from "@components/ui/button";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import zeenstreetLogo from "@assets/images/icons/zenstreet_logo.png";
 
 
 interface TelegramWrapperProps {
@@ -10,45 +10,61 @@ interface TelegramWrapperProps {
 
 export default function TelegramWrapper({ children }: TelegramWrapperProps) {
     const [isTelegram, setIsTelegram] = useState(true);
+
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
 
-        // Check if running inside Telegram
+        // Check if running inside Telegram WebApp
         setIsTelegram(
-            typeof window !== "undefined" &&
-            tg?.initDataUnsafe?.user?.id !== undefined
+            typeof window !== "undefined" && tg?.initDataUnsafe?.user?.id !== undefined
         );
 
         if (tg) {
-            // Initialize the WebApp
+            // Initialize Telegram WebApp settings
             tg.ready();
 
-            // Set header color if not already set
-            if (tg.headerColor !== '#FFFFFF') {
-                tg.setHeaderColor('#1C1B23');
+
+            if (tg.headerColor !== "#FFFFFF") {
+                tg.setHeaderColor("#1C1B23");
+            }
+            if (tg.bottomBarColor !== "#000000") {
+                tg.setBottomBarColor("#1C1B23");
             }
 
-            // Set bottom bar color if not already set
-            if (tg.bottomBarColor !== '#000000') {
-                tg.setBottomBarColor('#1C1B23');
-            }
-
-            // Disable vertical swipe if enabled
             if (tg.isVerticalSwipesEnabled) {
                 tg.disableVerticalSwipes();
             }
 
-            // Enable closing confirmation if not already enabled
+
             if (!tg.isClosingConfirmationEnabled) {
                 tg.enableClosingConfirmation();
             }
+
+            if (tg?.BackButton) {
+                if (window.location.pathname !== "/") {
+                    tg.BackButton.show();
+
+                    tg.onEvent("backButtonClicked", () => {
+                        window.history.back();
+                    });
+                } else {
+                    tg.BackButton.hide();
+                }
+            }
         }
+
+        // Clean up when the component unmounts or when the location changes
+        return () => {
+            if (tg?.BackButton) {
+                tg.BackButton.hide(); // Hide back button on component unmount
+                tg.offEvent("backButtonClicked", () => { });
+            }
+        };
     }, []);
 
-    if (!isTelegram) {
+    if (isTelegram) {
         return <>{children}</>;
     }
-
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 p-4">
             <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full text-center">

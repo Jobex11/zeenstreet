@@ -1,6 +1,6 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import dotsbg from "../../../assets/images/dotted-bg.png";
-import notificationImage from "../../../assets/images/notification_img.png"
+import dotsbg from "@assets/images/dotted-bg.png";
+import notificationImage from "@assets/images/notification_img.png"
 
 function MailNotification() {
 

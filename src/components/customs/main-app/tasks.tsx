@@ -2,14 +2,14 @@ import * as Progress from "@radix-ui/react-progress";
 import { useEffect, useRef, useState } from 'react';
 import { GoClockFill } from "react-icons/go";
 import { SlLock } from 'react-icons/sl';
-import wavybg from "../../../assets/images/card_bg.svg";
-import carousel_img from "../../../assets/images/cards/carousel_img.png";
-import dotsbg from "../../../assets/images/dotted-bg.png";
-import youtubeLogo from "../../../assets/images/icons/youtube_logo.svg";
-import zeenStreetLogo from "../../../assets/images/icons/zenstreet_logo.png";
-import TaskCard from "../../common/cards/Tasxcard";
-import { Button } from '../../ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../ui/card";
+import wavybg from "@assets/images/card_bg.svg";
+import carousel_img from "@assets/images/cards/carousel_img.png";
+import dotsbg from "@assets/images/dotted-bg.png";
+import youtubeLogo from "@assets/images/icons/youtube_logo.svg";
+import zeenStreetLogo from "@assets/images/icons/zenstreet_logo.png";
+import TaskCard from "@components/common/cards/Tasxcard";
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@components/ui/card";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 

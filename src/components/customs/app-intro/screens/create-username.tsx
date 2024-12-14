@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Logo from "../../../../assets/images/icons/ravenenie_logo.png";
-import { TextButton } from "../../../common/buttons/Textbutton";
-import { Input } from "../../../ui/input";
-import smily_man from "../../../../assets/images/smily_man.png";
-import Typewriter from "../../../common/typewriter";
+import Logo from "@assets/images/icons/ravenenie_logo.png";
+import { TextButton } from "@components/common/buttons/Textbutton";
+import { Input } from "@components/ui/input";
+import smily_man from "@assets/images/smily_man.png";
+import Typewriter from "@components/common/typewriter";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { toast } from "sonner";
+import { useCreateUsernameMutation } from "@hooks/redux/users";
 
 // Define Zod schema
 const schema = z.object({
@@ -40,6 +41,7 @@ export function CreateUsername({
 
   const [username, setUsername] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [createUsername,] = useCreateUsernameMutation()
 
   const onSubmit = async (data: CreateUsernameFormValues) => {
     setIsSubmitting(true);
@@ -49,34 +51,24 @@ export function CreateUsername({
         window.Telegram?.WebApp?.initDataUnsafe?.user?.id
       ) {
         const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
-        const response = await fetch(
-          "https://ravegenie-vgm7.onrender.com/api/username/set",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              telegram_id: telegramId,
-              preferred_username: data.username,
-            }),
-          }
-        );
+        await createUsername({
+          telegram_id: telegramId,
+          preferred_username: data.username,
+        }).unwrap(); // unwrap will throw an error if the request fails
 
-        if (!response.ok) {
-          const result = await response.json();
-          toast.error(result.error || "Failed to update username.");
-        } else {
-          toast.success("Username successfully updated!");
-          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          setScreens && setScreens("check-account");
-        }
+        toast.success("Username successfully updated!");
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        setScreens && setScreens("check-account");
       } else {
         toast.error("Telegram WebApp is not available.");
       }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.info("An error occurred. Please try again.");
+    } catch (err) {
+      // Error handling from unwrap
+      if (err instanceof Error) {
+        toast.error(err.message || "An error occurred while creating username.");
+      } else {
+        toast.error("An unknown error occurred.");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -130,7 +122,7 @@ export function CreateUsername({
               <Input
                 {...field}
                 value={username}
-                onChange={(e) => {
+                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => {
                   field.onChange(e);
                   setUsername(e.target.value);
                 }}

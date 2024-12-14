@@ -1,54 +1,36 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import dotsbg from "../../../assets/images/dotted-bg.png";
-import medalIcon from "../../../assets/images/icons/medal.svg";
-import dropbox from "../../../assets/images/icons/dropbox (2).svg";
-import profilePlaceholder from "../../../assets/images/icons/user-placeholder.svg";
-import mailIcon from "../../../assets/images/icons/mail-icon.svg";
+import dotsbg from "@assets/images/dotted-bg.png";
+import medalIcon from "@assets/images/icons/medal.svg";
+import dropbox from "@assets/images/icons/dropbox.svg";
+import profilePlaceholder from "@assets/images/icons/user-placeholder.svg";
+import mailIcon from "@assets/images/icons/mail-icon.svg";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useGetUsernameQuery } from "@hooks/redux/users";
 
 function Header() {
-  /*backend functions */
-  /* State variables */
-  const [username, setUsername] = useState<string | null>(null);
+
   const [profileImage, setProfileImage] = useState<string>(profilePlaceholder);
+  const [telegramId, setTelegramId] = useState<string | null>(null);
+  const { data: username } = useGetUsernameQuery(telegramId ?? "", {
+    skip: !telegramId,
+  });
+
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // Retrieve Telegram user data
-        const telegramData = window.Telegram.WebApp.initDataUnsafe?.user;
-        const telegramId = telegramData?.id;
+    if (window.Telegram && window.Telegram.WebApp) {
+      const initData = window.Telegram.WebApp.initDataUnsafe;
+      const user = initData?.user;
 
-        if (!telegramId) {
-          console.error("Telegram ID not found");
-          setUsername("User"); // Fallback username
-          return;
-        }
-
-        // Set Telegram profile photo or fallback to placeholder
-        if (telegramData.photo_url) {
-          setProfileImage(telegramData.photo_url);
-        }
-
-        // Fetch the preferred username from the backend using GET request
-        const response = await axios.get(
-          `https://ravegenie-vgm7.onrender.com/api/username/${telegramId}`
-        );
-
-        const { preferred_username } = response.data;
-        setUsername(preferred_username || "User"); // Fallback to 'User' if not set
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setUsername("User"); // Fallback on error
+      // Set Telegram user data
+      if (user) {
+        setTelegramId(user.id ?? null);
+        setProfileImage(user.photo_url || profilePlaceholder);
       }
-    };
-
-    fetchUserData();
+    }
   }, []);
 
-  /* backend functions */
+
   return (
     <div
       style={{
@@ -61,10 +43,18 @@ function Header() {
       <header className="flex items-center justify-between w-full py-4 px-3">
         <div className="flex items-center gap-4">
           <span>
-          <LazyLoadImage effect="blur" src={medalIcon} alt="medial icon" className="h-6 w-6" />
+            <LazyLoadImage
+              effect="blur"
+              src={medalIcon}
+              alt="medial icon"
+              className="h-6 w-6" />
           </span>
           <Link to={"/ranks"}>
-            <LazyLoadImage effect="blur" src={dropbox} alt="dropbox" className="h-6 w-6" />
+            <LazyLoadImage
+              effect="blur"
+              src={dropbox}
+              alt="dropbox"
+              className="h-6 w-6" />
           </Link>
         </div>
 
@@ -77,7 +67,7 @@ function Header() {
                 className="h-6 w-6 rounded-md"
               />
               <span className="text-[9px] work-sans font-medium text-white">
-                @{username || "Loading..."}
+                @{username || "You"}
               </span>
             </div>
           </Link>

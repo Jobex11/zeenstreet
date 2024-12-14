@@ -1,5 +1,5 @@
 
-import cardbg from "../../../assets/images/card_bg.svg"
+import cardbg from "@assets/images/card_bg.svg"
 import { Card } from '../../ui/card';
 
 function TaskCard({ children, className }: { children: React.ReactNode, className?:string }) {
