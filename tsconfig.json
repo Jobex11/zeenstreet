@@ -30,15 +30,13 @@
     "noFallthroughCasesInSwitch": true,
 
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"],
+    "paths":{
+      "@/*": ["./src/*", "./dist/*", ""],
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@lib/*": ["src/lib/*"]
+      "@lib/*": ["src/lib/*"],
     }
   },
-  "include": [
-    "src"
-  ],
+
 }
