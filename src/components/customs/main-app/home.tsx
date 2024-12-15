@@ -45,7 +45,7 @@ function Home() {
   const middleCardRef = useRef<HTMLDivElement>(null);
   const [selectedFilter, setSelectedFilter] = useState<string | null>("Events");
 
-  const { data: shares } = useGetUserSharesQuery(telegramId ?? "", {
+  const { data: user } = useGetUserSharesQuery(telegramId ?? "", {
     skip: !telegramId
   })
   const filteredTasks = selectedFilter
@@ -89,7 +89,7 @@ function Home() {
             Total $shares
           </h1>
           <h1 className="text-4xl font-bold aqum text-white pb-6 text-center">
-            {ShareFormatter(shares || 0)}
+            {ShareFormatter(user?.shares || 0)}
           </h1>
         </div>
         {/* latest cards */}
