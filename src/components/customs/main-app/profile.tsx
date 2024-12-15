@@ -116,7 +116,7 @@ function Profile() {
                                     </div>
                                     <div className="flex flex-col pb-4">
                                         <h1 className="text-white text-base font-bold aqum">
-                                            Hi {username || "User"}
+                                            Hi {username.preferred_username || "User"}
                                         </h1>
                                         <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF]">
                                             {telegramUsername && `@${telegramUsername}`}
