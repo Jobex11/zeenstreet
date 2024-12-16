@@ -9,6 +9,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
 export const WelcomeUser = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const telegramId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id;
     return (
         <div
             className="flex flex-col flex-1 justify-stretch w-full gap-3 min-h-full px-4 relative">
@@ -20,7 +22,7 @@ export const WelcomeUser = () => {
                 <h1 className="text-5xl mt-2 font-bold aqum  leading-[60px] uppercase text-[#FFFFFF]">
                     THE
                     <br /> FUTURE
-                    <br /> of Gaming.
+                    <br /> of Gaming.{telegramId}
                 </h1>
             </Fade>
 
