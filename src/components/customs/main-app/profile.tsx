@@ -94,7 +94,7 @@ function Profile() {
 
     const handleUpdateShares = async (shares: number) => {
         try {
-            const response = await updateUserShares({ telegramId: 22, shares }).unwrap();
+            const response = await updateUserShares({ telegramId, shares }).unwrap();
             console.log('Shares updated successfully:', response);
             toast.success(`User now has ${response.user.shares} shares.`);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -136,7 +136,7 @@ function Profile() {
                                                 <span>Hi {data?.preferred_username || "User"}</span>
                                             )}
 
-                                            {telegramId}
+                                         
                                         </h1>
                                         <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF]">
                                             {telegramUsername && `@${telegramUsername}`}
@@ -163,7 +163,7 @@ function Profile() {
                     {/*wealth class grid  */}
                     <div className="min-w-full">
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
-                            Wealth classes
+                            Wealth classes    {telegramId}
                         </h1>
                         <div className="w-full flex items-center pb-4 gap-4 overflow-x-auto">
                             {wealthClass.map((item) => (

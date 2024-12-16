@@ -64,7 +64,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
     }, []);
 
     if (isTelegram) {
-        return <>{children}</>;
+        return <>{children}</>; 
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 p-4">

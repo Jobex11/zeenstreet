@@ -6,15 +6,16 @@ import profilePlaceholder from "@assets/images/icons/user-placeholder.svg";
 import mailIcon from "@assets/images/icons/mail-icon.svg";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { useGetUsernameQuery } from "@hooks/redux/users";
+// import { useGetUsernameQuery } from "@hooks/redux/users";
 
 function Header() {
 
   const [profileImage, setProfileImage] = useState<string>(profilePlaceholder);
-  const [telegramId, setTelegramId] = useState<string | null>(null);
-  const { data: username } = useGetUsernameQuery(telegramId ?? "", {
-    skip: !telegramId,
-  });
+  // const [telegramId, setTelegramId] = useState<string | null>(null);
+  const [telegramUsername, setTelegramUsername] = useState("");
+  // const { data } = useGetUsernameQuery(telegramId ?? "", {
+  //   skip: !telegramId,
+  // });
 
 
   useEffect(() => {
@@ -24,8 +25,9 @@ function Header() {
 
       // Set Telegram user data
       if (user) {
-        setTelegramId(user.id ?? null);
+        // setTelegramId(user.id ?? null);
         setProfileImage(user.photo_url || profilePlaceholder);
+        setTelegramUsername(user.username ?? "User");
       }
     }
   }, []);
@@ -67,7 +69,7 @@ function Header() {
                 className="h-6 w-6 rounded-md"
               />
               <span className="text-[9px] work-sans font-medium text-white">
-                @{username || "You"}
+                @{telegramUsername || "You"}
               </span>
             </div>
           </Link>
