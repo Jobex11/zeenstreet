@@ -1,15 +1,16 @@
-'use client'
-
 import { useState, useEffect, useCallback } from 'react';
-import { useTonConnectUI } from '@tonconnect/ui-react';
+import { useTonConnectUI  } from '@tonconnect/ui-react';
 import { Address } from "@ton/core";
 import React from 'react';
 import { Button } from '@components/ui/button';
 
 export default function ConnectTonWallet() {
+    
     const [tonConnectUI] = useTonConnectUI();
     const [tonWalletAddress, setTonWalletAddress] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    // const userFriendlyAddress = useTonAddress();
+    // const rawAddress = useTonAddress(false);
 
     const handleWalletConnection = useCallback((address: string) => {
         setTonWalletAddress(address);
@@ -81,7 +82,7 @@ export default function ConnectTonWallet() {
                     onClick={handleWalletAction}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
-                    Connect TON Wallet
+                    Connect TON Wallet 
                 </Button>
             )}
         </React.Fragment>
