@@ -41,7 +41,8 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
             }
 
             if (tg?.BackButton) {
-                if (window.location.pathname !== "/") {
+                const excludedPaths = ["/home", "/"];
+                if (!excludedPaths.includes(window.location.pathname)) {
                     tg.BackButton.show();
 
                     tg.onEvent("backButtonClicked", () => {
@@ -62,7 +63,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
         };
     }, []);
 
-    if (!isTelegram) {
+    if (isTelegram) {
         return <>{children}</>;
     }
     return (
