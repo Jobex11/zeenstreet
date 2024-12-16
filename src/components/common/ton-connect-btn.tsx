@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useTonConnectUI  } from '@tonconnect/ui-react';
+import { useTonConnectUI } from '@tonconnect/ui-react';
 import { Address } from "@ton/core";
 import React from 'react';
 import { Button } from '@components/ui/button';
+import { IoWalletOutline } from "react-icons/io5";
+import { toast } from "sonner"
 
 export default function ConnectTonWallet() {
-    
+
     const [tonConnectUI] = useTonConnectUI();
     const [tonWalletAddress, setTonWalletAddress] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -15,12 +17,14 @@ export default function ConnectTonWallet() {
     const handleWalletConnection = useCallback((address: string) => {
         setTonWalletAddress(address);
         console.log("Wallet connected successfully!");
+        toast.success("Wallet connected successfully!");
         setIsLoading(false);
     }, []);
 
     const handleWalletDisconnection = useCallback(() => {
         setTonWalletAddress(null);
         console.log("Wallet disconnected successfully!");
+        // toast.error("Wallet disconnected successfully!");
         setIsLoading(false);
     }, []);
 
@@ -71,18 +75,18 @@ export default function ConnectTonWallet() {
                     <Button
                         onClick={handleWalletAction}
                         disabled={isLoading}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-red-500 hover:bg-red-700 text-white text-sm work-sans   py-2 px-4 rounded"
                     >
-                        Disconnect Wallet
+                        Disconnect Wallet <IoWalletOutline />
                     </Button>
                 </div>
             ) : (
                 <Button
                     disabled={isLoading}
                     onClick={handleWalletAction}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-orange-500 hover:bg-orange-600 text-white text-sm work-sans max-w-sm mx-auto py-2 px-4 rounded"
                 >
-                    Connect TON Wallet 
+                    Connect TON Wallet  <IoWalletOutline />
                 </Button>
             )}
         </React.Fragment>

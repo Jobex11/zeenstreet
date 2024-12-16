@@ -35,16 +35,112 @@ import { useGetUserSharesQuery, useUpdateUserSharesMutation } from "@hooks/redux
 import { toast } from "sonner";
 import { useGetUsernameQuery } from "@hooks/redux/users";
 
+
+const wealthClass = [
+    {
+        isLocked: false,
+        shareType: "bottom_feeders",
+        name: "Bottom Feeders",
+        rewards: 50,
+        img: wood_force,
+        description: "For those who rise from the deep, a humble start that they keep."
+    },
+    {
+        isLocked: true,
+        shareType: "the_aspirers",
+        name: "The Aspirers",
+        rewards: 70,
+        img: earth_force,
+        description: "Dreams take flight and reach the sky, as these souls soar high."
+    },
+    {
+        isLocked: true,
+        shareType: "stable_money",
+        name: "Stable Money",
+        rewards: 85,
+        img: metal_force,
+        description: "Built on strength, steadfast and sure, wealth that will always endure."
+    },
+    {
+        isLocked: true,
+        shareType: "high_achievers",
+        name: "High Achievers",
+        rewards: 100,
+        img: wave_force,
+        description: "With goals in sight, they climb and strive, their success comes alive."
+    },
+    {
+        isLocked: true,
+        shareType: "elite_circle",
+        name: "Elite Circle",
+        rewards: 110,
+        img: water_force,
+        description: "A select few who stand apart, their wisdom flowing like art."
+    },
+    {
+        isLocked: true,
+        shareType: "legacy_wealth",
+        name: "Legacy Wealth",
+        rewards: 120,
+        img: ice_force,
+        description: "Built to last, a timeless blend, wealth that will never end."
+    },
+    {
+        isLocked: true,
+        shareType: "titans",
+        name: "Titans",
+        rewards: 200,
+        img: fire_force,
+        description: "Mighty and strong, they rise above, their power known far and wide, like a burning love."
+    },
+    {
+        isLocked: true,
+        shareType: "planet_shakers",
+        name: "Planet Shakers",
+        rewards: 130,
+        img: light_force,
+        description: "With force and flair, they change the game, their impact is never the same."
+    },
+    {
+        isLocked: true,
+        shareType: "sovereign_wealth",
+        name: "Sovereign Wealth",
+        rewards: 140,
+        img: cosmic_force,
+        description: "Their wealth is vast, beyond the skies, a legacy that never dies."
+    },
+];
+
+
+const collected = [
+    { name: "class1", img: collected1 },
+    { name: "class2", img: collected2 },
+    { name: "class3", img: collected3 },
+    { name: "class4", img: collected4 },
+    { name: "class5", img: collected1 },
+];
+const achievement = [
+    { name: "Refer 10 Friends", reward: 30, img: achievement1 },
+    { name: "Refer 20 Friends", reward: 50, img: achievement2 },
+    { name: "Refer 30 Friends", reward: 80, img: achievement3 },
+    { name: "Refer 40 Friends", reward: 100, img: achievement4 },
+    { name: "Refer 50 Friends", reward: 200, img: achievement5 },
+    { name: "Refer 60 Friends", reward: 300, img: achievement5 },
+    { name: "Refer 70 Friends", reward: 400, img: achievement5 },
+];
+
 function Profile() {
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const [profileImage, setProfileImage] = useState<string>(profileImg);
     const [telegramUsername, setTelegramUsername] = useState("");
     const [updateUserShares, { isLoading: updatingShares }] = useUpdateUserSharesMutation();
+    const [, setUserShareState] = useState(null);
+    const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>({});
 
-    const { data: shares } = useGetUserSharesQuery(telegramId ?? "", {
+    const { data: userData } = useGetUserSharesQuery(telegramId ?? "", {
         skip: !telegramId, // Skip query if telegramId is null
     });
-    const { data: data, error, isLoading } = useGetUsernameQuery(telegramId ?? "", {
+    const { data: data, isLoading } = useGetUsernameQuery(telegramId ?? "", {
         skip: !telegramId,
     });
 
@@ -63,48 +159,34 @@ function Profile() {
         }
     }, []);
 
-    const wealthClass = [
-        { name: "Bottom Feaders", rewards: 200, img: wood_force },
-        { name: "The Aspirers", rewards: 200, img: earth_force },
-        { name: "Stable Money", rewards: 200, img: metal_force },
-        { name: "Hight Achievers", rewards: 200, img: wave_force },
-        { name: "Elite Circle", rewards: 200, img: water_force },
-        { name: "Legacy Wealth", rewards: 200, img: ice_force },
-        { name: "Titans", rewards: 200, img: fire_force },
-        { name: "Planet Shakers", rewards: 200, img: light_force },
-        { name: "Sovereign Wealth", rewards: 200, img: cosmic_force },
-    ];
 
-    const collected = [
-        { name: "class1", img: collected1 },
-        { name: "class2", img: collected2 },
-        { name: "class3", img: collected3 },
-        { name: "class4", img: collected4 },
-        { name: "class5", img: collected1 },
-    ];
-    const achievement = [
-        { name: "Refer 10 Friends", reward: 30, img: achievement1 },
-        { name: "Refer 20 Friends", reward: 50, img: achievement2 },
-        { name: "Refer 30 Friends", reward: 80, img: achievement3 },
-        { name: "Refer 40 Friends", reward: 100, img: achievement4 },
-        { name: "Refer 50 Friends", reward: 200, img: achievement5 },
-        { name: "Refer 60 Friends", reward: 300, img: achievement5 },
-        { name: "Refer 70 Friends", reward: 400, img: achievement5 },
-    ];
-
-    const handleUpdateShares = async (shares: number) => {
+    const handleUpdateShares = async (shares: number, shareType: string, itemName: string) => {
         try {
-            const response = await updateUserShares({ telegramId, shares }).unwrap();
+            const response = await updateUserShares({ telegramId, shares, shareType }).unwrap();
             console.log('Shares updated successfully:', response);
-            toast.success(`User now has ${response.user.shares} shares.`);
+            toast.success(response?.message);
+            navigator.vibrate([50, 50]);
+            setDrawerState((prevState) => ({
+                ...prevState,
+                [itemName]: false,  // Close the specific drawer based on item name
+            }));
+            setUserShareState({
+                ...userData,
+                claimedShares: { ...userData.claimedShares, [shareType]: true }, // Update claimed shares
+            });
+
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             console.error('Error updating shares:', err);
-            toast.error('Error updating shares:', err?.data?.message);
+            toast.error(err?.data?.message || "Error updating shares");
         }
     };
 
-    if (error) return <p>Error loading username {error.toString()}</p>;
+    const checkIfClaimed = (shareType: string) => {
+        return userData?.claimedShares?.[shareType] ?? false;
+    };
+
+    // if (error) return <p>Error loading username {error.toString()}</p>;
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -136,14 +218,14 @@ function Profile() {
                                                 <span>Hi {data?.preferred_username || "User"}</span>
                                             )}
 
-                                         
+
                                         </h1>
                                         <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF]">
                                             {telegramUsername && `@${telegramUsername}`}
                                         </h1>
                                         <div className="bg-[#D36519] rounded-md text-white w-[107px] p-2 text-center">
                                             <h1 className="text-[7px] aqum font-bold">
-                                                {ShareFormatter(shares || 0)} $shares
+                                                {ShareFormatter(userData?.shares || 0)} $shares
                                             </h1>
                                         </div>
                                     </div>
@@ -163,13 +245,18 @@ function Profile() {
                     {/*wealth class grid  */}
                     <div className="min-w-full">
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
-                            Wealth classes    {telegramId}
+                            Wealth classes
                         </h1>
                         <div className="w-full flex items-center pb-4 gap-4 overflow-x-auto">
                             {wealthClass.map((item) => (
-                                <Drawer key={item.name}>
+                                <Drawer key={item.name} open={drawerState[item.name] || false}  
+                                    onOpenChange={() =>
+                                        setDrawerState((prevState) => ({
+                                            ...prevState,
+                                            [item.name]: !prevState[item.name],
+                                        }))
+                                    }>
                                     <DrawerTrigger asChild>
-
                                         <div>
                                             <Card
                                                 style={{
@@ -185,9 +272,9 @@ function Profile() {
                                                     alt={`wealth class ${item.name}`}
                                                     className="h-full w-full object-cover object-center rounded-md"
                                                 />
-                                                <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
+                                                {item.isLocked && <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
                                                     <SlLock size={25} color="white" />
-                                                </div>
+                                                </div>}
                                             </Card>
                                             <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1 whitespace-nowrap">
                                                 {item.name}
@@ -210,10 +297,11 @@ function Profile() {
                                                 alt="Refferal Images"
                                                 className="h-[100px] w-[100px] object-contain object-center"
                                             />
-                                            <h1 className="text-white work-sans font-semibold text-[15px] capitalize">
+                                            <h1 className="text-white work-sans font-semibold text-base capitalize">
                                                 {item.name}
                                             </h1>
-                                            <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">
+                                            <p className="text-white work-sans text-sm text-center max-w-sm">{item.description}</p>
+                                            <h1 className="flex items-center gap-2 text-white work-sans text-base">
                                                 {item.rewards}{" "}
                                                 <LazyLoadImage
                                                     effect="blur"
@@ -225,11 +313,15 @@ function Profile() {
 
                                             {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
                                             <Button
-                                                onClick={() => handleUpdateShares(item.rewards)}
-                                                disabled={updatingShares}
-                                                className="bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans"
+                                                onClick={() => handleUpdateShares(item.rewards, item.shareType, item.name)}
+                                                disabled={updatingShares || checkIfClaimed(item.shareType) || item.isLocked}
+                                                className={`bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans`}
                                             >
-                                                {updatingShares ? 'Claiming...' : 'Claim Shares'}
+                                                {updatingShares
+                                                    ? 'Claiming...'
+                                                    : checkIfClaimed(item.shareType)
+                                                        ? `Shares Claimed (${item.shareType})`
+                                                        : `Claim Shares`}
                                             </Button>
                                         </div>
                                     </DrawerContent>

@@ -36,6 +36,7 @@ declare global {
         offEvent: (eventType: string, eventHandler: () => void) => void;
         ready: () => void;
         setBottomBarColor: (color: string) => void;
+        openTelegramLink:(url:string) => void;
         setHeaderColor: (color: string) => void;
         enableClosingConfirmation: () => void;
         disableClosingConfirmation: () => void;
