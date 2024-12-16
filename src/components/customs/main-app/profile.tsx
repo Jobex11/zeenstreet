@@ -31,24 +31,25 @@ import { DialogClose, DialogTitle } from "@components/ui/dialog";
 import goldCoin from "@assets/images/icons/gold_coin.svg";
 import { SlLock } from "react-icons/sl";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { useGetUserSharesQuery } from "@hooks/redux/shares";
-// import { useGetUsernameQuery } from "@hooks/redux/users";
+import { useGetUserSharesQuery, useUpdateUserSharesMutation } from "@hooks/redux/shares";
+import { toast } from "sonner";
+import { useGetUsernameQuery } from "@hooks/redux/users";
 
 function Profile() {
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const [profileImage, setProfileImage] = useState<string>(profileImg);
     const [telegramUsername, setTelegramUsername] = useState("");
+    const [updateUserShares, { isLoading: updatingShares }] = useUpdateUserSharesMutation();
 
-    // Fetch shares and username when `telegramId` is available
     const { data: shares } = useGetUserSharesQuery(telegramId ?? "", {
         skip: !telegramId, // Skip query if telegramId is null
     });
-    // const { data:data } = useGetUsernameQuery(telegramId ?? "", {
-    //     skip: !telegramId, 
-    // });
+    const { data: data, error, isLoading } = useGetUsernameQuery(telegramId ?? "", {
+        skip: !telegramId,
+    });
 
-     // Initialize Telegram WebApp and set user data
-     useEffect(() => {
+    // Initialize Telegram WebApp and set user data
+    useEffect(() => {
         if (window.Telegram && window.Telegram.WebApp) {
             const initData = window.Telegram.WebApp.initDataUnsafe;
             const user = initData?.user;
@@ -63,15 +64,15 @@ function Profile() {
     }, []);
 
     const wealthClass = [
-        { name: "Bottom Feaders", img: wood_force },
-        { name: "The Aspirers", img: earth_force },
-        { name: "Stable Money", img: metal_force },
-        { name: "Hight Achievers", img: wave_force },
-        { name: "Elite Circle", img: water_force },
-        { name: "Legacy Wealth", img: ice_force },
-        { name: "Titans", img: fire_force },
-        { name: "Planet Shakers", img: light_force },
-        { name: "Sovereign Wealth", img: cosmic_force },
+        { name: "Bottom Feaders", rewards: 200, img: wood_force },
+        { name: "The Aspirers", rewards: 200, img: earth_force },
+        { name: "Stable Money", rewards: 200, img: metal_force },
+        { name: "Hight Achievers", rewards: 200, img: wave_force },
+        { name: "Elite Circle", rewards: 200, img: water_force },
+        { name: "Legacy Wealth", rewards: 200, img: ice_force },
+        { name: "Titans", rewards: 200, img: fire_force },
+        { name: "Planet Shakers", rewards: 200, img: light_force },
+        { name: "Sovereign Wealth", rewards: 200, img: cosmic_force },
     ];
 
     const collected = [
@@ -91,6 +92,19 @@ function Profile() {
         { name: "Refer 70 Friends", reward: 400, img: achievement5 },
     ];
 
+    const handleUpdateShares = async (shares: number) => {
+        try {
+            const response = await updateUserShares({ telegramId: 22, shares }).unwrap();
+            console.log('Shares updated successfully:', response);
+            toast.success(`User now has ${response.user.shares} shares.`);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
+            console.error('Error updating shares:', err);
+            toast.error('Error updating shares:', err?.data?.message);
+        }
+    };
+
+    if (error) return <p>Error loading username {error.toString()}</p>;
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -116,7 +130,12 @@ function Profile() {
                                     </div>
                                     <div className="flex flex-col pb-4">
                                         <h1 className="text-white text-base font-bold aqum">
-                                            Hi {"User"}
+                                            {isLoading ? (
+                                                <span>User</span>
+                                            ) : (
+                                                <span>Hi {data?.preferred_username || "User"}</span>
+                                            )}
+
                                             {telegramId}
                                         </h1>
                                         <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF]">
@@ -195,7 +214,7 @@ function Profile() {
                                                 {item.name}
                                             </h1>
                                             <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">
-                                                + 3000{" "}
+                                                {item.rewards}{" "}
                                                 <LazyLoadImage
                                                     effect="blur"
                                                     src={goldCoin}
@@ -206,10 +225,11 @@ function Profile() {
 
                                             {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
                                             <Button
-                                                disabled={true}
+                                                onClick={() => handleUpdateShares(item.rewards)}
+                                                disabled={updatingShares}
                                                 className="bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans"
                                             >
-                                                Claim shares
+                                                {updatingShares ? 'Claiming...' : 'Claim Shares'}
                                             </Button>
                                         </div>
                                     </DrawerContent>

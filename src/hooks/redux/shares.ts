@@ -10,8 +10,19 @@ export const sharesApi = createApi({
         getUserShares: builder.query({
             query: (telegramId:string) => `/shares/${telegramId}`,
         }),
+        getTotalShares: builder.query({
+            query: () => `/shares/total`,
+        }),
+        updateUserShares: builder.mutation({
+            query: ({ telegramId, shares }) => ({
+                url: `/shares/update/${telegramId}`,
+                method: 'POST',
+                body: { shares },
+            }),
+            invalidatesTags: ['shares'],
+        }),
     }),
 })
 
 
-export const { useGetUserSharesQuery } = sharesApi
+export const { useGetUserSharesQuery, useUpdateUserSharesMutation, useGetTotalSharesQuery } = sharesApi
