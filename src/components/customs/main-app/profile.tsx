@@ -32,7 +32,7 @@ import goldCoin from "@assets/images/icons/gold_coin.svg";
 import { SlLock } from "react-icons/sl";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import { useGetUsernameQuery } from "@hooks/redux/users";
+// import { useGetUsernameQuery } from "@hooks/redux/users";
 
 function Profile() {
     const [telegramId, setTelegramId] = useState<string | null>(null);
@@ -43,9 +43,9 @@ function Profile() {
     const { data: shares } = useGetUserSharesQuery(telegramId ?? "", {
         skip: !telegramId, // Skip query if telegramId is null
     });
-    const { data } = useGetUsernameQuery(telegramId ?? "", {
-        skip: !telegramId, 
-    });
+    // const { data:data } = useGetUsernameQuery(telegramId ?? "", {
+    //     skip: !telegramId, 
+    // });
 
      // Initialize Telegram WebApp and set user data
      useEffect(() => {
@@ -116,7 +116,8 @@ function Profile() {
                                     </div>
                                     <div className="flex flex-col pb-4">
                                         <h1 className="text-white text-base font-bold aqum">
-                                            Hi {data?.preferred_username || "User"}
+                                            Hi {"User"}
+                                            {telegramId}
                                         </h1>
                                         <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF]">
                                             {telegramUsername && `@${telegramUsername}`}
