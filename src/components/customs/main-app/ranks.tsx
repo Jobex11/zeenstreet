@@ -39,7 +39,7 @@ function Ranks() {
             <LazyLoadImage effect="blur" src={trophy} alt="Rank Trophy" className='h-full w-full object-center object-contain' />
             <h1 className="text-[#FEFEFF] text-xl font-semibold work-sans py-1">Leaderboard</h1>
           </div>
-     
+
         </div>
 
         <div className='px-4 flex flex-col gap-8 py-[7rem]'>

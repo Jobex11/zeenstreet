@@ -15,6 +15,7 @@ import Notifications from "./pages/main-notification/page";
 import TelegramWrapper from "./components/common/Telegram.app.layout";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import Intro from "./pages/app-intro/page";
+import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
 const router = createBrowserRouter([
   {
@@ -61,11 +62,13 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-   <ReduxProvider>
-      <TelegramWrapper>
-        <RouterProvider router={router} />
-      </TelegramWrapper>
-    </ReduxProvider>
+    <TonConnectUIProvider manifestUrl="https://jade-obedient-tick-519.mypinata.cloud/files/bafkreiahwouhwspzt3n7gh7vah43hj33wkvjckstidqnjyhaxeetmvwmx4?X-Algorithm=PINATA1&X-Date=1734342728&X-Expires=30&X-Method=GET&X-Signature=9d270f115e63f5caef98caff92a0bde36a486c19336659bed43874157340ec69">
+      <ReduxProvider>
+        <TelegramWrapper>
+          <RouterProvider router={router} />
+        </TelegramWrapper>
+      </ReduxProvider>
+    </TonConnectUIProvider>
   </React.StrictMode>
 );
 

@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
+import ConnectTonWallet from "@components/common/ton-connect-btn";
 
 const todayTask = [
   {
@@ -84,9 +85,10 @@ function Home() {
         className="flex flex-col flex-1 py-3 "
       >
         {/* user rewards */}
-        <div>
+        <div className={"flex flex-col items-center gap-2"}>
+          <ConnectTonWallet/>
           <h1 className="uppercase aqum font-bold text-lg text-white text-center">
-            Total $shares
+            Total shares
           </h1>
           <h1 className="text-4xl font-bold aqum text-white pb-6 text-center">
             {ShareFormatter(user?.shares || 0)}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dotsbg from "@assets/images/dotted-bg.png";
 import logo from "@assets/images/icons/zenstreet_logo.png";
 import TaskCard from "@components/common/cards/Tasxcard";
@@ -15,70 +15,93 @@ import { IoCopy } from "react-icons/io5";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
+
+const tier1Referrals = [
+  {
+    userLogo: avatarImage,
+    name: "sebastian",
+    userName: "@Benjamin",
+    createdAt: "12-3-2023",
+    rewardedShares: "1124",
+    isTier2: false,
+  },
+  {
+    userLogo: avatarImage,
+    name: "sebastian",
+    userName: "@Benjamin",
+    createdAt: "12-2-2023",
+    rewardedShares: "1124",
+    isTier2: false,
+  },
+  {
+    userLogo: avatarImage,
+    name: "sebastian",
+    userName: "@Benjamin",
+    createdAt: "12-5-2023",
+    rewardedShares: "1124",
+    isTier2: false,
+  },
+];
+
+const tier2Referrals = [
+  {
+    userLogo: avatarImage,
+    name: "sebastian",
+    userName: "@Benjamin",
+    createdAt: "12-6-2023",
+    rewardedShares: "1124",
+    isTier2: true,
+  },
+  {
+    userLogo: avatarImage,
+    name: "sebastian",
+    userName: "@Benjamin",
+    createdAt: "12-7-2023",
+    rewardedShares: "1124",
+    isTier2: true,
+  },
+  {
+    userLogo: avatarImage,
+    name: "sebastian",
+    userName: "@Benjamin",
+    createdAt: "12-9-2023",
+    rewardedShares: "1124",
+    isTier2: true,
+  },
+];
+
 function Referral() {
+
+  const [telegramId, setTelegramId] = useState<string | null>(null);
   const [tabs, setTabs] = useState<string>("Tier 1");
   const btnTabs = [{ name: "Tier 1" }, { name: "Tier 2" }];
-
   const handleActiveTabs = (name: string) => {
     setTabs(name);
   };
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const initData = window.Telegram.WebApp.initDataUnsafe;
+      const user = initData?.user;
 
-  const tier1Referrals = [
-    {
-      userLogo: avatarImage,
-      name: "sebastian",
-      userName: "@Benjamin",
-      createdAt: "12-3-2023",
-      rewardedShares: "1124",
-      isTier2: false,
-    },
-    {
-      userLogo: avatarImage,
-      name: "sebastian",
-      userName: "@Benjamin",
-      createdAt: "12-2-2023",
-      rewardedShares: "1124",
-      isTier2: false,
-    },
-    {
-      userLogo: avatarImage,
-      name: "sebastian",
-      userName: "@Benjamin",
-      createdAt: "12-5-2023",
-      rewardedShares: "1124",
-      isTier2: false,
-    },
-  ];
+      // Set Telegram user data
+      if (user) {
+        setTelegramId(user.id ?? null);
+      }
+    }
+  }, []);
 
-  const tier2Referrals = [
-    {
-      userLogo: avatarImage,
-      name: "sebastian",
-      userName: "@Benjamin",
-      createdAt: "12-6-2023",
-      rewardedShares: "1124",
-      isTier2: true,
-    },
-    {
-      userLogo: avatarImage,
-      name: "sebastian",
-      userName: "@Benjamin",
-      createdAt: "12-7-2023",
-      rewardedShares: "1124",
-      isTier2: true,
-    },
-    {
-      userLogo: avatarImage,
-      name: "sebastian",
-      userName: "@Benjamin",
-      createdAt: "12-9-2023",
-      rewardedShares: "1124",
-      isTier2: true,
-    },
-  ];
 
-  const handleCopyReferralLink = (link: string) => {
-    navigator.clipboard.writeText(link);
+  const handleShareReferralLink = () => {
+    const tg = window.Telegram?.WebApp
+    const inviteLink = `https://t.me/RaveGenieBot/ravegeniegames?startapp=${telegramId}&mode=compact`
+    const shareText = "Join me on Ravegenie Games to earn rewards by completing task 🎉"
+    const fullUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(shareText)}`
+    tg.openTelegramLink(fullUrl)
+  };
+
+  const handleCopyReferralLink = () => {
+    const inviteLink = `https://t.me/RaveGenieBot/ravegeniegames?startapp=${telegramId}&mode=compact`
+    navigator.clipboard.writeText(inviteLink);
     navigator.vibrate([50, 50]);
     toast.info("Referral link copied!");
   };
@@ -122,28 +145,20 @@ function Referral() {
                   </h1>
                   <div className="flex  items-center gap-2">
                     <Button
-                      onClick={() =>
-                        handleCopyReferralLink(
-                          "https://t.me/bot/startapp?=333333333"
-                        )
-                      }
-                      className="h-[23px] w-[99.2px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins"
+                      onClick={handleCopyReferralLink}
+                      className="h-[23px] w-24 bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins"
                     >
-                      1ty37x567356r4
+                      {telegramId}
                     </Button>
                     <IconButton
                       className="bg-transparent w-fit hover:bg-transparent"
-                      onClick={() =>
-                        handleCopyReferralLink(
-                          "https://t.me/bot/startapp?=333333333"
-                        )
-                      }
+                      onClick={handleCopyReferralLink}
                     >
                       <IoCopy color="white" />
                     </IconButton>
-                    <IconButton className="bg-transparent w-fit hover:bg-transparent">
-                      <IoMdShareAlt color="white" />
-                    </IconButton>
+                    <button  onClick={handleShareReferralLink} className="bg-transparent w-fit hover:bg-transparent">
+                      <span><IoMdShareAlt color="white" size={25} /></span>
+                    </button>
                   </div>
                 </div>
                 <div className="flex flex-col items-center">
@@ -152,7 +167,7 @@ function Referral() {
                       <MdInfo color="#D25804" size={10} />
                     </span>{" "}
                     You&apos;ve been awared
-                    <br /> {ShareFormatter(100000000)} $shares
+                    <br /> {ShareFormatter(1000)} $shares
                   </h1>
                   <Button className="w-[111.2px] h-[30px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins">
                     Claim now
@@ -176,11 +191,10 @@ function Referral() {
                   key={tab.name}
                   // disabled={tabs !== tab.name}
                   onClick={() => handleActiveTabs(tab.name)}
-                  className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${
-                    tabs === tab.name
-                      ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm"
-                      : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "
-                  }`}
+                  className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name
+                    ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm"
+                    : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "
+                    }`}
                 >
                   {tab.name}
                   {tabs !== tab.name && (

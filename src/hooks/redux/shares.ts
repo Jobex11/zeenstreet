@@ -8,7 +8,7 @@ export const sharesApi = createApi({
     tagTypes: ['shares'],
     endpoints: (builder) => ({
         getUserShares: builder.query({
-            query: (telegramId:string) => `/shares/${telegramId}`,
+            query: (telegramId: string) => `/shares/${telegramId}`,
         }),
         getTotalShares: builder.query({
             query: () => `/shares/total`,
@@ -19,6 +19,19 @@ export const sharesApi = createApi({
                 method: 'POST',
                 body: { shares },
             }),
+            async onQueryStarted({ shares }, { dispatch, queryFulfilled }) {
+                try {
+                    const { data: updateUserShares } = await queryFulfilled
+                    dispatch(
+                        sharesApi.util.upsertQueryData('getUserShares', shares, updateUserShares)
+                    );
+                    dispatch(
+                        sharesApi.util.invalidateTags(['shares'])
+                    );
+                } catch (error) {
+                    console.log(error)
+                }
+            },
             invalidatesTags: ['shares'],
         }),
     }),
