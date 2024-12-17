@@ -41,8 +41,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@components/ui/dialog"
-import { IoWalletOutline } from "react-icons/io5";
 import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";
+import { IoWallet } from "react-icons/io5";
 
 const wealthClass = [
     {
@@ -253,7 +253,7 @@ function Profile() {
                                     <Dialog>
                                         <DialogTrigger>
                                             <Button className="relative shadow-lg">
-                                                <IoWalletOutline color="white" />
+                                                <IoWallet color="white" />
                                                 {hasWalletAddress &&
                                                     <div className="bg-orange-500 rounded-full h-2 w-2 absolute top-0 right-0 animate-ping" />
                                                 }
