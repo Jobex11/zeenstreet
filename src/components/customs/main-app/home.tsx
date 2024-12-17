@@ -86,7 +86,7 @@ function Home() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
-        className="flex flex-col  py-3 w-full"
+        className="flex flex-col py-3 w-full"
       >
         {/* user rewards */}
         <div className={"flex flex-col items-center gap-2"}>

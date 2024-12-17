@@ -62,7 +62,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
         };
     }, []);
 
-    if (isTelegram) { 
+    if (!isTelegram) { 
         return <>{children}</>;
     }
     return (

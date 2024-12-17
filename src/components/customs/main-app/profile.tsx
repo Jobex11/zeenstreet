@@ -164,7 +164,7 @@ function Profile() {
 
     const handleUpdateShares = async (shares: number, shareType: string, itemName: string) => {
         try {
-            const response = await updateUserShares({ telegramId, shares, shareType }).unwrap();
+            const response = await updateUserShares({ telegram_id: telegramId, shares, shareType }).unwrap();
             // console.log({ telegramId:6880808269, shares, shareType });
             console.log('Shares updated successfully:', response);
             toast.success(response?.message, { className: "text-xs work-sans" });
