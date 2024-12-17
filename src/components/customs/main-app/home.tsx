@@ -86,22 +86,22 @@ function Home() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
-        className="flex flex-col  py-3 "
+        className="flex flex-col  py-3 w-full"
       >
         {/* user rewards */}
         <div className={"flex flex-col items-center gap-2"}>
-          <h1 className="uppercase work-sans font-bold text-lg text-white text-center pt-2">
+          <h1 className="uppercase aqum font-bold text-lg text-white text-center pt-2">
             Total shares
           </h1>
-          <h1 className="text-3xl font-bold work-sans text-white pb-6 text-center">
-            {ShareFormatter(user?.shares || 20003044)}
+          <h1 className="text-3xl font-bold aqum text-white pb-6 text-center">
+            {ShareFormatter(user?.shares || 0)}
           </h1>
         </div>
 
         {/* latest cards */}
-        <div className=" px-4">
+
           <CardCarousel slides={SLIDES} options={OPTIONS} />
-        </div>
+
 
         <div className="flex flex-col pt-10 px-4 gap-5">
           <div className="flex items-center justify-between">

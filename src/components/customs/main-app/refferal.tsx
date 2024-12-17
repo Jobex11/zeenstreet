@@ -442,7 +442,7 @@ function Referral() {
     const inviteLink = `https://t.me/RaveGenieBot/ravegeniegames?startapp=${telegramId}&mode=compact`;
     navigator.clipboard.writeText(inviteLink);
     navigator.vibrate([50, 50]);
-    toast.info("Referral link copied!", { className: "text-xs work-sans py-2" })
+    toast.info("Referral link copied!", { className: "text-xs work-sans" })
   };
 
   return (

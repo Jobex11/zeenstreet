@@ -4,23 +4,27 @@ import useEmblaCarousel from 'embla-carousel-react'
 import ClassNames from 'embla-carousel-class-names'
 import { DotButton, useDotButton } from './carousel-dot-btn'
 import { LazyLoadImage } from "react-lazy-load-image-component"
+import cardbg from "@/assets/images/card_bg.svg"
 
 type PropType = {
     slides: number[]
     options?: EmblaOptionsType
-    defaultActiveIndex?: number 
+    defaultActiveIndex?: number
 }
 
 const CardCarousel: React.FC<PropType> = (props) => {
     const { slides, options, defaultActiveIndex = 2 } = props
     const [emblaRef, emblaApi] = useEmblaCarousel(
-        { ...options, startIndex: defaultActiveIndex }, 
+        { 
+            ...options, 
+            startIndex: defaultActiveIndex,
+            align: 'center',
+            containScroll: 'trimSnaps'
+        },
         [ClassNames()]
     )
 
-    const { selectedIndex, scrollSnaps, onDotButtonClick } =
-        useDotButton(emblaApi)
-
+    const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi)
 
     useEffect(() => {
         if (emblaApi) {
@@ -37,7 +41,7 @@ const CardCarousel: React.FC<PropType> = (props) => {
                             <LazyLoadImage
                                 effect="blur"
                                 className="embla__slide__img"
-                                src={`https://picsum.photos/600/350?v=${index}`}
+                                src={cardbg}
                                 alt="Your alt text"
                             />
                         </div>
@@ -45,22 +49,18 @@ const CardCarousel: React.FC<PropType> = (props) => {
                 </div>
             </div>
 
-            {/* Dots for navigation */}
-            <div className="flex items-center justify-center py-3 gap-3">
-                <div className="flex items-center gap-3">
-                    {scrollSnaps.map((_, index: number) => (
-                        <DotButton
-                            key={index}
-                            onClick={() => onDotButtonClick(index)}
-                            className={`embla__dot ${
-                                index === selectedIndex ? 'embla__dot--selected' : ''
-                            }`}
-                        />
-                    ))}
-                </div>
+            <div className="embla__dots">
+                {scrollSnaps.map((_, index: number) => (
+                    <DotButton
+                        key={index}
+                        onClick={() => onDotButtonClick(index)}
+                        className={`embla__dot ${index === selectedIndex ? 'embla__dot--selected' : ''}`}
+                    />
+                ))}
             </div>
         </div>
     )
 }
 
 export default CardCarousel
+

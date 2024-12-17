@@ -44,7 +44,7 @@ const wealthClass = [
         isLocked: false,
         shareType: "bottom_feeders",
         name: "Bottom Feeders",
-        rewards: 1,
+        rewards: 50,
         img: wood_force,
         description: "For those who rise from the deep, a humble start that they keep."
     },
@@ -181,7 +181,7 @@ function Profile() {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             console.error('Error updating shares:', err);
-            toast.error(err?.data?.error || "Error updating shares", { className: "text-xs work-sans py-2" })
+            toast.error(err?.data?.error || "Error updating shares", { className: "text-xs work-sans" })
             navigator.vibrate([50, 50]);
         }
     };

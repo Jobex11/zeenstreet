@@ -139,7 +139,7 @@ export function CreateUsername({
           )}
 
           <TextButton
-            name="Proceed"
+            name={`${isSubmitting ? "Processing.." : "Proceed"}`}
             type="submit"
             disabled={!username || isSubmitting}
             className={`uppercase mt-2 ${!username || isSubmitting ? "opacity-50 cursor-not-allowed" : ""
