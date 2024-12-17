@@ -3,11 +3,14 @@ import { useTonConnectUI } from '@tonconnect/ui-react';
 import { Address } from "@ton/core";
 import React from 'react';
 import { Button } from '@components/ui/button';
-import { IoWalletOutline } from "react-icons/io5";
-import { toast } from "sonner"
+import { IoWallet } from "react-icons/io5";
+// import { toast } from "sonner"
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from '@components/ui/drawer';
+import { useInView } from "react-intersection-observer";
 
 export default function ConnectTonWallet() {
 
+    const [pingVisible, setPingVisible] = useState(true);
     const [tonConnectUI] = useTonConnectUI();
     const [tonWalletAddress, setTonWalletAddress] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +20,7 @@ export default function ConnectTonWallet() {
     const handleWalletConnection = useCallback((address: string) => {
         setTonWalletAddress(address);
         console.log("Wallet connected successfully!");
-        toast.success("Wallet connected successfully!");
+        // toast.success("Wallet connected successfully!");
         setIsLoading(false);
     }, []);
 
@@ -63,30 +66,60 @@ export default function ConnectTonWallet() {
 
     const formatAddress = (address: string) => {
         const tempAddress = Address.parse(address).toString();
-        return `${tempAddress.slice(0, 4)}...${tempAddress.slice(-4)}`;
+        return `${tempAddress.slice(0, 6)}...${tempAddress.slice(-6)}`;
     };
 
+
+    const { ref } = useInView({
+        triggerOnce: true, // Trigger only once
+        onChange: (visible) => {
+            if (visible) setPingVisible(false);
+        },
+    });
 
     return (
         <React.Fragment>
             {tonWalletAddress ? (
-                <div className="flex flex-col items-center">
-                    <p className="mb-4">Connected: {formatAddress(tonWalletAddress)}</p>
-                    <Button
-                        onClick={handleWalletAction}
-                        disabled={isLoading}
-                        className="bg-red-500 hover:bg-red-700 text-white text-sm work-sans   py-2 px-4 rounded"
-                    >
-                        Disconnect Wallet <IoWalletOutline />
-                    </Button>
-                </div>
+                <Drawer>
+                    <DrawerTrigger>
+                        <Button className="relative shadow-lg">
+                            <IoWallet color="white" />
+                            {pingVisible && (
+                                <div
+                                    className="bg-orange-500 rounded-full h-2 w-2 absolute top-0 right-0 animate-ping"
+                                />
+                            )}
+                        </Button>
+                    </DrawerTrigger>
+                    <DrawerContent ref={ref} className="bg-[#1f1d26] border-none py-5 px-5 min-h-[40%] flex flex-col items-center space-y-4 md:space-y-6">
+                    <IoWallet size={50} color='white'/>
+                        <DrawerTitle className="text-white text-center text-lg md:text-xl font-semibold work-sans">
+                            {formatAddress(tonWalletAddress)}
+                        </DrawerTitle>
+
+                        <DrawerDescription className="text-white text-center text-sm md:text-base py-2 max-w-md work-sans">
+                            Now wait, play the games, get rewards, perform tasks, and await our return 🚀
+                        </DrawerDescription>
+
+                        <Button
+                            onClick={handleWalletAction}
+                            disabled={isLoading}
+                            className="flex items-center work-sans bg-red-500 hover:bg-red-700 text-white text-xs md:text-sm work-sans rounded-full py-2 px-4 space-x-2"
+                        >
+                            <IoWallet color="white" />
+                            <span>Disconnect Wallet</span>
+                        </Button>
+                    </DrawerContent>
+
+                </Drawer>
             ) : (
+
                 <Button
                     disabled={isLoading}
                     onClick={handleWalletAction}
-                    className="bg-orange-500 hover:bg-orange-600 text-white text-sm work-sans max-w-sm mx-auto py-2 px-4 rounded"
+                    className="relative shadow-lg"
                 >
-                    Connect TON Wallet  <IoWalletOutline />
+                    <IoWallet color="white" />
                 </Button>
             )}
         </React.Fragment>

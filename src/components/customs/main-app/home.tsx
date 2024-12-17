@@ -17,8 +17,12 @@ import { useEffect, useRef, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
+import CardCarousel from "@components/common/main-app/card-carousel";
+import { EmblaOptionsType } from 'embla-carousel'
 
-
+const OPTIONS: EmblaOptionsType = {}
+const SLIDE_COUNT = 5
+const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
 const todayTask = [
   {
     title: "Ongoing Project",
@@ -44,7 +48,7 @@ function Home() {
 
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const middleCardRef = useRef<HTMLDivElement>(null);
-  const [selectedFilter, setSelectedFilter] = useState<string | null>("Events");
+  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
   const { data: user } = useGetUserSharesQuery(telegramId ?? "", {
     skip: !telegramId
@@ -82,37 +86,21 @@ function Home() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
-        className="flex flex-col flex-1 py-3 "
+        className="flex flex-col  py-3 "
       >
         {/* user rewards */}
         <div className={"flex flex-col items-center gap-2"}>
-
-          <h1 className="uppercase aqum font-bold text-lg text-white text-center">
+          <h1 className="uppercase work-sans font-bold text-lg text-white text-center pt-2">
             Total shares
           </h1>
-          <h1 className="text-4xl font-bold aqum text-white pb-6 text-center">
-            {ShareFormatter(user?.shares || 0)}
+          <h1 className="text-3xl font-bold work-sans text-white pb-6 text-center">
+            {ShareFormatter(user?.shares || 20003044)}
           </h1>
         </div>
+
         {/* latest cards */}
-        <div className="flex items-center overflow-x-auto flex-nowrap w-full h-auto gap-3 px-4">
-          <TaskCard>
-            <h1 className="py-10 text-center text-white work-sans text-2xl font-semibold">
-              Card 1
-            </h1>
-          </TaskCard>
-          <div ref={middleCardRef}>
-            <TaskCard>
-              <h1 className="py-10 text-center text-white work-sans text-2xl font-semibold">
-                Card 2
-              </h1>
-            </TaskCard>
-          </div>
-          <TaskCard>
-            <h1 className="py-10 text-center text-white work-sans text-2xl font-semibold">
-              Card 3
-            </h1>
-          </TaskCard>
+        <div className=" px-4">
+          <CardCarousel slides={SLIDES} options={OPTIONS} />
         </div>
 
         <div className="flex flex-col pt-10 px-4 gap-5">
@@ -129,7 +117,7 @@ function Home() {
                   </span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-orange-600 rounded text-white border-none tahoma">
-                  <DropdownMenuItem className={`${selectedFilter === "All" && "bg-white text-black"}`} onClick={() => setSelectedFilter(null)} >All</DropdownMenuItem>
+                  <DropdownMenuItem className={`${selectedFilter === null && "bg-white text-black"}`} onClick={() => setSelectedFilter(null)} >All</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter == "Special" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Special")} >Special</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter === "Events" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Events")} >Events</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter === "Referral" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Referral")} >Referral</DropdownMenuItem>

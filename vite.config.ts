@@ -11,6 +11,7 @@ export default defineConfig({
   // optimizeDeps: {
   //   include: ['@telegram-apps/sdk-react'],
   // },
+  base: '/',
   plugins: [nodePolyfills(), react()],
   resolve: {
     alias: {

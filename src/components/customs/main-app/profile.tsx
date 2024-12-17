@@ -34,20 +34,15 @@ import { useGetUserSharesQuery, useUpdateUserSharesMutation } from "@hooks/redux
 import { toast } from "sonner";
 import { useGetUsernameQuery } from "@hooks/redux/users";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
     DialogClose,
     DialogTitle,
-    DialogTrigger,
 } from "@components/ui/dialog"
-import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";
-import { IoWallet } from "react-icons/io5";
 import ConnectTonWallet from "@components/common/ton-connect-btn"
+
 const wealthClass = [
     {
         isLocked: false,
-        shareType: "bottom_feeders18",
+        shareType: "bottom_feeders",
         name: "Bottom Feeders",
         rewards: 1,
         img: wood_force,
@@ -144,8 +139,6 @@ function Profile() {
     const [updateUserShares, { isLoading: updatingShares }] = useUpdateUserSharesMutation();
     const [, setUserShareState] = useState(null);
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>({});
-    const wallet = useTonWallet();
-    const hasWalletAddress = wallet?.account?.address;
     const { data: userData, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", {
         skip: !telegramId
     })
@@ -171,10 +164,10 @@ function Profile() {
 
     const handleUpdateShares = async (shares: number, shareType: string, itemName: string) => {
         try {
-            const response = await updateUserShares({ telegram_id: 6880808269, shares, shareType }).unwrap();
+            const response = await updateUserShares({ telegramId, shares, shareType }).unwrap();
             // console.log({ telegramId:6880808269, shares, shareType });
             console.log('Shares updated successfully:', response);
-            toast.success(response?.message);
+            toast.success(response?.message, { className: "text-xs work-sans" });
             navigator.vibrate([50, 50]);
             setDrawerState((prevState) => ({
                 ...prevState,
@@ -188,7 +181,8 @@ function Profile() {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             console.error('Error updating shares:', err);
-            toast.error(err?.data?.error || "Error updating shares");
+            toast.error(err?.data?.error || "Error updating shares", { className: "text-xs work-sans py-2" })
+            navigator.vibrate([50, 50]);
         }
     };
 
@@ -250,29 +244,8 @@ function Profile() {
                                             className='h-full w-full object-cover object-center' />
                                         <span className="text-[#EBB26D] absolute text-[13px] font-medium top-[10px] work-sans">1</span>
                                     </div>
-                                    <Dialog>
-                                        <DialogTrigger>
-                                            <Button className="relative shadow-lg">
-                                                <IoWallet color="white" />
-                                                {hasWalletAddress &&
-                                                    <div className="bg-orange-500 rounded-full h-2 w-2 absolute top-0 right-0 animate-ping" />
-                                                }
-                                            </Button>
-                                        </DialogTrigger>
-                                        <DialogContent className="bg-[#1f1d26] border-none">
-                                            <DialogTitle className={"text-white"}>
-                                                {!hasWalletAddress ? "Connect Your Ton Wallet"
-                                                    :
-                                                    `Weldone ${data?.preferred_username || "User"}`}</DialogTitle>
-                                            <DialogDescription className={"text-white"}>
-                                                {!hasWalletAddress ?
-                                                    "Connect your Ton wallet now and get ready to earn rewards! 🚀" :
-                                                    "Now wait, play the games get rewards perfom task and await our return 🚀"}
-                                            </DialogDescription>
-                                            <ConnectTonWallet />
-                                        </DialogContent>
+                                    <ConnectTonWallet />
 
-                                    </Dialog>
                                 </div>
                             </CardContent>
                         </TaskCard>
@@ -354,7 +327,7 @@ function Profile() {
                                                 className={`bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans`}
                                             >
                                                 {updatingShares
-                                                    ? 'Claiming...'
+                                                    ? 'Processing...'
                                                     : checkIfClaimed(item.shareType)
                                                         ? `Shares already Claimed`
                                                         : `Claim Shares`}
