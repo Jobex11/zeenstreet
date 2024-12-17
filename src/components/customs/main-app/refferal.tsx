@@ -140,20 +140,6 @@ function Referral() {
 
   //backend ends
 
-  const handleActiveTabs = (name: string) => {
-    setTabs(name);
-  };
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const initData = window.Telegram.WebApp.initDataUnsafe;
-      const user = initData?.user;
-
-      if (user) {
-        setTelegramId(user.id ?? null);
-      }
-    }
-  }, []);
-
   return (
     <div className="flex flex-col min-h-full">
       <div
