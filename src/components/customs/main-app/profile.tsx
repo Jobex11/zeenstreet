@@ -43,7 +43,7 @@ import {
 } from "@components/ui/dialog"
 import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";
 import { IoWallet } from "react-icons/io5";
-
+import ConnectTonWallet from "@components/common/ton-connect-btn"
 const wealthClass = [
     {
         isLocked: false,
@@ -269,7 +269,7 @@ function Profile() {
                                                     "Connect your Ton wallet now and get ready to earn rewards! 🚀" :
                                                     "Now wait, play the games get rewards perfom task and await our return 🚀"}
                                             </DialogDescription>
-                                            <TonConnectButton />
+                                            <ConnectTonWallet />
                                         </DialogContent>
 
                                     </Dialog>
