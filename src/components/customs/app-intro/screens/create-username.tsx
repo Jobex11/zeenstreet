@@ -56,18 +56,18 @@ export function CreateUsername({
           preferred_username: data.username,
         }).unwrap(); // unwrap will throw an error if the request fails
 
-        toast.success("Username successfully updated!");
+        toast.success("Username successfully updated!", { className: "text-xs work-sans" });
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         setScreens && setScreens("check-account");
       } else {
-        toast.error("Telegram WebApp is not available.");
+        toast.error("Telegram WebApp is not available.", { className: "text-xs work-sans" });
       }
     } catch (err) {
       // Error handling from unwrap
       if (err instanceof Error) {
-        toast.error(err.message || "An error occurred while creating username.");
+        toast.error(err.message || "An error occurred while creating username.", { className: "text-xs work-sans" });;
       } else {
-        toast.error("An unknown error occurred.");
+        toast.error("An unknown error occurred.", { className: "text-xs work-sans" });;
       }
     } finally {
       setIsSubmitting(false);
