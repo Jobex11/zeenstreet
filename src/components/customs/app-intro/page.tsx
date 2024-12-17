@@ -35,7 +35,8 @@ const userAccountInfo = {
 export default function ZeenAppIntro() {
 
     const [currentScreen, setCurrentScreen] = useState<string>(SCREENS.WELCOME);
-    const [loading, setLoading] = useState(false);
+    const [loading,] = useState<boolean>(false);
+    const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
     const navigate = useNavigate();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,33 +44,35 @@ export default function ZeenAppIntro() {
 
     // Use RTK Query hook for checking the username
     const { data, isLoading, } = useCheckUsernameQuery(telegramId ?? "", {
-        skip: !telegramId, 
+        skip: !telegramId
     });
 
     useEffect(() => {
-        if (isLoading) {
-            setLoading(true);
+        const hasOpenedBefore = localStorage.getItem('hasOpenedBefore');
+        if (hasOpenedBefore) {
+            setIsFirstTime(false);
         } else {
-            setLoading(false);
-            
-            // If no data is returned or user doesn't exist
-            if (!data || !data.hasPreferredUsername) {
-                setTimeout(() => {
-                    if (!telegramId) {
-                        setCurrentScreen(SCREENS.CREATE_USERNAME);
-                    } else {
-                        setCurrentScreen(SCREENS.CHECK_ACCOUNT);
-                    }
-                }, TIMEOUT);
-            } else if (data?.hasPreferredUsername) {
-                // Navigate to home screen if username exists
-                setTimeout(() => navigate("/home"), TIMEOUT);
-            }
+            localStorage.setItem('hasOpenedBefore', 'true');
         }
-    }, [isLoading, data, telegramId, navigate]);
-    
+    }, []);
 
-    
+    useEffect(() => {
+        if (isLoading) return;
+
+        if (data?.hasPreferredUsername) {
+            if (!isFirstTime) {
+                // If not first time and has username, show welcome briefly then go to home
+                setTimeout(() => navigate("/home"), TIMEOUT);
+            } else {
+                // If first time and has username, go through the flow
+                setCurrentScreen(SCREENS.CHECK_ACCOUNT);
+            }
+        } else if (currentScreen === SCREENS.WELCOME) {
+            // If no username, start the flow from create username
+            setTimeout(() => setCurrentScreen(SCREENS.CREATE_USERNAME), TIMEOUT);
+        }
+    }, [isLoading, data, isFirstTime, navigate, currentScreen]);
+
 
 
     const getBackgroundStyles = () => {
@@ -94,7 +97,7 @@ export default function ZeenAppIntro() {
                 {loading && (
                     <div
                         className="bg-orange-600 h-full transition-all duration-500 animate-pulse"
-                        style={{ width: loading ? "100%" : "0%" }}
+                        style={{ width: isLoading ? "100%" : "0%" }}
                     />
                 )}
             </div>
