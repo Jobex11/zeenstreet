@@ -27,21 +27,29 @@ import achievement5 from "@assets/images/cards/achievement_5.png";
 import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
 import { Button } from "@components/ui/button";
 import { IoIosClose } from "react-icons/io";
-import { DialogClose, DialogTitle } from "@components/ui/dialog";
 import goldCoin from "@assets/images/icons/gold_coin.svg";
 import { SlLock } from "react-icons/sl";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useGetUserSharesQuery, useUpdateUserSharesMutation } from "@hooks/redux/shares";
 import { toast } from "sonner";
 import { useGetUsernameQuery } from "@hooks/redux/users";
-
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogClose,
+    DialogTitle,
+    DialogTrigger,
+} from "@components/ui/dialog"
+import { IoWalletOutline } from "react-icons/io5";
+import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";
 
 const wealthClass = [
     {
         isLocked: false,
-        shareType: "bottom_feeders",
+        shareType: "bottom_feeders18",
         name: "Bottom Feeders",
-        rewards: 50,
+        rewards: 1,
         img: wood_force,
         description: "For those who rise from the deep, a humble start that they keep."
     },
@@ -136,13 +144,14 @@ function Profile() {
     const [updateUserShares, { isLoading: updatingShares }] = useUpdateUserSharesMutation();
     const [, setUserShareState] = useState(null);
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>({});
-
-    const { data: userData } = useGetUserSharesQuery(telegramId ?? "", {
-        skip: !telegramId, // Skip query if telegramId is null
-    });
+    const wallet = useTonWallet();
+    const hasWalletAddress = wallet?.account?.address;
+    const { data: userData, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", {
+        skip: !telegramId
+    })
     const { data: data, isLoading } = useGetUsernameQuery(telegramId ?? "", {
-        skip: !telegramId,
-    });
+        skip: !telegramId
+    })
 
     // Initialize Telegram WebApp and set user data
     useEffect(() => {
@@ -162,7 +171,8 @@ function Profile() {
 
     const handleUpdateShares = async (shares: number, shareType: string, itemName: string) => {
         try {
-            const response = await updateUserShares({ telegramId, shares, shareType }).unwrap();
+            const response = await updateUserShares({ telegram_id: 6880808269, shares, shareType }).unwrap();
+            // console.log({ telegramId:6880808269, shares, shareType });
             console.log('Shares updated successfully:', response);
             toast.success(response?.message);
             navigator.vibrate([50, 50]);
@@ -172,21 +182,22 @@ function Profile() {
             }));
             setUserShareState({
                 ...userData,
-                claimedShares: { ...userData.claimedShares, [shareType]: true }, // Update claimed shares
+                claimedShares: { ...userData.claimedShares, [shareType]: true },
             });
-
+            refetchShares();
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             console.error('Error updating shares:', err);
-            toast.error(err?.data?.message || "Error updating shares");
+            toast.error(err?.data?.error || "Error updating shares");
         }
     };
 
     const checkIfClaimed = (shareType: string) => {
         return userData?.claimedShares?.[shareType] ?? false;
     };
+    console.log("userData", userData)
 
-    // if (error) return <p>Error loading username {error.toString()}</p>;
+
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -215,12 +226,12 @@ function Profile() {
                                             {isLoading ? (
                                                 <span>User</span>
                                             ) : (
-                                                <span>Hi {data?.preferred_username || "User"}</span>
+                                                <span className="line-clamp-1">Hi {data?.preferred_username || "User"}</span>
                                             )}
 
 
                                         </h1>
-                                        <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF]">
+                                        <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF] line-clamp-1">
                                             {telegramUsername && `@${telegramUsername}`}
                                         </h1>
                                         <div className="bg-[#D36519] rounded-md text-white w-[107px] p-2 text-center">
@@ -230,13 +241,38 @@ function Profile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='h-[52px] w-[52px] mb-4 relative flex items-center justify-center'>
-                                    <LazyLoadImage
-                                        effect="blur"
-                                        src={profileBadge}
-                                        alt="rank badge"
-                                        className='h-full w-full object-cover object-center' />
-                                    <span className="text-[#EBB26D] absolute text-[13px] font-medium top-[10px] work-sans">1</span>
+                                <div>
+                                    <div className='h-[52px] w-[52px] mb-4 relative flex items-center justify-center'>
+                                        <LazyLoadImage
+                                            effect="blur"
+                                            src={profileBadge}
+                                            alt="rank badge"
+                                            className='h-full w-full object-cover object-center' />
+                                        <span className="text-[#EBB26D] absolute text-[13px] font-medium top-[10px] work-sans">1</span>
+                                    </div>
+                                    <Dialog>
+                                        <DialogTrigger>
+                                            <Button className="relative shadow-lg">
+                                                <IoWalletOutline color="white" />
+                                                {hasWalletAddress &&
+                                                    <div className="bg-orange-500 rounded-full h-2 w-2 absolute top-0 right-0 animate-ping" />
+                                                }
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="bg-[#1f1d26] border-none">
+                                            <DialogTitle className={"text-white"}>
+                                                {!hasWalletAddress ? "Connect Your Ton Wallet"
+                                                    :
+                                                    `Weldone ${data?.preferred_username || "User"}`}</DialogTitle>
+                                            <DialogDescription className={"text-white"}>
+                                                {!hasWalletAddress ?
+                                                    "Connect your Ton wallet now and get ready to earn rewards! 🚀" :
+                                                    "Now wait, play the games get rewards perfom task and await our return 🚀"}
+                                            </DialogDescription>
+                                            <TonConnectButton />
+                                        </DialogContent>
+
+                                    </Dialog>
                                 </div>
                             </CardContent>
                         </TaskCard>
@@ -249,7 +285,7 @@ function Profile() {
                         </h1>
                         <div className="w-full flex items-center pb-4 gap-4 overflow-x-auto">
                             {wealthClass.map((item) => (
-                                <Drawer key={item.name} open={drawerState[item.name] || false}  
+                                <Drawer key={item.name} open={drawerState[item.name] || false}
                                     onOpenChange={() =>
                                         setDrawerState((prevState) => ({
                                             ...prevState,
@@ -287,7 +323,7 @@ function Profile() {
                                         className="flex flex-col  min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                     >
                                         <DialogTitle className="sr-only" />
-                                        <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">
+                                        <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-5 gap-5">
                                             <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                 <IoIosClose size={30} color="#A4A4A7" />
                                             </DialogClose>
@@ -295,13 +331,13 @@ function Profile() {
                                                 effect="blur"
                                                 src={item.img}
                                                 alt="Refferal Images"
-                                                className="h-[100px] w-[100px] object-contain object-center"
+                                                className="h-24 w-24 object-contain object-center"
                                             />
                                             <h1 className="text-white work-sans font-semibold text-base capitalize">
                                                 {item.name}
                                             </h1>
                                             <p className="text-white work-sans text-sm text-center max-w-sm">{item.description}</p>
-                                            <h1 className="flex items-center gap-2 text-white work-sans text-base">
+                                            <h1 className={`flex items-center gap-2 ${checkIfClaimed(item.shareType) && "line-through"} text-white work-sans text-base`}>
                                                 {item.rewards}{" "}
                                                 <LazyLoadImage
                                                     effect="blur"
@@ -320,7 +356,7 @@ function Profile() {
                                                 {updatingShares
                                                     ? 'Claiming...'
                                                     : checkIfClaimed(item.shareType)
-                                                        ? `Shares Claimed (${item.shareType})`
+                                                        ? `Shares already Claimed`
                                                         : `Claim Shares`}
                                             </Button>
                                         </div>

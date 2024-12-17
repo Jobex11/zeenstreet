@@ -81,7 +81,7 @@ function MailNotification() {
           <div className="flex items-center justify-between py-3 inter">
             <h1 className="text-xl font-semibold text-white ">Notificaions</h1>
 
-            <div className="cursor-pointer"><h1 className="text-[10px] font-medium  text-white">Mark all as read</h1></div>
+            
           </div>
 
           {/* notifications */}

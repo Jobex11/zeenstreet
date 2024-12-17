@@ -9,30 +9,32 @@ export const sharesApi = createApi({
     endpoints: (builder) => ({
         getUserShares: builder.query({
             query: (telegramId: string) => `/shares/${telegramId}`,
+            providesTags: ['shares']
         }),
         getTotalShares: builder.query({
             query: () => `/shares/total`,
+            providesTags: ['shares']
         }),
         updateUserShares: builder.mutation({
-            query: ({ telegramId, shares }) => ({
-                url: `/shares/update/${telegramId}`,
+            query: ({ telegram_id, shares, shareType }) => ({
+                url: `/shares/update/${telegram_id}`,
                 method: 'POST',
-                body: { shares },
+                body: { shares, shareType },
             }),
-            async onQueryStarted({ shares }, { dispatch, queryFulfilled }) {
-                try {
-                    const { data: updateUserShares } = await queryFulfilled
-                    dispatch(
-                        sharesApi.util.upsertQueryData('getUserShares', shares, updateUserShares)
-                    );
-                    dispatch(
-                        sharesApi.util.invalidateTags(['shares'])
-                    );
-                } catch (error) {
-                    console.log(error)
-                }
-            },
             invalidatesTags: ['shares'],
+            // async onQueryStarted({ telegram_id }, { dispatch, queryFulfilled }) {
+            //     try {
+            //         const { data: updatedUserShares } = await queryFulfilled;
+
+            //         dispatch(
+            //             sharesApi.util.updateQueryData('getUserShares', telegram_id, (draft) => {
+            //                 Object.assign(draft, updatedUserShares);
+            //             })
+            //         );
+            //     } catch (error) {
+            //         console.log("Error updating shares:", error);
+            //     }
+            // },
         }),
     }),
 })

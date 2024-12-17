@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import ConnectTonWallet from "@components/common/ton-connect-btn";
+
 
 const todayTask = [
   {
@@ -86,7 +86,7 @@ function Home() {
       >
         {/* user rewards */}
         <div className={"flex flex-col items-center gap-2"}>
-          <ConnectTonWallet/>
+
           <h1 className="uppercase aqum font-bold text-lg text-white text-center">
             Total shares
           </h1>
@@ -128,7 +128,7 @@ function Home() {
                     <LazyLoadImage effect="blur" src={filter} alt="filter" className="" />
                   </span>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-orange-500 rounded text-white border-none tahoma">
+                <DropdownMenuContent className="bg-orange-600 rounded text-white border-none tahoma">
                   <DropdownMenuItem className={`${selectedFilter === "All" && "bg-white text-black"}`} onClick={() => setSelectedFilter(null)} >All</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter == "Special" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Special")} >Special</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter === "Events" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Events")} >Events</DropdownMenuItem>
