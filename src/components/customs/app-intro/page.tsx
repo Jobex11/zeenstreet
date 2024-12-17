@@ -51,19 +51,25 @@ export default function ZeenAppIntro() {
             setLoading(true);
         } else {
             setLoading(false);
-            if (data?.hasPreferredUsername) {
+            
+            // If no data is returned or user doesn't exist
+            if (!data || !data.hasPreferredUsername) {
+                setTimeout(() => {
+                    if (!telegramId) {
+                        setCurrentScreen(SCREENS.CREATE_USERNAME);
+                    } else {
+                        setCurrentScreen(SCREENS.CHECK_ACCOUNT);
+                    }
+                }, TIMEOUT);
+            } else if (data?.hasPreferredUsername) {
+                // Navigate to home screen if username exists
                 setTimeout(() => navigate("/home"), TIMEOUT);
-            } else if  (!telegramId && currentScreen === SCREENS.WELCOME) {
-                setTimeout(() => setCurrentScreen(SCREENS.CREATE_USERNAME), TIMEOUT);
-            } 
+            }
         }
-    }, [isLoading, data, telegramId, navigate, currentScreen]);
+    }, [isLoading, data, telegramId, navigate]);
+    
 
-    // useEffect(() => {
-    //     if (!telegramId && currentScreen === SCREENS.WELCOME) {
-    //         setTimeout(() => setCurrentScreen(SCREENS.CREATE_USERNAME), TIMEOUT);
-    //     }
-    // }, [telegramId, currentScreen]);
+    
 
 
     const getBackgroundStyles = () => {
