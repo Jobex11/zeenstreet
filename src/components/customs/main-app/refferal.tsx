@@ -140,6 +140,10 @@ function Referral() {
 
   //backend ends
 
+  const handleActiveTabs = (name: string) => {
+    setTabs(name);
+  };
+
   return (
     <div className="flex flex-col min-h-full">
       <div
