@@ -94,7 +94,9 @@ function Referral() {
   useEffect(() => {
     // Fetch Referral Code and Link
     if (telegramId) {
-      fetch(`/api/referral/referral-code/${telegramId}`)
+      fetch(
+        `https://ravegenie-vgm7.onrender.com/api/referral/referral-code/${telegramId}`
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.referralCode) {
@@ -103,7 +105,9 @@ function Referral() {
         })
         .catch((err) => console.error("Error fetching referral code:", err));
 
-      fetch(`/api/referral/referral-link/${telegramId}`)
+      fetch(
+        `https://ravegenie-vgm7.onrender.com/api/referral/referral-link/${telegramId}`
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.referralLink) {
