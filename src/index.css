@@ -84,7 +84,7 @@ body,html {
   --slide-spacing: 1rem;
   --slide-size: 100%;
   --slide-height: 13rem;
-  padding: 1.6rem;
+  padding: 1rem;
 }
 
 .embla__viewport {
@@ -99,7 +99,7 @@ body,html {
 }
 
 .embla__slide {
-  flex: 0 0 85%;
+  flex: 0 0  var(--slide-size);;
   min-width: 0;
   padding-left: var(--slide-spacing);
   position: relative;
@@ -119,6 +119,7 @@ body,html {
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
+  gap: 1;
 }
 
 .embla__dot {
@@ -128,8 +129,8 @@ body,html {
   padding: 0;
   outline: 0;
   border: 0;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
