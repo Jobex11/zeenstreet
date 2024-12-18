@@ -155,7 +155,7 @@ function Referral() {
       >
         <div className="px-4 flex flex-col gap-8 pb-[8rem]">
           {/* top card */}
-          <TaskCard>
+          <CardWrapper>
             <CardHeader className="flex flex-col items-center py-0">
               <div className="h-[84px] w-[92px]">
                 <LazyLoadImage
@@ -217,7 +217,7 @@ function Referral() {
                 </div>
               </div>
             </CardContent>
-          </TaskCard>
+          </CardWrapper>
 
           <div>
             {/* tab buttons */}
