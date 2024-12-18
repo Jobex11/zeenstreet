@@ -2,7 +2,7 @@
 import cardbg from "@assets/images/card_bg.svg"
 import { Card } from '../../ui/card';
 
-function TaskCard({ children, className }: { children: React.ReactNode, className?:string }) {
+function CardWrapper({ children, className }: { children: React.ReactNode, className?:string }) {
     return (
         <Card style={{
             backgroundImage: `url(${cardbg})`,
@@ -15,4 +15,4 @@ function TaskCard({ children, className }: { children: React.ReactNode, classNam
     )
 }
 
-export default TaskCard
+export default CardWrapper

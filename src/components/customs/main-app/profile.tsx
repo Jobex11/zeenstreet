@@ -1,43 +1,42 @@
-import { useState, useEffect } from "react";
-import dotsbg from "@assets/images/dotted-bg.png";
-import TaskCard from "@components/common/cards/Tasxcard";
-import { Card, CardContent } from "@components/ui/card";
 import wavybg from "@assets/images/card_bg.svg";
-import profileImg from "@assets/images/profile_img.png";
-import profileBadge from "@assets/images/icons/profile_badge.svg";
-import { ShareFormatter } from "@components/common/shareFormatter";
-import wood_force from "@assets/images/cards/wood.png";
-import wave_force from "@assets/images/cards/wave.png";
-import water_force from "@assets/images/cards/water.png";
-import cosmic_force from "@assets/images/cards/cosmic.png";
-import ice_force from "@assets/images/cards/ice.png";
-import fire_force from "@assets/images/cards/fire.png";
-import light_force from "@assets/images/cards/Light.png";
-import earth_force from "@assets/images/cards/earth.png";
-import metal_force from "@assets/images/cards/fire.png";
-import collected1 from "@assets/images/cards/collected_1.png";
-import collected2 from "@assets/images/cards/collected_2.png";
-import collected3 from "@assets/images/cards/collected_3.png";
-import collected4 from "@assets/images/cards/collected_4.png";
 import achievement1 from "@assets/images/cards/achievement_1.png";
 import achievement2 from "@assets/images/cards/achievement_2.png";
 import achievement3 from "@assets/images/cards/achievement_3.png";
 import achievement4 from "@assets/images/cards/achievement_4.png";
 import achievement5 from "@assets/images/cards/achievement_5.png";
-import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
-import { Button } from "@components/ui/button";
-import { IoIosClose } from "react-icons/io";
+import collected1 from "@assets/images/cards/collected_1.png";
+import collected2 from "@assets/images/cards/collected_2.png";
+import collected3 from "@assets/images/cards/collected_3.png";
+import collected4 from "@assets/images/cards/collected_4.png";
+import cosmic_force from "@assets/images/cards/cosmic.png";
+import earth_force from "@assets/images/cards/earth.png";
+import { default as fire_force, default as metal_force } from "@assets/images/cards/fire.png";
+import ice_force from "@assets/images/cards/ice.png";
+import light_force from "@assets/images/cards/Light.png";
+import water_force from "@assets/images/cards/water.png";
+import wave_force from "@assets/images/cards/wave.png";
+import wood_force from "@assets/images/cards/wood.png";
+import dotsbg from "@assets/images/dotted-bg.png";
 import goldCoin from "@assets/images/icons/gold_coin.svg";
-import { SlLock } from "react-icons/sl";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import { useGetUserSharesQuery, useUpdateUserSharesMutation } from "@hooks/redux/shares";
-import { toast } from "sonner";
-import { useGetUsernameQuery } from "@hooks/redux/users";
+import profileBadge from "@assets/images/icons/profile_badge.svg";
+import profileImg from "@assets/images/profile_img.png";
+import CardWrapper from "@components/common/cards/Tasxcard";
+import { ShareFormatter } from "@components/common/shareFormatter";
+import ConnectTonWallet from "@components/common/ton-connect-btn";
+import { Button } from "@components/ui/button";
+import { Card, CardContent } from "@components/ui/card";
 import {
     DialogClose,
     DialogTitle,
-} from "@components/ui/dialog"
-import ConnectTonWallet from "@components/common/ton-connect-btn"
+} from "@components/ui/dialog";
+import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
+import { useGetUserSharesQuery, useUpdateUserSharesMutation } from "@hooks/redux/shares";
+import { useGetUsernameQuery } from "@hooks/redux/users";
+import { useEffect, useState } from "react";
+import { IoIosClose } from "react-icons/io";
+import { SlLock } from "react-icons/sl";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { toast } from "sonner";
 
 const wealthClass = [
     {
@@ -140,10 +139,10 @@ function Profile() {
     const [, setUserShareState] = useState(null);
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>({});
     const { data: userData, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", {
-        skip: !telegramId
+        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
     })
     const { data: data, isLoading } = useGetUsernameQuery(telegramId ?? "", {
-        skip: !telegramId
+        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
     })
 
     // Initialize Telegram WebApp and set user data
@@ -205,7 +204,7 @@ function Profile() {
                 <div className="px-4 flex flex-col gap-8 pb-[8rem]">
                     {/* card */}
                     <div>
-                        <TaskCard className='min-h-32 flex flex-col w-full justify-end p-0'>
+                        <CardWrapper className='min-h-32 flex flex-col w-full justify-end p-0'>
                             <CardContent className='flex  justify-between px-2 py-0'>
                                 <div className='flex items-center'>
                                     <div className='h-28 w-[106px]'>
@@ -248,7 +247,7 @@ function Profile() {
 
                                 </div>
                             </CardContent>
-                        </TaskCard>
+                        </CardWrapper>
                     </div>
 
                     {/*wealth class grid  */}

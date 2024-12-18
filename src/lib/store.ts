@@ -3,19 +3,22 @@ import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { usersApi } from '@hooks/redux/users'
 import { sharesApi } from '@hooks/redux/shares'
+import { tasksApi } from '@/hooks/redux/tasks'
 
 export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [usersApi.reducerPath]: usersApi.reducer,
-    [sharesApi.reducerPath]:sharesApi.reducer
+    [sharesApi.reducerPath]:sharesApi.reducer,
+    [tasksApi.reducerPath]:tasksApi.reducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       usersApi.middleware,
-      sharesApi.middleware
+      sharesApi.middleware,
+      tasksApi.middleware
     ),
 })
 

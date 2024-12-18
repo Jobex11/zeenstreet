@@ -1,61 +1,42 @@
+import { RavegenieCard } from "@/components/common/cards/TaskCard";
+import { useGetAllTasksQuery } from "@/hooks/redux/tasks";
+import bell_icon from "@assets/images/bell_icon.png";
 import dotsbg from "@assets/images/dotted-bg.png";
-import logo from "@assets/images/icons/zenstreet_logo.png";
-import bell_icon from "@assets/images/bell_icon.png"
-import TaskCard from "@components/common/cards/Tasxcard";
-import { IoAdd } from "react-icons/io5";
-import {
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@components/ui/card";
-import { Button } from "@components/ui/button";
 import filter from "@assets/images/icons/filter.svg";
+import CardCarousel from "@components/common/main-app/card-carousel";
 import { ShareFormatter } from "@components/common/shareFormatter";
-import { useEffect, useRef, useState } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import CardCarousel from "@components/common/main-app/card-carousel";
-import { EmblaOptionsType } from 'embla-carousel'
+import { EmblaOptionsType } from 'embla-carousel';
+import { Fragment, useEffect, useRef, useState } from "react";
+import { BsCardText } from "react-icons/bs";
+import { FiLoader } from "react-icons/fi";
+import { IoAdd } from "react-icons/io5";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const OPTIONS: EmblaOptionsType = {}
 const SLIDE_COUNT = 5
 const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
-const todayTask = [
-  {
-    title: "Ongoing Project",
-    name: "Refer Friends",
-    shares: 10202000,
-    type: "Referral",
-  },
-  {
-    title: "Ongoing Project",
-    name: "Refer Friends",
-    shares: 10000400,
-    type: "Special",
-  },
-  {
-    title: "Ongoing Project",
-    name: "Refer Friends",
-    shares: 10030000,
-    type: "Events",
-  },
-];
+
 
 function Home() {
 
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const middleCardRef = useRef<HTMLDivElement>(null);
-  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
-
+  const [selectedFilter, setSelectedFilter] = useState("All");
+  
   const { data: user } = useGetUserSharesQuery(telegramId ?? "", {
-    skip: !telegramId
+    skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
   })
-  const filteredTasks = selectedFilter
-    ? todayTask.filter((task) => task.type === selectedFilter)
-    : todayTask;
+  const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true });
+
+  const filteredTasks = tasks?.tasks.filter((task: { category: string; }) =>
+    selectedFilter === null || selectedFilter === "All" || task.category === selectedFilter
+  );
+
+  useEffect(() => {
+    console.log(tasks);
+  }, [tasks]);
 
 
   useEffect(() => {
@@ -100,14 +81,13 @@ function Home() {
 
         {/* latest cards */}
 
-          <CardCarousel slides={SLIDES} options={OPTIONS} />
-
+        <CardCarousel slides={SLIDES} options={OPTIONS} />
 
         <div className="flex flex-col pt-10 px-4 gap-5">
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-2 work-sans">
               <h1 className="text-white text-lg font-semibold">Today&apos;s Tasks</h1>
-              <h1 className="text-white text-sm">18 Tasks Pending</h1>
+              <h1 className="text-white text-sm">{filteredTasks?.length} Tasks Available</h1>
             </div>
             <div className="flex items-center gap-3">
               <DropdownMenu>
@@ -117,7 +97,7 @@ function Home() {
                   </span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-orange-600 rounded text-white border-none tahoma">
-                  <DropdownMenuItem className={`${selectedFilter === null && "bg-white text-black"}`} onClick={() => setSelectedFilter(null)} >All</DropdownMenuItem>
+                  <DropdownMenuItem className={`${selectedFilter === null && "bg-white text-black"}`} onClick={() => setSelectedFilter("All")} >All</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter == "Special" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Special")} >Special</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter === "Events" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Events")} >Events</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter === "Referral" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Referral")} >Referral</DropdownMenuItem>
@@ -145,30 +125,24 @@ function Home() {
           </div>
 
 
+          {/* task cards */}
+          <div className='flex flex-col gap-5 pt-6 pb-[7rem]'>
+            <Fragment>
+              {isLoading && <div className="flex flex-col items-center py-5">
+                <FiLoader size={30} color="white" className="animate-spin" />
+                <p className="text-white work-sans pt-4 text-sm">Updating tasks.....</p>
+              </div>}
+            </Fragment>
 
-          <div className="flex flex-col mx-auto gap-5 pb-32 min-w-full">
-            {filteredTasks.map((task) => (
-              <TaskCard key={task.shares}>
-                <CardHeader className="flex flex-row justify-between items-center py-0 px-3">
-                  <CardTitle className="text-[#FFFFFF] text-xs font-medium">{task.title}</CardTitle>
-                  <div className="flex flex-col">
-                    <LazyLoadImage effect="blur" src={logo} alt="logo" className="h-w-14 w-14" />
-                    <h1 className="text-xs poppins text-white font-medium">{task.type}</h1>
-                  </div>
-                </CardHeader>
-                <CardContent className="px-3">
-                  <CardTitle className="text-xl font-bold text-white">{task.name}</CardTitle>
-                  <CardDescription className="text-xs font-bold text-white">
-                    {task.shares}
-                    $Shares</CardDescription>
-                </CardContent>
-                <hr className="mx-3" />
-                <CardFooter className="pt-3 px-3 flex items-center justify-between">
-                  <CardTitle className="text-xs font-bold text-white">Continue</CardTitle>
-                  <Button disabled className="rounded h-5 text-[10px] font-medium bg-[#D25804]">Confirm</Button>
-                </CardFooter>
-              </TaskCard>
-            ))}
+            {filteredTasks?.length === 0 ? (
+              <div className="flex flex-col items-center gap-2">
+                <BsCardText size={40} color="white" />
+                <p className="text-white work-sans text-base text-center">No Available Tasks</p>
+              </div>
+            ) : (
+              filteredTasks?.reverse().map((task: { _id: string; title: string; taskUrl: string; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Events" | "Referral" | "Daily" | "Partners" | "Social"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) =>
+                <RavegenieCard key={task._id} task={task} />)
+            )}
           </div>
         </div>
       </div>

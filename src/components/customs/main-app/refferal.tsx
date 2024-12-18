@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import dotsbg from "@assets/images/dotted-bg.png";
 import logo from "@assets/images/icons/zenstreet_logo.png";
-import TaskCard from "@components/common/cards/Tasxcard";
+import CardWrapper from "@components/common/cards/Tasxcard";
 import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import wavybg from "@assets/images/card_bg.svg";
@@ -456,7 +456,7 @@ function Referral() {
         className="flex flex-col flex-1 py-3 "
       >
         <div className="px-4 flex flex-col gap-8 pb-[8rem]">
-          <TaskCard>
+          <CardWrapper>
             <CardHeader className="flex flex-col items-center py-0">
               <div className="h-[84px] w-[92px]">
                 <LazyLoadImage
@@ -518,7 +518,7 @@ function Referral() {
                 </div>
               </div>
             </CardContent>
-          </TaskCard>
+          </CardWrapper>
 
           <div>
             <div className="flex items-center justify-between py-4">
