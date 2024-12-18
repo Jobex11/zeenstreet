@@ -43,6 +43,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      'vm': 'vm-browserify',
       "@": path.resolve(__dirname, "./src/"), // Main alias
       "@components": path.resolve(__dirname, "./src/components/"),
       "@assets": path.resolve(__dirname, "./src/assets/"),
@@ -60,7 +61,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'], // Vendor libraries
-          ui: ['@components', '@hooks'], // Custom chunks for your UI
         },
       },
       plugins: [
