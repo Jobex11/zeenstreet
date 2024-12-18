@@ -13,15 +13,13 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
-
-        // Check if running inside Telegram WebApp
         setIsTelegram(
             typeof window !== "undefined" && tg?.initDataUnsafe?.user?.id !== undefined
         );
 
         if (tg) {
             // Initialize Telegram WebApp settings
-            tg.ready();
+            tg?.ready();
 
 
             if (tg.headerColor !== "#FFFFFF") {
@@ -36,9 +34,9 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
             }
 
 
-            if (!tg.isClosingConfirmationEnabled) {
-                tg.enableClosingConfirmation();
-            }
+            // if (!tg.isClosingConfirmationEnabled) {
+            //     tg.enableClosingConfirmation();
+            // }
 
             if (tg?.BackButton) {
               if (window.location.pathname !== "/") {

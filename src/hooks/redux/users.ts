@@ -4,7 +4,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // Define a service using a base URL and expected endpoints
 export const usersApi = createApi({
     reducerPath: 'usersApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://ravegenie-vgm7.onrender.com/api' }),
+    baseQuery: fetchBaseQuery({
+        baseUrl:"https://ravegenie-vgm7.onrender.com/api" }),
     tagTypes: ['username'],
     endpoints: (builder) => ({
         createUsername: builder.mutation({
