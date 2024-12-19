@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // Define a service using a base URL and expected endpoints
 export const notificationApi = createApi({
     reducerPath: 'notificationApi',
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:4000/api/notifications" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-vgm7.onrender.com/api/notifications" }),
     tagTypes: ['Notifications'],
     endpoints: (builder) => ({
         getNotifications: builder.query({
