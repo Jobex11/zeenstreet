@@ -1,5 +1,6 @@
 import { RavegenieCard } from "@/components/common/cards/TaskCard";
-import { useGetAllTasksQuery } from "@/hooks/redux/tasks";
+import { tasksApi, useGetAllTasksQuery } from "@/hooks/redux/tasks";
+import { socket } from "@/lib/socket.io";
 import bell_icon from "@assets/images/bell_icon.png";
 import dotsbg from "@assets/images/dotted-bg.png";
 import filter from "@assets/images/icons/filter.svg";
@@ -24,10 +25,8 @@ function Home() {
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const middleCardRef = useRef<HTMLDivElement>(null);
   const [selectedFilter, setSelectedFilter] = useState("All");
-  
-  const { data: user } = useGetUserSharesQuery(telegramId ?? "", {
-    skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
-  })
+
+  const { data: user } = useGetUserSharesQuery(telegramId ??"",{ refetchOnReconnect: true, refetchOnFocus: true })
   const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true });
 
   const filteredTasks = tasks?.tasks.filter((task: { category: string; }) =>
@@ -58,6 +57,20 @@ function Home() {
     }
   }, []);
 
+  
+  useEffect(() => {
+    // Listen for 'taskCreated' events
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    socket.on("taskCreated", (newTask) => {
+      console.log("New task created, invalidating tasks tag");
+      tasksApi.util.invalidateTags(["Tasks"]);
+    });
+  
+    return () => {
+      socket.off("taskCreated"); // Cleanup listener
+    };
+  }, []);
+  
 
   return (
     <div className="flex flex-col min-h-full">

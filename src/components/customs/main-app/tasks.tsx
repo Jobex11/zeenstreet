@@ -1,4 +1,5 @@
-import { useGetAllTasksQuery } from "@/hooks/redux/tasks";
+import { tasksApi, useGetAllTasksQuery } from "@/hooks/redux/tasks";
+import { socket } from "@/lib/socket.io";
 import wavybg from "@assets/images/card_bg.svg";
 import carousel_img from "@assets/images/cards/carousel_img.png";
 import dotsbg from "@assets/images/dotted-bg.png";
@@ -10,6 +11,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
+
 
 function Tasks() {
     const middleCardRef = useRef<HTMLDivElement>(null);
@@ -38,7 +40,19 @@ function Tasks() {
         }
     }, []);
 
-    console.log(tasks); // Check the structure of `task`
+    useEffect(() => {
+        socket.on('taskCreated', (newTask) => {
+          // Update the RTK Query cache with the new task
+          tasksApi.util.updateQueryData('getAllTasks', undefined, (draft) => {
+            draft.push(newTask);
+          });
+        });
+    
+        return () => {
+          socket.disconnect(); 
+        };
+      }, []);
+
 
     // const unlockedCount = images.filter((image) => !image.isLocked).length;
     // const lockedCount = images.filter((image) => image.isLocked).length;
