@@ -3,19 +3,18 @@ import dotsbg from "@assets/images/dotted-bg.png";
 import medalIcon from "@assets/images/icons/medal.svg";
 import dropbox from "@assets/images/icons/dropbox.svg";
 import profilePlaceholder from "@assets/images/icons/user-placeholder.svg";
-import mailIcon from "@assets/images/icons/mail-icon.svg";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-// import { useGetUsernameQuery } from "@hooks/redux/users";
+import { useGetNotificationsQuery} from "@hooks/redux/notifications"
+import { AiFillBell } from "react-icons/ai";
 
 function Header() {
 
   const [profileImage, setProfileImage] = useState<string>(profilePlaceholder);
-  // const [telegramId, setTelegramId] = useState<string | null>(null);
+  const limit = 10
   const [telegramUsername, setTelegramUsername] = useState("");
-  // const { data } = useGetUsernameQuery(telegramId ?? "", {
-  //   skip: !telegramId,
-  // });
+  const { data: notifications } = useGetNotificationsQuery({ limit },
+    { refetchOnReconnect: true, refetchOnFocus: true });
 
 
   useEffect(() => {
@@ -74,8 +73,10 @@ function Header() {
             </div>
           </Link>
           <Link to={"/notifications"} className="relative w-fit h-fit">
-            <LazyLoadImage effect="blur" src={mailIcon} alt="main icon" className="h-5 w-7" />
-            <div className="h-[9.2px] w-[9.2px] bg-[#D36519] rounded-full absolute -top-1 -left-1 z-20" />
+            <AiFillBell size={30} color={"white"}/>
+            <div className="h-4 w-4 bg-[#D36519] text-xs text-white flex items-center justify-center rounded-full work-sans absolute -top-1 -left-1 z-20">
+              {notifications?.totalNotifications || 0}
+            </div>
           </Link>
         </div>
       </header>

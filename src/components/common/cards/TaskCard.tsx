@@ -5,11 +5,12 @@ import { Button } from "@components/ui/button";
 import { CardContent, CardFooter, CardHeader, CardTitle } from "@components/ui/card";
 import * as Progress from "@radix-ui/react-progress";
 import { Fragment, useEffect, useState } from "react";
-import { CiClock2 } from "react-icons/ci";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import CardWrapper from "./Tasxcard";
+import { GoClockFill } from "react-icons/go";
+import { sharesApi } from "@/hooks/redux/shares";
 
 export function RavegenieCard({ task }: TaskcardType) {
     const [telegramId, setTelegramId] = useState("");
@@ -84,6 +85,7 @@ export function RavegenieCard({ task }: TaskcardType) {
             toast.success(completedTask?.message, { className: "text-xs work-sans" });
             if (completedTask) {
                 setDisableTaskBtn(completedTask?.completedTasks?.includes(task?._id))
+                sharesApi.util.invalidateTags(["shares"])
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -98,23 +100,23 @@ export function RavegenieCard({ task }: TaskcardType) {
         }, 5000);
     };
     return (
-        <CardWrapper className={`py-1.5`}>
-            <CardHeader className="flex flex-row justify-between items-center px-3 py-0">
-                <CardTitle className="text-[#FFFFFF] text-xs font-medium work-sans capitalize p-0">{task?.taskType}</CardTitle>
+        <CardWrapper className={`py-1.5 ${isExpired || disbleTaskBtn ? " grayscale" : "border-[3px] border-[#c781ff]"}`}>
+            <CardHeader className="flex flex-row justify-between  px-2.5 py-0">
+                <CardTitle className="text-[#FFFFFF] text-sm font-medium work-sans capitalize p-0">{!disbleTaskBtn ? "Incomplete" :"Complete"}</CardTitle>
                 <div className="flex flex-col">
                     <LazyLoadImage
                         effect="blur"
                         src={task?.image}
                         alt="Task Logo"
-                        className="max-h-[50px] max-w-[75.78px] w-fit h-fit object-contain object-center" />
-                    <h1 className="text-[11px] work-sans text-white text-center font-medium">{task?.category}</h1>
+                        className="max-h-[50px] max-w-[75.78px] w-fit h-fit object-contain object-center rounded-full" />
+                    <h1 className="text-[11px] work-sans text-white text-center font-medium pt-3">{task?.category}</h1>
                 </div>
             </CardHeader>
-            <CardContent className="px-3 py-0">
+            <CardContent className="px-2.5 py-0">
                 <CardTitle className="text-xl font-bold work-sans text-white">{task?.title}</CardTitle>
                 {task?.countdown && (
                     <Fragment>
-                        {!isExpired ? (
+                        {!isExpired || !disbleTaskBtn ? (
                             <Progress.Root
                                 className="relative h-[9px] w-full overflow-hidden rounded-full bg-white my-1"
                                 style={{
@@ -140,13 +142,13 @@ export function RavegenieCard({ task }: TaskcardType) {
                         <div className='flex items-center justify-between text-xs work-sans font-medium text-white py-2'>
                             {isExpired ? <span className="work-sans text-sm">{task.baseReward} shares lost</span> : <span>{currentReward}/{task?.baseReward} shares left</span>}
                             {isExpired ? <span className="work-sans text-sm">Time Elapsed</span> : <span className='flex items-center gap-1 work-sans'>
-                                <CiClock2 size={22} />  {formatTime(remainingTime)} left
+                                <GoClockFill size={22} />  {formatTime(remainingTime)} left
                             </span>}
                         </div>
                     </Fragment>
                 )}
             </CardContent>
-            <CardFooter className="py-2 px-3 flex items-center border-t border-t-gray-500 justify-between">
+            <CardFooter className="py-2 px-2.5 flex items-center border-t border-t-gray-500 justify-between">
                 {!task.taskUrl ? <Link to={""}>
                     <Button
                         variant="secondary"

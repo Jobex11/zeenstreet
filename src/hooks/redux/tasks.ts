@@ -5,11 +5,11 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const tasksApi = createApi({
     reducerPath: 'tasksApi',
     baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-vgm7.onrender.com/api/tasks" }),
-    tagTypes: ['tasks'],
+    tagTypes: ['Tasks'],
     endpoints: (builder) => ({
         getAllTasks: builder.query({
             query: () => `/`,
-            providesTags: ['tasks']
+            providesTags: ['Tasks']
         }),
         completeTasks: builder.mutation({
             query: ({ taskId, telegram_id, reward }) => ({
@@ -17,11 +17,11 @@ export const tasksApi = createApi({
                 method: 'POST',
                 body: { telegram_id, reward },
             }),
-            invalidatesTags: ['tasks'],
+            invalidatesTags: ['Tasks'],
         }),
         checkTaskStatus: builder.query({
             query: (taskId) => `/${taskId}/status`,
-            providesTags: ['tasks']
+            providesTags: ['Tasks']
         })
     }),
 })
