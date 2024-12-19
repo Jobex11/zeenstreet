@@ -98,8 +98,8 @@ export function RavegenieCard({ task }: TaskcardType) {
         }, 5000);
     };
     return (
-        <CardWrapper className={``}>
-            <CardHeader className="flex flex-row justify-between items-center px-3">
+        <CardWrapper className={`py-1.5`}>
+            <CardHeader className="flex flex-row justify-between items-center px-3 py-0">
                 <CardTitle className="text-[#FFFFFF] text-xs font-medium work-sans capitalize p-0">{task?.taskType}</CardTitle>
                 <div className="flex flex-col">
                     <LazyLoadImage
@@ -107,10 +107,10 @@ export function RavegenieCard({ task }: TaskcardType) {
                         src={task?.image}
                         alt="Task Logo"
                         className="max-h-[50px] max-w-[75.78px] w-fit h-fit object-contain object-center" />
-                    <h1 className="text-[11px] work-sans text-[#FFFFFF] text-center font-medium">{task?.category}</h1>
+                    <h1 className="text-[11px] work-sans text-white text-center font-medium">{task?.category}</h1>
                 </div>
             </CardHeader>
-            <CardContent className="px-3">
+            <CardContent className="px-3 py-0">
                 <CardTitle className="text-xl font-bold work-sans text-white">{task?.title}</CardTitle>
                 {task?.countdown && (
                     <Fragment>
@@ -146,18 +146,22 @@ export function RavegenieCard({ task }: TaskcardType) {
                     </Fragment>
                 )}
             </CardContent>
-            <hr className="mx-3" />
-            <CardFooter className="py-2 px-3 flex items-center justify-between">
-                {!task.taskUrl ? <Link to={""}><Button
-                    disabled={disbleTaskBtn}
-                    onClick={handleTaskPerformance} className="rounded-[5px] h-5 text-[10px] font-medium">Continue</Button></Link> :
+            <CardFooter className="py-2 px-3 flex items-center border-t border-t-gray-500 justify-between">
+                {!task.taskUrl ? <Link to={""}>
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        disabled={disbleTaskBtn}
+                        onClick={handleTaskPerformance} className="rounded h-7 text-[10px] font-medium">Continue</Button></Link> :
                     <Button
                         disabled={disbleTaskBtn}
-                        onClick={handleTaskPerformance} className="rounded-[5px] h-5 text-[10px] font-medium">Continue</Button>}
+                        onClick={handleTaskPerformance} className="rounded h-7 text-[10px] font-medium">Continue</Button>}
                 {!isExpired ? (
                     <Button
+                        variant="secondary"
+                        size="sm"
                         disabled={isCompleting || !taskPerformed || disbleTaskBtn}
-                        onClick={handleCompleteTask} className="rounded-[5px] h-5 text-[10px] font-medium bg-[#D25804]">Confirm</Button>
+                        onClick={handleCompleteTask} className="bg-orange-600 hover:bg-orange-700 text-white h-7">Confirm</Button>
                 ) : <p className={"text-red-500 work-sans"}>Task Expired</p>}
             </CardFooter>
         </CardWrapper>
