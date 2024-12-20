@@ -1,12 +1,11 @@
 import dotsbg from "@assets/images/dotted-bg.png";
-import { useGetNotificationsQuery, notificationApi } from "@hooks/redux/notifications"
-import { socket } from "@lib/socket.io";
-import { Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Skeleton } from "@components/ui/skeleton"
+import { Skeleton } from "@components/ui/skeleton";
+import { useGetNotificationsQuery } from "@hooks/redux/notifications";
 import moment from 'moment';
-import { TbBellRinging2 } from "react-icons/tb";
+import { Fragment, useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
+import { TbBellRinging2 } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 interface NotificationTypes {
   _id: string
@@ -25,17 +24,6 @@ function MailNotification() {
     { refetchOnReconnect: true, refetchOnFocus: true });
 
 
-  useEffect(() => {
-    socket.on("notificationCreated", (newNotification) => {
-      console.log("New task created, invalidating tasks tag", newNotification);
-      notificationApi.util.invalidateTags(["Notifications"])
-    });
-
-    return () => {
-      socket.off("notificationCreated");
-    };
-  }, []);
-
   // const loadNextPage = () => {
   //   if (notifications?.currentPage < notifications?.totalPages) {
   //     setNotificationPage(notifications?.currentPage + 1);
@@ -51,7 +39,6 @@ function MailNotification() {
 
   const handleRefetch = () => {
     refetch();
-    notificationApi.util.invalidateTags(['Notifications'])
   }
 
   return (
@@ -73,7 +60,7 @@ function MailNotification() {
               ))}
             </div>}
 
-            {!notifications?.notifications &&
+            {!isLoading && !notifications?.notifications &&
               <div className={"flex flex-col h-full items-center justify-center gap-5 pt-10"}>
                 <TbBellRinging2 size={50} color={"white"} />
                 <p className={"text-white work-sans text-lg"}>No notifications yet</p>
@@ -82,7 +69,7 @@ function MailNotification() {
 
           {/* notifications */}
           <div className="flex flex-col gap-3 pb-[8rem]">
-            {notifications?.notifications?.map((notification: NotificationTypes) => (
+            {!isLoading && notifications?.notifications?.map((notification: NotificationTypes) => (
               <Link to={notification.url} key={notification._id} className="py-5 px-2 flex items-center gap-3 rounded border-b border-[#3E3D3D] hover:bg-gray-900 duration-200 inter">
                 <div className=" rounded-full h-[50px] min-w-[50px]">
                   <img

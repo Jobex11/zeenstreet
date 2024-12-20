@@ -126,7 +126,7 @@ export function RavegenieCard({ task }: TaskcardType) {
                 </div>
             </CardHeader>
             <CardContent className="px-2.5 py-0">
-                <CardTitle className="text-xl font-bold work-sans text-white">{task?.title}</CardTitle>
+                <CardTitle className="text-xl font-bold work-sans text-white line-clamp-1">{task?.title}</CardTitle>
                 {task?.countdown && (
                     <Fragment>
                         {isExpired || isTaskCompleted ? (
@@ -179,7 +179,7 @@ export function RavegenieCard({ task }: TaskcardType) {
                     </Fragment>
                 )}
             </CardContent>
-            <CardFooter className="py-2 px-2.5 flex items-center border-t border-t-gray-500 justify-between">
+            <CardFooter className="pt-2 pb-0 px-2.5 flex items-center border-t border-t-gray-500 justify-between">
                 {task.taskUrl ? <Link to={task.taskUrl}>
                     <Button
                         variant="secondary"
