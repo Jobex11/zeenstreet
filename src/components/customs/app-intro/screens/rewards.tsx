@@ -31,7 +31,7 @@ export const Rewards = (
           <div>
             <Fade>
               <div className="aqum flex flex-col gap-4 items-center">
-                <h1 className="text-xl text-[#D25804] font-extrabold aqum">Few more steps to get started</h1>
+                <h1 className="text-xl text-white text-center font-extrabold aqum">Few more steps to get started</h1>
 
                 <div className="relative h-28 w-28">
                   <LazyLoadImage effect="blur" src={medal} alt="" className="h-full w-full object-contain object-center" />

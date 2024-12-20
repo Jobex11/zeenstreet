@@ -7,7 +7,7 @@ import CardCarousel from "@components/common/main-app/card-carousel";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import { Fragment, useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { IoAdd } from "react-icons/io5";
@@ -128,24 +128,31 @@ function Home() {
 
 
           {/* task cards */}
-          <div className='flex flex-col gap-5 pt-6 pb-[7rem]'>
-            <Fragment>
-              {isLoading && <div className="flex flex-col items-center py-5">
+          <div className="flex flex-col gap-5 pt-6 pb-[7rem]">
+            {/* Loading State */}
+            {isLoading && (
+              <div className="flex flex-col items-center py-5">
                 <FiLoader size={30} color="white" className="animate-spin" />
                 <p className="text-white work-sans pt-4 text-sm">Updating tasks.....</p>
-              </div>}
-            </Fragment>
+              </div>
+            )}
 
-            {filteredTasks?.length === 0 ? (
+            {/* No Tasks Available */}
+            {!isLoading && (!filteredTasks || filteredTasks.length === 0) && (
               <div className="flex flex-col items-center gap-2">
                 <BsCardText size={40} color="white" />
                 <p className="text-white work-sans text-base text-center">No Available Tasks</p>
               </div>
-            ) : (
-              filteredTasks?.map((task: { _id: string; title: string; taskUrl: string; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Events" | "Referral" | "Daily" | "Partners" | "Social"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) =>
-                <RavegenieCard key={task._id} task={task} />)
+            )}
+
+            {/* Tasks List */}
+            {!isLoading && filteredTasks?.length > 0 && (
+              filteredTasks.map((task: { _id: string; title: string; taskUrl: string; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Events" | "Referral" | "Daily" | "Partners" | "Social"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) => (
+                <RavegenieCard key={task._id} task={task} />
+              ))
             )}
           </div>
+
         </div>
       </div>
     </div>

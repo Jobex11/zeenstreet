@@ -21,7 +21,7 @@ const TIMEOUT = 4000;
 
 export default function ZeenAppIntro() {
 
-    const [currentScreen, setCurrentScreen] = useState<string>(SCREENS.CHECK_ACCOUNT);
+    const [currentScreen, setCurrentScreen] = useState<string>(SCREENS.WELCOME);
     const [loading,] = useState<boolean>(false);
     const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
     const navigate = useNavigate();
