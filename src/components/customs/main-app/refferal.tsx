@@ -85,7 +85,9 @@ function Referral() {
     setLoading(true);
     try {
       // Fetch Tier 1 Referrals
-      const tier1Response = await fetch(`/api/referral/tier1/${telegramId}`);
+      const tier1Response = await fetch(
+        `https://ravegenie-vgm7.onrender.com/api/referral/tier1/${telegramId}`
+      );
       const tier1Data = await tier1Response.json();
 
       const tier1Mapped: Referral[] = tier1Data.tier1.map(
@@ -102,7 +104,9 @@ function Referral() {
       setTier1Referrals(tier1Mapped);
 
       // Fetch Tier 2 Referrals
-      const tier2Response = await fetch(`/api/referral/tier2/${telegramId}`);
+      const tier2Response = await fetch(
+        `https://ravegenie-vgm7.onrender.com/api/referral/tier2/${telegramId}`
+      );
       const tier2Data = await tier2Response.json();
 
       const tier2Mapped: Referral[] = tier2Data.tier2.map(
