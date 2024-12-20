@@ -15,72 +15,118 @@ import { IoCopy } from "react-icons/io5";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-const tier1Referrals = [
-  {
-    userLogo: avatarImage,
-    name: "sebastian",
-    userName: "@Benjamin",
-    createdAt: "12-3-2023",
-    rewardedShares: "1124",
-    isTier2: false,
-  },
-  {
-    userLogo: avatarImage,
-    name: "sebastian",
-    userName: "@Benjamin",
-    createdAt: "12-2-2023",
-    rewardedShares: "1124",
-    isTier2: false,
-  },
-  {
-    userLogo: avatarImage,
-    name: "sebastian",
-    userName: "@Benjamin",
-    createdAt: "12-5-2023",
-    rewardedShares: "1124",
-    isTier2: false,
-  },
-];
+interface Referral {
+  userLogo: string;
+  name: string;
+  userName: string;
+  createdAt: string;
+  rewardedShares: string;
+  isTier2: boolean;
+}
 
-const tier2Referrals = [
-  {
-    userLogo: avatarImage,
-    name: "sebastian",
-    userName: "@Benjamin",
-    createdAt: "12-6-2023",
-    rewardedShares: "1124",
-    isTier2: true,
-  },
-  {
-    userLogo: avatarImage,
-    name: "sebastian",
-    userName: "@Benjamin",
-    createdAt: "12-7-2023",
-    rewardedShares: "1124",
-    isTier2: true,
-  },
-  {
-    userLogo: avatarImage,
-    name: "sebastian",
-    userName: "@Benjamin",
-    createdAt: "12-9-2023",
-    rewardedShares: "1124",
-    isTier2: true,
-  },
-];
+interface Tier1DataItem {
+  telegram_id: string;
+  accountName: string;
+  username: string;
+  dateJoined: string;
+  shares: number;
+}
+
+interface Tier1Data {
+  tier1: Tier1DataItem[];
+}
+interface Tier2DataItem {
+  telegram_id: string;
+  accountName: string;
+  username: string;
+  dateJoined: string;
+  shares: number;
+}
+
+interface Tier2Data {
+  tier2: Tier2DataItem[];
+}
 
 function Referral() {
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const [tabs, setTabs] = useState<string>("Tier 1");
-  const btnTabs = [{ name: "Tier 1" }, { name: "Tier 2" }];
-
-  //backend starts
 
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [referralLink, setReferralLink] = useState<string | null>(null);
 
+  const [tier1Referrals, setTier1Referrals] = useState<Referral[]>([]);
+  const [tier2Referrals, setTier2Referrals] = useState<Referral[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const btnTabs = [{ name: "Tier 1" }, { name: "Tier 2" }];
+
+  //backend start
+
+  // Initialize Telegram WebApp
   useEffect(() => {
-    // Fetch Telegram User ID
+    if (window.Telegram && window.Telegram.WebApp) {
+      const tgData = window.Telegram.WebApp.initDataUnsafe;
+      if (tgData && tgData.user && tgData.user.id) {
+        setTelegramId(tgData.user.id.toString());
+      }
+    }
+  }, []);
+
+  // Fetch Tier Data
+  useEffect(() => {
+    if (telegramId) {
+      fetchReferrals();
+    }
+  }, [telegramId]);
+
+  const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+
+  const fetchReferrals = async () => {
+    setLoading(true);
+    try {
+      // Fetch Tier 1 Referrals
+      const tier1Response = await fetch(`/api/referral/tier1/${telegramId}`);
+      const tier1Data = await tier1Response.json();
+
+      const tier1Mapped: Referral[] = tier1Data.tier1.map(
+        (ref: Tier1DataItem) => ({
+          userLogo: `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos?user_id=${ref.telegram_id}`,
+          name: ref.accountName,
+          userName: ref.username,
+          createdAt: ref.dateJoined,
+          rewardedShares: ref.shares.toString(),
+          isTier2: false,
+        })
+      );
+
+      setTier1Referrals(tier1Mapped);
+
+      // Fetch Tier 2 Referrals
+      const tier2Response = await fetch(`/api/referral/tier2/${telegramId}`);
+      const tier2Data = await tier2Response.json();
+
+      const tier2Mapped: Referral[] = tier2Data.tier2.map(
+        (ref: Tier2DataItem) => ({
+          userLogo: `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos?user_id=${ref.telegram_id}`,
+          name: ref.accountName,
+          userName: ref.username,
+          createdAt: ref.dateJoined,
+          rewardedShares: ref.shares.toString(),
+          isTier2: true,
+        })
+      );
+
+      setTier2Referrals(tier2Mapped);
+    } catch (error) {
+      console.error("Error fetching referrals:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //backend stop
+
+  useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       const initData = window.Telegram.WebApp.initDataUnsafe;
       const user = initData?.user;
@@ -92,7 +138,6 @@ function Referral() {
   }, []);
 
   useEffect(() => {
-    // Fetch Referral Code and Link
     if (telegramId) {
       fetch(
         `https://ravegenie-vgm7.onrender.com/api/referral/referral-code/${telegramId}`
@@ -138,8 +183,6 @@ function Referral() {
     }
   };
 
-  //backend ends
-
   const handleActiveTabs = (name: string) => {
     setTabs(name);
   };
@@ -154,7 +197,6 @@ function Referral() {
         className="flex flex-col flex-1 py-3 "
       >
         <div className="px-4 flex flex-col gap-8 pb-[8rem]">
-          {/* top card */}
           <CardWrapper>
             <CardHeader className="flex flex-col items-center py-0">
               <div className="h-[84px] w-[92px]">
@@ -220,7 +262,6 @@ function Referral() {
           </CardWrapper>
 
           <div>
-            {/* tab buttons */}
             <div className="flex items-center justify-between py-4">
               {btnTabs.map((tab) => (
                 <Button
@@ -231,7 +272,6 @@ function Referral() {
                     backgroundPosition: "center",
                   }}
                   key={tab.name}
-                  // disabled={tabs !== tab.name}
                   onClick={() => handleActiveTabs(tab.name)}
                   className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${
                     tabs === tab.name
@@ -247,28 +287,33 @@ function Referral() {
               ))}
             </div>
 
-            {/* Referral list */}
             <>
-              {tabs === "Tier 1" && (
+              {loading ? (
+                <div className="text-center">Loading referrals...</div>
+              ) : (
                 <>
-                  {tier1Referrals.length > 0 ? (
-                    tier1Referrals.map((ref) => (
-                      <Referrals key={ref.createdAt} referrals={ref} />
-                    ))
-                  ) : (
-                    <div className="p-4 text-center">No Referrals yet</div>
+                  {tabs === "Tier 1" && (
+                    <>
+                      {tier1Referrals.length > 0 ? (
+                        tier1Referrals.map((ref) => (
+                          <Referrals key={ref.createdAt} referrals={ref} />
+                        ))
+                      ) : (
+                        <div className="p-4 text-center">No Referrals yet</div>
+                      )}
+                    </>
                   )}
-                </>
-              )}
 
-              {tabs === "Tier 2" && (
-                <>
-                  {tier2Referrals.length > 0 ? (
-                    tier2Referrals.map((ref) => (
-                      <Referrals key={ref.createdAt} referrals={ref} />
-                    ))
-                  ) : (
-                    <div className="p-4 text-center">No Referrals yet</div>
+                  {tabs === "Tier 2" && (
+                    <>
+                      {tier2Referrals.length > 0 ? (
+                        tier2Referrals.map((ref) => (
+                          <Referrals key={ref.createdAt} referrals={ref} />
+                        ))
+                      ) : (
+                        <div className="p-4 text-center">No Referrals yet</div>
+                      )}
+                    </>
                   )}
                 </>
               )}
@@ -298,7 +343,6 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
     <>
       {!referrals && <div className="p-4 text-center">No Referrals yet</div>}
       <div className="flex items-center justify-between py-5 border-b border-[#5F59598A]">
-        {/* user info */}
         <div className="flex items-center gap-2">
           <div className="h-[50px] w-[50px] rounded-full">
             <LazyLoadImage
@@ -320,7 +364,6 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
             </p>
           </div>
         </div>
-        {/* shares */}
         <div className="flex flex-col gap-1">
           <h1 className="text-white text-xs font-bold">
             {referrals.rewardedShares}
@@ -336,11 +379,10 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
 };
 
 /*
-
 import { useEffect, useState } from "react";
 import dotsbg from "@assets/images/dotted-bg.png";
 import logo from "@assets/images/icons/zenstreet_logo.png";
-import TaskCard from "@components/common/cards/Tasxcard";
+import CardWrapper from "@components/common/cards/Tasxcard";
 import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import wavybg from "@assets/images/card_bg.svg";
@@ -413,9 +455,9 @@ function Referral() {
   const [tabs, setTabs] = useState<string>("Tier 1");
   const btnTabs = [{ name: "Tier 1" }, { name: "Tier 2" }];
 
-  const handleActiveTabs = (name: string) => {
-    setTabs(name);
-  };
+  const [referralCode, setReferralCode] = useState<string | null>(null);
+  const [referralLink, setReferralLink] = useState<string | null>(null);
+
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       const initData = window.Telegram.WebApp.initDataUnsafe;
@@ -427,24 +469,55 @@ function Referral() {
     }
   }, []);
 
-  const handleShareReferralLink = () => {
-    const tg = window.Telegram?.WebApp;
-    const inviteLink = `https://t.me/RaveGenieBot/ravegeniegames?startapp=${telegramId}&mode=compact`;
-    const shareText =
-      "Join me on Ravegenie Games to earn rewards by completing task 🎉";
-    const fullUrl = `https://t.me/share/url?url=${encodeURIComponent(
-      inviteLink
-    )}&text=${encodeURIComponent(shareText)}`;
-    tg.openTelegramLink(fullUrl);
-  };
+  useEffect(() => {
+    if (telegramId) {
+      fetch(
+        `https://ravegenie-vgm7.onrender.com/api/referral/referral-code/${telegramId}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.referralCode) {
+            setReferralCode(data.referralCode);
+          }
+        })
+        .catch((err) => console.error("Error fetching referral code:", err));
+
+      fetch(
+        `https://ravegenie-vgm7.onrender.com/api/referral/referral-link/${telegramId}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.referralLink) {
+            setReferralLink(data.referralLink);
+          }
+        })
+        .catch((err) => console.error("Error fetching referral link:", err));
+    }
+  }, [telegramId]);
 
   const handleCopyReferralLink = () => {
-    const inviteLink = `https://t.me/RaveGenieBot/ravegeniegames?startapp=${telegramId}&mode=compact`;
-    navigator.clipboard.writeText(inviteLink);
-    navigator.vibrate([50, 50]);
-    toast.info("Referral link copied!", { className: "text-xs work-sans" })
+    if (referralLink) {
+      navigator.clipboard.writeText(referralLink);
+      navigator.vibrate([50, 50]);
+      toast.info("Referral link copied!");
+    }
   };
 
+  const handleShareReferralLink = () => {
+    if (referralLink) {
+      const tg = window.Telegram?.WebApp;
+      const shareText =
+        "Join me on Ravegenie Games to earn rewards by completing tasks 🎉";
+      const fullUrl = `https://t.me/share/url?url=${encodeURIComponent(
+        referralLink
+      )}&text=${encodeURIComponent(shareText)}`;
+      tg.openTelegramLink(fullUrl);
+    }
+  };
+
+  const handleActiveTabs = (name: string) => {
+    setTabs(name);
+  };
   return (
     <div className="flex flex-col min-h-full">
       <div
@@ -486,7 +559,7 @@ function Referral() {
                       onClick={handleCopyReferralLink}
                       className="h-[23px] w-24 bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins"
                     >
-                      {telegramId}
+                      {referralCode || "Loading..."}
                     </Button>
                     <IconButton
                       className="bg-transparent w-fit hover:bg-transparent"
@@ -531,7 +604,6 @@ function Referral() {
                     backgroundPosition: "center",
                   }}
                   key={tab.name}
-                  // disabled={tabs !== tab.name}
                   onClick={() => handleActiveTabs(tab.name)}
                   className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${
                     tabs === tab.name
