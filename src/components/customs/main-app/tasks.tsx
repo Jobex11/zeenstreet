@@ -42,16 +42,16 @@ function Tasks() {
 
     useEffect(() => {
         socket.on('taskCreated', (newTask) => {
-          // Update the RTK Query cache with the new task
-          tasksApi.util.updateQueryData('getAllTasks', undefined, (draft) => {
-            draft.push(newTask);
-          });
+            // Update the RTK Query cache with the new task
+            tasksApi.util.updateQueryData('getAllTasks', undefined, (draft) => {
+                draft.push(newTask);
+            });
         });
-    
+
         return () => {
-          socket.disconnect(); 
+            socket.disconnect();
         };
-      }, []);
+    }, []);
 
 
     // const unlockedCount = images.filter((image) => !image.isLocked).length;
@@ -158,7 +158,7 @@ function Tasks() {
                     ) : (
                         tasks?.tasks
                             .filter((task: { category: string }) => tabs === "All" || task.category === tabs)
-                            .reverse().map((task: { _id: string; title: string; taskUrl: string; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Daily" | "Referral" | "Partners" | "Social" | "Events"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) => (
+                            .map((task: { _id: string; title: string; taskUrl: string; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Daily" | "Referral" | "Partners" | "Social" | "Events"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) => (
                                 <RavegenieCard key={task._id} task={task} />
                             ))
                     )}

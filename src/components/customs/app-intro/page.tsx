@@ -19,26 +19,23 @@ const SCREENS = {
 
 const TIMEOUT = 4000;
 
-const user = {
-    year: "4",
-    shares: 100000,
-};
-
-const userAccountInfo = {
-    telegramAge: 20,
-    activityLevel: 30,
-    isPremium: 60,
-    ogStatus: 90,
-};
-
-
 export default function ZeenAppIntro() {
 
-    const [currentScreen, setCurrentScreen] = useState<string>(SCREENS.WELCOME);
+    const [currentScreen, setCurrentScreen] = useState<string>(SCREENS.CHECK_ACCOUNT);
     const [loading,] = useState<boolean>(false);
     const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
     const navigate = useNavigate();
 
+    const minShares = 1000; // Minimum shares
+    const maxShares = 20000; // Maximum shares
+
+    // Generate random values
+    const randomShares = Math.floor(
+        Math.random() * (maxShares - minShares + 1)
+    ) + minShares;
+    const user = {
+        shares: randomShares,
+    };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const telegramId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id;
 
@@ -107,7 +104,7 @@ export default function ZeenAppIntro() {
                 <CreateUsername setScreens={setCurrentScreen} />
             )}
             {currentScreen === SCREENS.CHECK_ACCOUNT && (
-                <CheckAccount userInfo={userAccountInfo} setScreens={setCurrentScreen} />
+                <CheckAccount setScreens={setCurrentScreen} />
             )}
             {currentScreen === SCREENS.REWARDS && (
                 <Rewards user={user} setScreens={setCurrentScreen} />

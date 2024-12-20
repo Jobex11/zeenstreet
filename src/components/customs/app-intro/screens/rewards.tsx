@@ -7,7 +7,7 @@ import CountUp from "react-countup"
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface RewardsProps {
-  year: string;
+  year?: string;
   shares: number;
 }
 
@@ -31,8 +31,7 @@ export const Rewards = (
           <div>
             <Fade>
               <div className="aqum flex flex-col gap-4 items-center">
-                <h1 className="text-7xl text-[#D25804] font-extrabold aqum">{user?.year}</h1>
-                <h1 className="text-[#D25804] text-2xl">Years</h1>
+                <h1 className="text-xl text-[#D25804] font-extrabold aqum">Few more steps to get started</h1>
 
                 <div className="relative h-28 w-28">
                   <LazyLoadImage effect="blur" src={medal} alt="" className="h-full w-full object-contain object-center" />
@@ -45,7 +44,7 @@ export const Rewards = (
                 <h1 className="capitalise text-lg font-bold text-white text-center py-3 aqum">Here is your Reward</h1>
 
                 <Card className="aqum flex w-56 h-[89px] mx-auto border-none flex-col rounded-xl items-center justify-center gap-2 p-3 bg-[#D25804] text-white">
-                  <h1 className=""><CountUp start={0} separator="," end={100000} /></h1>
+                  <h1 className=""><CountUp start={0} separator="," end={user.shares} /></h1>
                   <h1>$SHARES</h1>
                 </Card>
 

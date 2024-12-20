@@ -9,6 +9,7 @@ declare global {
             last_name?: string;
             username?: string;
             photo_url?: string;
+            is_premium?:boolean;
           };
         };
         //to handle more functionalities(tasks, user experience)

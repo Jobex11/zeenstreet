@@ -1,48 +1,45 @@
-import React, { useEffect } from 'react'
-import { EmblaOptionsType } from 'embla-carousel'
-import useEmblaCarousel from 'embla-carousel-react'
-import ClassNames from 'embla-carousel-class-names'
-import { DotButton, useDotButton } from './carousel-dot-btn'
-import { LazyLoadImage } from "react-lazy-load-image-component"
-import cardbg from "@/assets/images/card_bg.svg"
+import React, { useEffect } from 'react';
+import { EmblaOptionsType } from 'embla-carousel';
+import useEmblaCarousel from 'embla-carousel-react';
+import ClassNames from 'embla-carousel-class-names';
+import { DotButton, useDotButton } from './carousel-dot-btn';
 
 type PropType = {
-    slides: number[]
-    options?: EmblaOptionsType
-    defaultActiveIndex?: number
-}
+    slides: string[]; // Array of image URLs
+    options?: EmblaOptionsType;
+    defaultActiveIndex?: number;
+};
 
 const CardCarousel: React.FC<PropType> = (props) => {
-    const { slides, options, defaultActiveIndex = 2 } = props
+    const { slides, options, defaultActiveIndex = 0 } = props;
     const [emblaRef, emblaApi] = useEmblaCarousel(
-        { 
-            ...options, 
+        {
+            ...options,
             startIndex: defaultActiveIndex,
             align: 'center',
-            containScroll: 'trimSnaps'
+            containScroll: 'trimSnaps',
         },
         [ClassNames()]
-    )
+    );
 
-    const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi)
+    const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
 
     useEffect(() => {
         if (emblaApi) {
-            emblaApi.scrollTo(defaultActiveIndex)
+            emblaApi.scrollTo(defaultActiveIndex);
         }
-    }, [emblaApi, defaultActiveIndex])
+    }, [emblaApi, defaultActiveIndex]);
 
     return (
         <div className="embla">
             <div className="embla__viewport" ref={emblaRef}>
                 <div className="embla__container">
-                    {slides.map((index) => (
+                    {slides.map((imageUrl, index) => (
                         <div className="embla__slide" key={index}>
-                            <LazyLoadImage
-                                effect="blur"
-                                className="embla__slide__img"
-                                src={cardbg}
-                                alt="Your alt text"
+                            <img
+                                className="embla__slide__img border-2 object-bottom border-[#c781ff]"
+                                src={imageUrl}
+                                alt={`Slide ${index + 1}`}
                             />
                         </div>
                     ))}
@@ -59,8 +56,8 @@ const CardCarousel: React.FC<PropType> = (props) => {
                 ))}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default CardCarousel
+export default CardCarousel;
 
