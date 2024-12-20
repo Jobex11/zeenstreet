@@ -94,8 +94,9 @@ function Referral() {
 
         if (fileData.ok) {
           const filePath = fileData.result.file_path;
-          return `https://api.telegram.org/file/bot<YOUR_TELEGRAM_BOT_TOKEN>/${filePath}`;
+          return `https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`;
         }
+        s;
       }
       return null; // No photo available
     } catch (error) {
