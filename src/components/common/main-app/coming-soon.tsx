@@ -1,4 +1,3 @@
-import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface Props {
     image?: string;
@@ -12,7 +11,7 @@ const ComingSoon = ({ image, alt,name }: Props) => {
             <div className="flex flex-col text-center px-3">
                 {/* Icon at the top */}
                 <div className="mb-6 text-center mx-auto">
-                    <LazyLoadImage effect="blur" src={image} alt={alt} className="h-40 w-40" />
+                    <img src={image} alt={alt} className="h-40 w-40" />
                 </div>
 
                 {/* Title */}

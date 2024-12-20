@@ -120,8 +120,7 @@ function Referral() {
           <CardWrapper>
             <CardHeader className="flex flex-col items-center py-0">
               <div className="h-[84px] w-[92px]">
-                <LazyLoadImage
-                  effect="blur"
+                <img
                   src={logo}
                   alt="zeen streeet logo"
                   className={"min-h-full object-cover object-center w-full"}

@@ -4,7 +4,6 @@ import medalIcon from "@assets/images/icons/medal.svg";
 import dropbox from "@assets/images/icons/dropbox.svg";
 import profilePlaceholder from "@assets/images/icons/user-placeholder.svg";
 import { Link } from "react-router-dom";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useGetNotificationsQuery} from "@hooks/redux/notifications"
 import { AiFillBell } from "react-icons/ai";
 
@@ -39,20 +38,18 @@ function Header() {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
       }}
-      className="h-fit w-full top-0 sticky z-50"
+      className="h-fit w-full  top-0 sticky z-50"
     >
-      <header className="flex items-center justify-between w-full py-4 px-3">
+      <header className="flex items-center justify-between w-full py-4 px-3 ">
         <div className="flex items-center gap-4">
           <span>
-            <LazyLoadImage
-              effect="blur"
+            <img
               src={medalIcon}
               alt="medial icon"
               className="h-6 w-6" />
           </span>
           <Link to={"/ranks"}>
-            <LazyLoadImage
-              effect="blur"
+            <img
               src={dropbox}
               alt="dropbox"
               className="h-6 w-6" />
@@ -62,7 +59,7 @@ function Header() {
         <div className="flex items-center gap-4">
           <Link to={"/profile"}>
             <div className="flex items-center bg-transparent border hover:bg-transparent pr-2 rounded-md gap-2 h-7 min-w-16">
-              <LazyLoadImage effect="blur"
+              <img
                 src={profileImage}
                 alt="user placeholder"
                 className="h-6 w-6 rounded-md"

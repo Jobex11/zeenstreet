@@ -35,7 +35,6 @@ import { useGetUsernameQuery } from "@hooks/redux/users";
 import { useEffect, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { toast } from "sonner";
 
 const wealthClass = [
@@ -208,8 +207,7 @@ function Profile() {
                             <CardContent className='flex  justify-between px-2 py-0'>
                                 <div className='flex items-center'>
                                     <div className='h-28 w-[106px]'>
-                                        <LazyLoadImage
-                                            effect="blur"
+                                        <img
                                             src={profileImage}
                                             alt='profile image'
                                             className='w-full object-contain object-center rounded-full' />
@@ -236,8 +234,7 @@ function Profile() {
                                 </div>
                                 <div>
                                     <div className='h-[52px] w-[52px] mb-4 relative flex items-center justify-center'>
-                                        <LazyLoadImage
-                                            effect="blur"
+                                        <img
                                             src={profileBadge}
                                             alt="rank badge"
                                             className='h-full w-full object-cover object-center' />
@@ -274,8 +271,7 @@ function Profile() {
                                                 }}
                                                 className='h-12 min-w-[70px] w-full relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold overflow-hidden'
                                             >
-                                                <LazyLoadImage
-                                                    effect="blur"
+                                                <img
                                                     src={item.img}
                                                     alt={`wealth class ${item.name}`}
                                                     className="h-full w-full object-cover object-center rounded-md"
@@ -299,8 +295,7 @@ function Profile() {
                                             <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                 <IoIosClose size={30} color="#A4A4A7" />
                                             </DialogClose>
-                                            <LazyLoadImage
-                                                effect="blur"
+                                            <img
                                                 src={item.img}
                                                 alt="Refferal Images"
                                                 className="h-24 w-24 object-contain object-center"
@@ -311,8 +306,7 @@ function Profile() {
                                             <p className="text-white work-sans text-sm text-center max-w-sm">{item.description}</p>
                                             <h1 className={`flex items-center gap-2 ${checkIfClaimed(item.shareType) && "line-through"} text-white work-sans text-base`}>
                                                 {item.rewards}{" "}
-                                                <LazyLoadImage
-                                                    effect="blur"
+                                                <img
                                                     src={goldCoin}
                                                     alt="coin"
                                                     className="h-5 w-5 object-contain"
@@ -357,8 +351,7 @@ function Profile() {
                                                     }}
                                                     className="h-24 min-w-[70px] w-full rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
                                                 >
-                                                    <LazyLoadImage
-                                                        effect="blur"
+                                                    <img
                                                         src={item.img}
                                                         alt=""
                                                         className="h-full w-full object-cover rounded-md"
@@ -376,8 +369,7 @@ function Profile() {
                                                 <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                     <IoIosClose size={30} color="#A4A4A7" />
                                                 </DialogClose>
-                                                <LazyLoadImage
-                                                    effect="blur"
+                                                <img
                                                     src={item.img}
                                                     alt="Refferal Images"
                                                     className="h-[100px] w-[100px] object-contain object-center"
@@ -387,8 +379,7 @@ function Profile() {
                                                 </h1>
                                                 <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">
                                                     + 3000{" "}
-                                                    <LazyLoadImage
-                                                        effect="blur"
+                                                    <img
                                                         src={goldCoin}
                                                         alt="coin"
                                                         className="h-5 w-5 object-contain"
@@ -423,8 +414,7 @@ function Profile() {
                                             <DrawerTrigger asChild>
                                                 <div className="flex flex-col items-center gap-3">
                                                     <div className="flex flex-col relative gap-1 min-w-fit">
-                                                        <LazyLoadImage
-                                                            effect="blur"
+                                                        <img
                                                             src={a.img}
                                                             alt="Refferal Images"
                                                             className="max-h-[58px] max-w-[46px] object-cover object-center"
@@ -449,8 +439,7 @@ function Profile() {
                                                     <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                         <IoIosClose size={30} color="#A4A4A7" />
                                                     </DialogClose>
-                                                    <LazyLoadImage
-                                                        effect="blur"
+                                                    <img
                                                         src={a.img}
                                                         alt="Refferal Images"
                                                         className="h-[100px] w-[100px] object-contain object-center"
@@ -460,8 +449,7 @@ function Profile() {
                                                     </h1>
                                                     <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">
                                                         + {a.reward}{" "}
-                                                        <LazyLoadImage
-                                                            effect="blur"
+                                                        <img
                                                             src={goldCoin}
                                                             alt="coin"
                                                             className="h-5 w-5 object-contain"

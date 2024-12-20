@@ -1,6 +1,5 @@
 import { RavegenieCard } from "@/components/common/cards/TaskCard";
-import { tasksApi, useGetAllTasksQuery } from "@/hooks/redux/tasks";
-import { socket } from "@/lib/socket.io";
+import { useGetAllTasksQuery } from "@/hooks/redux/tasks";
 import bell_icon from "@assets/images/bell_icon.png";
 import dotsbg from "@assets/images/dotted-bg.png";
 import filter from "@assets/images/icons/filter.svg";
@@ -8,16 +7,21 @@ import CardCarousel from "@components/common/main-app/card-carousel";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import { EmblaOptionsType } from 'embla-carousel';
 import { Fragment, useEffect, useRef, useState } from "react";
 import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import firstBannerImg from "@assets/images/cards/Banner 1.jpg"
+import secondBannerImg from "@assets/images/cards/Banner 2 C.jpg"
+import thirdBannerImg from "@assets/images/cards/Banner 3.jpg"
 
-const OPTIONS: EmblaOptionsType = {}
-const SLIDE_COUNT = 5
-const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
+
+const imageUrls = [
+  firstBannerImg,
+  secondBannerImg,
+  thirdBannerImg,
+];
 
 
 function Home() {
@@ -26,7 +30,7 @@ function Home() {
   const middleCardRef = useRef<HTMLDivElement>(null);
   const [selectedFilter, setSelectedFilter] = useState("All");
 
-  const { data: user } = useGetUserSharesQuery(telegramId ??"",{ refetchOnReconnect: true, refetchOnFocus: true })
+  const { data: user } = useGetUserSharesQuery(telegramId ?? "", { refetchOnReconnect: true, refetchOnFocus: true })
   const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true });
 
   const filteredTasks = tasks?.tasks.filter((task: { category: string; }) =>
@@ -57,21 +61,6 @@ function Home() {
     }
   }, []);
 
-  
-  useEffect(() => {
-    // Listen for 'taskCreated' events
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    socket.on("taskCreated", (newTask) => {
-      console.log("New task created, invalidating tasks tag");
-      tasksApi.util.invalidateTags(["Tasks"]);
-    });
-  
-    return () => {
-      socket.off("taskCreated"); // Cleanup listener
-    };
-  }, []);
-  
-
   return (
     <div className="flex flex-col min-h-full">
       <div
@@ -94,7 +83,7 @@ function Home() {
 
         {/* latest cards */}
 
-        <CardCarousel slides={SLIDES} options={OPTIONS} />
+        <CardCarousel slides={imageUrls} />
 
         <div className="flex flex-col pt-10 px-4 gap-5">
           <div className="flex items-center justify-between">
@@ -106,7 +95,7 @@ function Home() {
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <span>
-                    <LazyLoadImage effect="blur" src={filter} alt="filter" className="" />
+                    <LazyLoadImage effect="opacity" src={filter} alt="filter" className="" />
                   </span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-orange-600 rounded text-white border-none tahoma">
@@ -127,7 +116,7 @@ function Home() {
                     <h1 className="text-sm poppins">Send a ping notification<br /> to your team</h1>
                     <div className="h-10 w-10">
                       <button>
-                        <LazyLoadImage effect="blur" src={bell_icon} />
+                        <LazyLoadImage effect="opacity" src={bell_icon} alt="add" />
                       </button>
                     </div>
                   </div>
@@ -153,7 +142,7 @@ function Home() {
                 <p className="text-white work-sans text-base text-center">No Available Tasks</p>
               </div>
             ) : (
-              filteredTasks?.reverse().map((task: { _id: string; title: string; taskUrl: string; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Events" | "Referral" | "Daily" | "Partners" | "Social"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) =>
+              filteredTasks?.map((task: { _id: string; title: string; taskUrl: string; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Events" | "Referral" | "Daily" | "Partners" | "Social"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) =>
                 <RavegenieCard key={task._id} task={task} />)
             )}
           </div>
