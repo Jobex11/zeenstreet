@@ -5,7 +5,6 @@ import CardWrapper from "@components/common/cards/Tasxcard";
 import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import wavybg from "@assets/images/card_bg.svg";
-import avatarImage from "@assets/images/icons/avatar_img.png";
 import { toast } from "sonner";
 import { GoTriangleUp } from "react-icons/go";
 import { IoMdShareAlt } from "react-icons/io";
@@ -32,19 +31,12 @@ interface Tier1DataItem {
   shares: number;
 }
 
-interface Tier1Data {
-  tier1: Tier1DataItem[];
-}
 interface Tier2DataItem {
   telegram_id: string;
   accountName: string;
   username: string;
   dateJoined: string;
   shares: number;
-}
-
-interface Tier2Data {
-  tier2: Tier2DataItem[];
 }
 
 function Referral() {
@@ -81,16 +73,46 @@ function Referral() {
 
   const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
+  const getTelegramProfilePhoto = async (
+    userId: string
+  ): Promise<string | null> => {
+    try {
+      const photosResponse = await fetch(
+        `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos?user_id=${userId}`
+      );
+      const photosData = await photosResponse.json();
+
+      // Check if the user has any photos
+      if (photosData.ok && photosData.result.total_count > 0) {
+        const fileId = photosData.result.photos[0][0].file_id; // First photo, first size
+
+        // Fetch the file path using getFile
+        const fileResponse = await fetch(
+          `https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`
+        );
+        const fileData = await fileResponse.json();
+
+        if (fileData.ok) {
+          const filePath = fileData.result.file_path;
+          return `https://api.telegram.org/file/bot<YOUR_TELEGRAM_BOT_TOKEN>/${filePath}`;
+        }
+      }
+      return null; // No photo available
+    } catch (error) {
+      console.error("Error fetching profile photo:", error);
+      return null;
+    }
+  };
+
   const fetchReferrals = async () => {
     setLoading(true);
     try {
-      // Fetch Tier 1 Referrals
       const tier1Response = await fetch(
         `https://ravegenie-vgm7.onrender.com/api/referral/tier1/${telegramId}`
       );
       const tier1Data = await tier1Response.json();
-
-      const tier1Mapped: Referral[] = tier1Data.tier1.map(
+      /*
+    const tier1Mapped: Referral[] = tier1Data.tier1.map(
         (ref: Tier1DataItem) => ({
           userLogo: `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos?user_id=${ref.telegram_id}`,
           name: ref.accountName,
@@ -101,9 +123,26 @@ function Referral() {
         })
       );
 
+*/
+      const tier1Mapped: Referral[] = await Promise.all(
+        tier1Data.tier1.map(async (ref: Tier1DataItem) => {
+          const userLogo =
+            (await getTelegramProfilePhoto(ref.telegram_id)) ||
+            "default-avatar-url";
+
+          return {
+            userLogo,
+            name: ref.accountName,
+            userName: ref.username,
+            createdAt: ref.dateJoined,
+            rewardedShares: ref.shares.toString(),
+            isTier2: false,
+          };
+        })
+      );
+
       setTier1Referrals(tier1Mapped);
 
-      // Fetch Tier 2 Referrals
       const tier2Response = await fetch(
         `https://ravegenie-vgm7.onrender.com/api/referral/tier2/${telegramId}`
       );
