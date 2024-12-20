@@ -5,7 +5,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const usersApi = createApi({
     reducerPath: 'usersApi',
     baseQuery: fetchBaseQuery({
-        baseUrl:"https://ravegenie-vgm7.onrender.com/api" }),
+        baseUrl: "https://ravegenie-vgm7.onrender.com/api/api"
+    }),
     tagTypes: ['username'],
     endpoints: (builder) => ({
         createUsername: builder.mutation({
@@ -34,6 +35,9 @@ export const usersApi = createApi({
         }),
         checkUsername: builder.query({
             query: (telegramId) => `/username/has/${telegramId}`
+        }),
+        getUserById: builder.query({
+            query: (telegram_id) => `/auth/${telegram_id}/user`
         })
     }),
 })
@@ -41,4 +45,5 @@ export const usersApi = createApi({
 export const {
     useCreateUsernameMutation,
     useGetUsernameQuery,
-    useCheckUsernameQuery } = usersApi
+    useCheckUsernameQuery,
+    useGetUserByIdQuery } = usersApi
