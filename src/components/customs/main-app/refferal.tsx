@@ -71,14 +71,14 @@ function Referral() {
     }
   }, [telegramId]);
 
-  const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+  const VITE_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
   const getTelegramProfilePhoto = async (
     userId: string
   ): Promise<string | null> => {
     try {
       const photosResponse = await fetch(
-        `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos?user_id=${userId}`
+        `https://api.telegram.org/bot${VITE_BOT_TOKEN}/getUserProfilePhotos?user_id=${userId}`
       );
       const photosData = await photosResponse.json();
 
@@ -88,13 +88,13 @@ function Referral() {
 
         // Fetch the file path using getFile
         const fileResponse = await fetch(
-          `https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`
+          `https://api.telegram.org/bot${VITE_BOT_TOKEN}/getFile?file_id=${fileId}`
         );
         const fileData = await fileResponse.json();
 
         if (fileData.ok) {
           const filePath = fileData.result.file_path;
-          return `https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`;
+          return `https://api.telegram.org/file/bot${VITE_BOT_TOKEN}/${filePath}`;
         }
       }
       return null; // No photo available
@@ -150,7 +150,7 @@ function Referral() {
 
       const tier2Mapped: Referral[] = tier2Data.tier2.map(
         (ref: Tier2DataItem) => ({
-          userLogo: `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos?user_id=${ref.telegram_id}`,
+          userLogo: `https://api.telegram.org/bot${VITE_BOT_TOKEN}/getUserProfilePhotos?user_id=${ref.telegram_id}`,
           name: ref.accountName,
           userName: ref.username,
           createdAt: ref.dateJoined,
