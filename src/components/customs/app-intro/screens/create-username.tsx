@@ -50,7 +50,7 @@ export function CreateUsername({
         typeof window !== "undefined" &&
         window.Telegram?.WebApp?.initDataUnsafe?.user?.id
       ) {
-        const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
+        const telegramId = window?.Telegram?.WebApp?.initDataUnsafe?.user?.id;
         await createUsername({
           telegram_id: telegramId,
           preferred_username: data.username,
