@@ -37,8 +37,8 @@ function MailNotification() {
   //   }
   // };
 
-  const handleRefetch = () => {
-    refetch();
+  const handleRefetch = async () => {
+    await refetch();
   }
 
   return (

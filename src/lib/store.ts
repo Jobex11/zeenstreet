@@ -5,6 +5,7 @@ import { usersApi } from '@hooks/redux/users'
 import { sharesApi } from '@hooks/redux/shares'
 import { tasksApi } from '@hooks/redux/tasks'
 import {notificationApi} from '@hooks/redux/notifications'
+import { cardsApi } from '@/hooks/redux/cards'
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [sharesApi.reducerPath]:sharesApi.reducer,
     [tasksApi.reducerPath]:tasksApi.reducer,
     [notificationApi.reducerPath]:notificationApi.reducer,
+    [cardsApi.reducerPath]:cardsApi.reducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -22,7 +24,8 @@ export const store = configureStore({
       usersApi.middleware,
       sharesApi.middleware,
       tasksApi.middleware,
-      notificationApi.middleware
+      notificationApi.middleware,
+      cardsApi.middleware
     ),
 })
 

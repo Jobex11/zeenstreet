@@ -1,20 +1,20 @@
 import { RavegenieCard } from "@/components/common/cards/TaskCard";
 import { useGetAllTasksQuery } from "@/hooks/redux/tasks";
 import bell_icon from "@assets/images/bell_icon.png";
+import firstBannerImg from "@assets/images/cards/Banner 1.jpg";
+import secondBannerImg from "@assets/images/cards/Banner 2 C.jpg";
+import thirdBannerImg from "@assets/images/cards/Banner 3.jpg";
 import dotsbg from "@assets/images/dotted-bg.png";
 import filter from "@assets/images/icons/filter.svg";
 import CardCarousel from "@components/common/main-app/card-carousel";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import {  useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import firstBannerImg from "@assets/images/cards/Banner 1.jpg"
-import secondBannerImg from "@assets/images/cards/Banner 2 C.jpg"
-import thirdBannerImg from "@assets/images/cards/Banner 3.jpg"
 
 
 const imageUrls = [
@@ -27,20 +27,15 @@ const imageUrls = [
 function Home() {
 
   const [telegramId, setTelegramId] = useState<string | null>(null);
-  const middleCardRef = useRef<HTMLDivElement>(null);
+  // const middleCardRef = useRef<HTMLDivElement>(null);
   const [selectedFilter, setSelectedFilter] = useState("All");
 
-  const { data: user } = useGetUserSharesQuery(telegramId ?? "", { refetchOnReconnect: true, refetchOnFocus: true })
-  const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true });
+  const { data: user, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true })
+  const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true, });
 
   const filteredTasks = tasks?.tasks.filter((task: { category: string; }) =>
     selectedFilter === null || selectedFilter === "All" || task.category === selectedFilter
   );
-
-  useEffect(() => {
-    console.log(tasks);
-  }, [tasks]);
-
 
   useEffect(() => {
     // Set Telegram user ID
@@ -49,15 +44,6 @@ function Home() {
       if (telegramUserId) {
         setTelegramId(telegramUserId);
       }
-    }
-
-    // Scroll to middle card
-    if (middleCardRef.current) {
-      middleCardRef.current.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
     }
   }, []);
 
@@ -147,8 +133,26 @@ function Home() {
 
             {/* Tasks List */}
             {!isLoading && filteredTasks?.length > 0 && (
-              filteredTasks.map((task: { _id: string; title: string; taskUrl: string; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Events" | "Referral" | "Daily" | "Partners" | "Social"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) => (
-                <RavegenieCard key={task._id} task={task} />
+              filteredTasks.map((task: {
+                _id: string;
+                title: string;
+                diminishingPoints: number[];
+                diminishingPercentage: number;
+                taskUrl: string;
+                image: string;
+                taskType: "one-time" | "recurring";
+                category: "Special" | "Events" | "Referral" | "Daily" | "Partners" | "Social";
+                diminishingRewards: "Yes" | "No";
+                countdown: number;
+                baseReward: number;
+                isExpired: boolean;
+                remainingTime: number;
+                reward: number;
+              }) => (
+                <RavegenieCard
+                  key={task._id}
+                  task={task}
+                  refetch={refetchShares} />
               ))
             )}
           </div>

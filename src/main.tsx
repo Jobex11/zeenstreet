@@ -16,6 +16,7 @@ import TelegramWrapper from "./components/common/Telegram.app.layout";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import Intro from "./pages/app-intro/page";
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
+import LeaderBoard from "./pages/leader-board/page";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
   {
     path: "/notifications",
     element: <Notifications />,
+  },
+  {
+    path: "/leader-board",
+    element: <LeaderBoard />,
   },
 ]);
 

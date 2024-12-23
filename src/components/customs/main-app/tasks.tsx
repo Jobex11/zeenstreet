@@ -1,61 +1,44 @@
-import { tasksApi, useGetAllTasksQuery } from "@/hooks/redux/tasks";
-import { socket } from "@/lib/socket.io";
+import { useGetAllcardsQuery } from "@/hooks/redux/cards";
+import { useGetAllTasksQuery } from "@/hooks/redux/tasks";
+import { CardType } from "@/types/card.types";
 import wavybg from "@assets/images/card_bg.svg";
-import carousel_img from "@assets/images/cards/carousel_img.png";
 import dotsbg from "@assets/images/dotted-bg.png";
 import { RavegenieCard } from "@components/common/cards/TaskCard";
 import { Button } from '@components/ui/button';
+import { Skeleton } from "@components/ui/skeleton"
 import { Card } from "@components/ui/card";
 import * as Progress from "@radix-ui/react-progress";
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
 
 
 function Tasks() {
-    const middleCardRef = useRef<HTMLDivElement>(null);
+
+    const [telegramId, setTelegramId] = useState<string | null>(null);
     const [tabs, setTabs] = useState<string>("All");
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
+    const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
+        refetchOnReconnect: true, refetchOnFocus: true
+    })
     const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true });
-
     const handleActiveTabs = (name: string) => {
         setTabs(name)
     }
-    const images = [
-        // will add new object in the array by unshifting
-        // { carousel_img, isLocked: false,},
-        { carousel_img, isLocked: false, ref: middleCardRef },
-        { carousel_img, isLocked: true, },
-
-    ]
 
     useEffect(() => {
-        if (middleCardRef.current) {
-            middleCardRef.current.scrollIntoView({
-                behavior: "smooth",
-                inline: "center",
-                block: "nearest",
-            });
+        if (window.Telegram && window.Telegram.WebApp) {
+            const initData = window.Telegram.WebApp.initDataUnsafe;
+            const user = initData?.user;
+
+            // Set Telegram user data
+            if (user) {
+                setTelegramId(user.id ?? null);
+            }
         }
     }, []);
 
-    useEffect(() => {
-        socket.on('taskCreated', (newTask) => {
-            // Update the RTK Query cache with the new task
-            tasksApi.util.updateQueryData('getAllTasks', undefined, (draft) => {
-                draft.push(newTask);
-            });
-        });
-
-        return () => {
-            socket.disconnect();
-        };
-    }, []);
-
-
-    // const unlockedCount = images.filter((image) => !image.isLocked).length;
-    // const lockedCount = images.filter((image) => image.isLocked).length;
     return (
         <div className='flex flex-col min-h-full w-full'>
             <div style={{
@@ -65,60 +48,64 @@ function Tasks() {
             }} className=' py-3 h-full px-3 min-w-full '>
                 {/* task header */}
                 <header className="flex flex-col gap-3 w-full">
-                    <div className={`relative flex items-center gap-16 pb-5 mb-4 ${images.filter((image) => !image.isLocked).length >= 1 ? "overflow-x-auto " : "overflow-x-hidden"} px-4 snap-x snap-mandatory`}>
-                        {images.map((img, id) => {
-                            // Determine if it's the first unlocked card
-                            const firstUnlockedIndex = images.findIndex((image) => !image.isLocked);
-                            const isFirstUnlocked = id === firstUnlockedIndex;
-
-                            return (
-                                <Card
-                                    key={id}
-                                    ref={img.ref}
-                                    className={`group bg-slate-800 relative rounded-lg snap-center ${!img.isLocked
-                                        ? isFirstUnlocked
-                                            ? "min-w-[85%] shadow-xl shadow-slate-700"
-                                            : "min-w-[70%] shadow-xl shadow-slate-700"
-                                        : "rounded-lg min-w-[70%]"
-                                        } max-h-32 w-full overflow-hidden`} // Added overflow-hidden
-                                >
-                                    {/* LazyLoadImage
-                                    effect="blur" */}
-                                    <img
-                                        src={img.carousel_img}
-                                        alt={`card img ${id}`}
-                                        className={`h-32 !w-full object-cover rounded-lg ${!img.isLocked
-                                            ? "duration-200 transition-transform"
-                                            : "scale-90"
-                                            }`}
-                                    />
-                                    {img.isLocked && (
+                    {isLoadingCards && <Skeleton className={"max-h-32 h-32 w-full bg-slate-700 shadow-xl"} />}
+                    <div className={`relative flex items-center gap-16 pb-5 mb-4 px-4 snap-x snap-mandatory overflow-x-auto`}>
+                        {!isLoadingCards && cards?.cards.length > 0 && cards?.cards.slice(0, 2).map((card: CardType) => (
+                            <Card
+                                key={card._id}
+                                // ref={card.isCurrent && middleCardRef}
+                                className={`group bg-slate-800 relative rounded-lg snap-center max-h-32 w-full overflow-hidden ${card.isCurrent ? "min-w-[85%] shadow-xl shadow-slate-700" : "min-w-[70%] shadow-xl shadow-slate-700"}`}>
+                                <img
+                                    src={card.image}
+                                    alt={`card img ${card.title}`}
+                                    className={`h-32 !w-full object-cover rounded-lg ${card.isCurrent
+                                        ? "duration-200 transition-transform"
+                                        : ""
+                                        }`}
+                                />
+                                {card.isCurrent ? (
+                                    null
+                                ) :
+                                    (
                                         <div className="absolute bg-black/95 z-20 top-0 h-full w-full rounded-md flex flex-col justify-center items-center">
                                             <SlLock size={50} color="white" />
                                         </div>
-                                    )}
-                                </Card>
-                            );
-                        })}
+                                    )
+                                }
+                            </Card>
+                        ))}
                     </div>
 
-
-                    <Progress.Root
-                        className="relative h-[9px] w-full overflow-hidden rounded-full bg-white my-1"
-                        style={{
-                            transform: "translateZ(0)",
-                        }}
-                        value={100}
-                    >
-                        <Progress.Indicator
-                            className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] size-full bg-[#D25804] rounded-r-full transition-transform duration-200"
-                            style={{
-                                transform: `translateX(-${100 - 50}%)`,
-                                background:
-                                    "linear-gradient(#D25804, #fff0), repeating-linear-gradient(135deg, rgb(232,6,6) 0 7px, #0000 0 20px), #D25804",
-                            }}
-                        />
-                    </Progress.Root>
+                    {cards?.cards.map(
+                        (card: CardType) =>
+                            card.isCurrent && (
+                                <div key={card._id} className="flex flex-col items-center w-full">
+                                    {/* Progress Text */}
+                                    <div className="flex justify-between w-full text-sm font-medium text-white">
+                                        <span className={"text-xs work-sans"}>{card.progress?.progressDisplay || "0/0"}</span>
+                                        <span className={"text-xs jakarta"}>{card.progress?.progressInPercentage || 0}% Complete</span>
+                                    </div>
+                                    {/* Progress Bar */}
+                                    <Progress.Root
+                                        className="relative h-[9px] w-full overflow-hidden rounded-full bg-white my-1"
+                                        style={{
+                                            transform: "translateZ(0)",
+                                        }}
+                                        value={card.progress?.progressInPercentage || 0}
+                                    >
+                                        <Progress.Indicator
+                                            className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] size-full bg-[#D25804] rounded-r-full transition-transform duration-200"
+                                            style={{
+                                                transform: `translateX(-${100 - (card.progress?.progressInPercentage || 0)
+                                                    }%)`,
+                                                background:
+                                                    "linear-gradient(#D25804, #fff0), repeating-linear-gradient(135deg, rgb(232,6,6) 0 7px, #0000 0 20px), #D25804",
+                                            }}
+                                        />
+                                    </Progress.Root>
+                                </div>
+                            )
+                    )}
                 </header>
 
 
@@ -158,8 +145,11 @@ function Tasks() {
                     ) : (
                         tasks?.tasks
                             .filter((task: { category: string }) => tabs === "All" || task.category === tabs)
-                            .map((task: { _id: string; title: string; taskUrl: string; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Daily" | "Referral" | "Partners" | "Social" | "Events"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) => (
-                                <RavegenieCard key={task._id} task={task} />
+                            .map((task: { _id: string; title: string; taskUrl: string; diminishingPercentage: number; diminishingPoints: number[]; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Daily" | "Referral" | "Partners" | "Social" | "Events"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) => (
+                                <RavegenieCard
+                                    key={task._id}
+                                    task={task}
+                                    refetch={refetchCards} />
                             ))
                     )}
                 </div>
