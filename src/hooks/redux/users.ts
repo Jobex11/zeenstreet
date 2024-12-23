@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const usersApi = createApi({
     reducerPath: 'usersApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://ravegenie-vgm7.onrender.com/api/api"
+        baseUrl: "http://localhost:4000/api"
     }),
     tagTypes: ['username'],
     endpoints: (builder) => ({
@@ -38,7 +38,7 @@ export const usersApi = createApi({
         }),
         getUserById: builder.query({
             query: (telegram_id) => `/auth/${telegram_id}/user`
-        })
+        }),
     }),
 })
 

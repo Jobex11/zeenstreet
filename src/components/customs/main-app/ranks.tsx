@@ -5,7 +5,7 @@ import rankBadge from "@assets/images/icons/rank_badge.svg";
 import goldCoin from "@assets/images/icons/gold_coin.svg";
 import eclipse from "@assets/images/eclipse.png"
 import { ShareFormatter } from "@components/common/shareFormatter";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+// import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
 function Ranks() {
@@ -36,8 +36,10 @@ function Ranks() {
             backgroundPosition: "center, center",
             backgroundBlendMode: "multiply",
           }} className='h-[271px] flex flex-col items-center justify-center'>
-            <LazyLoadImage effect="blur" src={trophy} alt="Rank Trophy" className='h-full w-full object-center object-contain' />
-            <h1 className="text-[#FEFEFF] text-xl font-semibold work-sans py-1">Leaderboard</h1>
+            <img
+              src={trophy}
+              alt="Rank Trophy" className='h-full w-full object-center object-contain' />
+            <h1 className="text-[#FEFEFF] text-xl font-semibold work-sans py-1">Ranks</h1>
           </div>
 
         </div>
@@ -50,11 +52,11 @@ function Ranks() {
               <div key={rank.rank} className="flex items-center justify-between py-2">
                 <div className="flex items-center gap-3">
                   <div className="h-[49px] w-[49px]">
-                    <LazyLoadImage effect="blur" src={rankBadge} alt="Rank badge" className="min-h-full min- w-full object-center object-contain" />
+                    <img src={rankBadge} alt="Rank badge" className="min-h-full min- w-full object-center object-contain" />
                   </div>
                   <h1 className="text-[#FFFFFF] text-[17px] font-bold jakarta">{rank.rank}</h1>
                 </div>
-                <div><h1 className="font-medium text-[17px] jakarta flex items-center gap-1 text-white"><LazyLoadImage effect="blur" src={goldCoin} alt="gold" className="h-[15px] w-[15px] object-cover object-center" />{ShareFormatter(rank.shares)} Gold</h1></div>
+                <div><h1 className="font-medium text-[17px] jakarta flex items-center gap-1 text-white"><img src={goldCoin} alt="gold" className="h-[15px] w-[15px] object-cover object-center" />{ShareFormatter(rank.shares)} Gold</h1></div>
               </div>
             ))}
 

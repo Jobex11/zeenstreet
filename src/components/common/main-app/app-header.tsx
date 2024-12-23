@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import dotsbg from "@assets/images/dotted-bg.png";
 import medalIcon from "@assets/images/icons/medal.svg";
+import mailIcon from "@assets/images/icons/mail-icon.svg";
 import dropbox from "@assets/images/icons/dropbox.svg";
 import profilePlaceholder from "@assets/images/icons/user-placeholder.svg";
 import { Link } from "react-router-dom";
-import { useGetNotificationsQuery} from "@hooks/redux/notifications"
-import { AiFillBell } from "react-icons/ai";
+import { useGetNotificationsQuery } from "@hooks/redux/notifications"
+
 
 function Header() {
 
@@ -42,12 +43,12 @@ function Header() {
     >
       <header className="flex items-center justify-between w-full py-4 px-3 ">
         <div className="flex items-center gap-4">
-          <span>
+          <Link to={"/leader-board"}>
             <img
               src={medalIcon}
               alt="medial icon"
               className="h-6 w-6" />
-          </span>
+          </Link>
           <Link to={"/ranks"}>
             <img
               src={dropbox}
@@ -65,15 +66,19 @@ function Header() {
                 className="h-6 w-6 rounded-md"
               />
               <span className="text-[9px] work-sans font-medium text-white">
-                @{telegramUsername || "You"}
+                @{telegramUsername.slice(0, 7) || "You"}
               </span>
             </div>
           </Link>
           <Link to={"/notifications"} className="relative w-fit h-fit">
-            <AiFillBell size={30} color={"white"}/>
-            <div className="h-4 w-4 bg-[#D36519] text-xs text-white flex items-center justify-center rounded-full work-sans absolute -top-1 -left-1 z-20">
-              {notifications?.totalNotifications || 0}
-            </div>
+            <img src={mailIcon} className={"h-7 w-7"} />
+            {
+              notifications?.totalNotifications &&
+              <div className="h-4 w-4 bg-[#D36519] text-xs text-white flex items-center justify-center rounded-full work-sans absolute -top-1 -left-1 z-20">
+                {notifications?.totalNotifications || 0}
+              </div>
+            }
+
           </Link>
         </div>
       </header>

@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const sharesApi = createApi({
     reducerPath: 'sharesApi',
     baseQuery: fetchBaseQuery({
-        baseUrl:"https://ravegenie-vgm7.onrender.com/api" }),
+        baseUrl:"http://localhost:4000/api" }),
     tagTypes: ['shares'],
     endpoints: (builder) => ({
         getUserShares: builder.query({
