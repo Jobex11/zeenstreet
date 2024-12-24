@@ -13,16 +13,16 @@ import { GoClockFill } from "react-icons/go";
 import { useGetUserByIdQuery } from "@hooks/redux/users";
 
 
-export function RavegenieCard({ task }: TaskcardType) {
+export function RavegenieCard({ task, refetch }: TaskcardType) {
     const [telegramId, setTelegramId] = useState("");
     const [remainingTime, setRemainingTime] = useState(0);
-    const [currentReward, setCurrentReward] = useState(0);
+    const [currentReward, setCurrentReward] = useState<number>(0);
     const [progressValue, setProgressValue] = useState(0);
     const [taskPerformed, setTaskPerformed] = useState<boolean>(false);
     const [isTaskCompleted, setIsTaskCompleted] = useState<boolean>(false)
     const [completeTasks, { isLoading: isCompleting }] = useCompleteTasksMutation();
     const { data: userById } = useGetUserByIdQuery(telegramId ?? "", {
-        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
+        refetchOnReconnect: true, refetchOnFocus: true
     })
 
     useEffect(() => {
@@ -51,21 +51,28 @@ export function RavegenieCard({ task }: TaskcardType) {
     }, [task]);
 
     useEffect(() => {
-        if (remainingTime <= 0) {
-            return;
-        }
+        if (remainingTime <= 0 || task.diminishingRewards !== "Yes") return;
 
         const interval = setInterval(() => {
             setRemainingTime((prev) => {
                 const newTime = prev - 1;
                 setProgressValue((newTime / task.countdown) * 100);
-                const newReward = Math.floor((task.baseReward * newTime) / task.countdown);
-                setCurrentReward(newReward);
 
-                // Store updated data in localStorage
+                // Check if the current remaining time matches a diminishing point
+                if (task.diminishingPoints?.includes(newTime)) {
+                    let newReward = task.baseReward;
+
+                    // Apply diminishing logic
+                    const { diminishingPercentage } = task;
+                    newReward -= (newReward * diminishingPercentage) / 100;
+
+                    // Update reward only at diminishing points
+                    setCurrentReward(Math.floor((newReward * newTime) / task.countdown));
+                }
+
                 localStorage.setItem(`task-${task._id}`, JSON.stringify({
                     remainingTime: newTime,
-                    lastUpdated: Date.now()
+                    lastUpdated: Date.now(),
                 }));
 
                 return newTime > 0 ? newTime : 0;
@@ -73,9 +80,11 @@ export function RavegenieCard({ task }: TaskcardType) {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [remainingTime, task.countdown, task.baseReward, task._id]);
+    }, [remainingTime, task]);
 
     const isExpired = remainingTime <= 0;
+
+
 
     const handleCompleteTask = async () => {
         if (!taskPerformed) {
@@ -87,16 +96,18 @@ export function RavegenieCard({ task }: TaskcardType) {
             const completedTask = await completeTasks({ taskId: task._id, telegram_id: telegramId, reward: task?.baseReward }).unwrap();
             console.log('Shares updated successfully:', completedTask);
             toast.success(completedTask?.message, { className: "text-xs work-sans" });
-            if (completedTask) {
-                setIsTaskCompleted(completedTask?.completedTasks?.includes(task?._id))
-                // sharesApi.util.invalidateTags(["shares"])
-            }
+            // if (completedTask) {
+            //     setIsTaskCompleted(completedTask?.completedTasks?.includes(task?._id))
+            refetch?.();
+            // }
+
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error("Error completing task:", error?.data?.error);
             toast.info(error?.data?.error || "Task performed already", { className: "text-xs work-sans" });
         }
     };
+
 
     useEffect(() => {
         if (userById?.user?.completedTasks?.includes(task?._id)) {
@@ -105,15 +116,26 @@ export function RavegenieCard({ task }: TaskcardType) {
             setIsTaskCompleted(false);
         }
     }, [userById, task?._id]);
-    console.log("Completed Tasks", userById?.user?.completedTasks)
+
+
+    useEffect(() => {
+        // Retrieve the persisted taskPerformed state from localStorage
+        const performedState = localStorage.getItem(`taskPerformed-${task._id}`);
+        if (performedState) {
+            setTaskPerformed(JSON.parse(performedState));
+        }
+    }, [task._id]);
 
     const handleTaskPerformance = () => {
         setTimeout(() => {
             setTaskPerformed(true);
+            // Persist the state to localStorage
+            localStorage.setItem(`taskPerformed-${task._id + userById?.user?._id}`, JSON.stringify(true));
         }, 5000);
     };
+
     return (
-        <CardWrapper className={`py-1.5 ${isExpired || isTaskCompleted ? " grayscale" : "border-[3px] border-[#c781ff]"}`}>
+        <CardWrapper className={`py-1.5 ${isExpired || isTaskCompleted ? "grayscale" : "border-[3px] border-[#c781ff]"}`}>
             <CardHeader className="flex flex-row justify-between  px-2.5 py-0">
                 <CardTitle className="text-[#FFFFFF] text-sm font-medium work-sans capitalize p-0">{isTaskCompleted ? "Completed" : "Incomplete"}</CardTitle>
                 <div className="flex flex-col">
@@ -127,7 +149,7 @@ export function RavegenieCard({ task }: TaskcardType) {
             </CardHeader>
             <CardContent className="px-2.5 py-0">
                 <CardTitle className="text-xl font-bold work-sans text-white line-clamp-1">{task?.title}</CardTitle>
-                {task?.countdown && (
+                {task?.diminishingRewards === "Yes" ? (
                     <Fragment>
                         {isExpired || isTaskCompleted ? (
                             <Progress.Root
@@ -153,34 +175,76 @@ export function RavegenieCard({ task }: TaskcardType) {
                         )}
 
                         <div className="flex items-center justify-between text-xs work-sans font-medium text-white py-2">
-                            {/* If task is expired but not completed, show shares lost */}
                             {isExpired && !isTaskCompleted ? (
                                 <>
-                                    <span className="work-sans text-sm">{task.baseReward} shares lost</span>
+                                    <span className="work-sans text-sm">{task?.reward} points lost</span>
                                     <span className="work-sans text-sm">Time Elapsed</span>
                                 </>
                             ) : isTaskCompleted ? (
-                                // If task is completed, show "Task Completed" and "Reward Claimed"
                                 <>
                                     <span className="work-sans text-sm">Task Completed</span>
-                                    <span className="work-sans text-sm">{task?.reward} Reward Claimed</span>
+                                    <span className="work-sans text-sm">{currentReward} Reward Claimed</span>
                                 </>
                             ) : (
-                                // Default case: Show remaining shares and time left
                                 <>
-                                    <span>{currentReward}/{task?.baseReward} shares left</span>
+                                    <span>{currentReward}/{task.baseReward} reward left</span>
                                     <span className="flex items-center gap-1 work-sans">
                                         <GoClockFill size={22} /> {formatTime(remainingTime)} left
                                     </span>
                                 </>
                             )}
                         </div>
-
                     </Fragment>
-                )}
+                ) : <Fragment>
+
+                    {isExpired || isTaskCompleted ? (
+                        <Progress.Root
+                            className="relative h-[9px] w-full overflow-hidden rounded-full bg-white my-1"
+                            style={{
+                                transform: "translateZ(0)",
+                            }}
+                            value={100}
+                        />
+                    ) : (
+                        <Progress.Root
+                            className="relative h-[9px] w-full overflow-hidden rounded-full bg-white my-1"
+                            style={{
+                                transform: "translateZ(0)",
+                            }}
+                            value={progressValue}
+                        >
+                            <Progress.Indicator
+                                className="h-full w-full bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 rounded-r-full transition-transform duration-500 ease-out animate-pulse"
+                                style={{ transform: `translateX(-${100 - progressValue}%)` }}
+                            />
+                        </Progress.Root>
+                    )}
+                    <div className="flex items-center justify-between text-xs work-sans font-medium text-white py-2">
+                        {isExpired && !isTaskCompleted ? (
+                            <>
+                                <span className="work-sans text-sm">{task?.reward} points lost</span>
+                                <span className="work-sans text-sm">Time Elapsed</span>
+                            </>
+                        ) : isTaskCompleted ? (
+                            <>
+                                <span className="work-sans text-sm">Task Completed</span>
+                                <span className="work-sans text-sm">{task.reward} Reward Claimed</span>
+                            </>
+                        ) : (
+                            <>
+                                <span>{task.reward}/{task.baseReward} reward left</span>
+                                <span className="flex items-center gap-1 work-sans">
+                                    <GoClockFill size={22} /> {formatTime(remainingTime)} left
+                                </span>
+                            </>
+                        )}
+                    </div>
+                </Fragment>
+                }
+
             </CardContent>
             <CardFooter className="pt-2 pb-0 px-2.5 flex items-center border-t border-t-gray-500 justify-between">
-                {task.taskUrl ? <Link to={task.taskUrl}>
+                {!task.taskUrl ? <Link to={task.taskUrl}>
                     <Button
                         variant="secondary"
                         size="sm"
@@ -200,4 +264,3 @@ export function RavegenieCard({ task }: TaskcardType) {
         </CardWrapper>
     );
 }
-

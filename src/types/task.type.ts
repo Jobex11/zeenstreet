@@ -1,6 +1,6 @@
 
 
-export type TaskcardType = {
+export interface TaskcardType  {
     task: {
         _id: string;
         title: string;
@@ -14,13 +14,16 @@ export type TaskcardType = {
         | "Referral"
         | "Partners"
         | "Social";
-        diminishingRewards: "Yes" | "No";
         countdown: number;
         baseReward: number;
         isExpired: boolean;
         remainingTime: number;
         reward: number;
-    }
+        diminishingPercentage: number;
+        diminishingRewards: "Yes" | "No";
+        diminishingPoints: number[];
+    },
+    refetch?: () => void;
 }
 
 export type TaskcardInterface = {
@@ -42,4 +45,6 @@ export type TaskcardInterface = {
       isExpired: boolean;
       remainingTime: number;
       reward: number;
+      diminishingPoints: number[];
+      diminishingPercentage:number[];
 }
