@@ -13,7 +13,6 @@ export const WelcomeUser = () => {
         <div
             className="flex flex-col flex-1 justify-stretch w-full gap-3 min-h-full px-4 relative">
             <div className="flex flex-col pt-2">
-                {/* <img src={Zenlogo} alt="Zenstreet logo" className="h-fit w-[94px] object-s object-center" /> */}
                 <LazyLoadImage effect="blur" src={logo} alt="Ravgenie logo" className="h-fit w-40 object-cover object-center" />
             </div>
             <Fade cascade>

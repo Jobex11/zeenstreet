@@ -96,10 +96,10 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
             const completedTask = await completeTasks({ taskId: task._id, telegram_id: telegramId, reward: task?.baseReward }).unwrap();
             console.log('Shares updated successfully:', completedTask);
             toast.success(completedTask?.message, { className: "text-xs work-sans" });
-            if (completedTask) {
-                setIsTaskCompleted(completedTask?.completedTasks?.includes(task?._id))
-                refetch?.();
-            }
+            // if (completedTask) {
+            //     setIsTaskCompleted(completedTask?.completedTasks?.includes(task?._id))
+            refetch?.();
+            // }
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -116,7 +116,7 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
             setIsTaskCompleted(false);
         }
     }, [userById, task?._id]);
-    console.log("Current Reward", currentReward)
+
 
     useEffect(() => {
         // Retrieve the persisted taskPerformed state from localStorage
@@ -130,7 +130,7 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
         setTimeout(() => {
             setTaskPerformed(true);
             // Persist the state to localStorage
-            localStorage.setItem(`taskPerformed-${task._id}`, JSON.stringify(true));
+            localStorage.setItem(`taskPerformed-${task._id + userById?.user?._id}`, JSON.stringify(true));
         }, 5000);
     };
 

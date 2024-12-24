@@ -71,11 +71,11 @@ function MailNotification() {
           <div className="flex flex-col gap-3 pb-[8rem]">
             {!isLoading && notifications?.notifications?.map((notification: NotificationTypes) => (
               <Link to={notification.url} key={notification._id} className="py-5 px-2 flex items-center gap-3 rounded border-b border-[#3E3D3D] hover:bg-gray-900 duration-200 inter">
-                <div className=" rounded-full h-[50px] min-w-[50px]">
+                <div className=" rounded-full h-[50px] w-[50px]">
                   <img
                     src={notification.logo}
                     alt="Notification Logo"
-                    className="h-full min-w-full object-cover object-center rounded-full" />
+                    className="h-full w-full object-cover object-center rounded-full" />
                 </div>
 
                 <div>
