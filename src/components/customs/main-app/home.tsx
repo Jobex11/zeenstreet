@@ -1,9 +1,9 @@
 import { RavegenieCard } from "@/components/common/cards/TaskCard";
 import { useGetAllTasksQuery } from "@/hooks/redux/tasks";
 import bell_icon from "@assets/images/bell_icon.png";
-import firstBannerImg from "@assets/images/cards/Banner 1.jpg";
-import secondBannerImg from "@assets/images/cards/Banner 2 C.jpg";
-import thirdBannerImg from "@assets/images/cards/Banner 3.jpg";
+import firstBannerImg from "@assets/images/cards/Banner1.jpg";
+import secondBannerImg from "@assets/images/cards/Banner2.jpg";
+import thirdBannerImg from "@assets/images/cards/Banner3.jpg";
 import dotsbg from "@assets/images/dotted-bg.png";
 import filter from "@assets/images/icons/filter.svg";
 import CardCarousel from "@components/common/main-app/card-carousel";
