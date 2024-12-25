@@ -24,8 +24,8 @@ function Tasks() {
     // const [shareStep, setShareStep] = useState<"share" | "confirm">("share");
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const [tabs, setTabs] = useState<string>("All");
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [hasShared, setHasShared] = useState(false);
+    const [storyDrawerOpen, setStoryDrawerOpen] = useState(false);
+    const [hasSharedToStory, setHasSharedToStory] = useState(false);
     const { shareToStory } = useTelegramWebApp();
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
     const [updateShare, { isLoading: updating }] = useUpdateUserSharesMutation()
@@ -55,17 +55,17 @@ function Tasks() {
             }
         }
 
-        const storedDrawerOpen = localStorage.getItem("drawerOpen");
-        const storedHasShared = localStorage.getItem("hasShared");
+        const storedstoryDrawerOpen = localStorage.getItem("storydrawerOpen");
+        const storedHasSharedToStory = localStorage.getItem("hasSharedToStory");
 
-        if (storedDrawerOpen === "true") setDrawerOpen(true);
-        if (storedHasShared === "true") setHasShared(true);
+        if (storedstoryDrawerOpen === "true") setStoryDrawerOpen(true);
+        if (storedHasSharedToStory === "true") setHasSharedToStory(true);
     }, []);
 
     useEffect(() => {
-        localStorage.setItem("drawerOpen", String(drawerOpen));
-        localStorage.setItem("hasShared", String(hasShared));
-    }, [drawerOpen, hasShared]);
+        localStorage.setItem("storyDrawerOpen", String(storyDrawerOpen));
+        localStorage.setItem("hasSharedToStory", String(hasSharedToStory));
+    }, [storyDrawerOpen, hasSharedToStory]);
 
     const handleShareToStory = async () => {
         const mediaUrl = "https://zeenstreet-ten.vercel.app/assets/Banner1-CFK7gMq_.jpg";
@@ -81,8 +81,8 @@ function Tasks() {
     
         try {
             await shareToStory(mediaUrl, [params]);
-            setHasShared(true);  // Update state
-            localStorage.setItem("hasShared", "true");  // Sync state with localStorage
+            setHasSharedToStory(true);  // Update state
+            localStorage.setItem("hasSharedToStory", "true");  // Sync state with localStorage
         } catch (error) {
             console.error("Error sharing to story:", error);
         }
@@ -93,12 +93,12 @@ function Tasks() {
         const shares = 100
         if (confirmed) {
             try {
-                const update = await updateShare({ teleggram_id: telegramId, share: shares, shareType: "" }).unwrap(); // Call the mutation to reward the user.
+                const update = await updateShare({telegram_id: telegramId, shares: shares, shareType: "shares" }).unwrap(); // Call the mutation to reward the user.
                 if (update) {
                     toast.success(`Share confirmed! ${shares} Rewards have been added`, { className: "text-xs work-sans" });
-                    setDrawerOpen(false);
-                    localStorage.removeItem("drawerOpen");
-                    localStorage.removeItem("hasShared");
+                    setStoryDrawerOpen(false);
+                    localStorage.removeItem("storyDrawerOpen");
+                    localStorage.removeItem("hasSharedToStory");
                 }
             } catch (err) {
                 console.error("Error updating share:", err);
@@ -106,7 +106,7 @@ function Tasks() {
             }
         } else {
             toast.info("You lost the reward for not sharing!", { className: "text-xs work-sans" });
-            setDrawerOpen(false);
+            setStoryDrawerOpen(false);
         }
     };
     return (
@@ -225,12 +225,12 @@ function Tasks() {
                     )}
                 </div>
             </div>
-            <Drawer open={!hasShared} dismissible={false}>
+            <Drawer open={!hasSharedToStory} dismissible={false}>
                 <DrawerContent
                     aria-describedby={undefined}
                     aria-description="show task dialog"
                     className="flex flex-col min-h-[47%] pt-1 bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 gap-3">
-                    {!hasShared ? (
+                    {!hasSharedToStory ? (
                         <div className="flex flex-col w-full gap-4">
                             <div className="relative h-[13rem] w-full">
                                 <img src={"https://zeenstreet-ten.vercel.app/assets/Banner1-CFK7gMq_.jpg"}
