@@ -18,10 +18,10 @@ interface NotificationTypes {
   url: string
 }
 function MailNotification() {
-  const [notificationPage, setNotificationPage] = useState(1)
+  const [notificationPage, setNotificationPage] = useState<number>(1)
   const limit = 10
 
-  const { data: notifications, isLoading, refetch, } = useGetNotificationsQuery({ notificationPage, limit },
+  const { data: notifications, isLoading, refetch, } = useGetNotificationsQuery([notificationPage, limit],
     { refetchOnReconnect: true, refetchOnFocus: true });
 
   const loadNextPage = () => {
