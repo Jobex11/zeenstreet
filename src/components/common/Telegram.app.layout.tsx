@@ -79,7 +79,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
                     This app is designed to work within the Telegram environment. Please open it using the Telegram app for the best experience.
                 </p>
                 <Button
-                    onClick={() => window.location.href = "https://t.me/RaveGenieBot"}
+                    onClick={() => window.location.href = "https://t.me/RaveGenie_Bot/game"}
                     className="bg-blue-500 work-sans hover:bg-blue-600 text-white font-bold py-6 px-10 rounded-full transition duration-300"
                 >
                     Open in Telegram

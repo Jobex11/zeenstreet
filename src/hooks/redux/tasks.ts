@@ -17,19 +17,6 @@ export const tasksApi = createApi({
                 method: 'POST',
                 body: { telegram_id, reward },
             }),
-            // async onQueryStarted({ reward }, { dispatch, queryFulfilled }) {
-            //     try {
-            //         const { data: getAllTasks } = await queryFulfilled;
-
-            //         dispatch(
-            //             tasksApi.util.updateQueryData('getAllTasks', reward, (draft) => {
-            //                 Object.assign(draft, getAllTasks);
-            //             })
-            //         );
-            //     } catch (error) {
-            //         console.log("Error invalidating tasks", error);
-            //     }
-            // },
             invalidatesTags: ['Tasks'],
         }),
         checkTaskStatus: builder.query({

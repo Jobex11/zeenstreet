@@ -19,8 +19,8 @@ function Tasks() {
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const [tabs, setTabs] = useState<string>("All");
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
-    const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
-        refetchOnReconnect: true, refetchOnFocus: true
+    const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId, {
+        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
     })
     const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true });
     const handleActiveTabs = (name: string) => {
@@ -54,7 +54,7 @@ function Tasks() {
                             <Card
                                 key={card._id}
                                 // ref={card.isCurrent && middleCardRef}
-                                className={`group bg-slate-800 relative rounded-lg snap-center max-h-32 w-full overflow-hidden ${card.isCurrent ? "min-w-[85%] shadow-xl shadow-slate-700" : "min-w-[70%] shadow-xl shadow-slate-700"}`}>
+                                className={`group bg-slate-800 relative rounded-lg snap-center max-h-32 w-full overflow-hidden ${card.isCurrent ? "min-w-[85%] shadow-xl shadow-slate-700" : "min-w-[70%] shadow-xl"}`}>
                                 <img
                                     src={card.image}
                                     alt={`card img ${card.title}`}
@@ -63,6 +63,7 @@ function Tasks() {
                                         : ""
                                         }`}
                                 />
+                                <div className={"absolute h-full w-full bg-transparent z-10 top-0 bottom-0"} />
                                 {card.isCurrent ? (
                                     null
                                 ) :

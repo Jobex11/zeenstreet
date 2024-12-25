@@ -12,12 +12,12 @@ interface CheckAccountProps {
 export const CheckAccount = ({ setScreens }: CheckAccountProps) => {
     const [isPremium, setIsPremium] = useState<boolean | undefined>(false);
     // Define ranges for random values
-    const minTelegramAge = 1; // Minimum age in years
+    const minTelegramAge = 4; // Minimum age in years
     const maxTelegramAge = 10; // Maximum age in years
-    const minActivityLevel = 0; // Minimum activity level (as a percentage)
+    const minActivityLevel = 50; // Minimum activity level (as a percentage)
     const maxActivityLevel = 100; // Maximum activity level
-    const minOgStatus = 0; // Minimum OG status level
-    const maxOgStatus = 5; // Maximum OG status level
+    const minOgStatus = 50; // Minimum OG status level
+    const maxOgStatus = 100; // Maximum OG status level
 
     // Generate random values
     const randomTelegramAge = Math.floor(

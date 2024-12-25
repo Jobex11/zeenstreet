@@ -19,7 +19,7 @@ import dotsbg from "@assets/images/dotted-bg.png";
 import goldCoin from "@assets/images/icons/gold_coin.svg";
 import profileBadge from "@assets/images/icons/profile_badge.svg";
 import profileImg from "@assets/images/profile_img.png";
-import CardWrapper from "@components/common/cards/Tasxcard";
+import CardWrapper from "@/components/common/cards/card-wrapper";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import ConnectTonWallet from "@components/common/ton-connect-btn";
 import { Button } from "@components/ui/button";
@@ -31,12 +31,13 @@ import {
     useGetUserSharesQuery,
     useUpdateUserSharesMutation,
 } from "@hooks/redux/shares";
-import { useGetUsernameQuery, useGetUserByIdQuery } from "@hooks/redux/users";
+import { useGetUsernameQuery, useGetUsersByIdQuery } from "@hooks/redux/users";
 import { Key, useEffect, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
 import { toast } from "sonner";
 import { Fragment } from "react";
+import { Skeleton } from "@components/ui/skeleton"
 
 const wealthClass = [
     {
@@ -143,6 +144,7 @@ function Profile() {
     const { data: userData, refetch: refetchShares } = useGetUserSharesQuery(
         telegramId ?? "",
         {
+            skip: !telegramId,
             refetchOnReconnect: true,
             refetchOnFocus: true,
         }
@@ -151,7 +153,7 @@ function Profile() {
         refetchOnReconnect: true,
         refetchOnFocus: true,
     });
-    const { data: userDataCard } = useGetUserByIdQuery(telegramId ?? "", {
+    const { data: userDataCard, isLoading: loadingCollectedCards } = useGetUsersByIdQuery(telegramId ?? "", {
         refetchOnReconnect: true,
         refetchOnFocus: true,
     });
@@ -374,11 +376,16 @@ function Profile() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-2">
                         <div>
-                            <h1 className="text-[#FEFEFF] work-sans py-2">Cards collected</h1>
+                            <h1 className="text-[#FEFEFF] work-sans">Cards collected</h1>
                             <div className="w-full h-full flex items-center pb-4 gap-4 overflow-x-auto">
                                 <Fragment>
+                                    {loadingCollectedCards && <div className={"flex items-center gap-4"}>
+                                        {[0, 1, 2, 3, 4, 5].map((ske) => (
+                                            <Skeleton key={ske} className={"h-24 min-w-[70px] bg-gray-600 shadow-xl"} />
+                                        ))}
+                                    </div>}
                                     {userDataCard?.user.unlockedCards.length === 0 ? (
                                         <div
                                             className={
