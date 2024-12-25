@@ -70,7 +70,7 @@ function Tasks() {
     const handleShareToStory = async () => {
         const mediaUrl = "https://zeenstreet-ten.vercel.app/assets/Banner1-CFK7gMq_.jpg";
         const params = {
-            text: `Join me, ${userById?.user?.username}, in RaveGenie Games! Complete tasks and earn rewards for your efforts.`,
+            text: `Join mein RaveGenie Games! Complete tasks and earn rewards for your efforts.`,
             ...(isPremium && {
                 widget_link: {
                     url: userById?.user?.referralLink,
@@ -78,14 +78,16 @@ function Tasks() {
                 }
             }),
         };
-
+    
         try {
             await shareToStory(mediaUrl, [params]);
-            setHasShared(false);
+            setHasShared(true);  // Update state
+            localStorage.setItem("hasShared", "true");  // Sync state with localStorage
         } catch (error) {
             console.error("Error sharing to story:", error);
         }
     };
+    
 
     const handleConfirmation = async (confirmed: boolean) => {
         const shares = 100
