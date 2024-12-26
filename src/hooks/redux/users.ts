@@ -39,6 +39,9 @@ export const usersApi = createApi({
         getUsersById: builder.query({
             query: (telegram_id) => `/auth/${telegram_id}/user`
         }),
+        getAllUsers: builder.query({
+            query: () => `/auth/all-users`,
+        })
     }),
 })
 
@@ -46,4 +49,6 @@ export const {
     useCreateUsernameMutation,
     useGetUsernameQuery,
     useCheckUsernameQuery,
-    useGetUsersByIdQuery } = usersApi
+    useGetUsersByIdQuery,
+    useGetAllUsersQuery,
+} = usersApi

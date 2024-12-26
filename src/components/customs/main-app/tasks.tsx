@@ -12,35 +12,36 @@ import { Fragment, useEffect, useState } from 'react';
 import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
-import { useTelegramWebApp } from "@hooks/useTelegramWebapp"
-import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from "@components/ui/drawer";
-import { useUpdateUserSharesMutation } from "@/hooks/redux/shares";
-import { toast } from "sonner";
-import { useGetUsersByIdQuery } from "@/hooks/redux/users";
-import { RxShare1 } from "react-icons/rx";
+
+// import { useTelegramWebApp } from "@hooks/useTelegramWebapp"
+// import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from "@components/ui/drawer";
+// import { useUpdateUserSharesMutation } from "@/hooks/redux/shares";
+// import { toast } from "sonner";
+// import { useGetUsersByIdQuery } from "@/hooks/redux/users";
+// import { RxShare1 } from "react-icons/rx";
 
 function Tasks() {
-    const [isPremium, setIsPremium] = useState<boolean | undefined>(false)
+    // const [isPremium, setIsPremium] = useState<boolean | undefined>(false)
     // const [shareStep, setShareStep] = useState<"share" | "confirm">("share");
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const [tabs, setTabs] = useState<string>("All");
-    const [storyDrawerOpen, setStoryDrawerOpen] = useState(false);
-    const [hasSharedToStory, setHasSharedToStory] = useState(false);
-    const { shareToStory } = useTelegramWebApp();
+    // const [storyDrawerOpen, setStoryDrawerOpen] = useState(false);
+    // const [hasSharedToStory, setHasSharedToStory] = useState(false);
+    // const { shareToStory } = useTelegramWebApp();
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
-    const [updateShare, { isLoading: updating }] = useUpdateUserSharesMutation()
+    // const [updateShare, { isLoading: updating }] = useUpdateUserSharesMutation()
+
     const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId, {
         skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
     })
-    const { data: userById } = useGetUsersByIdQuery(telegramId ?? "", {
-        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
-    })
+    // const { data: userById } = useGetUsersByIdQuery(telegramId ?? "", {
+    // skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
+    // })
+
     const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true });
     const handleActiveTabs = (name: string) => {
         setTabs(name)
     }
-
-
 
 
     useEffect(() => {
@@ -51,64 +52,64 @@ function Tasks() {
             // Set Telegram user data
             if (user) {
                 setTelegramId(user.id ?? null);
-                setIsPremium(user.is_premium)
+                // setIsPremium(user.is_premium)
             }
         }
 
-        const storedstoryDrawerOpen = localStorage.getItem("storydrawerOpen");
-        const storedHasSharedToStory = localStorage.getItem("hasSharedToStory");
+        // const storedstoryDrawerOpen = localStorage.getItem("storydrawerOpen");
+        // const storedHasSharedToStory = localStorage.getItem("hasSharedToStory");
 
-        if (storedstoryDrawerOpen === "true") setStoryDrawerOpen(true);
-        if (storedHasSharedToStory === "true") setHasSharedToStory(true);
+        // if (storedstoryDrawerOpen === "true") setStoryDrawerOpen(true);
+        // if (storedHasSharedToStory === "true") setHasSharedToStory(true);
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem("storyDrawerOpen", String(storyDrawerOpen));
-        localStorage.setItem("hasSharedToStory", String(hasSharedToStory));
-    }, [storyDrawerOpen, hasSharedToStory]);
+    // useEffect(() => {
+    //     localStorage.setItem("storyDrawerOpen", String(storyDrawerOpen));
+    //     localStorage.setItem("hasSharedToStory", String(hasSharedToStory));
+    // }, [storyDrawerOpen, hasSharedToStory]);
 
-    const handleShareToStory = async () => {
-        const mediaUrl = "https://zeenstreet-ten.vercel.app/assets/Banner1-CFK7gMq_.jpg";
-        const params = {
-            text: `Join mein RaveGenie Games! Complete tasks and earn rewards for your efforts.`,
-            ...(isPremium && {
-                widget_link: {
-                    url: userById?.user?.referralLink,
-                    name: "RaveGenie Games"
-                }
-            }),
-        };
-    
-        try {
-            await shareToStory(mediaUrl, [params]);
-            setHasSharedToStory(true);  // Update state
-            localStorage.setItem("hasSharedToStory", "true");  // Sync state with localStorage
-        } catch (error) {
-            console.error("Error sharing to story:", error);
-        }
-    };
-    
+    // const handleShareToStory = async () => {
+    //     const mediaUrl = "https://zeenstreet-ten.vercel.app/assets/Banner1-CFK7gMq_.jpg";
+    //     const params = {
+    //         text: `Join mein RaveGenie Games! Complete tasks and earn rewards for your efforts.`,
+    //         ...(isPremium && {
+    //             widget_link: {
+    //                 url: userById?.user?.referralLink,
+    //                 name: "RaveGenie Games"
+    //             }
+    //         }),
+    //     };
 
-    const handleConfirmation = async (confirmed: boolean) => {
-        const shares = 100
-        if (confirmed) {
-            try {
-                const update = await updateShare({telegram_id: telegramId, shares: shares, shareType: "shares" }).unwrap(); // Call the mutation to reward the user.
-                if (update) {
-                    toast.success(`Share confirmed! ${shares} Rewards have been added`, { className: "text-xs work-sans" });
-                    setStoryDrawerOpen(false);
-                    localStorage.removeItem("storyDrawerOpen");
-                    localStorage.removeItem("hasSharedToStory");
-                }
-            } catch (err) {
-                console.error("Error updating share:", err);
-                toast.error("Something went wrong. Please try again.", { className: "text-xs work-sans" });
-            }
-        } else {
-            toast.info("You lost the reward for not sharing!", { className: "text-xs work-sans" });
-            setStoryDrawerOpen(false);
-        }
-    };
+    //     try {
+    //         await shareToStory(mediaUrl, [params]);
+    //         setHasSharedToStory(true);  // Update state
+    //         localStorage.setItem("hasSharedToStory", "true"); 
+    //     } catch (error) {
+    //         console.error("Error sharing to story:", error);
+    //     }
+    // };
+
+
+    // const handleConfirmation = async (confirmed: boolean) => {
+    //     const shares = 100
+    //     if (confirmed) {
+    //         try {
+    //             const update = await updateShare({telegram_id: telegramId, shares: shares, shareType: "shares" }).unwrap(); // Call the mutation to reward the user.
+    //             if (update) {
+    //                 toast.success(`Share confirmed! ${shares} Rewards have been added`, { className: "text-xs work-sans" });
+    //                 setStoryDrawerOpen(false);
+    //                 localStorage.removeItem("storyDrawerOpen");
+    //                 localStorage.removeItem("hasSharedToStory");
+    //             }
+    //         } catch (err) {
+    //             console.error("Error updating share:", err);
+    //             toast.error("Something went wrong. Please try again.", { className: "text-xs work-sans" });
+    //         }
+    //     } else {
+    //         toast.info("You lost the reward for not sharing!", { className: "text-xs work-sans" });
+    //         setStoryDrawerOpen(false);
+    //     }
+    // };
     return (
         <div className='flex flex-col min-h-full w-full'>
             <div style={{
@@ -225,7 +226,7 @@ function Tasks() {
                     )}
                 </div>
             </div>
-            <Drawer open={!hasSharedToStory} dismissible={false}>
+            {/* <Drawer open={!hasSharedToStory} dismissible={false}>
                 <DrawerContent
                     aria-describedby={undefined}
                     aria-description="show task dialog"
@@ -271,7 +272,7 @@ function Tasks() {
                     )}
                 </DrawerContent>
 
-            </Drawer>
+            </Drawer> */}
         </div>
     )
 }

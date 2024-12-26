@@ -141,7 +141,7 @@ function Referral() {
         className="flex flex-col flex-1 py-3 "
       >
         <div className="px-4 flex flex-col gap-8 pb-[8rem]">
-          <CardWrapper className={"border-[3px] border-[#c781ff]"}>
+          <CardWrapper>
             <CardHeader className="flex flex-col items-center py-0">
               <div className="h-[84px] w-[92px]">
                 <LazyLoadImage
@@ -195,7 +195,8 @@ function Referral() {
                       <MdInfo color="#D25804" size={10} />
                     </span>{" "}
                     You&apos;ve been awared
-                    <br /> {ShareFormatter(userData?.user?.claimReferrals_shares)} $shares
+                    <br />
+                    <ShareFormatter shares={userData?.user?.claimReferrals_shares} /> Shares
                   </h1>
                   <Button onClick={handleClaimReferralShares} disabled={claimingShares || userData?.user?.claimReferrals_shares} className="w-[111.2px] h-[30px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins">
                     Claim now
@@ -319,7 +320,6 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
   });
 
   const fileId = isPhotoSuccess ? photoData?.result?.photos?.[0]?.[2]?.file_id : null;
-  console.log("FieldId", fileId)
 
   const { data: filePathData, isSuccess: isFileSuccess } = useGetFilePathQuery(fileId, {
     skip: !fileId,
@@ -328,12 +328,7 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
   });
 
   const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
-  console.log("filePath", filePath)
   const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-  console.log("Bot Token:", BOT_TOKEN);
-
-
-
   return (
     <Fragment>
       <div className="flex items-center justify-between py-5 border-b border-[#5F59598A]">

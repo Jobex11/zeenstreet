@@ -9,11 +9,11 @@ import { useGetNotificationsQuery } from "@hooks/redux/notifications"
 
 
 function Header() {
-
+  const [page] = useState(0);
   const [profileImage, setProfileImage] = useState<string>(profilePlaceholder);
   const limit = 10
   const [telegramUsername, setTelegramUsername] = useState("");
-  const { data: notifications } = useGetNotificationsQuery({ limit },
+  const { data: notifications } = useGetNotificationsQuery([page, limit],
     { refetchOnReconnect: true, refetchOnFocus: true });
 
 

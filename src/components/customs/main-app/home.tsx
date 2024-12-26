@@ -64,7 +64,7 @@ function Home() {
             Total shares
           </h1>
           <h1 className="text-3xl font-bold aqum text-white text-center">
-            {ShareFormatter(user?.shares || 0)}
+            <ShareFormatter shares={user?.shares} />
           </h1>
           <div className={"mb-5 pb-1 flex items-center gap-4 border-b border-gray-500"}>
             <span className={"work-sans text-white"}>{userRank}</span>
@@ -89,7 +89,7 @@ function Home() {
                     <LazyLoadImage effect="opacity" src={filter} alt="filter" className="" />
                   </span>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-orange-600 rounded text-white border-none tahoma">
+                <DropdownMenuContent className="bg-orange-600 rounded text-white flex flex-col-reverse border-none tahoma">
                   <DropdownMenuItem className={`${selectedFilter === null && "bg-white text-black"}`} onClick={() => setSelectedFilter("All")} >All</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter == "Special" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Special")} >Special</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter === "Events" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Events")} >Events</DropdownMenuItem>

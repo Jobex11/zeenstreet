@@ -7,6 +7,7 @@ import { FiRefreshCcw } from "react-icons/fi";
 import { TbBellRinging2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { FiLoader } from "react-icons/fi"
 
 interface NotificationTypes {
   _id: string
@@ -44,7 +45,7 @@ function MailNotification() {
       }} className='flex flex-col flex-1 py-3 '>
         <div className="flex flex-col px-4 ">
           <div className="flex items-center justify-between py-3 inter">
-            <h1 className="text-xl font-semibold text-white work-sans">Notificaions</h1>
+            <h1 className="text-xl font-semibold text-white work-sans">Notifications</h1>
             <button
               type="button"
               onClick={() => { handleRefetch(); navigator.vibrate([50, 50]) }}
@@ -69,15 +70,12 @@ function MailNotification() {
             dataLength={notifications?.notifications?.length || 0}
             next={loadNextPage}
             hasMore={notifications?.currentPage < notifications?.totalPages}
-            loader={<div className="text-center text-white">Loading more...</div>}
+            loader={
+              <div className="flex flex-col items-center justify-center py-5">
+                <FiLoader size={30} color="white" className="animate-spin" />
+              </div>}
             scrollThreshold={0.9}
             scrollableTarget="scrollableDiv"
-            // endMessage={
-            //   <p style={{ textAlign: 'center' }}>
-            //     <b>Yay! You have seen it all</b>
-            //   </p>
-            // }
-
             refreshFunction={async () => {
               await refetch();
             }}
