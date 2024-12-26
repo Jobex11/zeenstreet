@@ -237,11 +237,11 @@ function Profile() {
                         <CardWrapper className="min-h-32 flex flex-col w-full justify-end p-0">
                             <CardContent className="flex  justify-between px-2 py-0">
                                 <div className="flex items-center">
-                                    <div className="h-28 w-[106px]">
+                                    <div className="h-28 w-28">
                                         <img
                                             src={profileImage}
                                             alt="profile image"
-                                            className="w-full object-contain object-center rounded-full"
+                                            className="w-full h-full object-contain object-center rounded-full"
                                         />
                                     </div>
                                     <div className="flex flex-col pb-4">
