@@ -47,7 +47,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
                     alt={user.username} />
                 <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user.username.slice(0, 2)}</AvatarFallback>
             </Avatar>
-            <div className={`absolute -bottom-2 z-40 h-8 w-8 rounded-full flex items-center justify-center work-sans ${index === 0 ? "bg-yellow-500 font-bold" : index === 1 ? "bg-green-600" : index === 2 ? "bg-purple-700" : ""}`}>
+            <div className={`absolute -bottom-2 z-40 h-7 w-7 rounded-full flex items-center justify-center work-sans ${index === 0 ? "bg-yellow-500 font-bold" : index === 1 ? "bg-green-600" : index === 2 ? "bg-purple-700" : ""}`}>
                 {
                     index === 0 ? 1 : index === 1 ? 2 : index === 2 ? 3 : 0
                 }
