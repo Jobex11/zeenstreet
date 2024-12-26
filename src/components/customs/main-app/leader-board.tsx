@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar"
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo'
 import { useGetAllUsersQuery } from '@hooks/redux/users'
 import { ShareFormatter } from '@components/common/shareFormatter'
-import { PiPersonSimpleSnowboardLight } from "react-icons/pi";
+// import { PiPersonSimpleSnowboardLight } from "react-icons/pi";
 
 interface User {
     username: string;
@@ -40,14 +40,14 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
     const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
 
     return (
-        <div className={`relative flex flex-col items-center  ${index === 0 ? 'w-28 h-28 shadow-xl' : 'w-20 h-20 '}`} >
+        <div className={`relative flex flex-col items-center  ${index === 0 ? 'w-[85px] h-[85px] shadow-xl' : 'w-[67px] h-[67px]'}`} >
             <Avatar className={`w-full h-full shadow-2xl`}>
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
                     alt={user.username} />
-                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl font-bold'>{user.username.slice(0, 2)}</AvatarFallback>
+                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user.username.slice(0, 2)}</AvatarFallback>
             </Avatar>
-            <div className={`absolute -bottom-2 z-40 h-8 w-8 rounded-full flex items-center justify-center work-sans ${index === 0 ? "bg-orange-500 font-bold" : index === 1 ? "bg-green-600" : index === 2 ? "bg-purple-700" : ""}`}>
+            <div className={`absolute -bottom-2 z-40 h-8 w-8 rounded-full flex items-center justify-center work-sans ${index === 0 ? "bg-yellow-500 font-bold" : index === 1 ? "bg-green-600" : index === 2 ? "bg-purple-700" : ""}`}>
                 {
                     index === 0 ? 1 : index === 1 ? 2 : index === 2 ? 3 : 0
                 }
@@ -89,13 +89,13 @@ export default function GlobalLeaderboard() {
     return (
         <div className="flex flex-col h-screen text-white">
             <div className="h-fit pt-10 px-4">
-                <h1 className="text-2xl font-bold text-center work-sans mb-4">Global Leaderboard</h1>
-                <PiPersonSimpleSnowboardLight size={60} color={"white"} className='mx-auto mb-3' />
+                {/* <h1 className="text-2xl font-bold text-center work-sans mb-4">Global Leaderboard</h1>
+                <PiPersonSimpleSnowboardLight size={60} color={"white"} className='mx-auto mb-3' /> */}
                 <div className=" grid grid-cols-3 place-content-evenly place-items-stretch mt-4">
                     {topThree.map((user, index) => (
                         <div key={user._id} className={`flex flex-col h-full items-center ${index === 0 ? 'order-2' : index === 1 ? 'order-1' : 'order-3'}`}>
                             <UserImages index={index} user={user} telegram_id={user.telegram_id} />
-                            <span className="font-semibold work-sans capitalize mt-3 line-clamp-1">{user.username.slice(0,13)}</span>
+                            <span className="font-medium work-sans capitalize mt-3 line-clamp-1">{user.username.slice(0, 6)}</span>
                             <span className="text-sm work-sans"><ShareFormatter shares={user[activeTab]} /></span>
                         </div>
                     ))}
@@ -106,7 +106,7 @@ export default function GlobalLeaderboard() {
                         <div key={btn.name} className='flex flex-col w-full'>
                             <button
                                 onClick={() => handleActiveTabs(btn.tab as 'shares' | 'unlockedCardsCount' | 'referralCount')}
-                                className={` work-sans py-3 ${activeTab === btn.tab && "border-orange-600"} hover:text-gray-700 duration-150  w-full border-b-2 border-transparent`}
+                                className={` work-sans text-sm py-3 ${activeTab === btn.tab && "border-orange-600"} hover:text-gray-700 duration-150  w-full border-b-2 border-transparent`}
                                 aria-pressed={activeTab === btn.tab}
                             >
                                 {btn.name}
@@ -120,14 +120,14 @@ export default function GlobalLeaderboard() {
                 </div>
             </div>
 
-            <div className="flex-1 px-4 py-2 overflow-y-auto">
-                {restUsers?.reverse().map((user, index) => {
+            <div className="flex-1 px-4 py-2 overflow-y-auto mt-7">
+                {restUsers?.map((user, index) => {
                     return (
-                        <div key={user._id} className={`${user?.telegram_id === telegramId && " rounded-md shadow-2xl text-white bg-slate-900 flex items-center justify-between px-2"} flex items-center justify-between py-2 border-b border-white/10`}>
+                        <div key={user._id} className={`${user?.telegram_id === telegramId && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
                             <div className="flex items-center">
                                 <span className="w-6 text-center">{index + 4}</span>
                                 <MiniImage user={user} />
-                                <span className="ml-2 jakarta">{user.username}</span>
+                                <span className="ml-2 jakarta text-sm">{user.username.slice(0, 10)}</span>
                             </div>
                             <span className="text-sm work-sans pr-2"><ShareFormatter shares={user[activeTab]} /></span>
                         </div>
@@ -165,11 +165,11 @@ export const MiniImage = ({ user }: MiniImageProps) => {
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
     const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
     return (
-        <Avatar className="w-12 h-12 ml-2">
+        <Avatar className="w-12 h-12">
             <AvatarImage
                 src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
                 alt={user.username} />
-            <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl font-semibold'>{user.username.slice(0, 2)}</AvatarFallback>
+            <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl font-medium'>{user.username.slice(0, 2)}</AvatarFallback>
         </Avatar>
     )
 
