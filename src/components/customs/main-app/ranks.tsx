@@ -128,7 +128,7 @@ function Ranks() {
                         alt="Rank Trophy"
                         className="h-full w-full object-center object-contain"
                       />
-                      <h2 className="text-center text-2xl font-bold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
+                      <h2 className="text-center text-[19px] font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
                         {group.rank}
                       </h2>
                     </div>
