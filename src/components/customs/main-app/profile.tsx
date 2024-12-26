@@ -17,7 +17,6 @@ import wave_force from "@assets/images/cards/wave.png";
 import wood_force from "@assets/images/cards/wood.png";
 import dotsbg from "@assets/images/dotted-bg.png";
 import goldCoin from "@assets/images/icons/gold_coin.svg";
-import profileBadge from "@assets/images/icons/profile_badge.svg";
 import profileImg from "@assets/images/profile_img.png";
 import CardWrapper from "@/components/common/cards/card-wrapper";
 import { ShareFormatter } from "@components/common/shareFormatter";
@@ -38,10 +37,12 @@ import { SlLock } from "react-icons/sl";
 import { toast } from "sonner";
 import { Fragment } from "react";
 import { Skeleton } from "@components/ui/skeleton"
+import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
+import { checkWealthClassUnlock } from "@/lib/utils";
+
 
 const wealthClass = [
     {
-        isLocked: false,
         shareType: "bottom_feeders",
         name: "Bottom Feeders",
         rewards: 50,
@@ -50,7 +51,6 @@ const wealthClass = [
             "For those who rise from the deep, a humble start that they keep.",
     },
     {
-        isLocked: true,
         shareType: "the_aspirers",
         name: "The Aspirers",
         rewards: 70,
@@ -59,7 +59,6 @@ const wealthClass = [
             "Dreams take flight and reach the sky, as these souls soar high.",
     },
     {
-        isLocked: true,
         shareType: "stable_money",
         name: "Stable Money",
         rewards: 85,
@@ -68,7 +67,6 @@ const wealthClass = [
             "Built on strength, steadfast and sure, wealth that will always endure.",
     },
     {
-        isLocked: true,
         shareType: "high_achievers",
         name: "High Achievers",
         rewards: 100,
@@ -77,7 +75,6 @@ const wealthClass = [
             "With goals in sight, they climb and strive, their success comes alive.",
     },
     {
-        isLocked: true,
         shareType: "elite_circle",
         name: "Elite Circle",
         rewards: 110,
@@ -85,7 +82,6 @@ const wealthClass = [
         description: "A select few who stand apart, their wisdom flowing like art.",
     },
     {
-        isLocked: true,
         shareType: "legacy_wealth",
         name: "Legacy Wealth",
         rewards: 120,
@@ -93,7 +89,6 @@ const wealthClass = [
         description: "Built to last, a timeless blend, wealth that will never end.",
     },
     {
-        isLocked: true,
         shareType: "titans",
         name: "Titans",
         rewards: 200,
@@ -102,7 +97,6 @@ const wealthClass = [
             "Mighty and strong, they rise above, their power known far and wide, like a burning love.",
     },
     {
-        isLocked: true,
         shareType: "planet_shakers",
         name: "Planet Shakers",
         rewards: 130,
@@ -111,7 +105,6 @@ const wealthClass = [
             "With force and flair, they change the game, their impact is never the same.",
     },
     {
-        isLocked: true,
         shareType: "sovereign_wealth",
         name: "Sovereign Wealth",
         rewards: 140,
@@ -131,16 +124,19 @@ const achievement = [
     { name: "Refer 70 Friends", reward: 400, img: achievement5 },
 ];
 
+
+
 function Profile() {
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const [profileImage, setProfileImage] = useState<string>(profileImg);
     const [telegramUsername, setTelegramUsername] = useState("");
-    const [updateUserShares, { isLoading: updatingShares }] =
-        useUpdateUserSharesMutation();
-    const [, setUserShareState] = useState(null);
+    const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>(
         {}
     );
+    const { data: wealthClasses } = useGetAllWealthClasssQuery(undefined);
+    const [updateUserShares, { isLoading: updatingShares }] =
+        useUpdateUserSharesMutation();
     const { data: userData, refetch: refetchShares } = useGetUserSharesQuery(
         telegramId ?? "",
         {
@@ -149,11 +145,11 @@ function Profile() {
             refetchOnFocus: true,
         }
     );
-    const { data: data, isLoading } = useGetUsernameQuery(telegramId ?? "", {
+    const { data: data, isLoading } = useGetUsernameQuery(telegramId, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
     });
-    const { data: userDataCard, isLoading: loadingCollectedCards } = useGetUsersByIdQuery(telegramId ?? "", {
+    const { data: userDataCard, isLoading: loadingCollectedCards } = useGetUsersByIdQuery(telegramId, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
     });
@@ -190,12 +186,9 @@ function Profile() {
             navigator.vibrate([50, 50]);
             setDrawerState((prevState) => ({
                 ...prevState,
-                [itemName]: false, // Close the specific drawer based on item name
+                [itemName]: false, 
             }));
-            setUserShareState({
-                ...userData,
-                claimedShares: { ...userData.claimedShares, [shareType]: true },
-            });
+            setClaimedRewards((prev) => ({ ...prev, [shareType]: true }));
             refetchShares();
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
@@ -207,9 +200,26 @@ function Profile() {
         }
     };
 
-    const checkIfClaimed = (shareType: string) => {
-        return userData?.claimedShares?.[shareType] ?? false;
-    };
+    const checkIfClaimed = (shareType: string) => claimedRewards[shareType] || false;
+
+    const wealthClassWithDetails = wealthClass.map((item) => {
+        const matchedData = wealthClasses?.data?.find(
+            (wclass: { name: string; }) => wclass.name === item.name
+        );
+
+     
+        const isUnlocked = checkWealthClassUnlock(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards, matchedData);
+        console.log("isUnlocked for", item.name, ":", isUnlocked);
+
+        return {
+            ...item,
+            isLocked: !isUnlocked, 
+            img:  item.img, 
+            description:item.description, 
+            rewards: matchedData?.sharesReward || item.rewards, 
+        };
+    });
+
 
     return (
         <div className="flex flex-col min-h-full">
@@ -240,7 +250,7 @@ function Profile() {
                                                 <span>User</span>
                                             ) : (
                                                 <span className="line-clamp-1">
-                                                    Hi {data?.preferred_username.slice(0, 10) || "User"}
+                                                    Hi {data?.preferred_username.slice(0, 10) || "........"}
                                                 </span>
                                             )}
                                         </h1>
@@ -249,22 +259,12 @@ function Profile() {
                                         </h1>
                                         <div className="bg-[#D36519] rounded-md text-white w-[107px] p-2 text-center">
                                             <h1 className="text-[7px] aqum font-bold">
-                                                {ShareFormatter(userData?.shares || 0)} $shares
+                                                <ShareFormatter shares={userData?.shares} /> shares
                                             </h1>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="h-[52px] w-[52px] mb-4 relative flex items-center justify-center">
-                                        <img
-                                            src={profileBadge}
-                                            alt="rank badge"
-                                            className="h-full w-full object-cover object-center"
-                                        />
-                                        <span className="text-[#EBB26D] absolute text-[13px] font-medium top-[10px] work-sans">
-                                            1
-                                        </span>
-                                    </div>
                                     <ConnectTonWallet />
                                 </div>
                             </CardContent>
@@ -276,110 +276,114 @@ function Profile() {
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
                             Wealth classes
                         </h1>
-                        <div className="w-full flex items-center pb-4 gap-4 overflow-x-auto">
-                            {wealthClass.map((item) => (
-                                <Drawer
-                                    key={item.name}
-                                    open={drawerState[item.name] || false}
-                                    onOpenChange={() =>
-                                        setDrawerState((prevState) => ({
-                                            ...prevState,
-                                            [item.name]: !prevState[item.name],
-                                        }))
-                                    }
-                                >
-                                    <DrawerTrigger asChild>
-                                        <div>
-                                            <Card
-                                                style={{
-                                                    backgroundImage: `url(${wavybg})`,
-                                                    backgroundRepeat: "no-repeat",
-                                                    backgroundSize: "cover",
-                                                }}
-                                                className="h-12 min-w-[70px] w-full relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold overflow-hidden"
-                                            >
+                        <div className="min-w-full flex items-center pb-4 gap-4 overflow-x-auto">
+                            {wealthClassWithDetails?.map((item) => {
+                                return (
+                                    <Drawer
+                                        key={item.name}
+                                        open={drawerState[item.name] || false}
+                                        onOpenChange={() =>
+                                            setDrawerState((prevState) => ({
+                                                ...prevState,
+                                                [item.name]: !prevState[item.name],
+                                            }))
+                                        }
+                                    >
+                                        <DrawerTrigger asChild>
+                                            <div>
+                                                <Card
+                                                    style={{
+                                                        backgroundImage: `url(${wavybg})`,
+                                                        backgroundRepeat: "no-repeat",
+                                                        backgroundSize: "cover",
+                                                    }}
+                                                    className="h-12 min-w-[70px] w-full relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold overflow-hidden"
+                                                >
+                                                    <img
+                                                        src={item.img}
+                                                        alt={`wealth class ${item.name}`}
+                                                        className="h-full w-full object-cover object-center rounded-md"
+                                                    />
+                                                    {item.isLocked && (
+                                                        <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
+                                                            <SlLock size={25} color="white" />
+                                                        </div>
+                                                    )}
+                                                </Card>
+                                                <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1 whitespace-nowrap">
+                                                    {item.name}
+                                                </h1>
+                                            </div>
+                                        </DrawerTrigger>
+                                        <DrawerContent
+                                            aria-describedby={undefined}
+                                            aria-description="dialog"
+                                            className="flex flex-col  min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
+                                        >
+                                            <DialogTitle className="sr-only" />
+                                            <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-5 gap-5">
+                                                <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
+                                                    <IoIosClose size={30} color="#A4A4A7" />
+                                                </DialogClose>
                                                 <img
                                                     src={item.img}
-                                                    alt={`wealth class ${item.name}`}
-                                                    className="h-full w-full object-cover object-center rounded-md"
+                                                    alt="Wealth class images"
+                                                    className="h-24 w-24 object-contain object-center"
                                                 />
-                                                {item.isLocked && (
-                                                    <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
-                                                        <SlLock size={25} color="white" />
-                                                    </div>
-                                                )}
-                                            </Card>
-                                            <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1 whitespace-nowrap">
-                                                {item.name}
-                                            </h1>
-                                        </div>
-                                    </DrawerTrigger>
-                                    <DrawerContent
-                                        aria-describedby={undefined}
-                                        aria-description="dialog"
-                                        className="flex flex-col  min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
-                                    >
-                                        <DialogTitle className="sr-only" />
-                                        <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-5 gap-5">
-                                            <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
-                                                <IoIosClose size={30} color="#A4A4A7" />
-                                            </DialogClose>
-                                            <img
-                                                src={item.img}
-                                                alt="Refferal Images"
-                                                className="h-24 w-24 object-contain object-center"
-                                            />
-                                            <h1 className="text-white work-sans font-semibold text-base capitalize">
-                                                {item.name}
-                                            </h1>
-                                            <p className="text-white work-sans text-sm text-center max-w-sm">
-                                                {item.description}
-                                            </p>
-                                            <h1
-                                                className={`flex items-center gap-2 ${checkIfClaimed(item.shareType) && "line-through"
-                                                    } text-white work-sans text-base`}
-                                            >
-                                                {item.rewards}{" "}
-                                                <img
-                                                    src={goldCoin}
-                                                    alt="coin"
-                                                    className="h-5 w-5 object-contain"
-                                                />{" "}
-                                            </h1>
-
-                                            {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
-                                            <Button
-                                                onClick={() =>
-                                                    handleUpdateShares(
-                                                        item.rewards,
-                                                        item.shareType,
-                                                        item.name
-                                                    )
-                                                }
-                                                disabled={
-                                                    updatingShares ||
-                                                    checkIfClaimed(item.shareType) ||
-                                                    item.isLocked
-                                                }
-                                                className={`bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans`}
-                                            >
-                                                {updatingShares
-                                                    ? "Processing..."
-                                                    : checkIfClaimed(item.shareType)
-                                                        ? `Shares already Claimed`
-                                                        : `Claim Shares`}
-                                            </Button>
-                                        </div>
-                                    </DrawerContent>
-                                </Drawer>
-                            ))}
+                                                <h1 className="text-white work-sans font-semibold text-base capitalize">
+                                                    {item.name}
+                                                </h1>
+                                                <p className="text-white work-sans text-sm text-center max-w-sm">
+                                                    {item.description}
+                                                </p>
+                                                <h1
+                                                    className={`flex items-center gap-2 ${checkIfClaimed(item.shareType) && "line-through"
+                                                        } text-white work-sans text-base`}
+                                                >
+                                                    {item.rewards}{" "}
+                                                    <img
+                                                        src={goldCoin}
+                                                        alt="coin"
+                                                        className="h-5 w-5 object-contain"
+                                                    />{" "}
+                                                </h1>
+                                                <Button
+                                                    onClick={() => {
+                                                        handleUpdateShares(item.rewards, item.shareType, item.name);
+                                                        setDrawerState((prevState) => ({
+                                                            ...prevState,
+                                                            [item.name]: false,
+                                                        }));
+                                                    }}
+                                                    disabled={
+                                                        updatingShares ||
+                                                        checkIfClaimed(item.shareType) || 
+                                                        item.isLocked 
+                                                    }
+                                                    className={`bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans ${(updatingShares || checkIfClaimed(item.shareType) || item.isLocked) &&
+                                                        "opacity-50 cursor-not-allowed"
+                                                        }`}
+                                                >
+                                                    {updatingShares
+                                                        ? "Processing..."
+                                                        : checkIfClaimed(item.shareType)
+                                                    ? "Shares already Claimed"
+                                                    : item.isLocked
+                                                    ? "Unlock Requirements First"
+                                                      : "Claim Shares"}
+                                                </Button>
+                                            </div>
+                                        </DrawerContent>
+                                    </Drawer>
+                                )
+                            })}
                         </div>
                     </div>
 
                     <div className="flex flex-col gap-2">
                         <div>
                             <h1 className="text-[#FEFEFF] work-sans">Cards collected</h1>
-                            <div className="w-full h-full flex items-center pb-4 gap-4 overflow-x-auto">
+                            <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">
                                 <Fragment>
                                     {loadingCollectedCards && <div className={"flex items-center gap-4"}>
                                         {[0, 1, 2, 3, 4, 5].map((ske) => (
@@ -413,7 +417,7 @@ function Profile() {
                                                                     backgroundRepeat: "no-repeat",
                                                                     backgroundSize: "cover",
                                                                 }}
-                                                                className="h-24 min-w-[70px] relative w-full rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
+                                                                className="h-24 min-w-28 relative shrink-0 rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
                                                             >
                                                                 <img
                                                                     src={card.image}
@@ -549,3 +553,6 @@ function Profile() {
 }
 
 export default Profile;
+
+
+

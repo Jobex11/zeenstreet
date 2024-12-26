@@ -1,4 +1,4 @@
-import Loader from '@/components/common/Loader';
+import Loader from '@components/common/Loader';
 import MainappLayout from '@components/common/main-app/main-app-layout'
 import { lazy, Suspense } from 'react';
 

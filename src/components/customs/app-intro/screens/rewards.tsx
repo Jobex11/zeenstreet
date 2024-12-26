@@ -10,8 +10,8 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 interface RewardsProps {
-  year?: string;
   shares: number;
+  province: string;
 }
 
 export const Rewards = (
@@ -40,7 +40,7 @@ export const Rewards = (
 
   const handleUpdateUserShare = async () => {
     try {
-      const shares = await updateShare({ shares: user.shares, telegram_id: telegramId, shareType: "Reward" }).unwrap();
+      const shares = await updateShare({ shares: user.shares, telegram_id: telegramId, shareType: "reward_shares" }).unwrap();
       if (shares) {
         setScreens?.("socials");
       }
@@ -60,8 +60,9 @@ export const Rewards = (
           <div>
             <Fade>
               <div className="aqum flex flex-col gap-4 items-center">
-                <h1 className="text-xl text-white text-center font-extrabold aqum">Few more steps to get started</h1>
-
+                <h1 className="text-xl text-white text-center font-extrabold work-sans">You are now a citizen of the</h1>
+                <h1 className="text-orange-600 text-2xl text-center aqum font-semibold uppercase">{user.province}</h1>
+                <h1 className="text-xl text-white text-center font-semibold work-sans pb-2">Province</h1>
                 <div className="relative h-28 w-28">
                   <LazyLoadImage effect="blur" src={medal} alt="" className="h-full w-full object-contain object-center" />
                 </div>
@@ -86,7 +87,7 @@ export const Rewards = (
         </div>
       </div>
       <TextButton
-        name={"Proceed"}
+        name={`${isLoading ? "Processing..." : "Proceed"}`}
         disabled={isLoading}
         onClick={handleUpdateUserShare}
         className={"uppercase mt-4"}
