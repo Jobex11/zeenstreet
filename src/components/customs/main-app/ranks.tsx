@@ -128,7 +128,7 @@ function Ranks() {
                         alt="Rank Trophy"
                         className="h-full w-full object-center object-contain"
                       />
-                      <h2 className="text-center text-[19px] font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
+                      <h2 className="text-center text-lg font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
                         {group.rank}
                       </h2>
                     </div>
@@ -145,7 +145,7 @@ function Ranks() {
                               </h1>
                             </div>
                             <div>
-                              <h1 className={`font-medium text-[17px] jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
+                              <h1 className={`font-medium text-base jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
                                 <ShareFormatter shares={user.shares + 10000} />
                               </h1>
                             </div>

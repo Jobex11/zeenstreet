@@ -61,8 +61,6 @@ function Referral() {
     refetchOnFocus: true,
   })
 
-
-
   const { data: referralCode } = useGetReferralCodeQuery(telegramId ?? "", {
     skip: !telegramId,
     refetchOnReconnect: true,
@@ -85,7 +83,6 @@ function Referral() {
   }, []);
 
 
-
   const handleCopyReferralLink = async () => {
     if (referralLink) {
       await navigator.clipboard.writeText(referralLink?.referralLink);
@@ -98,7 +95,7 @@ function Referral() {
     if (referralLink) {
       const tg = window.Telegram?.WebApp;
       const shareText =
-        "Join me on Ravegenie Games to earn rewards by completing tasks 🎉";
+        "Join me on Ravegenie Games to earn rewards by completing tasks and so much more🎉";
       const fullUrl = `https://t.me/share/url?url=${encodeURIComponent(
         referralLink.referralLink
       )}&text=${encodeURIComponent(shareText)}`;
@@ -198,7 +195,9 @@ function Referral() {
                     <br />
                     <ShareFormatter shares={userData?.user?.claimReferrals_shares} /> Shares
                   </h1>
-                  <Button onClick={handleClaimReferralShares} disabled={claimingShares || userData?.user?.claimReferrals_shares} className="w-[111.2px] h-[30px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins">
+                  <Button onClick={handleClaimReferralShares}
+                    disabled={claimingShares || userData?.user?.claimReferrals_shares}
+                    className="w-[111.2px] h-[30px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins">
                     Claim now
                   </Button>
                 </div>
@@ -260,7 +259,7 @@ function Referral() {
 
                         <div className="p-4 flex flex-col items-center ">
                           <AiOutlineTeam color={"white"} size={40} />
-                          <p className={"text-white work-sans text-center"}>Your Direct Workforce Will Reside Here</p>
+                          <p className={"text-white work-sans text-sm text-center"}>Your Direct Workforce Will Reside Here</p>
                         </div>
                       )}
                     </Fragment>
@@ -283,7 +282,7 @@ function Referral() {
                       ) : (
                         <div className="p-4 flex flex-col items-center gap-3 pt-3 ">
                           <RiTeamLine color={"white"} size={40} />
-                          <p className={"text-white work-sans text-center max-w-[250px]"}>Your Tier 2 Workforce Will Reside Here</p>
+                          <p className={"text-white work-sans text-center text-sm max-w-[250px]"}>Your Tier 2 Workforce Will Reside Here</p>
                         </div>
                       )}
                     </Fragment>
