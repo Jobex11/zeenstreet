@@ -10,13 +10,14 @@ import CardCarousel from "@components/common/main-app/card-carousel";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
+import { useGetAllRanksQuery } from "@hooks/redux/ranks"
 import { useEffect, useState, useMemo } from "react";
 import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { SlBadge } from "react-icons/sl";
-import getUserRank, { getRankIconColor } from "@lib/utils"
+import { getUserRank, getRankIconColor } from "@lib/utils"
 
 const imageUrls = [
   firstBannerImg,
@@ -28,18 +29,34 @@ const imageUrls = [
 function Home() {
 
   const [telegramId, setTelegramId] = useState<string | null>(null);
-  // const middleCardRef = useRef<HTMLDivElement>(null);
   const [selectedFilter, setSelectedFilter] = useState("All");
-
+  const { data: ranks } = useGetAllRanksQuery(undefined);
   const { data: user, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true })
   const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true, });
-  const userRank = useMemo(() => getUserRank(user?.shares), [user?.shares]);
+
+  const userRank = useMemo(
+    () =>
+      getUserRank(
+        user?.shares,
+        ranks?.data?.map(
+          (rank: { rank: string; rankRange: { min: number; max: number } }) => ({
+            rank: rank.rank,
+            min: rank.rankRange.min,
+            max: rank.rankRange.max,
+          })
+        ) || []
+      ),
+    [ranks?.data, user?.shares]
+  );
+  
+  const rankColor = getRankIconColor(userRank);
+  
+
   const filteredTasks = tasks?.tasks.filter((task: { category: string; }) =>
     selectedFilter === null || selectedFilter === "All" || task.category === selectedFilter
   );
 
   useEffect(() => {
-    // Set Telegram user ID
     if (window.Telegram && window.Telegram.WebApp) {
       const telegramUserId = window.Telegram.WebApp.initDataUnsafe?.user?.id;
       if (telegramUserId) {
@@ -68,7 +85,7 @@ function Home() {
           </h1>
           <div className={"mb-5 pb-1 flex items-center gap-4 border-b border-gray-500"}>
             <span className={"work-sans text-white"}>{userRank}</span>
-            <SlBadge color={getRankIconColor(userRank)} size={25} />
+            <SlBadge color={rankColor} size={25} />
           </div>
         </div>
 
@@ -161,7 +178,6 @@ function Home() {
               ))
             )}
           </div>
-
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,9 +39,11 @@ export function CreateUsername({
     mode: "onSubmit",
   });
 
+  const [telegramId, setTelegramId] = useState<string | null>(null);
   const [username, setUsername] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createUsername,] = useCreateUsernameMutation()
+
 
   const onSubmit = async (data: CreateUsernameFormValues) => {
     setIsSubmitting(true);
@@ -50,7 +52,6 @@ export function CreateUsername({
         typeof window !== "undefined" &&
         window.Telegram?.WebApp?.initDataUnsafe?.user?.id
       ) {
-        const telegramId = window?.Telegram?.WebApp?.initDataUnsafe?.user?.id;
         await createUsername({
           telegram_id: telegramId,
           preferred_username: data.username,
@@ -74,6 +75,18 @@ export function CreateUsername({
     }
   };
 
+  // Initialize Telegram WebApp and set user data
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const initData = window.Telegram.WebApp.initDataUnsafe;
+      const user = initData?.user;
+
+      // Set Telegram user data
+      if (user) {
+        setTelegramId(user.id ?? null);
+      }
+    }
+  }, []);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

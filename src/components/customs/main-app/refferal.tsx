@@ -20,12 +20,15 @@ import {
   useGetReferralCodeQuery,
   useGetTier1ReferralQuery,
   useGetTier2ReferralQuery,
-  useCliamReferralSharesMutation
+  useCliamReferralSharesMutation,
 } from "@hooks/redux/referrals";
-import { useGetTelegramUserPhotoUrlQuery, useGetFilePathQuery } from "@hooks/redux/tg_photo";
+import {
+  useGetTelegramUserPhotoUrlQuery,
+  useGetFilePathQuery,
+} from "@hooks/redux/tg_photo";
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
-import useWindowSize from '@hooks/useWindowsize'
-import Confetti from 'react-confetti'
+import useWindowSize from "@hooks/useWindowsize";
+import Confetti from "react-confetti";
 import { AiOutlineTeam } from "react-icons/ai";
 
 interface Referral {
@@ -45,35 +48,40 @@ function Referral() {
 
   const btnTabs = [{ name: "Tier 1" }, { name: "Tier 2" }];
 
-  const [claimReferralShares, { isLoading: claimingShares }] = useCliamReferralSharesMutation();
-  const { data: userData, refetch: refetchUserData } = useGetUsersByIdQuery(telegramId ?? "", {
-    refetchOnReconnect: true,
-    refetchOnFocus: true,
-  });
-  const { data: tier1Data, isLoading: loading } = useGetTier1ReferralQuery(telegramId ?? "", {
-    skip: !telegramId,
-    refetchOnReconnect: true,
-    refetchOnFocus: true,
-  })
+  const [claimReferralShares, { isLoading: claimingShares }] =
+    useCliamReferralSharesMutation();
+  const { data: userData, refetch: refetchUserData } = useGetUsersByIdQuery(
+    telegramId ?? "",
+    {
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+    }
+  );
+  const { data: tier1Data, isLoading: loading } = useGetTier1ReferralQuery(
+    telegramId ?? "",
+    {
+      skip: !telegramId,
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+    }
+  );
   const { data: tier2Data } = useGetTier2ReferralQuery(telegramId ?? "", {
     skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
-  })
-
-
+  });
 
   const { data: referralCode } = useGetReferralCodeQuery(telegramId ?? "", {
     skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
-  })
+  });
 
   const { data: referralLink } = useGetReferralLinkQuery(telegramId ?? "", {
     skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
-  })
+  });
   // Initialize Telegram WebApp
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -84,148 +92,7 @@ function Referral() {
     }
   }, []);
 
-
-<<<<<<< HEAD
-  const VITE_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-
-  const getTelegramProfilePhoto = async (
-    userId: string
-  ): Promise<string | null> => {
-    try {
-      const photosResponse = await fetch(
-        `https://api.telegram.org/bot${VITE_BOT_TOKEN}/getUserProfilePhotos?user_id=${userId}`
-      );
-      const photosData = await photosResponse.json();
-
-      // Check if the user has any photos
-      if (photosData.ok && photosData.result.total_count > 0) {
-        const fileId = photosData.result.photos[0][0].file_id; // First photo, first size
-
-        // Fetch the file path using getFile
-        const fileResponse = await fetch(
-          `https://api.telegram.org/bot${VITE_BOT_TOKEN}/getFile?file_id=${fileId}`
-        );
-        const fileData = await fileResponse.json();
-
-        if (fileData.ok) {
-          const filePath = fileData.result.file_path;
-          return `https://api.telegram.org/file/bot${VITE_BOT_TOKEN}/${filePath}`;
-        }
-      }
-      return null; // No photo available
-    } catch (error) {
-      console.error("Error fetching profile photo:", error);
-      return null;
-    }
-  };
-
-  const fetchReferrals = async () => {
-    setLoading(true);
-    try {
-      const tier1Response = await fetch(
-        `https://ravegenie-vgm7.onrender.com/api/referral/tier1/${telegramId}`
-      );
-      const tier1Data = await tier1Response.json();
-      /*
-    const tier1Mapped: Referral[] = tier1Data.tier1.map(
-        (ref: Tier1DataItem) => ({
-          userLogo: `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos?user_id=${ref.telegram_id}`,
-          name: ref.accountName,
-          userName: ref.username,
-          createdAt: ref.dateJoined,
-          rewardedShares: ref.shares.toString(),
-          isTier2: false,
-        })
-      );
-
-*/
-      const tier1Mapped: Referral[] = await Promise.all(
-        tier1Data.tier1.map(async (ref: Tier1DataItem) => {
-          const userLogo =
-            (await getTelegramProfilePhoto(ref.telegram_id)) ||
-            "default-avatar-url";
-
-          return {
-            userLogo,
-            name: ref.accountName,
-            userName: ref.username,
-            createdAt: ref.dateJoined,
-            rewardedShares: ref.shares.toString(),
-            isTier2: false,
-          };
-        })
-      );
-
-      setTier1Referrals(tier1Mapped);
-
-      const tier2Response = await fetch(
-        `https://ravegenie-vgm7.onrender.com/api/referral/tier2/${telegramId}`
-      );
-      const tier2Data = await tier2Response.json();
-
-      const tier2Mapped: Referral[] = tier2Data.tier2.map(
-        (ref: Tier2DataItem) => ({
-          userLogo: `https://api.telegram.org/bot${VITE_BOT_TOKEN}/getUserProfilePhotos?user_id=${ref.telegram_id}`,
-          name: ref.accountName,
-          userName: ref.username,
-          createdAt: ref.dateJoined,
-          rewardedShares: ref.shares.toString(),
-          isTier2: true,
-        })
-      );
-
-      setTier2Referrals(tier2Mapped);
-    } catch (error) {
-      console.error("Error fetching referrals:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  //backend stop
-
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const initData = window.Telegram.WebApp.initDataUnsafe;
-      const user = initData?.user;
-
-      if (user) {
-        setTelegramId(user.id ?? null);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (telegramId) {
-      fetch(
-        `https://ravegenie-vgm7.onrender.com/api/referral/referral-code/${telegramId}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.referralCode) {
-            setReferralCode(data.referralCode);
-          }
-        })
-        .catch((err) => console.error("Error fetching referral code:", err));
-
-      fetch(
-        `https://ravegenie-vgm7.onrender.com/api/referral/referral-link/${telegramId}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.referralLink) {
-            setReferralLink(data.referralLink);
-          }
-        })
-        .catch((err) => console.error("Error fetching referral link:", err));
-    }
-  }, [telegramId]);
-
-  const handleCopyReferralLink = () => {
-=======
-
   const handleCopyReferralLink = async () => {
->>>>>>> 0190acb7f1a2828f205452fce21e05a975e3c576
     if (referralLink) {
       await navigator.clipboard.writeText(referralLink?.referralLink);
       navigator.vibrate([50, 50]);
@@ -237,7 +104,7 @@ function Referral() {
     if (referralLink) {
       const tg = window.Telegram?.WebApp;
       const shareText =
-        "Join me on Ravegenie Games to earn rewards by completing tasks 🎉";
+        "Join me on Ravegenie Games to earn rewards by completing tasks and so much more🎉";
       const fullUrl = `https://t.me/share/url?url=${encodeURIComponent(
         referralLink.referralLink
       )}&text=${encodeURIComponent(shareText)}`;
@@ -249,22 +116,23 @@ function Referral() {
     setTabs(name);
   };
 
-
   const handleClaimReferralShares = async () => {
     try {
       const refShares = await claimReferralShares(telegramId).unwrap();
       if (refShares) {
         toast.success(refShares.message, { className: "text-xs work-sans" });
-        refetchUserData()
+        refetchUserData();
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 5000);
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      toast.error(error?.data || "Failed to claim referral shares.", { className: "text-xs work-sans" });
+      toast.error(error?.data || "Failed to claim referral shares.", {
+        className: "text-xs work-sans",
+      });
       console.error("Claiming referral shares error:", error);
     }
-  }
+  };
 
   const isButtonEnabled = userData?.hasNewReferrals && !claimingShares;
 
@@ -328,16 +196,29 @@ function Referral() {
                     </button>
                   </div>
                 </div>
-                <div className={`flex flex-col items-center ${!isButtonEnabled ? "hidden" : "flex"}`}>
+                <div
+                  className={`flex flex-col items-center ${
+                    !isButtonEnabled ? "hidden" : "flex"
+                  }`}
+                >
                   <h1 className="aqum text-[13px] font-bold text-center items-top flex  text-white py-2">
                     <span>
                       <MdInfo color="#D25804" size={10} />
                     </span>{" "}
                     You&apos;ve been awared
                     <br />
-                    <ShareFormatter shares={userData?.user?.claimReferrals_shares} /> Shares
+                    <ShareFormatter
+                      shares={userData?.user?.claimReferrals_shares}
+                    />{" "}
+                    Shares
                   </h1>
-                  <Button onClick={handleClaimReferralShares} disabled={claimingShares || userData?.user?.claimReferrals_shares} className="w-[111.2px] h-[30px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins">
+                  <Button
+                    onClick={handleClaimReferralShares}
+                    disabled={
+                      claimingShares || userData?.user?.claimReferrals_shares
+                    }
+                    className="w-[111.2px] h-[30px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins"
+                  >
                     Claim now
                   </Button>
                 </div>
@@ -357,10 +238,11 @@ function Referral() {
                   }}
                   key={tab.name}
                   onClick={() => handleActiveTabs(tab.name)}
-                  className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name
-                    ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm"
-                    : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "
-                    }`}
+                  className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${
+                    tabs === tab.name
+                      ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm"
+                      : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "
+                  }`}
                 >
                   {tab.name}
                   {tabs !== tab.name && (
@@ -375,7 +257,10 @@ function Referral() {
                 <div className="text-center text-white">
                   <div className={"flex flex-col gap-3"}>
                     {[0, 1, 2, 3].map((ske) => (
-                      <Skeleton key={ske} className={"h-14 w-full rounded bg-gray-600 shadow-lg"} />
+                      <Skeleton
+                        key={ske}
+                        className={"h-14 w-full rounded bg-gray-600 shadow-lg"}
+                      />
                     ))}
                   </div>
                 </div>
@@ -384,22 +269,29 @@ function Referral() {
                   {tabs === "Tier 1" && (
                     <Fragment>
                       {!loading && tier1Data?.tier1.length > 0 ? (
-                        tier1Data?.tier1.map((ref: {
-                          telegram_id: string;
-                          userLogo: string;
-                          username: string;
-                          dateJoined: string;
-                          accountName: string;
-                          isTier2?: boolean;
-                          shares: string;
-                        }) => (
-                          <Referrals key={ref.telegram_id} referrals={ref} />
-                        ))
+                        tier1Data?.tier1.map(
+                          (ref: {
+                            telegram_id: string;
+                            userLogo: string;
+                            username: string;
+                            dateJoined: string;
+                            accountName: string;
+                            isTier2?: boolean;
+                            shares: string;
+                          }) => (
+                            <Referrals key={ref.telegram_id} referrals={ref} />
+                          )
+                        )
                       ) : (
-
                         <div className="p-4 flex flex-col items-center ">
                           <AiOutlineTeam color={"white"} size={40} />
-                          <p className={"text-white work-sans text-center"}>Your Direct Workforce Will Reside Here</p>
+                          <p
+                            className={
+                              "text-white work-sans text-sm text-center"
+                            }
+                          >
+                            Your Direct Workforce Will Reside Here
+                          </p>
                         </div>
                       )}
                     </Fragment>
@@ -408,21 +300,29 @@ function Referral() {
                   {tabs === "Tier 2" && (
                     <Fragment>
                       {!loading && tier2Data?.tier2.length > 0 ? (
-                        tier2Data?.tier2.map((ref: {
-                          telegram_id: string;
-                          userLogo: string;
-                          username: string;
-                          accountName: string;
-                          dateJoined: string;
-                          isTier2?: boolean | undefined;
-                          shares: string;
-                        }) => (
-                          <Referrals key={ref.telegram_id} referrals={ref} />
-                        ))
+                        tier2Data?.tier2.map(
+                          (ref: {
+                            telegram_id: string;
+                            userLogo: string;
+                            username: string;
+                            accountName: string;
+                            dateJoined: string;
+                            isTier2?: boolean | undefined;
+                            shares: string;
+                          }) => (
+                            <Referrals key={ref.telegram_id} referrals={ref} />
+                          )
+                        )
                       ) : (
                         <div className="p-4 flex flex-col items-center gap-3 pt-3 ">
                           <RiTeamLine color={"white"} size={40} />
-                          <p className={"text-white work-sans text-center max-w-[250px]"}>Your Tier 2 Workforce Will Reside Here</p>
+                          <p
+                            className={
+                              "text-white work-sans text-center text-sm max-w-[250px]"
+                            }
+                          >
+                            Your Tier 2 Workforce Will Reside Here
+                          </p>
                         </div>
                       )}
                     </Fragment>
@@ -452,19 +352,25 @@ interface RefferalsProps {
 }
 
 export const Referrals = ({ referrals }: RefferalsProps) => {
-  const { data: photoData, isSuccess: isPhotoSuccess } = useGetTelegramUserPhotoUrlQuery(referrals.telegram_id, {
-    skip: !referrals.telegram_id,
-    refetchOnReconnect: true,
-    refetchOnFocus: true,
-  });
+  const { data: photoData, isSuccess: isPhotoSuccess } =
+    useGetTelegramUserPhotoUrlQuery(referrals.telegram_id, {
+      skip: !referrals.telegram_id,
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+    });
 
-  const fileId = isPhotoSuccess ? photoData?.result?.photos?.[0]?.[2]?.file_id : null;
+  const fileId = isPhotoSuccess
+    ? photoData?.result?.photos?.[0]?.[2]?.file_id
+    : null;
 
-  const { data: filePathData, isSuccess: isFileSuccess } = useGetFilePathQuery(fileId, {
-    skip: !fileId,
-    refetchOnReconnect: true,
-    refetchOnFocus: true,
-  });
+  const { data: filePathData, isSuccess: isFileSuccess } = useGetFilePathQuery(
+    fileId,
+    {
+      skip: !fileId,
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+    }
+  );
 
   const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
   const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;

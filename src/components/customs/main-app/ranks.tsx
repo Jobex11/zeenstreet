@@ -28,7 +28,7 @@ function Ranks() {
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const [emblaRef] = useEmblaCarousel();
   const { data: allUsers, isLoading: loadingUsers } = useGetAllUsersQuery(undefined);
-  const { data: ranks, isSuccess: ranksLoaded } = useGetAllRanksQuery(undefined)
+  const { data: ranks, isSuccess: ranksLoaded } = useGetAllRanksQuery(undefined);
 
 
   useEffect(() => {
@@ -52,43 +52,44 @@ function Ranks() {
   // Categorize users by rank
   const usersByRank = useMemo(() => {
     if (loadingUsers || !allUsers) return [];
-
+  
+    // Ensure rank ranges exist
     const updatedRanks = [...rankRanges];
     const lastRange = updatedRanks[updatedRanks.length - 1];
-
-    // Ensure the current user is included in the last group if they exceed the range
+  
+    // Include the current user in the highest rank if they exceed the range
     const currentUserDetails = allUsers.users.find(
       (user: User) => user.telegram_id === telegramId
     );
-
-    if (
-      currentUserDetails &&
-      currentUserDetails.shares > lastRange.max &&
-      !updatedRanks.some((range) => range.min <= currentUserDetails?.shares && range.max >= currentUserDetails?.shares)
-    ) {
-      updatedRanks[updatedRanks.length - 1] = {
-        ...lastRange,
-        max: currentUserDetails?.shares,
-      };
+  
+    if (currentUserDetails) {
+      // Adjust the highest range's max to include the current user if necessary
+      if (currentUserDetails.shares > lastRange?.max) {
+        updatedRanks[updatedRanks.length - 1] = {
+          ...lastRange,
+          max: currentUserDetails.shares, // Extend the max range dynamically
+        };
+      }
     }
-
+  
+    // Group users by ranks
     return updatedRanks.map((range) => {
       const users = allUsers.users.filter(
         (user: User) => user.shares >= range.min && user.shares <= range.max
       );
-
-      // Sort users so the current user appears at the top
+  
+      // Ensure the current user appears at the top of their rank group
       return {
         rank: range.rank,
         users: users.sort((a: { telegram_id: string | null; shares: number; }, b: { telegram_id: string | null; shares: number; }) => {
           if (a.telegram_id === telegramId) return -1;
           if (b.telegram_id === telegramId) return 1;
-          return b.shares - a.shares; 
+          return b.shares - a.shares; // Sort by shares in descending order
         }),
       };
     });
   }, [allUsers, loadingUsers, rankRanges, telegramId]);
-
+  
 
   const currentUser = (telegram_id: string) => {
     const user = telegram_id === telegramId;
@@ -119,7 +120,7 @@ function Ranks() {
                         backgroundPosition: "center, center",
                         backgroundBlendMode: "multiply,multiply ",
                       }}
-                      className="h-[271px] flex flex-col items-center justify-center w-full rounded-md"
+                      className="h-[250px] flex flex-col items-center justify-center w-full rounded-md"
                     >
                       <img
                         loading="eager"
@@ -127,7 +128,7 @@ function Ranks() {
                         alt="Rank Trophy"
                         className="h-full w-full object-center object-contain"
                       />
-                      <h2 className="text-center text-2xl font-bold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
+                      <h2 className="text-center text-lg font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
                         {group.rank}
                       </h2>
                     </div>
@@ -139,20 +140,20 @@ function Ranks() {
                           <div key={user._id} className={`flex ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-2`}>
                             <div className="flex items-center gap-3">
                               <RankImage user={user} telegram_id={user.telegram_id} />
-                              <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-[17px] capitalize font-bold jakarta`}>
+                              <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-sm capitalize font-bold jakarta`}>
                                 {user.username}
                               </h1>
                             </div>
                             <div>
-                              <h1 className={`font-medium text-[17px] jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
-                                <ShareFormatter shares={user.shares} /> Shares
+                              <h1 className={`font-medium text-base jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
+                                <ShareFormatter shares={user.shares + 10000} />
                               </h1>
                             </div>
                           </div>
                         )) : (
-                          <div className="text-center text-white text-lg flex flex-col gap-1 items-center">
+                          <div className="text-center text-white text-lg flex flex-col gap-1 pt-5 items-center">
                             <HiOutlineUserGroup size={45} className="" />
-                            No users yet for this rank.
+                            {/* No users yet for this rank. */}
                           </div>
                         )}
                   </div>
@@ -197,7 +198,7 @@ export const RankImage = ({ telegram_id, user }: ImageProps) => {
         alt="Rank badge"
         className="min-h-full w-full object-center rounded-full object-contain"
       />
-        : <div className="h-[50px] w-[50px] flex items-center justify-center bg-orange-500 uppercase text-white work-sans font-semibold border rounded-full">
+        : <div className="h-[50px] w-[50px] flex items-center justify-center bg-orange-500 uppercase text-white work-sans font-medium border rounded-full">
           {user?.username?.slice(0, 2)}
         </div>}
     </div>
