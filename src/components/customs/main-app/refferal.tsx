@@ -134,7 +134,7 @@ function Referral() {
     }
   };
 
-  const isButtonEnabled = userData?.user?.hasNewReferrals && !claimingShares;
+  //const isButtonEnabled = userData?.user?.hasNewReferrals && !claimingShares;
 
   return (
     <div className="flex flex-col min-h-full">
@@ -197,9 +197,7 @@ function Referral() {
                   </div>
                 </div>
                 <div
-                  className={`flex flex-col items-center ${
-                    !isButtonEnabled ? "hidden" : "flex"
-                  }`}
+                  className={`flex flex-col items-center`}
                 >
                   <h1 className="aqum text-[13px] font-bold text-center items-top flex  text-white py-2">
                     <span>
