@@ -10,12 +10,13 @@ import CardCarousel from "@components/common/main-app/card-carousel";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-
+import { SlBadge } from "react-icons/sl";
+import getUserRank, { getRankIconColor } from "@lib/utils"
 
 const imageUrls = [
   firstBannerImg,
@@ -32,7 +33,7 @@ function Home() {
 
   const { data: user, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true })
   const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true, });
-
+  const userRank = useMemo(() => getUserRank(user?.shares), [user?.shares]);
   const filteredTasks = tasks?.tasks.filter((task: { category: string; }) =>
     selectedFilter === null || selectedFilter === "All" || task.category === selectedFilter
   );
@@ -62,9 +63,13 @@ function Home() {
           <h1 className="uppercase aqum font-bold text-lg text-white text-center pt-2">
             Total shares
           </h1>
-          <h1 className="text-3xl font-bold aqum text-white pb-6 text-center">
-            {ShareFormatter(user?.shares || 0)}
+          <h1 className="text-3xl font-bold aqum text-white text-center">
+            <ShareFormatter shares={user?.shares} />
           </h1>
+          <div className={"mb-5 pb-1 flex items-center gap-4 border-b border-gray-500"}>
+            <span className={"work-sans text-white"}>{userRank}</span>
+            <SlBadge color={getRankIconColor(userRank)} size={25} />
+          </div>
         </div>
 
         {/* latest cards */}
@@ -84,7 +89,7 @@ function Home() {
                     <LazyLoadImage effect="opacity" src={filter} alt="filter" className="" />
                   </span>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-orange-600 rounded text-white border-none tahoma">
+                <DropdownMenuContent className="bg-orange-600 rounded text-white flex flex-col-reverse border-none tahoma">
                   <DropdownMenuItem className={`${selectedFilter === null && "bg-white text-black"}`} onClick={() => setSelectedFilter("All")} >All</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter == "Special" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Special")} >Special</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter === "Events" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Events")} >Events</DropdownMenuItem>

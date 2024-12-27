@@ -5,10 +5,13 @@ import Logo from "@assets/images/icons/ravenenie_logo.png";
 import { Fade, Zoom } from "react-awesome-reveal";
 import CountUp from "react-countup"
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useUpdateUserSharesMutation } from "@hooks/redux/shares";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 interface RewardsProps {
-  year?: string;
   shares: number;
+  province: string;
 }
 
 export const Rewards = (
@@ -20,6 +23,32 @@ export const Rewards = (
     setScreens?: (value: React.SetStateAction<string>) => void
   }
 ) => {
+  const [telegramId, setTelegramId] = useState<string | null>(null)
+  const [updateShare, { isLoading }] = useUpdateUserSharesMutation();
+
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const initData = window.Telegram.WebApp.initDataUnsafe;
+      const user = initData?.user;
+
+      // Set Telegram user data
+      if (user) {
+        setTelegramId(user.id ?? null);
+      }
+    }
+  }, []);
+
+  const handleUpdateUserShare = async () => {
+    try {
+      const shares = await updateShare({ shares: user.shares, telegram_id: telegramId, shareType: "reward_shares" }).unwrap();
+      if (shares) {
+        setScreens?.("socials");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+    } catch (error: any) {
+      toast.error("someting went wrong", { className: "text-xs work-sans" });
+    }
+  }
   return (
     <div className="flex flex-col flex-1  justify-stretch gap-10 w-full min-h-full p-4 relative">
       <div className="flex  flex-col justify-stretch gap-5">
@@ -31,8 +60,9 @@ export const Rewards = (
           <div>
             <Fade>
               <div className="aqum flex flex-col gap-4 items-center">
-                <h1 className="text-xl text-white text-center font-extrabold aqum">Few more steps to get started</h1>
-
+                <h1 className="text-xl text-white text-center font-extrabold work-sans">You are now a citizen of the</h1>
+                <h1 className="text-orange-600 text-2xl text-center aqum font-semibold uppercase">{user.province}</h1>
+                <h1 className="text-xl text-white text-center font-semibold work-sans pb-2">Province</h1>
                 <div className="relative h-28 w-28">
                   <LazyLoadImage effect="blur" src={medal} alt="" className="h-full w-full object-contain object-center" />
                 </div>
@@ -57,9 +87,9 @@ export const Rewards = (
         </div>
       </div>
       <TextButton
-        name={"Proceed"}
-        disabled={false}
-        onClick={() => setScreens && setScreens("socials")}
+        name={`${isLoading ? "Processing..." : "Proceed"}`}
+        disabled={isLoading}
+        onClick={handleUpdateUserShare}
         className={"uppercase mt-4"}
       />
     </div>

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 export const useGoldFormatter = (goldAmount: number) => {
-  const formattedGold = useMemo(() => {
+  return useMemo(() => {
     if (goldAmount <= 100_000) {
       return goldAmount.toLocaleString();
     } else if (goldAmount >= 1_000_000_000) {
@@ -13,6 +13,5 @@ export const useGoldFormatter = (goldAmount: number) => {
     }
   }, [goldAmount]);
 
-  return formattedGold;
 };
 

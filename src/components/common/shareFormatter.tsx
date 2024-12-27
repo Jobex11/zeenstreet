@@ -1,6 +1,6 @@
-import { useGoldFormatter } from '@hooks/useGoldformatter'
+import { useGoldFormatter } from "@hooks/useGoldformatter";
 
-export function ShareFormatter(shares: number) {
-    const formatShare = useGoldFormatter(shares)
-    return formatShare
+export function ShareFormatter({ shares }: { shares: number }) {
+    const formatShare = useGoldFormatter(shares);
+    return <span>{formatShare}</span>;
 }

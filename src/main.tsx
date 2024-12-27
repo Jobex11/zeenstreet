@@ -7,7 +7,7 @@ import Tasks from "./pages/tasks/page";
 import Marketplace from "./pages/marketplace/page";
 import Teams from "./pages/teams/page";
 import Games from "./pages/games/page";
-import ReduxProvider from "./components/common/provider";
+import ReduxProvider from "@components/common/provider";
 import ReferralPage from "./pages/referral/page";
 import ProfilePage from "./pages/profile/page";
 import RankPage from "./pages/ranks/page";
@@ -17,6 +17,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import Intro from "./pages/app-intro/page";
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import LeaderBoard from "./pages/leader-board/page";
+import ErrorBoundary from '@components/common/error-boundary';
 
 const router = createBrowserRouter([
   {
@@ -70,12 +71,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <TonConnectUIProvider
       manifestUrl='https://zeenstreet-ten.vercel.app/tonconnect-manifest.json'
       actionsConfiguration={{
-        twaReturnUrl: 'https://t.me/RaveGenieBot'
+        twaReturnUrl: 'https://t.me/RaveGenie_Bot/game'
       }}
     >
       <ReduxProvider>
         <TelegramWrapper>
-          <RouterProvider router={router} />
+          <ErrorBoundary>
+            <RouterProvider router={router} />
+          </ErrorBoundary>
         </TelegramWrapper>
       </ReduxProvider>
     </TonConnectUIProvider>

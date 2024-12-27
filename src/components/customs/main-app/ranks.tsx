@@ -1,73 +1,205 @@
+import { useState, useMemo, useEffect, Key } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 import dotsbg from "@assets/images/dotted-bg.png";
 import trophy from "@assets/images/icons/trophy.png";
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
-import rankBadge from "@assets/images/icons/rank_badge.svg";
-import goldCoin from "@assets/images/icons/gold_coin.svg";
-import eclipse from "@assets/images/eclipse.png"
+import eclipse from "@assets/images/eclipse.png";
 import { ShareFormatter } from "@components/common/shareFormatter";
-// import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useGetAllUsersQuery } from "@hooks/redux/users";
+import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from "@hooks/redux/tg_photo";
+import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
+import { HiOutlineUserGroup } from "react-icons/hi2";
+
+interface Rank {
+  rankRange: { min: number; max: number };
+  rank: string;
+  _id: string;
+}
+
+interface User {
+  username: string;
+  shares: number;
+  telegram_id: string;
+  _id: string;
+}
 
 
 function Ranks() {
+  const [telegramId, setTelegramId] = useState<string | null>(null);
+  const [emblaRef] = useEmblaCarousel();
+  const { data: allUsers, isLoading: loadingUsers } = useGetAllUsersQuery(undefined);
+  const { data: ranks, isSuccess: ranksLoaded } = useGetAllRanksQuery(undefined)
 
-  const ranks = [
-    { rank: "Rank 1", shares: 4000000 },
-    { rank: "Rank 2", shares: 3000000 },
-    { rank: "Rank 3", shares: 2000000 },
-    { rank: "Rank 4", shares: 1000000 },
-    { rank: "Rank 5", shares: 800000 },
-    { rank: "Rank 6", shares: 500000 },
-    { rank: "Rank 7", shares: 100500 }
-  ]
+
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const tgData = window.Telegram.WebApp.initDataUnsafe;
+      if (tgData && tgData.user && tgData.user.id) {
+        setTelegramId(tgData.user.id.toString());
+      }
+    }
+  }, []);
+
+  const rankRanges = useMemo(() => {
+    if (!ranksLoaded || !ranks) return [];
+    return ranks?.data?.map((rank: Rank) => ({
+      rank: rank.rank,
+      min: rank.rankRange.min,
+      max: rank.rankRange.max,
+    }));
+  }, [ranks, ranksLoaded]);
+
+  // Categorize users by rank
+  const usersByRank = useMemo(() => {
+    if (loadingUsers || !allUsers) return [];
+
+    const updatedRanks = [...rankRanges];
+    const lastRange = updatedRanks[updatedRanks.length - 1];
+
+    // Ensure the current user is included in the last group if they exceed the range
+    const currentUserDetails = allUsers.users.find(
+      (user: User) => user.telegram_id === telegramId
+    );
+
+    if (
+      currentUserDetails &&
+      currentUserDetails.shares > lastRange.max &&
+      !updatedRanks.some((range) => range.min <= currentUserDetails?.shares && range.max >= currentUserDetails?.shares)
+    ) {
+      updatedRanks[updatedRanks.length - 1] = {
+        ...lastRange,
+        max: currentUserDetails?.shares,
+      };
+    }
+
+    return updatedRanks.map((range) => {
+      const users = allUsers.users.filter(
+        (user: User) => user.shares >= range.min && user.shares <= range.max
+      );
+
+      // Sort users so the current user appears at the top
+      return {
+        rank: range.rank,
+        users: users.sort((a: { telegram_id: string | null; shares: number; }, b: { telegram_id: string | null; shares: number; }) => {
+          if (a.telegram_id === telegramId) return -1;
+          if (b.telegram_id === telegramId) return 1;
+          return b.shares - a.shares; 
+        }),
+      };
+    });
+  }, [allUsers, loadingUsers, rankRanges, telegramId]);
+
+
+  const currentUser = (telegram_id: string) => {
+    const user = telegram_id === telegramId;
+    return user
+  }
   return (
-    <div className='flex flex-col min-h-full'>
-      <div style={{
-        backgroundImage: `url(${dotsbg})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover"
-      }} className='flex flex-col flex-1 pb-3 '>
-
-        {/* rank trophy  */}
-        <div>
-          <div style={{
-            backgroundImage: `url(${eclipse}), url(${sprinkledStars})`,
-            backgroundRepeat: "no-repeat, no-repeat",
-            backgroundSize: "cover, cover",
-            backgroundPosition: "center, center",
-            backgroundBlendMode: "multiply",
-          }} className='h-[271px] flex flex-col items-center justify-center'>
-            <img
-              src={trophy}
-              alt="Rank Trophy" className='h-full w-full object-center object-contain' />
-            <h1 className="text-[#FEFEFF] text-xl font-semibold work-sans py-1">Ranks</h1>
-          </div>
-
-        </div>
-
-        <div className='px-4 flex flex-col gap-8 py-[7rem]'>
-
-          {/* rank lists */}
-          <div className="flex flex-col mt-3">
-            {ranks.map((rank) => (
-              <div key={rank.rank} className="flex items-center justify-between py-2">
-                <div className="flex items-center gap-3">
-                  <div className="h-[49px] w-[49px]">
-                    <img src={rankBadge} alt="Rank badge" className="min-h-full min- w-full object-center object-contain" />
+    <div className="flex flex-col min-h-full">
+      <div
+        style={{
+          backgroundImage: `url(${dotsbg})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
+        className="flex flex-col flex-1 pb-3"
+      >
+        {/* Embla Carousel */}
+        <div className="embla" ref={emblaRef}>
+          <div className="embla__container flex">
+            {usersByRank.map((group: { rank: string | number, users: { username: string; shares: number; telegram_id: string; _id: string; }[]; }, index: Key | null | undefined) => (
+              <div className="embla__slide w-full flex-shrink-0" key={index}>
+                <div className="flex flex-col gap-8">
+                  <div>
+                    <div
+                      style={{
+                        backgroundImage: `url(${eclipse}), url(${sprinkledStars})`,
+                        backgroundRepeat: "no-repeat, no-repeat",
+                        backgroundSize: "cover, cover",
+                        backgroundPosition: "center, center",
+                        backgroundBlendMode: "multiply,multiply ",
+                      }}
+                      className="h-[271px] flex flex-col items-center justify-center w-full rounded-md"
+                    >
+                      <img
+                        loading="eager"
+                        src={trophy}
+                        alt="Rank Trophy"
+                        className="h-full w-full object-center object-contain"
+                      />
+                      <h2 className="text-center text-2xl font-bold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
+                        {group.rank}
+                      </h2>
+                    </div>
                   </div>
-                  <h1 className="text-[#FFFFFF] text-[17px] font-bold jakarta">{rank.rank}</h1>
+                  <div className="flex flex-col mt-3 divide-y-2 divide-gray-800">
+                    {
+                      group?.users.length > 0 ?
+                        group?.users?.map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
+                          <div key={user._id} className={`flex ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-2`}>
+                            <div className="flex items-center gap-3">
+                              <RankImage user={user} telegram_id={user.telegram_id} />
+                              <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-[17px] capitalize font-bold jakarta`}>
+                                {user.username}
+                              </h1>
+                            </div>
+                            <div>
+                              <h1 className={`font-medium text-[17px] jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
+                                <ShareFormatter shares={user.shares} /> Shares
+                              </h1>
+                            </div>
+                          </div>
+                        )) : (
+                          <div className="text-center text-white text-lg flex flex-col gap-1 items-center">
+                            <HiOutlineUserGroup size={45} className="" />
+                            No users yet for this rank.
+                          </div>
+                        )}
+                  </div>
                 </div>
-                <div><h1 className="font-medium text-[17px] jakarta flex items-center gap-1 text-white"><img src={goldCoin} alt="gold" className="h-[15px] w-[15px] object-cover object-center" />{ShareFormatter(rank.shares)} Gold</h1></div>
               </div>
             ))}
-
           </div>
-
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Ranks
+export default Ranks;
 
+interface ImageProps {
+  telegram_id: string | null;
+  user: User;
+}
 
+export const RankImage = ({ telegram_id, user }: ImageProps) => {
+  const { data: photoData, isSuccess: isPhotoSuccess } = useGetTelegramUserPhotoUrlQuery(telegram_id, {
+    skip: !telegram_id,
+    refetchOnReconnect: true,
+    refetchOnFocus: true,
+  });
+
+  const fileId = isPhotoSuccess ? photoData?.result?.photos?.[0]?.[2]?.file_id : null;
+
+  const { data: filePathData, isSuccess: isFileSuccess } = useGetFilePathQuery(fileId, {
+    skip: !fileId,
+    refetchOnReconnect: true,
+    refetchOnFocus: true,
+  });
+
+  const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
+  const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+  return (
+    <div className="h-[49px] w-[49px]">
+      {filePath ? <img
+        src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
+        alt="Rank badge"
+        className="min-h-full w-full object-center rounded-full object-contain"
+      />
+        : <div className="h-[50px] w-[50px] flex items-center justify-center bg-orange-500 uppercase text-white work-sans font-semibold border rounded-full">
+          {user?.username?.slice(0, 2)}
+        </div>}
+    </div>
+  )
+}

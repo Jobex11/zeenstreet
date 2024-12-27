@@ -8,7 +8,7 @@ export const notificationApi = createApi({
     tagTypes: ['Notifications'],
     endpoints: (builder) => ({
         getNotifications: builder.query({
-            query: ({ page, limit = 10 }) => ({
+            query: ([page =1, limit = 10 ]) => ({
                 url: `/notifications?page=${page}&limit=${limit}`,
                 providesTags: ['Notifications']
             }),

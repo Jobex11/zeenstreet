@@ -8,20 +8,20 @@ import { Fragment, useEffect, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import CardWrapper from "./Tasxcard";
+import CardWrapper from "./card-wrapper";
 import { GoClockFill } from "react-icons/go";
-import { useGetUserByIdQuery } from "@hooks/redux/users";
+import { useGetUsersByIdQuery } from "@hooks/redux/users";
 
 
 export function RavegenieCard({ task, refetch }: TaskcardType) {
-    const [telegramId, setTelegramId] = useState("");
+    const [telegramId, setTelegramId] = useState<string | null>(null);
     const [remainingTime, setRemainingTime] = useState(0);
     const [currentReward, setCurrentReward] = useState<number>(0);
     const [progressValue, setProgressValue] = useState(0);
     const [taskPerformed, setTaskPerformed] = useState<boolean>(false);
     const [isTaskCompleted, setIsTaskCompleted] = useState<boolean>(false)
     const [completeTasks, { isLoading: isCompleting }] = useCompleteTasksMutation();
-    const { data: userById } = useGetUserByIdQuery(telegramId ?? "", {
+    const { data: userById } = useGetUsersByIdQuery(telegramId, {
         refetchOnReconnect: true, refetchOnFocus: true
     })
 
@@ -51,22 +51,20 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
     }, [task]);
 
     useEffect(() => {
-        if (remainingTime <= 0 || task.diminishingRewards !== "Yes") return;
+        if (remainingTime <= 0) return;
 
         const interval = setInterval(() => {
             setRemainingTime((prev) => {
                 const newTime = prev - 1;
                 setProgressValue((newTime / task.countdown) * 100);
 
-                // Check if the current remaining time matches a diminishing point
-                if (task.diminishingPoints?.includes(newTime)) {
+                // Handle diminishing rewards logic
+                if (task.diminishingRewards === "Yes" && task.diminishingPoints?.includes(newTime)) {
                     let newReward = task.baseReward;
 
-                    // Apply diminishing logic
                     const { diminishingPercentage } = task;
                     newReward -= (newReward * diminishingPercentage) / 100;
 
-                    // Update reward only at diminishing points
                     setCurrentReward(Math.floor((newReward * newTime) / task.countdown));
                 }
 
@@ -82,6 +80,8 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
         return () => clearInterval(interval);
     }, [remainingTime, task]);
 
+
+
     const isExpired = remainingTime <= 0;
 
 
@@ -95,11 +95,12 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
         try {
             const completedTask = await completeTasks({ taskId: task._id, telegram_id: telegramId, reward: task?.baseReward }).unwrap();
             console.log('Shares updated successfully:', completedTask);
-            toast.success(completedTask?.message, { className: "text-xs work-sans" });
-            // if (completedTask) {
-            //     setIsTaskCompleted(completedTask?.completedTasks?.includes(task?._id))
-            refetch?.();
-            // }
+            if (completedTask) {
+                setIsTaskCompleted(true);
+                setTaskPerformed(false); // Reset performed state for a new task
+                toast.success(completedTask.message, { className: "text-xs work-sans" });
+                refetch?.(); // Optional: sync with server data
+            }
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -112,15 +113,17 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
     useEffect(() => {
         if (userById?.user?.completedTasks?.includes(task?._id)) {
             setIsTaskCompleted(true);
+            refetch?.();
         } else {
             setIsTaskCompleted(false);
         }
-    }, [userById, task?._id]);
+    }, [userById, task?._id, refetch]);
 
+    console.log("User", userById?.user)
 
     useEffect(() => {
         // Retrieve the persisted taskPerformed state from localStorage
-        const performedState = localStorage.getItem(`taskPerformed-${task._id}`);
+        const performedState = localStorage.getItem(`taskHasPerformed-${task._id}`);
         if (performedState) {
             setTaskPerformed(JSON.parse(performedState));
         }
@@ -130,20 +133,46 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
         setTimeout(() => {
             setTaskPerformed(true);
             // Persist the state to localStorage
-            localStorage.setItem(`taskPerformed-${task._id + userById?.user?._id}`, JSON.stringify(true));
+            localStorage.setItem(`taskHasPerformed-${task._id}`, JSON.stringify(true));
         }, 5000);
     };
+
+    useEffect(() => {
+        const storedStatus = JSON.parse(localStorage.getItem(`taskStatus-${task._id}`) || "{}");
+        setIsTaskCompleted(storedStatus.isTaskCompleted || false);
+        setTaskPerformed(storedStatus.taskPerformed || false);
+    }, [task._id]);
+
+    useEffect(() => {
+        localStorage.setItem(`taskStatus-${task._id}`, JSON.stringify({
+            isTaskCompleted,
+            taskPerformed,
+        }));
+    }, [isTaskCompleted, task._id, taskPerformed]);
+
+
+
+    useEffect(() => {
+        if (isExpired) {
+            localStorage.removeItem(`task-${task._id}`);
+            localStorage.removeItem(`taskStatus-${task._id}`);
+            setTaskPerformed(false);
+        }
+    }, [isExpired, task._id]);
 
     return (
         <CardWrapper className={`py-1.5 ${isExpired || isTaskCompleted ? "grayscale" : "border-[3px] border-[#c781ff]"}`}>
             <CardHeader className="flex flex-row justify-between  px-2.5 py-0">
                 <CardTitle className="text-[#FFFFFF] text-sm font-medium work-sans capitalize p-0">{isTaskCompleted ? "Completed" : "Incomplete"}</CardTitle>
                 <div className="flex flex-col">
-                    <LazyLoadImage
-                        effect="opacity"
-                        src={task?.image}
-                        alt="Task Logo"
-                        className="max-h-[50px] max-w-[75.78px] w-fit h-fit object-contain object-center rounded-full" />
+                    <div className={"h-50 w-[75.78px] relative"}>
+                        <LazyLoadImage
+                            effect="opacity"
+                            src={task?.image}
+                            alt="Task Logo"
+                            className="w-full h-full object-contain object-center rounded-full" />
+                        <div className={"absolute top-0 bottom-0 h-full w-full z-10 bg-transparent"} />
+                    </div>
                     <h1 className="text-[11px] work-sans text-white text-center font-medium pt-3">{task?.category}</h1>
                 </div>
             </CardHeader>
@@ -177,7 +206,7 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
                         <div className="flex items-center justify-between text-xs work-sans font-medium text-white py-2">
                             {isExpired && !isTaskCompleted ? (
                                 <>
-                                    <span className="work-sans text-sm">{task?.reward} points lost</span>
+                                    {/* <span className="work-sans text-sm">{task?.reward} points lost</span> */}
                                     <span className="work-sans text-sm">Time Elapsed</span>
                                 </>
                             ) : isTaskCompleted ? (
@@ -222,19 +251,19 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
                     <div className="flex items-center justify-between text-xs work-sans font-medium text-white py-2">
                         {isExpired && !isTaskCompleted ? (
                             <>
-                                <span className="work-sans text-sm">{task?.reward} points lost</span>
+                                {/* <span className="work-sans text-sm">{task?.reward} points lost</span> */}
                                 <span className="work-sans text-sm">Time Elapsed</span>
                             </>
                         ) : isTaskCompleted ? (
                             <>
                                 <span className="work-sans text-sm">Task Completed</span>
-                                <span className="work-sans text-sm">{task.reward} Reward Claimed</span>
+                                <span className="work-sans text-sm">{task.baseReward} Reward Claimed</span>
                             </>
                         ) : (
                             <>
-                                <span>{task.reward}/{task.baseReward} reward left</span>
+                                <span>{task.reward}/{task.baseReward}</span>
                                 <span className="flex items-center gap-1 work-sans">
-                                    <GoClockFill size={22} /> {formatTime(remainingTime)} left
+                                    <GoClockFill size={22} /> {formatTime(remainingTime)}
                                 </span>
                             </>
                         )}

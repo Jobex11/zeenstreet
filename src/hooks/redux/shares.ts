@@ -23,19 +23,6 @@ export const sharesApi = createApi({
                 body: { shares, shareType },
             }),
             invalidatesTags: ['shares'],
-            // async onQueryStarted({ telegram_id }, { dispatch, queryFulfilled }) {
-            //     try {
-            //         const { data: updatedUserShares } = await queryFulfilled;
-
-            //         dispatch(
-            //             sharesApi.util.updateQueryData('getUserShares', telegram_id, (draft) => {
-            //                 Object.assign(draft, updatedUserShares);
-            //             })
-            //         );
-            //     } catch (error) {
-            //         console.log("Error updating shares:", error);
-            //     }
-            // },
         }),
     }),
 })

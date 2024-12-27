@@ -3,52 +3,39 @@ import { LuCheckCircle } from "react-icons/lu";
 import Logo from "@assets/images/icons/ravenenie_logo.png";
 import { Progress } from "@components/ui/progress";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { useEffect, useState } from "react";
 
 interface CheckAccountProps {
     setScreens?: (value: React.SetStateAction<string>) => void
 }
 
 export const CheckAccount = ({ setScreens }: CheckAccountProps) => {
-    const [isPremium, setIsPremium] = useState<boolean | undefined>(false);
-    // Define ranges for random values
-    const minTelegramAge = 1; // Minimum age in years
-    const maxTelegramAge = 10; // Maximum age in years
-    const minActivityLevel = 0; // Minimum activity level (as a percentage)
-    const maxActivityLevel = 100; // Maximum activity level
-    const minOgStatus = 0; // Minimum OG status level
-    const maxOgStatus = 5; // Maximum OG status level
+
+    // Define min and max ranges for values
+    const minElementalProvince = 1000;
+    const maxElementalProvince = 90000;
+    const minEmberOfEnlightmentLevel = 1000;
+    const maxEmberOfEnlightmentLevel = 90000;
+    const minVeilofFortune = 1000;
+    const maxVeilofFortune = 90000; // Corrected range
+    const minBonusEligible = 1000;
+    const maxBonusEligible = 90000; // Corrected range
+
+    // Function to generate a random number within a range
+    const getRandomValue = (min: number, max: number) =>
+        Math.floor(Math.random() * (max - min + 1)) + min;
 
     // Generate random values
-    const randomTelegramAge = Math.floor(
-        Math.random() * (maxTelegramAge - minTelegramAge + 1)
-    ) + minTelegramAge;
+    const randomElementalProvince = getRandomValue(minElementalProvince, maxElementalProvince);
+    const randomEmberOfEnlightmentLevel = getRandomValue(minEmberOfEnlightmentLevel, maxEmberOfEnlightmentLevel);
+    const randomVeilofFortune = getRandomValue(minVeilofFortune, maxVeilofFortune);
+    const randomBonusEligible = getRandomValue(minBonusEligible, maxBonusEligible);
 
-    const randomActivityLevel = Math.floor(
-        Math.random() * (maxActivityLevel - minActivityLevel + 1)
-    ) + minActivityLevel;
-
-    const randomOgStatus = Math.floor(
-        Math.random() * (maxOgStatus - minOgStatus + 1)
-    ) + minOgStatus;
-
-    useEffect(() => {
-        if (window.Telegram && window.Telegram.WebApp) {
-            const initData = window.Telegram.WebApp.initDataUnsafe;
-            const user = initData?.user;
-
-            // Set Telegram user data
-            if (user) {
-                setIsPremium(user.is_premium)
-            }
-        }
-    }, []);
 
     const progressValues = [
-        { title: "Telegram age", progress: randomTelegramAge * 10 },
-        { title: "Activity level analyzed", progress: randomActivityLevel },
-        { title: "Telegram Premium checked", progress: isPremium ? 100 : 0 },
-        { title: "Bonus eligibility checked", progress: randomOgStatus * 20 },
+        { title: "Elemental Province", progress: randomElementalProvince },
+        { title: "Ember of Enlightment", progress: randomEmberOfEnlightmentLevel },
+        { title: "Veil of Fortune", progress: randomVeilofFortune },
+        { title: "Bonus Eligibility Check", progress: randomBonusEligible },
     ];
 
 
