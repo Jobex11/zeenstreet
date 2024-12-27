@@ -134,7 +134,7 @@ function Referral() {
     }
   };
 
-  const isButtonEnabled = userData?.hasNewReferrals && !claimingShares;
+  const isButtonEnabled = userData?.user?.hasNewReferrals && !claimingShares;
 
   return (
     <div className="flex flex-col min-h-full">
