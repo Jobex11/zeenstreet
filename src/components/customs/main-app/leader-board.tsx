@@ -127,7 +127,7 @@ export default function GlobalLeaderboard() {
                             <div className="flex items-center">
                                 <span className="w-6 text-center">{index + 4}</span>
                                 <MiniImage user={user} />
-                                <span className="ml-2 jakarta text-sm">{user.username.slice(0, 10)}</span>
+                                <span className="ml-2 jakarta font-medium text-sm">{user.username.slice(0, 10)}</span>
                             </div>
                             <span className="text-sm work-sans pr-2"><ShareFormatter shares={user[activeTab]} /></span>
                         </div>
@@ -169,7 +169,7 @@ export const MiniImage = ({ user }: MiniImageProps) => {
             <AvatarImage
                 src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
                 alt={user.username} />
-            <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl font-medium'>{user.username.slice(0, 2)}</AvatarFallback>
+            <AvatarFallback className='uppercase bg-orange-500 text-white jakarta text-lg font-medium'>{user.username.slice(0, 2)}</AvatarFallback>
         </Avatar>
     )
 
