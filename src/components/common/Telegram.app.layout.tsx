@@ -54,7 +54,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
         // Clean up when the component unmounts or when the location changes
         return () => {
             if (tg?.BackButton) {
-                tg.BackButton.hide(); // Hide back button on component unmount
+                tg.BackButton.hide();
                 tg.offEvent("backButtonClicked", () => { });
             }
         };

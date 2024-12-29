@@ -82,8 +82,9 @@ export default function ConnectTonWallet() {
             {tonWalletAddress ? (
                 <Drawer>
                     <DrawerTrigger className='flex flex-1 w-full'>
-                        <Button className="relative shadow-lg flex-1 min-w-full">
+                        <Button className="relative shadow-lg flex-1 min-w-full bg-orange-500 hover:bg-orange-600">
                             <IoWallet color="white" />
+                           {formatAddress(tonWalletAddress)}
                             {pingVisible && (
                                 <div
                                     className="bg-orange-500 rounded-full h-2 w-2 absolute top-0 right-0 animate-ping"

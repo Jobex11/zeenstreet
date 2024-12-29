@@ -155,7 +155,7 @@ function Ranks() {
                                 </h1>
                               </div>
                               <div>
-                                <h1 className={`font-medium text-sm jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
+                                <h1 className={`font-medium text-xs jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
                                   <ShareFormatter shares={user.shares} />
                                 </h1>
                               </div>

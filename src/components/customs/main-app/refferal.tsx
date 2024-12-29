@@ -43,7 +43,7 @@ interface Referral {
 }
 
 function Referral() {
-  const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+  const [telegramId, setTelegramId] = useState<string | null>(null);
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
@@ -145,7 +145,7 @@ function Referral() {
   };
 
   // const isButtonEnabled = userData?.user?.hasNewReferrals && !claimingShares;
-  console.log("User", userData)
+  console.log("User", tier2Data)
   return (
     <div className="flex flex-col min-h-full">
       {showConfetti && <Confetti width={width} height={height} />}
@@ -209,7 +209,7 @@ function Referral() {
                 <div
                   className={`flex flex-col items-center`}
                 >
-                  {userData?.user?.claimReferrals_shares &&
+                  
                     <h1 className="aqum text-[13px] font-bold text-center items-top flex gap-3  text-white py-2">
                       <span>
                         <MdInfo color="#D25804" size={10} />
@@ -220,7 +220,7 @@ function Referral() {
                         shares={userData?.user?.claimReferrals_shares}
                       />{" "}
                       Shares
-                    </h1>}
+                    </h1>
                   <Button
                     onClick={handleClaimReferralShares}
                     disabled={
@@ -386,10 +386,10 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
   );
 
   const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
-  const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+  const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
   return (
     <Fragment>
-      <div className="flex items-center justify-between py-5 border-b border-[#5F59598A]">
+      <div className="flex items-center justify-between my-2 py-3 border-b border-[#5F59598A]">
         <div className="flex items-center gap-2">
           <div className="h-[50px] w-[50px] rounded-full">
             {filePath ? (

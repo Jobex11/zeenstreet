@@ -48,13 +48,13 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
                     alt={user.username} />
                 <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user.username.slice(0, 2)}</AvatarFallback>
             </Avatar> :
-                <Avatar className="w-12 h-12">
+                <Avatar className="w-full h-full">
                     <AvatarImage
                         src={avatarImg}
                         alt={user.username} />
                 </Avatar>}
 
-            <div className={`absolute -bottom-2 z-40 h-7 w-7 rounded-full flex items-center justify-center work-sans ${index === 0 ? "bg-yellow-500 font-bold" : index === 1 ? "bg-green-600" : index === 2 ? "bg-purple-700" : ""}`}>
+            <div className={`absolute -bottom-2 z-40 h-5 w-5 rounded-full flex items-center text-xs justify-center work-sans ${index === 0 ? "bg-yellow-500 font-medium" : index === 1 ? "bg-green-600" : index === 2 ? "bg-purple-700" : ""}`}>
                 {
                     index === 0 ? 1 : index === 1 ? 2 : index === 2 ? 3 : 0
                 }
@@ -100,7 +100,7 @@ export default function GlobalLeaderboard() {
                     {topThree.map((user, index) => (
                         <div key={user._id} className={`flex flex-col h-full items-center ${index === 0 ? 'order-2' : index === 1 ? 'order-1' : 'order-3'}`}>
                             <UserImages index={index} user={user} telegram_id={user.telegram_id} />
-                            <span className="font-medium work-sans capitalize mt-3 line-clamp-1">{user.username.slice(0, 6)}</span>
+                            <span className="font-medium work-sans capitalize text-[10px] mt-3 line-clamp-1">{user.username.slice(0, 12)}</span>
                             <span className="text-sm work-sans"><ShareFormatter shares={user[activeTab]} /></span>
                         </div>
                     ))}

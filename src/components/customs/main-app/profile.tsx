@@ -32,7 +32,7 @@ import {
     useUpdateUserSharesMutation,
 } from "@hooks/redux/shares";
 import { useGetUsernameQuery, useGetUsersByIdQuery } from "@hooks/redux/users";
-import { Key, useEffect, useState, useRef } from "react";
+import { Key, useEffect, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
 import { toast } from "sonner";
@@ -119,8 +119,7 @@ const wealthClass = [
 
 function Profile() {
 
-    const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+    const [telegramId, setTelegramId] = useState<string | null>(null);
     const [profileImage, setProfileImage] = useState<string>(avatarImg);
     const [telegramUsername, setTelegramUsername] = useState("");
     const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
@@ -213,22 +212,6 @@ function Profile() {
         };
     });
 
-    useEffect(() => {
-        const container = scrollContainerRef.current;
-
-        if (container) {
-            const scrollAmount = 400;
-            const scrollSpeed = 300;
-
-            const animateScroll = async () => {
-                container.scrollTo({ left: scrollAmount, behavior: "smooth" });
-                await new Promise((resolve) => setTimeout(resolve, scrollSpeed));
-                container.scrollTo({ left: 0, behavior: "smooth" });
-            };
-
-            animateScroll();
-        }
-    }, []);
 
     const achievement = [
         { isLocked: userDataCard?.user?.referrals.length !== 10, name: "Refer 10 Friends", shareType: "milestone_1", reward: 30, img: milestone_1 },
@@ -254,7 +237,7 @@ function Profile() {
                     <div>
                         <CardWrapper className="min-h-32 flex flex-col w-full justify-end p-0">
                             <CardContent className="flex  justify-between px-2 py-0">
-                                <div className="flex items-center">
+                                <div className="flex items-center gap-2">
                                     <div className="h-28 w-28">
                                         <img
                                             src={profileImage}
@@ -275,7 +258,7 @@ function Profile() {
                                         <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF] line-clamp-1">
                                             {telegramUsername && `@${telegramUsername}`}
                                         </h1>
-                                        <div className="bg-[#D36519] rounded-md text-white w-[107px] p-2 text-center">
+                                        <div className="bg-[#D36519] rounded-md text-white w-full p-2 text-center">
                                             <h1 className="text-[7px] aqum font-bold">
                                                 <ShareFormatter shares={userData?.shares} /> shares
                                             </h1>
@@ -294,7 +277,7 @@ function Profile() {
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
                             Wealth classes
                         </h1>
-                        <div ref={scrollContainerRef} className="min-w-full flex items-center pb-4 gap-4 overflow-x-auto">
+                        <div className="min-w-full flex items-center pb-4 gap-4 overflow-x-auto">
                             {wealthClassWithDetails?.map((item) => {
                                 return (
                                     <Drawer

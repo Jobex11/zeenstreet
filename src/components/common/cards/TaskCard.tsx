@@ -165,7 +165,7 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
             <CardHeader className="flex flex-row justify-between  px-2.5 py-0">
                 <CardTitle className="text-[#FFFFFF] text-sm font-medium work-sans capitalize p-0">{isTaskCompleted ? "Completed" : "Incomplete"}</CardTitle>
                 <div className="flex flex-col">
-                    <div className={"h-50 w-[75.78px] relative"}>
+                    <div className={"h-[50px] w-[50px] relative"}>
                         <LazyLoadImage
                             effect="opacity"
                             src={task?.image}
