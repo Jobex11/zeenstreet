@@ -81,12 +81,9 @@ function Ranks() {
       // Ensure the current user appears at the top of their rank group
       return {
         rank: range.rank,
-        users: users.sort((a: { telegram_id: string | null; shares: number; }, b: { telegram_id: string | null; shares: number; }) => {
-          if (a.telegram_id === telegramId) return -1;
-          if (b.telegram_id === telegramId) return 1;
-          return b.shares - a.shares; // Sort by shares in descending order
-        }),
+        users: users.sort((a: { shares: number; }, b: { shares: number; }) => b.shares - a.shares),
       };
+
     });
   }, [allUsers, loadingUsers, rankRanges, telegramId]);
 
