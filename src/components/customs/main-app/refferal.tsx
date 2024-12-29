@@ -207,20 +207,19 @@ function Referral() {
                   </div>
                 </div>
                 <div
-                  className={`flex flex-col items-center`}
+                  className={`flex flex-col items-center ${!userData?.user?.claimReferrals_shares && "hidden"}`}
                 >
-                  
-                    <h1 className="aqum text-[13px] font-bold text-center items-top flex gap-3  text-white py-2">
-                      <span>
-                        <MdInfo color="#D25804" size={10} />
-                      </span>{" "}
-                      You&apos;ve been awared
-                      <br />
-                      <ShareFormatter
-                        shares={userData?.user?.claimReferrals_shares}
-                      />{" "}
-                      Shares
-                    </h1>
+                  <h1 className="aqum text-[13px] font-bold text-center items-top flex   text-white py-2">
+                    <span>
+                      <MdInfo color="#D25804" size={10} />
+                    </span>{" "}
+                    You&apos;ve been awared
+                    <br />
+                    <ShareFormatter
+                      shares={userData?.user?.claimReferrals_shares}
+                    />{" "}
+                    Shares
+                  </h1>
                   <Button
                     onClick={handleClaimReferralShares}
                     disabled={
@@ -233,7 +232,7 @@ function Referral() {
                       ? "Claiming..."
                       : userData?.user?.claimReferrals_shares.length === 0
                         ? `Claim ${userData?.user?.claimReferrals_shares} Referral Shares `
-                        : "No Referrals to Claim"}
+                        : "No Shares to Claim"}
                   </Button>
                 </div>
               </div>

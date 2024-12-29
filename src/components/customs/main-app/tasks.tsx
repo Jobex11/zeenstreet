@@ -23,7 +23,7 @@ import { SlLock } from 'react-icons/sl';
 function Tasks() {
     // const [isPremium, setIsPremium] = useState<boolean | undefined>(false)
     // const [shareStep, setShareStep] = useState<"share" | "confirm">("share");
-    const [telegramId, setTelegramId] = useState<string | null>(null);
+    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const [tabs, setTabs] = useState<string>("All");
     // const [storyDrawerOpen, setStoryDrawerOpen] = useState(false);
@@ -32,14 +32,14 @@ function Tasks() {
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
     // const [updateShare, { isLoading: updating }] = useUpdateUserSharesMutation()
 
-    const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId, {
+    const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
         skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
     })
     // const { data: userById } = useGetUsersByIdQuery(telegramId ?? "", {
     // skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
     // })
 
-    const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true });
+    const { data: tasks, isLoading } = useGetAllTasksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true });
     const handleActiveTabs = (name: string) => {
         setTabs(name)
     }
@@ -119,7 +119,7 @@ function Tasks() {
         const container = scrollContainerRef.current;
 
         if (container) {
-            const scrollAmount = 400; 
+            const scrollAmount = 400;
             const scrollSpeed = 300;
 
             const animateScroll = async () => {
@@ -219,7 +219,6 @@ function Tasks() {
                     </div>
                 </div>
 
-
                 {/* task cards */}
                 <div className='flex flex-col gap-5 pt-6 pb-[7rem]'>
                     <Fragment>
@@ -229,20 +228,19 @@ function Tasks() {
                         </div>}
                     </Fragment>
 
-                    {tasks?.tasks.filter((task: { category: string }) => tabs === "All" || task.category === tabs).length === 0 ? (
+                    {tasks?.tasks?.filter((task: { category: string }) => tabs === "All" || task.category === tabs).length === 0 ? (
                         <div className="flex flex-col items-center gap-2">
                             <BsCardText size={40} color="white" />
                             <p className="text-white work-sans text-base text-center">No Available Tasks on <span className="capitalize">{tabs}</span> </p>
                         </div>
 
                     ) : (
-                        tasks?.tasks
-                            .filter((task: { category: string }) => tabs === "All" || task.category === tabs)
+                        tasks?.tasks?.filter((task: { category: string }) => tabs === "All" || task.category === tabs)
                             .map((task: { _id: string; title: string; taskUrl: string; diminishingPercentage: number; diminishingPoints: number[]; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Daily" | "Referral" | "Partners" | "Social" | "Events"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) => (
                                 <RavegenieCard
                                     key={task._id}
                                     task={task}
-                                    refetch={refetchCards} />
+                                    refetch={async () => await refetchCards()} />
                             ))
                     )}
                 </div>
