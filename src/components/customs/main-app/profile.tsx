@@ -1,9 +1,11 @@
 import wavybg from "@assets/images/card_bg.svg";
-import achievement1 from "@assets/images/cards/achievement_1.png";
-import achievement2 from "@assets/images/cards/achievement_2.png";
-import achievement3 from "@assets/images/cards/achievement_3.png";
-import achievement4 from "@assets/images/cards/achievement_4.png";
-import achievement5 from "@assets/images/cards/achievement_5.png";
+import milestone_1 from "@assets/images/milestone_1.png";
+import milestone_2 from "@assets/images/milestone_2.png";
+import milestone_3 from "@assets/images/milestone_3.png";
+import milestone_4 from "@assets/images/milestone_4.png";
+import milestone_5 from "@assets/images/milestone_5.png";
+import milestone_6 from "@assets/images/milestone_6.png";
+import milestone_7 from "@assets/images/milestone_7.png";
 import cosmic_force from "@assets/images/cards/cosmic.png";
 import earth_force from "@assets/images/cards/earth.png";
 import {
@@ -17,7 +19,6 @@ import wave_force from "@assets/images/cards/wave.png";
 import wood_force from "@assets/images/cards/wood.png";
 import dotsbg from "@assets/images/dotted-bg.png";
 import goldCoin from "@assets/images/icons/gold_coin.svg";
-import profileImg from "@assets/images/profile_img.png";
 import CardWrapper from "@/components/common/cards/card-wrapper";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import ConnectTonWallet from "@components/common/ton-connect-btn";
@@ -31,7 +32,7 @@ import {
     useUpdateUserSharesMutation,
 } from "@hooks/redux/shares";
 import { useGetUsernameQuery, useGetUsersByIdQuery } from "@hooks/redux/users";
-import { Key, useEffect, useState } from "react";
+import { Key, useEffect, useState, useRef } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
 import { toast } from "sonner";
@@ -39,7 +40,7 @@ import { Fragment } from "react";
 import { Skeleton } from "@components/ui/skeleton"
 import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
 import { checkWealthClassUnlock } from "@/lib/utils";
-
+import avatarImg from "@assets/images/avatar.webp"
 
 const wealthClass = [
     {
@@ -114,21 +115,13 @@ const wealthClass = [
     },
 ];
 
-const achievement = [
-    { name: "Refer 10 Friends", reward: 30, img: achievement1 },
-    { name: "Refer 20 Friends", reward: 50, img: achievement2 },
-    { name: "Refer 30 Friends", reward: 80, img: achievement3 },
-    { name: "Refer 40 Friends", reward: 100, img: achievement4 },
-    { name: "Refer 50 Friends", reward: 200, img: achievement5 },
-    { name: "Refer 60 Friends", reward: 300, img: achievement5 },
-    { name: "Refer 70 Friends", reward: 400, img: achievement5 },
-];
-
 
 
 function Profile() {
-    const [telegramId, setTelegramId] = useState<string | null>(null);
-    const [profileImage, setProfileImage] = useState<string>(profileImg);
+
+    const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+    const [profileImage, setProfileImage] = useState<string>(avatarImg);
     const [telegramUsername, setTelegramUsername] = useState("");
     const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>(
@@ -164,7 +157,7 @@ function Profile() {
             if (user) {
                 setTelegramId(user.id ?? null);
                 setTelegramUsername(user.username ?? "User");
-                setProfileImage(user.photo_url || profileImg);
+                setProfileImage(user.photo_url || avatarImg);
             }
         }
     }, []);
@@ -186,7 +179,7 @@ function Profile() {
             navigator.vibrate([50, 50]);
             setDrawerState((prevState) => ({
                 ...prevState,
-                [itemName]: false, 
+                [itemName]: false,
             }));
             setClaimedRewards((prev) => ({ ...prev, [shareType]: true }));
             refetchShares();
@@ -207,20 +200,45 @@ function Profile() {
             (wclass: { name: string; }) => wclass.name === item.name
         );
 
-     
+
         const isUnlocked = checkWealthClassUnlock(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards, matchedData);
         console.log("isUnlocked for", item.name, ":", isUnlocked);
 
         return {
             ...item,
-            isLocked: !isUnlocked, 
-            img:  item.img, 
-            description:item.description, 
-            rewards: matchedData?.sharesReward || item.rewards, 
+            isLocked: !isUnlocked,
+            img: item.img,
+            description: item.description,
+            rewards: matchedData?.sharesReward || item.rewards,
         };
     });
 
+    useEffect(() => {
+        const container = scrollContainerRef.current;
 
+        if (container) {
+            const scrollAmount = 400;
+            const scrollSpeed = 300;
+
+            const animateScroll = async () => {
+                container.scrollTo({ left: scrollAmount, behavior: "smooth" });
+                await new Promise((resolve) => setTimeout(resolve, scrollSpeed));
+                container.scrollTo({ left: 0, behavior: "smooth" });
+            };
+
+            animateScroll();
+        }
+    }, []);
+
+    const achievement = [
+        { isLocked: userDataCard?.user?.referrals.length !== 10, name: "Refer 10 Friends", shareType: "milestone_1", reward: 30, img: milestone_1 },
+        { isLocked: true, name: "Refer 20 Friends", shareType: "milestone_2", reward: 50, img: milestone_2 },
+        { isLocked: true, name: "Refer 30 Friends", shareType: "milestone_3", reward: 80, img: milestone_3 },
+        { isLocked: true, name: "Refer 40 Friends", shareType: "milestone_4", reward: 100, img: milestone_4 },
+        { isLocked: true, name: "Refer 50 Friends", shareType: "milestone_5", reward: 200, img: milestone_5 },
+        { isLocked: true, name: "Refer 60 Friends", shareType: "milestone_6", reward: 300, img: milestone_6 },
+        { isLocked: true, name: "Refer 70 Friends", shareType: "milestone_7", reward: 400, img: milestone_7 },
+    ];
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -264,11 +282,11 @@ function Profile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <ConnectTonWallet />
-                                </div>
                             </CardContent>
                         </CardWrapper>
+                        <div className="my-3">
+                            <ConnectTonWallet />
+                        </div>
                     </div>
 
                     {/*wealth class grid  */}
@@ -276,7 +294,7 @@ function Profile() {
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
                             Wealth classes
                         </h1>
-                        <div className="min-w-full flex items-center pb-4 gap-4 overflow-x-auto">
+                        <div ref={scrollContainerRef} className="min-w-full flex items-center pb-4 gap-4 overflow-x-auto">
                             {wealthClassWithDetails?.map((item) => {
                                 return (
                                     <Drawer
@@ -357,8 +375,8 @@ function Profile() {
                                                     }}
                                                     disabled={
                                                         updatingShares ||
-                                                        checkIfClaimed(item.shareType) || 
-                                                        item.isLocked 
+                                                        checkIfClaimed(item.shareType) ||
+                                                        item.isLocked
                                                     }
                                                     className={`bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans ${(updatingShares || checkIfClaimed(item.shareType) || item.isLocked) &&
                                                         "opacity-50 cursor-not-allowed"
@@ -367,10 +385,10 @@ function Profile() {
                                                     {updatingShares
                                                         ? "Processing..."
                                                         : checkIfClaimed(item.shareType)
-                                                    ? "Shares already Claimed"
-                                                    : item.isLocked
-                                                    ? "Unlock Requirements First"
-                                                      : "Claim Shares"}
+                                                            ? "Shares already Claimed"
+                                                            : item.isLocked
+                                                                ? "Unlock Requirements First"
+                                                                : "Claim Shares"}
                                                 </Button>
                                             </div>
                                         </DrawerContent>
@@ -481,9 +499,6 @@ function Profile() {
                                 Achievments
                             </h1>
                             <div className=" min-h-[171px] border-none min-w-[326px] w-full p-2">
-                                <h1 className="work-sans text-xs pb-2 text-[#FEFEFF] font-medium">
-                                    Referrals
-                                </h1>
                                 <div className="flex items-center overflow-x-auto max-w-full gap-7 pb-5">
                                     {achievement.map((a, i) => (
                                         <Drawer key={i}>
@@ -495,10 +510,12 @@ function Profile() {
                                                             alt="Refferal Images"
                                                             className="max-h-[58px] max-w-[46px] object-cover object-center"
                                                         />
-                                                        {/* This div with lock icon will be rendered on a condition to check if the card is locked or not */}
-                                                        <div className="absolute h-full w-full rounded-md  bg-black/40 z-20 flex flex-col items-center justify-center">
-                                                            <SlLock size={25} color="white" />
-                                                        </div>
+
+                                                        {a.isLocked &&
+                                                            <div className="absolute h-full w-full rounded-md  bg-black/40 z-20 flex flex-col items-center justify-center">
+                                                                <SlLock size={25} color="white" />
+                                                            </div>
+                                                        }
                                                     </div>
                                                     <h1 className="work-sans text-[6px] text-[#FEFEFF] font-medium whitespace-nowrap">
                                                         {a.name}
@@ -531,9 +548,11 @@ function Profile() {
                                                             className="h-5 w-5 object-contain"
                                                         />{" "}
                                                     </h1>
-                                                    {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
                                                     <Button
-                                                        disabled={true}
+                                                        onClick={() => {
+                                                            handleUpdateShares(a.reward, a.shareType, a.name)
+                                                        }}
+                                                        disabled={a.isLocked}
                                                         className="bg-[#D36519] hover:bg-orange-500 text-center rounded-lg py-4 h-12 w-full text-white work-sans"
                                                     >
                                                         Check

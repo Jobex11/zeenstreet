@@ -30,6 +30,8 @@ import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import useWindowSize from "@hooks/useWindowsize";
 import Confetti from "react-confetti";
 import { AiOutlineTeam } from "react-icons/ai";
+import { useGetUserSharesQuery } from "@/hooks/redux/shares";
+import avatarImg from "@assets/images/avatar.webp"
 
 interface Referral {
   userLogo: string;
@@ -41,7 +43,7 @@ interface Referral {
 }
 
 function Referral() {
-  const [telegramId, setTelegramId] = useState<string | null>(null);
+  const [telegramId, setTelegramId] = useState<string | null>("6880808269");
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
@@ -50,6 +52,13 @@ function Referral() {
 
   const [claimReferralShares, { isLoading: claimingShares }] =
     useCliamReferralSharesMutation();
+  const { refetch } = useGetUserSharesQuery(
+    telegramId ?? "",
+    {
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+    }
+  );
   const { data: userData, refetch: refetchUserData } = useGetUsersByIdQuery(
     telegramId ?? "",
     {
@@ -122,6 +131,7 @@ function Referral() {
       if (refShares) {
         toast.success(refShares.message, { className: "text-xs work-sans" });
         refetchUserData();
+        refetch()
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 5000);
       }
@@ -134,8 +144,8 @@ function Referral() {
     }
   };
 
-  //const isButtonEnabled = userData?.user?.hasNewReferrals && !claimingShares;
-
+  // const isButtonEnabled = userData?.user?.hasNewReferrals && !claimingShares;
+  console.log("User", userData)
   return (
     <div className="flex flex-col min-h-full">
       {showConfetti && <Confetti width={width} height={height} />}
@@ -199,25 +209,31 @@ function Referral() {
                 <div
                   className={`flex flex-col items-center`}
                 >
-                  <h1 className="aqum text-[13px] font-bold text-center items-top flex  text-white py-2">
-                    <span>
-                      <MdInfo color="#D25804" size={10} />
-                    </span>{" "}
-                    You&apos;ve been awared
-                    <br />
-                    <ShareFormatter
-                      shares={userData?.user?.claimReferrals_shares}
-                    />{" "}
-                    Shares
-                  </h1>
+                  {userData?.user?.claimReferrals_shares &&
+                    <h1 className="aqum text-[13px] font-bold text-center items-top flex gap-3  text-white py-2">
+                      <span>
+                        <MdInfo color="#D25804" size={10} />
+                      </span>{" "}
+                      You&apos;ve been awared
+                      <br />
+                      <ShareFormatter
+                        shares={userData?.user?.claimReferrals_shares}
+                      />{" "}
+                      Shares
+                    </h1>}
                   <Button
                     onClick={handleClaimReferralShares}
                     disabled={
-                      claimingShares || userData?.user?.claimReferrals_shares
+                      claimingShares ||
+                      !userData?.user?.claimReferrals_shares
                     }
-                    className="w-[111.2px] h-[30px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins"
+                    className="min-w-[111.2px] h-[30px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins"
                   >
-                    Claim now
+                    {claimingShares
+                      ? "Claiming..."
+                      : userData?.user?.claimReferrals_shares.length === 0
+                        ? `Claim ${userData?.user?.claimReferrals_shares} Referral Shares `
+                        : "No Referrals to Claim"}
                   </Button>
                 </div>
               </div>
@@ -236,11 +252,10 @@ function Referral() {
                   }}
                   key={tab.name}
                   onClick={() => handleActiveTabs(tab.name)}
-                  className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${
-                    tabs === tab.name
-                      ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm"
-                      : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "
-                  }`}
+                  className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name
+                    ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm"
+                    : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "
+                    }`}
                 >
                   {tab.name}
                   {tabs !== tab.name && (
@@ -384,9 +399,12 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
                 className="h-full w-full rounded-full object-cover object-center"
               />
             ) : (
-              <div className="h-[50px] w-[50px] flex items-center justify-center bg-orange-500 uppercase text-white work-sans font-semibold border rounded-full">
-                {referrals.username.slice(0, 2)}
-              </div>
+              <img
+                src={avatarImg}
+                alt={`${referrals.username} Logo`}
+                className="h-full w-full rounded-full object-cover object-center"
+              />
+
             )}
           </div>
           <div className="flex flex-col">

@@ -8,7 +8,7 @@ import { Button } from '@components/ui/button';
 import { Skeleton } from "@components/ui/skeleton"
 import { Card } from "@components/ui/card";
 import * as Progress from "@radix-ui/react-progress";
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState, useRef } from 'react';
 import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
@@ -24,6 +24,7 @@ function Tasks() {
     // const [isPremium, setIsPremium] = useState<boolean | undefined>(false)
     // const [shareStep, setShareStep] = useState<"share" | "confirm">("share");
     const [telegramId, setTelegramId] = useState<string | null>(null);
+    const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const [tabs, setTabs] = useState<string>("All");
     // const [storyDrawerOpen, setStoryDrawerOpen] = useState(false);
     // const [hasSharedToStory, setHasSharedToStory] = useState(false);
@@ -69,6 +70,8 @@ function Tasks() {
     // }, [storyDrawerOpen, hasSharedToStory]);
 
     // const handleShareToStory = async () => {
+
+
     //     const mediaUrl = "https://zeenstreet-ten.vercel.app/assets/Banner1-CFK7gMq_.jpg";
     //     const params = {
     //         text: `Join mein RaveGenie Games! Complete tasks and earn rewards for your efforts.`,
@@ -110,6 +113,24 @@ function Tasks() {
     //         setStoryDrawerOpen(false);
     //     }
     // };
+
+
+    useEffect(() => {
+        const container = scrollContainerRef.current;
+
+        if (container) {
+            const scrollAmount = 400; 
+            const scrollSpeed = 300;
+
+            const animateScroll = async () => {
+                container.scrollTo({ left: scrollAmount, behavior: "smooth" });
+                await new Promise((resolve) => setTimeout(resolve, scrollSpeed));
+                container.scrollTo({ left: 0, behavior: "smooth" });
+            };
+
+            animateScroll();
+        }
+    }, []);
     return (
         <div className='flex flex-col min-h-full w-full'>
             <div style={{
@@ -183,7 +204,7 @@ function Tasks() {
 
                 <div className='h-auto w-full'>
                     {/* task tabs */}
-                    <div className='flex items-center gap-6 overflow-x-auto max-w-full h-auto py-5 '>
+                    <div ref={scrollContainerRef} className='flex items-center gap-6 overflow-x-auto max-w-full h-auto py-5 '>
                         {btnTabs.map((tab) => (
                             <Button
                                 style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}

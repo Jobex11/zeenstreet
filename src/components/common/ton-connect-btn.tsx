@@ -81,8 +81,8 @@ export default function ConnectTonWallet() {
         <React.Fragment>
             {tonWalletAddress ? (
                 <Drawer>
-                    <DrawerTrigger>
-                        <Button className="relative shadow-lg">
+                    <DrawerTrigger className='flex flex-1 w-full'>
+                        <Button className="relative shadow-lg flex-1 min-w-full">
                             <IoWallet color="white" />
                             {pingVisible && (
                                 <div
@@ -92,7 +92,7 @@ export default function ConnectTonWallet() {
                         </Button>
                     </DrawerTrigger>
                     <DrawerContent ref={ref} className="bg-[#1f1d26] border-none py-5 px-5 min-h-[40%] flex flex-col items-center space-y-4 md:space-y-6">
-                    <IoWallet size={50} color='white'/>
+                        <IoWallet size={50} color='white' />
                         <DrawerTitle className="text-white text-center text-lg md:text-xl font-semibold work-sans">
                             {formatAddress(tonWalletAddress)}
                         </DrawerTitle>
@@ -110,15 +110,15 @@ export default function ConnectTonWallet() {
                             <span>Disconnect Wallet</span>
                         </Button>
                     </DrawerContent>
-
                 </Drawer>
             ) : (
 
                 <Button
                     disabled={isLoading}
                     onClick={handleWalletAction}
-                    className="relative shadow-lg"
+                    className="relative shadow-lg w-full flex-1 work-sans bg-orange-500 hover:bg-orange-600 text-white"
                 >
+                    <span>Connect wallet</span>
                     <IoWallet color="white" />
                 </Button>
             )}

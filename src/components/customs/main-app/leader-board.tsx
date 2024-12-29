@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar"
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo'
 import { useGetAllUsersQuery } from '@hooks/redux/users'
 import { ShareFormatter } from '@components/common/shareFormatter'
 // import { PiPersonSimpleSnowboardLight } from "react-icons/pi";
+import avatarImg from "@assets/images/avatar.webp"
 
 interface User {
     username: string;
@@ -37,16 +38,22 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
     });
 
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
-    const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+    const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
 
     return (
         <div className={`relative flex flex-col items-center  ${index === 0 ? 'w-[85px] h-[85px] shadow-xl' : 'w-[67px] h-[67px]'}`} >
-            <Avatar className={`w-full h-full shadow-2xl`}>
+            {filePath ? <Avatar className={`w-full h-full shadow-2xl`}>
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
                     alt={user.username} />
                 <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user.username.slice(0, 2)}</AvatarFallback>
-            </Avatar>
+            </Avatar> :
+                <Avatar className="w-12 h-12">
+                    <AvatarImage
+                        src={avatarImg}
+                        alt={user.username} />
+                </Avatar>}
+
             <div className={`absolute -bottom-2 z-40 h-7 w-7 rounded-full flex items-center justify-center work-sans ${index === 0 ? "bg-yellow-500 font-bold" : index === 1 ? "bg-green-600" : index === 2 ? "bg-purple-700" : ""}`}>
                 {
                     index === 0 ? 1 : index === 1 ? 2 : index === 2 ? 3 : 0
@@ -89,8 +96,6 @@ export default function GlobalLeaderboard() {
     return (
         <div className="flex flex-col h-screen text-white">
             <div className="h-fit pt-10 px-4">
-                {/* <h1 className="text-2xl font-bold text-center work-sans mb-4">Global Leaderboard</h1>
-                <PiPersonSimpleSnowboardLight size={60} color={"white"} className='mx-auto mb-3' /> */}
                 <div className=" grid grid-cols-3 place-content-evenly place-items-stretch mt-4">
                     {topThree.map((user, index) => (
                         <div key={user._id} className={`flex flex-col h-full items-center ${index === 0 ? 'order-2' : index === 1 ? 'order-1' : 'order-3'}`}>
@@ -163,14 +168,23 @@ export const MiniImage = ({ user }: MiniImageProps) => {
     });
 
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
-    const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+  const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
     return (
-        <Avatar className="w-12 h-12">
-            <AvatarImage
-                src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
-                alt={user.username} />
-            <AvatarFallback className='uppercase bg-orange-500 text-white jakarta text-lg font-medium'>{user.username.slice(0, 2)}</AvatarFallback>
-        </Avatar>
+        <Fragment>
+            {filePath ? <Avatar className="w-12 h-12">
+                <AvatarImage
+                    src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
+                    alt={user.username} />
+                <AvatarFallback className='uppercase bg-orange-500 text-white jakarta text-lg font-normal'>{user.username.slice(0, 2)}</AvatarFallback>
+            </Avatar> :
+                <Avatar className="w-12 h-12">
+                    <AvatarImage
+                        src={avatarImg}
+                        alt={user.username} />
+                </Avatar>
+            }
+        </Fragment>
+
     )
 
 }

@@ -16,20 +16,38 @@ export const CheckAccount = ({ setScreens }: CheckAccountProps) => {
     const minEmberOfEnlightmentLevel = 1000;
     const maxEmberOfEnlightmentLevel = 90000;
     const minVeilofFortune = 1000;
-    const maxVeilofFortune = 90000; // Corrected range
+    const maxVeilofFortune = 90000; 
     const minBonusEligible = 1000;
-    const maxBonusEligible = 90000; // Corrected range
+    const maxBonusEligible = 90000; 
 
-    // Function to generate a random number within a range
     const getRandomValue = (min: number, max: number) =>
         Math.floor(Math.random() * (max - min + 1)) + min;
 
-    // Generate random values
-    const randomElementalProvince = getRandomValue(minElementalProvince, maxElementalProvince);
-    const randomEmberOfEnlightmentLevel = getRandomValue(minEmberOfEnlightmentLevel, maxEmberOfEnlightmentLevel);
-    const randomVeilofFortune = getRandomValue(minVeilofFortune, maxVeilofFortune);
-    const randomBonusEligible = getRandomValue(minBonusEligible, maxBonusEligible);
+    // Normalize a value to a given range
+    const normalizeValue = (value: number, min: number, max: number) =>
+        Math.round(((value - min) / (max - min)) * 100);
 
+    // Generate random values and normalize them to a range of 0–100
+    const randomElementalProvince = normalizeValue(
+        getRandomValue(minElementalProvince, maxElementalProvince),
+        minElementalProvince,
+        maxElementalProvince
+    );
+    const randomEmberOfEnlightmentLevel = normalizeValue(
+        getRandomValue(minEmberOfEnlightmentLevel, maxEmberOfEnlightmentLevel),
+        minEmberOfEnlightmentLevel,
+        maxEmberOfEnlightmentLevel
+    );
+    const randomVeilofFortune = normalizeValue(
+        getRandomValue(minVeilofFortune, maxVeilofFortune),
+        minVeilofFortune,
+        maxVeilofFortune
+    );
+    const randomBonusEligible = normalizeValue(
+        getRandomValue(minBonusEligible, maxBonusEligible),
+        minBonusEligible,
+        maxBonusEligible
+    );
 
     const progressValues = [
         { title: "Elemental Province", progress: randomElementalProvince },
@@ -37,7 +55,6 @@ export const CheckAccount = ({ setScreens }: CheckAccountProps) => {
         { title: "Veil of Fortune", progress: randomVeilofFortune },
         { title: "Bonus Eligibility Check", progress: randomBonusEligible },
     ];
-
 
     return (
         <div className="flex flex-col flex-1  w-full min-h-full p-4 relative">

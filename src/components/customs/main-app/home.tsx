@@ -18,6 +18,7 @@ import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { SlBadge } from "react-icons/sl";
 import { getUserRank, getRankIconColor } from "@lib/utils"
+import { Skeleton } from "@components/ui/skeleton";
 
 const imageUrls = [
   firstBannerImg,
@@ -28,10 +29,10 @@ const imageUrls = [
 
 function Home() {
 
-  const [telegramId, setTelegramId] = useState<string | null>(null);
+  const [telegramId, setTelegramId] = useState<string | null>("6880808269");
   const [selectedFilter, setSelectedFilter] = useState("All");
   const { data: ranks } = useGetAllRanksQuery(undefined);
-  const { data: user, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true })
+  const { data: user, refetch: refetchShares, isLoading: loadingShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true })
   const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true, });
 
   const userRank = useMemo(
@@ -48,9 +49,9 @@ function Home() {
       ),
     [ranks?.data, user?.shares]
   );
-  
+
   const rankColor = getRankIconColor(userRank);
-  
+
 
   const filteredTasks = tasks?.tasks.filter((task: { category: string; }) =>
     selectedFilter === null || selectedFilter === "All" || task.category === selectedFilter
@@ -81,7 +82,8 @@ function Home() {
             Total shares
           </h1>
           <h1 className="text-3xl font-bold aqum text-white text-center">
-            <ShareFormatter shares={user?.shares} />
+            {loadingShares ? <Skeleton className="bg-gray-700 h-9 w-32 animate-pulse rounded-md shadow-lg" /> : <ShareFormatter shares={user?.shares} />}
+
           </h1>
           <div className={"mb-5 pb-1 flex items-center gap-4 border-b border-gray-500"}>
             <span className={"work-sans text-white"}>{userRank}</span>

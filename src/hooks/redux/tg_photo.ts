@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
-const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+ const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
 console.log("Bot Token:", BOT_TOKEN);
 
 export const tgUserPhotoApi = createApi({
