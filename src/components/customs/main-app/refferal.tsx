@@ -14,7 +14,6 @@ import { IoCopy } from "react-icons/io5";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Skeleton } from "@components/ui/skeleton";
-import { RiTeamLine } from "react-icons/ri";
 import {
   useGetReferralLinkQuery,
   useGetReferralCodeQuery,
@@ -29,9 +28,10 @@ import {
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import useWindowSize from "@hooks/useWindowsize";
 import Confetti from "react-confetti";
-import { AiOutlineTeam } from "react-icons/ai";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import avatarImg from "@assets/images/avatar.webp"
+import avatarImg from "@assets/images/icons/users_avatar.svg"
+import tier1_img from "@assets/images/icons/tier1_friend.svg"
+import tier2_img from "@assets/images/icons/tier2_friend.svg"
 
 interface Referral {
   userLogo: string;
@@ -43,7 +43,8 @@ interface Referral {
 }
 
 function Referral() {
-  const [telegramId, setTelegramId] = useState<string | null>(null);
+
+  const [telegramId, setTelegramId] = useState<string | null>();
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
@@ -151,7 +152,6 @@ function Referral() {
     }
   };
 
-  // const isButtonEnabled = userData?.user?.hasNewReferrals && !claimingShares;
   console.log("User", tier1Data)
   return (
     <div className="flex flex-col min-h-full">
@@ -303,8 +303,8 @@ function Referral() {
                           )
                         )
                       ) : (
-                        <div className="p-4 flex flex-col items-center ">
-                          <AiOutlineTeam color={"white"} size={40} />
+                        <div className="p-4 flex flex-col gap-3 items-center ">
+                          <img src={tier1_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
                           <p
                             className={
                               "text-white work-sans text-sm text-center"
@@ -335,7 +335,7 @@ function Referral() {
                         )
                       ) : (
                         <div className="p-4 flex flex-col items-center gap-3 pt-3 ">
-                          <RiTeamLine color={"white"} size={40} />
+                          <img src={tier2_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
                           <p
                             className={
                               "text-white work-sans text-center text-sm max-w-[250px]"

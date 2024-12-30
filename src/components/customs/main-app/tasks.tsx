@@ -9,9 +9,9 @@ import { Skeleton } from "@components/ui/skeleton"
 import { Card } from "@components/ui/card";
 import * as Progress from "@radix-ui/react-progress";
 import { Fragment, useEffect, useState, useRef } from 'react';
-import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
+import taskImg from "@assets/images/icons/tasks_img.svg";
 
 // import { useTelegramWebApp } from "@hooks/useTelegramWebapp"
 // import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from "@components/ui/drawer";
@@ -209,7 +209,6 @@ function Tasks() {
 
 
                 <div className='h-auto w-full'>
-                    {/* task tabs */}
                     <div ref={scrollContainerRef} className='flex items-center gap-6 overflow-x-auto max-w-full h-auto py-5 '>
                         {btnTabs.map((tab) => (
                             <Button
@@ -235,8 +234,8 @@ function Tasks() {
                     </Fragment>
 
                     {tasks?.tasks?.filter((task: { category: string }) => tabs === "All" || task.category === tabs).length === 0 ? (
-                        <div className="flex flex-col items-center gap-2">
-                            <BsCardText size={40} color="white" />
+                        <div className="flex flex-col items-center gap-2 mt-5">
+                            <img src={taskImg} alt={""} className={"h-24 w-24 object-contain object-center"}/>
                             <p className="text-white work-sans text-base text-center">No Available Tasks on <span className="capitalize">{tabs}</span> </p>
                         </div>
 

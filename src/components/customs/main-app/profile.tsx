@@ -25,7 +25,7 @@ import ConnectTonWallet from "@components/common/ton-connect-btn";
 import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import { DialogClose, DialogTitle } from "@components/ui/dialog";
-import { BsCardList } from "react-icons/bs";
+import card_empty from "@assets/images/icons/empty_card.svg"
 import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
 import {
     useGetUserSharesQuery,
@@ -40,7 +40,7 @@ import { Fragment } from "react";
 import { Skeleton } from "@components/ui/skeleton"
 import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
 import { checkWealthClassUnlock } from "@/lib/utils";
-import avatarImg from "@assets/images/avatar.webp"
+import avatarImg from "@assets/images/icons/users_avatar.svg"
 
 const wealthClass = [
     {
@@ -121,7 +121,7 @@ function Profile() {
 
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const [profileImage, setProfileImage] = useState<string>(avatarImg);
-    const [telegramUsername, setTelegramUsername] = useState("");
+    const [telegramUsername, setTelegramUsername] = useState<string>("");
     const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>(
         {}
@@ -204,7 +204,6 @@ function Profile() {
 
 
         const isUnlocked = checkWealthClassUnlock(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards, matchedData);
-        console.log("isUnlocked for", item.name, ":", isUnlocked);
 
         return {
             ...item,
@@ -384,9 +383,9 @@ function Profile() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-7">
                         <div>
-                            <h1 className="text-[#FEFEFF] work-sans">Cards collected</h1>
+                            <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold">Cards collected</h1>
                             <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">
                                 <Fragment>
                                     {loadingCollectedCards && <div className={"flex items-center gap-4"}>
@@ -400,7 +399,8 @@ function Profile() {
                                                 "flex items-center justify-center flex-col gap-2  min-w-full"
                                             }
                                         >
-                                            <BsCardList size={40} color={"white"} />
+                                            <img src={card_empty} alt="No card image" className="h-20 w-20 object-contain object-center" />
+
                                             <p className={"text-sm text-white work-sans text-center"}>
                                                 You don't have any card yet
                                             </p>

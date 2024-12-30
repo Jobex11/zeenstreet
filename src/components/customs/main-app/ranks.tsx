@@ -10,7 +10,8 @@ import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from "@hooks/red
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import avatarImg from "@assets/images/avatar.webp"
+import avatarImg from "@assets/images/icons/users_avatar.svg"
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Rank {
   rankRange: { min: number; max: number };
@@ -29,7 +30,7 @@ interface User {
 function Ranks() {
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const [emblaRef, embla] = useEmblaCarousel({ dragFree: false, watchDrag: false });
-  const { data: allUsers, isLoading: loadingUsers } = useGetAllUsersQuery(undefined, {
+  const { data: allUsers, isLoading: loadingUsers, isSuccess: usersLoaded } = useGetAllUsersQuery(undefined, {
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -112,6 +113,20 @@ function Ranks() {
 
   return (
     <div className="flex flex-col min-h-full">
+      {loadingUsers && <div className="flex flex-col gap-4 px-2 h-full">
+        <Skeleton className='h-52 relative w-full rounded-md bg-gray-600 shadow-2xl'>
+          <div
+            className="absolute top-1/2 h-10 w-10 flex items-center justify-center left-2 transform -translate-y-1/2 bg-gray-900 text-white p-2 rounded-full shadow-md hover:bg-gray-600"
+          />
+          <div
+            className="absolute top-1/2 h-10 w-10 flex items-center justify-center right-2 transform -translate-y-1/2 bg-gray-900 text-white p-2 rounded-full shadow-md hover:bg-gray-600"
+          />
+        </Skeleton>
+        <div>
+          <Skeleton className='h-11 mb-2 w-full rounded-md bg-gray-600 shadow-2xl' />
+          <Skeleton className='h-11 w-full rounded-md bg-gray-600 shadow-2xl' />
+        </div>
+      </div>}
       <div
         style={{
           backgroundImage: `url(${dotsbg})`,
@@ -121,76 +136,77 @@ function Ranks() {
         className="flex flex-col flex-1 pb-3"
       >
         {/* Embla Carousel */}
-        <div className="relative">
-          <div className="embla" ref={emblaRef}>
-            <div className="embla__container flex">
-              {usersByRank.map((group: { rank: string | number, users: { username: string; shares: number; telegram_id: string; _id: string; }[]; }, index: Key | null | undefined) => (
-                <div className="embla__slide w-full flex-shrink-0" key={index}>
-                  <div className="flex flex-col gap-8">
-                    <div>
-                      <div
-                        style={{
-                          backgroundImage: `url(${eclipse}), url(${sprinkledStars})`,
-                          backgroundRepeat: "no-repeat, no-repeat",
-                          backgroundSize: "cover, cover",
-                          backgroundPosition: "center, center",
-                          backgroundBlendMode: "multiply,multiply ",
-                        }}
-                        className="h-[250px] flex flex-col items-center justify-center w-full rounded-md"
-                      >
-                        <img
-                          loading="eager"
-                          src={trophy}
-                          alt="Rank Trophy"
-                          className="h-full w-full object-center object-contain"
-                        />
-                        <h2 className="text-center text-lg font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
-                          {group.rank}
-                        </h2>
+        {usersLoaded &&
+          <div className="relative">
+            <div className="embla" ref={emblaRef}>
+              <div className="embla__container flex">
+                {usersByRank.map((group: { rank: string | number, users: { username: string; shares: number; telegram_id: string; _id: string; }[]; }, index: Key | null | undefined) => (
+                  <div className="embla__slide w-full flex-shrink-0" key={index}>
+                    <div className="flex flex-col gap-8">
+                      <div>
+                        <div
+                          style={{
+                            backgroundImage: `url(${eclipse}), url(${sprinkledStars})`,
+                            backgroundRepeat: "no-repeat, no-repeat",
+                            backgroundSize: "cover, cover",
+                            backgroundPosition: "center, center",
+                            backgroundBlendMode: "multiply,multiply ",
+                          }}
+                          className="h-[250px] flex flex-col items-center justify-center w-full rounded-md"
+                        >
+                          <img
+                            loading="eager"
+                            src={trophy}
+                            alt="Rank Trophy"
+                            className="h-full w-full object-center object-contain"
+                          />
+                          <h2 className="text-center text-lg font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
+                            {group.rank}
+                          </h2>
+                        </div>
+                      </div>
+                      <div className="flex flex-col mt-3 divide-y-2 divide-gray-800">
+                        {
+                          group?.users.length > 0 ?
+                            group?.users?.map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
+                              <div key={user._id} className={`flex mb-2 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
+                                <div className="flex items-center gap-3">
+                                  <RankImage user={user} telegram_id={user.telegram_id} />
+                                  <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-sm capitalize font-semibold jakarta`}>
+                                    {user.username}
+                                  </h1>
+                                </div>
+                                <div>
+                                  <h1 className={`font-medium text-xs jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
+                                    <ShareFormatter shares={user.shares} />
+                                  </h1>
+                                </div>
+                              </div>
+                            )) : (
+                              <div className="text-center text-white text-lg flex flex-col gap-1 pt-5 items-center">
+                                <HiOutlineUserGroup size={45} className="" />
+                              </div>
+                            )}
                       </div>
                     </div>
-                    <div className="flex flex-col mt-3 divide-y-2 divide-gray-800">
-                      {
-                        group?.users.length > 0 ?
-                          group?.users?.map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
-                            <div key={user._id} className={`flex mb-2 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
-                              <div className="flex items-center gap-3">
-                                <RankImage user={user} telegram_id={user.telegram_id} />
-                                <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-sm capitalize font-semibold jakarta`}>
-                                  {user.username}
-                                </h1>
-                              </div>
-                              <div>
-                                <h1 className={`font-medium text-xs jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
-                                  <ShareFormatter shares={user.shares} />
-                                </h1>
-                              </div>
-                            </div>
-                          )) : (
-                            <div className="text-center text-white text-lg flex flex-col gap-1 pt-5 items-center">
-                              <HiOutlineUserGroup size={45} className="" />
-                            </div>
-                          )}
-                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <button
+                onClick={scrollPrev}
+                className="absolute top-1/2 h-10 w-10 flex items-center justify-center left-2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-md hover:bg-gray-600"
+              >
+                <IoIosArrowBack size={20} />
+              </button>
+              <button
+                onClick={scrollNext}
+                className="absolute top-1/2 h-10 w-10 flex items-center justify-center right-2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-md hover:bg-gray-600"
+              >
+                <IoIosArrowForward size={20} />
+              </button>
             </div>
-            <button
-              onClick={scrollPrev}
-              className="absolute top-1/2 h-10 w-10 flex items-center justify-center left-2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-md hover:bg-gray-600"
-            >
-              <IoIosArrowBack size={20} />
-            </button>
-            <button
-              onClick={scrollNext}
-              className="absolute top-1/2 h-10 w-10 flex items-center justify-center right-2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-md hover:bg-gray-600"
-            >
-              <IoIosArrowForward size={20} />
-            </button>
           </div>
-        </div>
-
+        }
       </div>
     </div>
   );

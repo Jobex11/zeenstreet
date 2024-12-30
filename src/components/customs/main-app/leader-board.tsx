@@ -3,8 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar"
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo'
 import { useGetAllUsersQuery } from '@hooks/redux/users'
 import { ShareFormatter } from '@components/common/shareFormatter'
-// import { PiPersonSimpleSnowboardLight } from "react-icons/pi";
-import avatarImg from "@assets/images/avatar.webp"
+import avatarImg from "@assets/images/icons/users_avatar.svg"
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface User {
     username: string;
@@ -27,7 +27,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
         skip: !telegram_id,
         refetchOnReconnect: true,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange:true,
+        refetchOnMountOrArgChange: true,
     });
 
     const fileId = isPhotoSuccess ? photoData?.result?.photos?.[0]?.[2]?.file_id : null;
@@ -36,7 +36,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
         skip: !fileId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange:true,
+        refetchOnMountOrArgChange: true,
     });
 
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
@@ -67,10 +67,10 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
 
 export default function GlobalLeaderboard() {
     const [activeTab, setActiveTab] = useState<'shares' | 'unlockedCardsCount' | 'referralCount'>('shares');
-    const { data: allUsers } = useGetAllUsersQuery(undefined, {
+    const { data: allUsers, isLoading, isSuccess, } = useGetAllUsersQuery(undefined, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange:true,
+        refetchOnMountOrArgChange: true,
     });
     const [telegramId, setTelegramId] = useState<string | null>(null);
 
@@ -102,6 +102,18 @@ export default function GlobalLeaderboard() {
     return (
         <div className="flex flex-col h-screen text-white">
             <div className="h-fit pt-10 px-4">
+                <Fragment>
+                    {isLoading && <div className='flex flex-col gap-3'>
+                        <div className=' grid grid-cols-3'>
+                            {[0, 1, 3].map((ske) => (
+                                <div key={ske} className={`flex flex-col h-full items-center ${ske === 0 ? 'order-2' : ske === 1 ? 'order-1' : 'order-3'}`}>
+                                    <Skeleton className='rounded-full h-20 w-20 bg-gray-600 shadow-lg' />
+                                </div>
+                            ))}
+                        </div>
+                        <Skeleton className='h-10 w-full rounded-md bg-gray-600 shadow-2xl' />
+                    </div>}
+                </Fragment>
                 <div className=" grid grid-cols-3 place-content-evenly place-items-stretch mt-4">
                     {topThree.map((user, index) => (
                         <div key={user._id} className={`flex flex-col h-full items-center ${index === 0 ? 'order-2' : index === 1 ? 'order-1' : 'order-3'}`}>
@@ -113,7 +125,7 @@ export default function GlobalLeaderboard() {
                 </div>
 
                 <div className='flex items-center w-full border-t border-white/10 mt-3'>
-                    {tabBtn.map((btn) => (
+                    {isSuccess && tabBtn.map((btn) => (
                         <div key={btn.name} className='flex flex-col w-full'>
                             <button
                                 onClick={() => handleActiveTabs(btn.tab as 'shares' | 'unlockedCardsCount' | 'referralCount')}
@@ -163,7 +175,7 @@ export const MiniImage = ({ user }: MiniImageProps) => {
         skip: !user?.telegram_id,
         refetchOnReconnect: true,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange:true,
+        refetchOnMountOrArgChange: true,
     });
     const fileId = isPhotoSuccess ? photoData?.result?.photos?.[0]?.[2]?.file_id : null;
 
@@ -172,7 +184,7 @@ export const MiniImage = ({ user }: MiniImageProps) => {
         skip: !fileId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange:true,
+        refetchOnMountOrArgChange: true,
     });
 
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;

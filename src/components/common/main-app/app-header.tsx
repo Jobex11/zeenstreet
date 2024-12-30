@@ -3,18 +3,17 @@ import dotsbg from "@assets/images/dotted-bg.png";
 import medalIcon from "@assets/images/icons/medal.svg";
 import mailIcon from "@assets/images/icons/mail-icon.svg";
 import dropbox from "@assets/images/icons/dropbox.svg";
-import profilePlaceholder from "@assets/images/icons/user-placeholder.svg";
 import { Link } from "react-router-dom";
 import { useGetNotificationsQuery } from "@hooks/redux/notifications"
-
+import avatarImg from "@assets/images/icons/users_avatar.svg"
 
 function Header() {
   const [page] = useState(0);
-  const [profileImage, setProfileImage] = useState<string>(profilePlaceholder);
+  const [profileImage, setProfileImage] = useState<string>(avatarImg);
   const limit = 10
   const [telegramUsername, setTelegramUsername] = useState("");
   const { data: notifications } = useGetNotificationsQuery([page, limit],
-    { refetchOnReconnect: true, refetchOnFocus: true });
+    { refetchOnReconnect: true, refetchOnFocus: true,refetchOnMountOrArgChange: true });
 
 
   useEffect(() => {
@@ -25,7 +24,7 @@ function Header() {
       // Set Telegram user data
       if (user) {
         // setTelegramId(user.id ?? null);
-        setProfileImage(user.photo_url || profilePlaceholder);
+        setProfileImage(user.photo_url || avatarImg);
         setTelegramUsername(user.username ?? "User");
       }
     }
@@ -78,7 +77,6 @@ function Header() {
                 {notifications?.totalNotifications || 0}
               </div>
             }
-
           </Link>
         </div>
       </header>
