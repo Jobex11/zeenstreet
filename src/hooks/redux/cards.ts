@@ -11,8 +11,12 @@ export const cardsApi = createApi({
             query: (telegram_id) => `/users/${telegram_id}`,
             providesTags: ['Cards']
         }),
+        getNumberOfUnlockedCards: builder.query({
+            query: (telegram_id) => `/unlocked-cards/${telegram_id}`,
+            providesTags: ['Cards']
+        }),
     }),
 })
 
 
-export const { useGetAllcardsQuery } = cardsApi
+export const { useGetAllcardsQuery, useGetNumberOfUnlockedCardsQuery } = cardsApi

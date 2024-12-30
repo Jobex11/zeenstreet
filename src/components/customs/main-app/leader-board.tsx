@@ -27,6 +27,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
         skip: !telegram_id,
         refetchOnReconnect: true,
         refetchOnFocus: true,
+        refetchOnMountOrArgChange:true,
     });
 
     const fileId = isPhotoSuccess ? photoData?.result?.photos?.[0]?.[2]?.file_id : null;
@@ -35,6 +36,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
         skip: !fileId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
+        refetchOnMountOrArgChange:true,
     });
 
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
@@ -65,7 +67,11 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
 
 export default function GlobalLeaderboard() {
     const [activeTab, setActiveTab] = useState<'shares' | 'unlockedCardsCount' | 'referralCount'>('shares');
-    const { data: allUsers } = useGetAllUsersQuery(undefined);
+    const { data: allUsers } = useGetAllUsersQuery(undefined, {
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange:true,
+    });
     const [telegramId, setTelegramId] = useState<string | null>(null);
 
 
@@ -91,7 +97,7 @@ export default function GlobalLeaderboard() {
     const handleActiveTabs = (tab: 'shares' | 'unlockedCardsCount' | 'referralCount') => {
         setActiveTab(tab)
     }
-
+    console.log("Cards", allUsers?.users)
 
     return (
         <div className="flex flex-col h-screen text-white">
@@ -157,6 +163,7 @@ export const MiniImage = ({ user }: MiniImageProps) => {
         skip: !user?.telegram_id,
         refetchOnReconnect: true,
         refetchOnFocus: true,
+        refetchOnMountOrArgChange:true,
     });
     const fileId = isPhotoSuccess ? photoData?.result?.photos?.[0]?.[2]?.file_id : null;
 
@@ -165,10 +172,11 @@ export const MiniImage = ({ user }: MiniImageProps) => {
         skip: !fileId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
+        refetchOnMountOrArgChange:true,
     });
 
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
-  const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
+    const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
     return (
         <Fragment>
             {filePath ? <Avatar className="w-12 h-12">

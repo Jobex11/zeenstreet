@@ -1,4 +1,4 @@
-import  { useState, useMemo, useEffect, Key } from "react";
+import { useState, useMemo, useEffect, Key } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import dotsbg from "@assets/images/dotted-bg.png";
 import trophy from "@assets/images/icons/trophy.png";
@@ -10,6 +10,7 @@ import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from "@hooks/red
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import avatarImg from "@assets/images/avatar.webp"
 
 interface Rank {
   rankRange: { min: number; max: number };
@@ -28,8 +29,16 @@ interface User {
 function Ranks() {
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const [emblaRef, embla] = useEmblaCarousel({ dragFree: false, watchDrag: false });
-  const { data: allUsers, isLoading: loadingUsers } = useGetAllUsersQuery(undefined);
-  const { data: ranks, isSuccess: ranksLoaded } = useGetAllRanksQuery(undefined);
+  const { data: allUsers, isLoading: loadingUsers } = useGetAllUsersQuery(undefined, {
+    refetchOnReconnect: true,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
+  const { data: ranks, isSuccess: ranksLoaded } = useGetAllRanksQuery(undefined, {
+    refetchOnReconnect: true,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
 
 
   useEffect(() => {
@@ -144,7 +153,7 @@ function Ranks() {
                       {
                         group?.users.length > 0 ?
                           group?.users?.map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
-                            <div key={user._id} className={`flex ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
+                            <div key={user._id} className={`flex mb-2 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
                               <div className="flex items-center gap-3">
                                 <RankImage user={user} telegram_id={user.telegram_id} />
                                 <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-sm capitalize font-semibold jakarta`}>
@@ -171,13 +180,13 @@ function Ranks() {
               onClick={scrollPrev}
               className="absolute top-1/2 h-10 w-10 flex items-center justify-center left-2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-md hover:bg-gray-600"
             >
-              <IoIosArrowBack size={20}/>
+              <IoIosArrowBack size={20} />
             </button>
             <button
               onClick={scrollNext}
               className="absolute top-1/2 h-10 w-10 flex items-center justify-center right-2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-md hover:bg-gray-600"
             >
-              <IoIosArrowForward size={20}/>
+              <IoIosArrowForward size={20} />
             </button>
           </div>
         </div>
@@ -210,7 +219,7 @@ export const RankImage = ({ telegram_id, user }: ImageProps) => {
   });
 
   const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
- const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
+  const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
   return (
     <div className="h-[49px] w-[49px]">
       {filePath ? <img
@@ -218,9 +227,14 @@ export const RankImage = ({ telegram_id, user }: ImageProps) => {
         alt="Rank badge"
         className="min-h-full w-full object-center rounded-full object-contain"
       />
-        : <div className="h-[50px] w-[50px] flex items-center justify-center bg-orange-500 uppercase text-white work-sans font-medium border rounded-full">
-          {user?.username?.slice(0, 2)}
-        </div>}
+        :
+        <img
+          src={avatarImg}
+          alt={`${user.username}'s Logo`}
+          className="h-full w-full rounded-full object-cover object-center"
+        />
+
+      }
     </div>
   )
 }

@@ -30,7 +30,7 @@ import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import useWindowSize from "@hooks/useWindowsize";
 import Confetti from "react-confetti";
 import { AiOutlineTeam } from "react-icons/ai";
-import { useGetUserSharesQuery } from "@/hooks/redux/shares";
+import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import avatarImg from "@assets/images/avatar.webp"
 
 interface Referral {
@@ -55,15 +55,19 @@ function Referral() {
   const { refetch } = useGetUserSharesQuery(
     telegramId ?? "",
     {
+      skip: !telegramId,
       refetchOnReconnect: true,
       refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
     }
   );
   const { data: userData, refetch: refetchUserData } = useGetUsersByIdQuery(
     telegramId ?? "",
     {
+      skip: !telegramId,
       refetchOnReconnect: true,
       refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
     }
   );
   const { data: tier1Data, isLoading: loading } = useGetTier1ReferralQuery(
@@ -72,18 +76,21 @@ function Referral() {
       skip: !telegramId,
       refetchOnReconnect: true,
       refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
     }
   );
   const { data: tier2Data } = useGetTier2ReferralQuery(telegramId ?? "", {
     skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
 
   const { data: referralCode } = useGetReferralCodeQuery(telegramId ?? "", {
     skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
 
   const { data: referralLink } = useGetReferralLinkQuery(telegramId ?? "", {
@@ -145,7 +152,7 @@ function Referral() {
   };
 
   // const isButtonEnabled = userData?.user?.hasNewReferrals && !claimingShares;
-  console.log("User", tier2Data)
+  console.log("User", tier1Data)
   return (
     <div className="flex flex-col min-h-full">
       {showConfetti && <Confetti width={width} height={height} />}
@@ -215,9 +222,10 @@ function Referral() {
                     </span>{" "}
                     You&apos;ve been awared
                     <br />
-                    <ShareFormatter
+
+                    <span className="mx-2"><ShareFormatter
                       shares={userData?.user?.claimReferrals_shares}
-                    />{" "}
+                    /></span>
                     Shares
                   </h1>
                   <Button
@@ -230,7 +238,7 @@ function Referral() {
                   >
                     {claimingShares
                       ? "Claiming..."
-                      : userData?.user?.claimReferrals_shares.length === 0
+                      : userData?.user?.claimReferrals_shares
                         ? `Claim ${userData?.user?.claimReferrals_shares} Referral Shares `
                         : "No Shares to Claim"}
                   </Button>
@@ -369,6 +377,7 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
       skip: !referrals.telegram_id,
       refetchOnReconnect: true,
       refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
     });
 
   const fileId = isPhotoSuccess
@@ -381,6 +390,7 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
       skip: !fileId,
       refetchOnReconnect: true,
       refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
     }
   );
 

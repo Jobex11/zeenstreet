@@ -1,17 +1,26 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
 export const useGoldFormatter = (goldAmount: number) => {
   return useMemo(() => {
-    if (goldAmount <= 100_000) {
-      return goldAmount.toLocaleString();
+    const formatNumber = (num: number, suffix: string) => {
+      // Round to 1 decimal place
+      const rounded = Math.round(num * 10) / 10;
+      
+      // Convert to string and remove trailing '.0' if present
+      const formatted = rounded.toString().replace(/\.0$/, '');
+      
+      return formatted + suffix;
+    };
+
+    if (goldAmount < 100_000) {
+      return goldAmount.toLocaleString(); // Format numbers below 100,000 with commas
     } else if (goldAmount >= 1_000_000_000) {
-      return (goldAmount / 1_000_000_000).toFixed(1) + 'b'; // Billions (e.g., 1.2b)
+      return formatNumber(goldAmount / 1_000_000_000, "b"); // Billions
     } else if (goldAmount >= 1_000_000) {
-      return (goldAmount / 1_000_000).toFixed(1) + 'm'; // Millions (e.g., 2.5m)
+      return formatNumber(goldAmount / 1_000_000, "m"); // Millions
     } else if (goldAmount >= 100_000) {
-      return (goldAmount / 1_000).toFixed(1) + 'k'; // Thousands (e.g., 100.1k)
+      return formatNumber(goldAmount / 1_000, "k"); // Thousands
     }
   }, [goldAmount]);
-
 };
 

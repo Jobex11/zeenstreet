@@ -21,7 +21,7 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
     const [taskPerformed, setTaskPerformed] = useState<boolean>(false);
     const [isTaskCompleted, setIsTaskCompleted] = useState<boolean>(false)
     const [completeTasks, { isLoading: isCompleting }] = useCompleteTasksMutation();
-    const { data: userById } = useGetUsersByIdQuery(telegramId, {
+    const { data: userById, refetch: refetchUserById } = useGetUsersByIdQuery(telegramId, {
         refetchOnReconnect: true, refetchOnFocus: true
     })
 
@@ -80,8 +80,6 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
         return () => clearInterval(interval);
     }, [remainingTime, task]);
 
-
-
     const isExpired = remainingTime <= 0;
 
 
@@ -101,7 +99,7 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
                 toast.success(completedTask.message, { className: "text-xs work-sans" });
                 refetch?.(); // Optional: sync with server data
             }
-
+            refetchUserById()
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error("Error completing task:", error?.data?.error);

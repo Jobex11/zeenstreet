@@ -135,15 +135,18 @@ function Profile() {
             skip: !telegramId,
             refetchOnReconnect: true,
             refetchOnFocus: true,
+            refetchOnMountOrArgChange: true,
         }
     );
     const { data: data, isLoading } = useGetUsernameQuery(telegramId, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
     });
     const { data: userDataCard, isLoading: loadingCollectedCards } = useGetUsersByIdQuery(telegramId, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
     });
 
     // Initialize Telegram WebApp and set user data

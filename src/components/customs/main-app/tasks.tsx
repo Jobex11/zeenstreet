@@ -23,7 +23,7 @@ import { SlLock } from 'react-icons/sl';
 function Tasks() {
     // const [isPremium, setIsPremium] = useState<boolean | undefined>(false)
     // const [shareStep, setShareStep] = useState<"share" | "confirm">("share");
-    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+    const [telegramId, setTelegramId] = useState<string | null>(null);
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const [tabs, setTabs] = useState<string>("All");
     // const [storyDrawerOpen, setStoryDrawerOpen] = useState(false);
@@ -33,13 +33,19 @@ function Tasks() {
     // const [updateShare, { isLoading: updating }] = useUpdateUserSharesMutation()
 
     const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
-        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
+        skip: !telegramId, refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
     })
     // const { data: userById } = useGetUsersByIdQuery(telegramId ?? "", {
     // skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
     // })
 
-    const { data: tasks, isLoading } = useGetAllTasksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true });
+    const { data: tasks, isLoading } = useGetAllTasksQuery(undefined, {
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+    });
     const handleActiveTabs = (name: string) => {
         setTabs(name)
     }

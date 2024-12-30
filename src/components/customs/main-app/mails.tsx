@@ -23,7 +23,11 @@ function MailNotification() {
   const limit = 10
 
   const { data: notifications, isLoading, refetch, } = useGetNotificationsQuery([notificationPage, limit],
-    { refetchOnReconnect: true, refetchOnFocus: true });
+    {
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
+    });
 
   const loadNextPage = () => {
     if (notifications?.currentPage < notifications?.totalPages) {

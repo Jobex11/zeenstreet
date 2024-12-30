@@ -29,11 +29,16 @@ const imageUrls = [
 
 function Home() {
 
-  const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+  const [telegramId, setTelegramId] = useState<string | null>(null);
   const [selectedFilter, setSelectedFilter] = useState("All");
-  const { data: ranks } = useGetAllRanksQuery(undefined);
-  const { data: user, refetch: refetchShares, isLoading: loadingShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true })
-  const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true, });
+  const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
+  const { data: user, refetch: refetchShares, isLoading: loadingShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, })
+  const { data: tasks, isLoading } = useGetAllTasksQuery(null,
+     { refetchOnReconnect: true,
+       refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+       }
+    );
 
   const userRank = useMemo(
     () =>
