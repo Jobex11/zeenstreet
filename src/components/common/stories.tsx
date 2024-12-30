@@ -49,7 +49,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
         if (!story) return;
         const mediaUrl = story?.image;
         const params = {
-            text: story.text,
+            text: story?.text,
             ...(isPremium && {
                 widget_link: {
                     url: user?.user?.referralLink,
@@ -62,8 +62,8 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
             await shareToStory(mediaUrl, [params]);
 
             setTimeout(async () => {
-                await shareStory({ telegramId });
-                await updateUserShares({ telegramId, shares: 50, shareType: "story gift" });
+                await shareStory({ telegram_id: telegramId });
+                await updateUserShares({ telegram_id: telegramId, shares: 100, shareType: "story gift" });
                 refetchStory()
             }, 5000);
         } catch (error) {
