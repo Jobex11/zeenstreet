@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import zeenstreetLogo from "@assets/images/icons/zenstreet_logo.png";
+
 
 
 interface TelegramWrapperProps {
@@ -39,7 +40,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
             // }
 
             if (tg?.BackButton) {
-              if (window.location.pathname !== "/") {
+                if (window.location.pathname !== "/") {
                     tg.BackButton.show();
 
                     tg.onEvent("backButtonClicked", () => {
@@ -60,8 +61,8 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
         };
     }, []);
 
-    if (isTelegram) { 
-        return <>{children}</>;
+    if (isTelegram) {
+        return <Fragment>{children}</Fragment>;
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 p-4">

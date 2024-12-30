@@ -12,13 +12,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import { useGetAllRanksQuery } from "@hooks/redux/ranks"
 import { useEffect, useState, useMemo } from "react";
-import { BsCardText } from "react-icons/bs";
 import { FiLoader } from "react-icons/fi";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { SlBadge } from "react-icons/sl";
 import { getUserRank, getRankIconColor } from "@lib/utils"
 import { Skeleton } from "@components/ui/skeleton";
+import taskImg from "@assets/images/icons/tasks_img.svg";
 
 const imageUrls = [
   firstBannerImg,
@@ -155,7 +155,7 @@ function Home() {
             {/* No Tasks Available */}
             {!isLoading && (!filteredTasks || filteredTasks.length === 0) && (
               <div className="flex flex-col items-center gap-2">
-                <BsCardText size={40} color="white" />
+                  <img src={taskImg} alt={"no story image"} className={"h-24 w-24 object-contain object-center"}/>
                 <p className="text-white work-sans text-base text-center">No Available Tasks</p>
               </div>
             )}

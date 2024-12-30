@@ -10,6 +10,7 @@ import { referralsApi } from '@/hooks/redux/referrals'
 import { tgUserPhotoApi } from '@/hooks/redux/tg_photo'
 import { ranksApi } from '@/hooks/redux/ranks'
 import { wealthClassApi } from '@/hooks/redux/wealthclass'
+import { storiesApi } from '@/hooks/redux/stories'
 
 export const store = configureStore({
   reducer: {
@@ -23,7 +24,8 @@ export const store = configureStore({
     [referralsApi.reducerPath]: referralsApi.reducer,
     [tgUserPhotoApi.reducerPath]: tgUserPhotoApi.reducer,
     [ranksApi.reducerPath]: ranksApi.reducer,
-    [wealthClassApi.reducerPath]: wealthClassApi.reducer
+    [wealthClassApi.reducerPath]: wealthClassApi.reducer,
+    [storiesApi.reducerPath]:storiesApi.reducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -37,7 +39,8 @@ export const store = configureStore({
       referralsApi.middleware,
       tgUserPhotoApi.middleware,
       ranksApi.middleware,
-      wealthClassApi.middleware
+      wealthClassApi.middleware,
+      storiesApi.middleware
     ),
 })
 

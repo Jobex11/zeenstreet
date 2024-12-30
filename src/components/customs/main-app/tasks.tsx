@@ -13,33 +13,19 @@ import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
 import taskImg from "@assets/images/icons/tasks_img.svg";
 
-// import { useTelegramWebApp } from "@hooks/useTelegramWebapp"
-// import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from "@components/ui/drawer";
-// import { useUpdateUserSharesMutation } from "@/hooks/redux/shares";
-// import { toast } from "sonner";
-// import { useGetUsersByIdQuery } from "@/hooks/redux/users";
-// import { RxShare1 } from "react-icons/rx";
 
 function Tasks() {
-    // const [isPremium, setIsPremium] = useState<boolean | undefined>(false)
-    // const [shareStep, setShareStep] = useState<"share" | "confirm">("share");
+
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const [tabs, setTabs] = useState<string>("All");
-    // const [storyDrawerOpen, setStoryDrawerOpen] = useState(false);
-    // const [hasSharedToStory, setHasSharedToStory] = useState(false);
-    // const { shareToStory } = useTelegramWebApp();
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
-    // const [updateShare, { isLoading: updating }] = useUpdateUserSharesMutation()
 
     const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
         skip: !telegramId, refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     })
-    // const { data: userById } = useGetUsersByIdQuery(telegramId ?? "", {
-    // skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true
-    // })
 
     const { data: tasks, isLoading } = useGetAllTasksQuery(undefined, {
         refetchOnReconnect: true,
@@ -56,70 +42,12 @@ function Tasks() {
             const initData = window.Telegram.WebApp.initDataUnsafe;
             const user = initData?.user;
 
-            // Set Telegram user data
             if (user) {
                 setTelegramId(user.id ?? null);
-                // setIsPremium(user.is_premium)
             }
         }
 
-        // const storedstoryDrawerOpen = localStorage.getItem("storydrawerOpen");
-        // const storedHasSharedToStory = localStorage.getItem("hasSharedToStory");
-
-        // if (storedstoryDrawerOpen === "true") setStoryDrawerOpen(true);
-        // if (storedHasSharedToStory === "true") setHasSharedToStory(true);
     }, []);
-
-    // useEffect(() => {
-    //     localStorage.setItem("storyDrawerOpen", String(storyDrawerOpen));
-    //     localStorage.setItem("hasSharedToStory", String(hasSharedToStory));
-    // }, [storyDrawerOpen, hasSharedToStory]);
-
-    // const handleShareToStory = async () => {
-
-
-    //     const mediaUrl = "https://zeenstreet-ten.vercel.app/assets/Banner1-CFK7gMq_.jpg";
-    //     const params = {
-    //         text: `Join mein RaveGenie Games! Complete tasks and earn rewards for your efforts.`,
-    //         ...(isPremium && {
-    //             widget_link: {
-    //                 url: userById?.user?.referralLink,
-    //                 name: "RaveGenie Games"
-    //             }
-    //         }),
-    //     };
-
-    //     try {
-    //         await shareToStory(mediaUrl, [params]);
-    //         setHasSharedToStory(true);  // Update state
-    //         localStorage.setItem("hasSharedToStory", "true"); 
-    //     } catch (error) {
-    //         console.error("Error sharing to story:", error);
-    //     }
-    // };
-
-
-    // const handleConfirmation = async (confirmed: boolean) => {
-    //     const shares = 100
-    //     if (confirmed) {
-    //         try {
-    //             const update = await updateShare({telegram_id: telegramId, shares: shares, shareType: "shares" }).unwrap(); // Call the mutation to reward the user.
-    //             if (update) {
-    //                 toast.success(`Share confirmed! ${shares} Rewards have been added`, { className: "text-xs work-sans" });
-    //                 setStoryDrawerOpen(false);
-    //                 localStorage.removeItem("storyDrawerOpen");
-    //                 localStorage.removeItem("hasSharedToStory");
-    //             }
-    //         } catch (err) {
-    //             console.error("Error updating share:", err);
-    //             toast.error("Something went wrong. Please try again.", { className: "text-xs work-sans" });
-    //         }
-    //     } else {
-    //         toast.info("You lost the reward for not sharing!", { className: "text-xs work-sans" });
-    //         setStoryDrawerOpen(false);
-    //     }
-    // };
-
 
     useEffect(() => {
         const container = scrollContainerRef.current;
@@ -179,7 +107,6 @@ function Tasks() {
                         (card: CardType) =>
                             card.isCurrent && (
                                 <div key={card._id} className="flex flex-col items-center w-full">
-                                    {/* Progress Text */}
                                     <div className="flex justify-between w-full text-sm font-medium text-white">
                                         <span className={"text-xs work-sans"}>{card.progress?.progressDisplay || "0/0"}</span>
                                         <span className={"text-xs jakarta"}>{card.progress?.progressInPercentage || 0}% Complete</span>
@@ -214,7 +141,6 @@ function Tasks() {
                             <Button
                                 style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}
                                 key={tab}
-                                // disabled={tabs !== tab.name}
                                 onClick={() => handleActiveTabs(tab)}
                                 className={`poppins object-cover px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm  w-[117px] h-[39px] " : "w-[88px] h-[31px] rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "}`}>
                                 {tab}
@@ -235,7 +161,7 @@ function Tasks() {
 
                     {tasks?.tasks?.filter((task: { category: string }) => tabs === "All" || task.category === tabs).length === 0 ? (
                         <div className="flex flex-col items-center gap-2 mt-5">
-                            <img src={taskImg} alt={""} className={"h-24 w-24 object-contain object-center"}/>
+                            <img src={taskImg} alt={""} className={"h-24 w-24 object-contain object-center"} />
                             <p className="text-white work-sans text-base text-center">No Available Tasks on <span className="capitalize">{tabs}</span> </p>
                         </div>
 
@@ -250,53 +176,6 @@ function Tasks() {
                     )}
                 </div>
             </div>
-            {/* <Drawer open={!hasSharedToStory} dismissible={false}>
-                <DrawerContent
-                    aria-describedby={undefined}
-                    aria-description="show task dialog"
-                    className="flex flex-col min-h-[47%] pt-1 bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 gap-3">
-                    {!hasSharedToStory ? (
-                        <div className="flex flex-col w-full gap-4">
-                            <div className="relative h-[13rem] w-full">
-                                <img src={"https://zeenstreet-ten.vercel.app/assets/Banner1-CFK7gMq_.jpg"}
-                                    alt="Welcome image"
-                                    className="h-full w-full object-cover object-bottom" />
-                                <div className="absolute top-0 bottom-0 h-full w-full bg-transparent z-10" />
-                            </div>
-                            <DrawerTitle className={"text-center work-sans text-lg text-white"}>Share to Your Story</DrawerTitle>
-                            <DrawerDescription className="text-center text-white work-sans">Share this story to your Telegram to earn rewards!</DrawerDescription>
-                            <Button
-                                onClick={handleShareToStory}
-                                className="bg-orange-500 hover:bg-orange-600 text-center work-sans text-white px-4 py-3"
-                            >
-                                Share Now
-                            </Button>
-                        </div>
-                    ) : (
-                        <div className="flex flex-col w-full items-center gap-4">
-                            <RxShare1 size={60} color="white" />
-                            <DrawerTitle className={"text-center work-sans text-lg text-white"}>Did You Share It?</DrawerTitle>
-                            <DrawerDescription className="text-center text-white work-sans">Confirm if you successfully shared the story.</DrawerDescription>
-                            <div className={"flex items-center w-full gap-5 pt-5 "}>
-                                <Button
-                                    onClick={() => handleConfirmation(true)}
-                                    className="bg-green-500 hover:bg-green-600 w-full work-sans text-white text-center px-4 py-2"
-                                    disabled={updating}
-                                >
-                                    {updating ? "Checking status..." : "Yes, I Shared"}
-                                </Button>
-                                <Button
-                                    onClick={() => handleConfirmation(false)}
-                                    className="bg-red-500 hover:bg-red-600 w-full work-sans text-white text-center px-4 py-2"
-                                >
-                                    No, I Didn't
-                                </Button>
-                            </div>
-                        </div>
-                    )}
-                </DrawerContent>
-
-            </Drawer> */}
         </div>
     )
 }
