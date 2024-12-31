@@ -13,7 +13,7 @@ interface StoriesLayoutProps {
 }
 
 function StoriesLayout({ children }: StoriesLayoutProps) {
-    const [telegramId, setTelegramId] = useState<string | null>(null);
+    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
     const { shareToStory } = useTelegramWebApp();
     const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(telegramId ?? "", {
         skip: !telegramId,
@@ -30,8 +30,8 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
     });
 
     console.log("Story", story)
-    const [shareStory] = useShareStoryMutation();
-    const [updateUserShares, { isLoading: updatingShares }] = useUpdateUserSharesMutation();
+    const [shareStory, { isLoading: checkingStatus }] = useShareStoryMutation();
+    const [updateUserShares] = useUpdateUserSharesMutation();
 
     useEffect(() => {
         if (window.Telegram && window.Telegram.WebApp) {
@@ -49,7 +49,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
         const mediaUrl = story?.image;
         try {
             shareToStory(mediaUrl, {
-                text: `Hey guys, join me in RaveGenie Games to earn rewards by performing tasks and much more! \n ${user?.user?.referralLink}`,
+                text: `Hey guys it's me ${user?.user?.first_name}, join me in RaveGenie Games to earn rewards by performing tasks 🎉 and much more! \n https://t.me/RaveGenie_Bot/game?start=${user?.user?.referralCode}`,
                 widget_link: {
                     url: user?.user?.referralLink,
                     name: "RaveGenie Games",
@@ -57,16 +57,19 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
             });
 
             setTimeout(async () => {
-                await shareStory(telegramId);
-                await updateUserShares({ telegram_id: telegramId, shares: story?.reward, shareType: "story gift" });
+                await shareStory(telegramId).unwrap();
+                await updateUserShares({
+                    telegram_id: telegramId,
+                    shares: story?.reward,
+                    shareType: `story gift_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`
+                }).unwrap();;
                 refetchStory()
-            }, 9000);
+            }, 10000);
 
         } catch (error) {
             console.error("Error sharing to story:", error);
         }
     };
-
     return (
         <Fragment>
             {userSuccess && storySuccess && <Drawer open={!story?.hasShared} dismissible={false}>
@@ -99,7 +102,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                                 onClick={handleShareToStory}
                                 className="bg-orange-500 hover:bg-orange-600 text-center work-sans text-white px-4 py-3"
                             >
-                                {updatingShares ? "Checking status....." : "Share Now"}
+                                {checkingStatus ? "Checking status....." : "Share Now"}
                             </Button>
                         </div>
                     }

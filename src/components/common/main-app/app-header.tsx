@@ -65,7 +65,7 @@ function Header() {
                 className="h-6 w-6 rounded-md"
               />
               <span className="text-[9px] work-sans font-medium text-white">
-                @{telegramUsername.slice(0, 7) || "You"}
+                @{telegramUsername.slice(0, 10) || "You"}
               </span>
             </div>
           </Link>

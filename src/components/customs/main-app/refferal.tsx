@@ -48,7 +48,6 @@ function Referral() {
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
-
   const btnTabs = [{ name: "Tier 1" }, { name: "Tier 2" }];
 
   const [claimReferralShares, { isLoading: claimingShares }] =
@@ -111,9 +110,14 @@ function Referral() {
 
   const handleCopyReferralLink = async () => {
     if (referralLink) {
-      await navigator.clipboard.writeText(referralLink?.referralLink);
+      const shareText =
+        "Join me on Ravegenie Games to earn rewards by completing tasks and so much more🎉";
+      const fullUrl = `${encodeURIComponent(
+        referralLink.referralLink
+      )}&text=${encodeURIComponent(shareText)}`;
+      await navigator.clipboard.writeText(fullUrl);
       navigator.vibrate([50, 50]);
-      toast.info("Referral link copied!");
+      toast.info("Referral link copied!", { className: "text-xs work-sans" });
     }
   };
 
@@ -152,7 +156,6 @@ function Referral() {
     }
   };
 
-  console.log("User", tier1Data)
   return (
     <div className="flex flex-col min-h-full">
       {showConfetti && <Confetti width={width} height={height} />}
@@ -272,7 +275,7 @@ function Referral() {
               ))}
             </div>
 
-            <>
+            <Fragment>
               {loading ? (
                 <div className="text-center text-white">
                   <div className={"flex flex-col gap-3"}>
@@ -285,7 +288,7 @@ function Referral() {
                   </div>
                 </div>
               ) : (
-                <>
+                <Fragment>
                   {tabs === "Tier 1" && (
                     <Fragment>
                       {!loading && tier1Data?.tier1.length > 0 ? (
@@ -347,9 +350,9 @@ function Referral() {
                       )}
                     </Fragment>
                   )}
-                </>
+                </Fragment>
               )}
-            </>
+            </Fragment>
           </div>
         </div>
       </div>
