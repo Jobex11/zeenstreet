@@ -1,3 +1,4 @@
+import { ShareToStoryParams } from '@/global'
 import { useState, useEffect, useCallback } from 'react'
 
 interface TelegramWebAppData {
@@ -86,9 +87,9 @@ export function useTelegramWebApp() {
         window.Telegram?.WebApp?.checkHomeScreenStatus(callback)
     }, [])
 
-    const shareToStory = useCallback((mediaUrl: string, params?: object) => {
-        window.Telegram?.WebApp?.shareToStory(mediaUrl, params)
-    }, [])
+    const shareToStory = useCallback((mediaUrl: string, params?: ShareToStoryParams) => {
+        window.Telegram?.WebApp?.shareToStory(mediaUrl, params);
+    }, []);
 
     const isVersionAtLeast = useCallback((version: string) => {
         return window.Telegram?.WebApp?.isVersionAtLeast(version) || false

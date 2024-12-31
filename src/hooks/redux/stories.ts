@@ -13,7 +13,7 @@ export const storiesApi = createApi({
         shareStory: builder.mutation({
             query: (telegram_id) => ({
                 url: `/${telegram_id}/share`,
-                method: 'POST',
+                method: 'PUT',
             }),
             invalidatesTags: ['Story'],
         }),

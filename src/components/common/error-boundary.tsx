@@ -1,40 +1,61 @@
-import React, { Component, ReactNode } from 'react';
+import {
+  Component,
+  type ComponentType,
+  type GetDerivedStateFromError,
+  type PropsWithChildren,
+  type ReactNode,
+} from 'react';
+
+export interface ErrorBoundaryProps extends PropsWithChildren {
+  fallback?: ReactNode | ComponentType<{ error: unknown }>;
+}
 
 interface ErrorBoundaryState {
-  hasError: boolean;
+  error?: unknown;
 }
 
-interface ErrorBoundaryProps {
-  children: ReactNode;
-}
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  state: ErrorBoundaryState = {};
+  
+  static getDerivedStateFromError: GetDerivedStateFromError<ErrorBoundaryProps, ErrorBoundaryState> = (error) => ({ error });
 
-class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(): ErrorBoundaryState {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Error Boundary caught an error:', error, errorInfo);
+  componentDidCatch(error: Error) {
+    this.setState({ error });
   }
 
   render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
-          <h1>Something went wrong.</h1>
-          <p>We're working to fix it. Please try again later.</p>
-        </div>
-      );
-    }
+    const {
+      state: {
+        error,
+      },
+      props: {
+        fallback: Fallback,
+        children,
+      },
+    } = this;
 
-    return this.props.children;
+    return 'error' in this.state
+      ? typeof Fallback === 'function'
+        ? <Fallback error={error} />
+        : Fallback
+      : children;
   }
 }
 
-export default ErrorBoundary;
 
+export function ErrorBoundaryError({ error }: { error: unknown }) {
+  return (
+    <div>
+      <p>An unhandled error occurred:</p>
+      <blockquote>
+        <code>
+          {error instanceof Error
+            ? error.message
+            : typeof error === 'string'
+              ? error
+              : JSON.stringify(error)}
+        </code>
+      </blockquote>
+    </div>
+  );
+}

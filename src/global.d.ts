@@ -9,7 +9,7 @@ declare global {
             last_name?: string;
             username?: string;
             photo_url?: string;
-            is_premium?:boolean;
+            is_premium?: boolean;
           };
         };
         //to handle more functionalities(tasks, user experience)
@@ -32,12 +32,12 @@ declare global {
         exitFullscreen: () => void;
         addToHomeScreen: () => void;
         checkHomeScreenStatus: (callback?: (isAdded: boolean) => void) => void;
-        shareToStory: (mediaUrl: string, params?: object) => void;
+        shareToStory: (mediaUrl: string, params?: ShareToStoryParams) => void;
         onEvent: (eventType: string, eventHandler: () => void) => void;
         offEvent: (eventType: string, eventHandler: () => void) => void;
         ready: () => void;
         setBottomBarColor: (color: string) => void;
-        openTelegramLink:(url:string) => void;
+        openTelegramLink: (url: string) => void;
         setHeaderColor: (color: string) => void;
         enableClosingConfirmation: () => void;
         disableClosingConfirmation: () => void;
@@ -48,4 +48,12 @@ declare global {
   }
 }
 
-export {};
+export { };
+
+export interface ShareToStoryParams {
+  text?: string;
+  widget_link?: {
+    url: string;
+    name: string;
+  }
+}

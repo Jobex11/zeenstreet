@@ -1,11 +1,12 @@
-import { useGetAllStoryQuery, useShareStoryMutation } from "@hooks/redux/stories";
-import React, { Fragment, useEffect, useState } from "react";
-import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from "@components/ui/drawer";
-import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
-import { useUpdateUserSharesMutation } from "@hooks/redux/shares";
 import { useGetUsersByIdQuery } from "@/hooks/redux/users";
 import { Button } from "@components/ui/button";
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from "@components/ui/drawer";
 import { Skeleton } from "@components/ui/skeleton";
+import { useUpdateUserSharesMutation } from "@hooks/redux/shares";
+import { useGetAllStoryQuery, useShareStoryMutation } from "@hooks/redux/stories";
+import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
+import React, { Fragment, useEffect, useState } from "react";
+
 
 interface StoriesLayoutProps {
     children: React.ReactNode;
@@ -48,24 +49,21 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
     const handleShareToStory = async () => {
         if (!story) return;
         const mediaUrl = story?.image;
-        const params = {
-            text: story?.text,
-            ...(isPremium && {
+        try {
+            shareToStory(mediaUrl, {
+                text: isPremium ? story?.text.slice(0, 2048) : story?.text.slice(0, 200),
                 widget_link: {
                     url: user?.user?.referralLink,
                     name: "RaveGenie Games",
                 },
-            }),
-        };
-
-        try {
-            await shareToStory(mediaUrl, [params]);
+            });
 
             setTimeout(async () => {
                 await shareStory({ telegram_id: telegramId });
                 await updateUserShares({ telegram_id: telegramId, shares: 100, shareType: "story gift" });
                 refetchStory()
             }, 5000);
+
         } catch (error) {
             console.error("Error sharing to story:", error);
         }
@@ -77,7 +75,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                 <DrawerContent
                     aria-describedby={undefined}
                     aria-description="show task dialog"
-                    className="flex flex-col min-h-[49%] pt-1 bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 gap-3"
+                    className="flex flex-col max-h-full pt-3 pb-10 bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 gap-3"
                 >
                     <Fragment>
                         {loadingStory &&

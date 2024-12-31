@@ -17,7 +17,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import Intro from "./pages/app-intro/page";
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import LeaderBoard from "./pages/leader-board/page";
-import ErrorBoundary from '@components/common/error-boundary';
+import { ErrorBoundary, ErrorBoundaryError } from '@components/common/error-boundary';
 
 const router = createBrowserRouter([
   {
@@ -74,13 +74,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         twaReturnUrl: 'https://t.me/RaveGenie_Bot/game'
       }}
     >
-      <ReduxProvider>
-        <TelegramWrapper>
-          <ErrorBoundary>
+      <ErrorBoundary fallback={ErrorBoundaryError}>
+        <ReduxProvider>
+          <TelegramWrapper>
             <RouterProvider router={router} />
-          </ErrorBoundary>
-        </TelegramWrapper>
-      </ReduxProvider>
+          </TelegramWrapper>
+        </ReduxProvider>
+      </ErrorBoundary>
     </TonConnectUIProvider>
   </React.StrictMode>
 );
