@@ -110,12 +110,7 @@ function Referral() {
 
   const handleCopyReferralLink = async () => {
     if (referralLink) {
-      const shareText =
-        "Join me on Ravegenie Games to earn rewards by completing tasks and so much more🎉";
-      const fullUrl = `${encodeURIComponent(
-        referralLink.referralLink
-      )}&text=${encodeURIComponent(shareText)}`;
-      await navigator.clipboard.writeText(fullUrl);
+      await navigator.clipboard.writeText(referralLink?.referralLink);
       navigator.vibrate([50, 50]);
       toast.info("Referral link copied!", { className: "text-xs work-sans" });
     }
@@ -222,10 +217,9 @@ function Referral() {
                   <h1 className="aqum text-[13px] font-bold text-center items-top flex   text-white py-2">
                     <span>
                       <MdInfo color="#D25804" size={10} />
-                    </span>{" "}
+                    </span>
                     You&apos;ve been awared
                     <br />
-
                     <span className="mx-2"><ShareFormatter
                       shares={userData?.user?.claimReferrals_shares}
                     /></span>

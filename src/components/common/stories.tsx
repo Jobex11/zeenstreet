@@ -29,7 +29,6 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
         refetchOnMountOrArgChange: true,
     });
 
-    console.log("Story", story)
     const [shareStory, { isLoading: checkingStatus }] = useShareStoryMutation();
     const [updateUserShares] = useUpdateUserSharesMutation();
 
@@ -62,9 +61,9 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                     telegram_id: telegramId,
                     shares: story?.reward,
                     shareType: `story gift_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`
-                }).unwrap();;
+                }).unwrap();
                 refetchStory()
-            }, 12000);
+            }, 10000);
 
         } catch (error) {
             console.error("Error sharing to story:", error);
@@ -96,7 +95,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                                 Share to Your Story
                             </DrawerTitle>
                             <DrawerDescription className="text-center text-white work-sans">
-                                Hi {user?.user?.first_name} 👋,
+                                Hi {user?.user?.username || user?.user?.first_name} 👋,
                                 welcome to RaveGenie! We'd love for
                                 you to share this to your story, and yes,
                                 you'll be rewarded for it!  + {story?.reward} shares 😀
