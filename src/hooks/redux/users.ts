@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const usersApi = createApi({
     reducerPath: 'usersApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://ravegenie-vgm7.onrender.com/api"
+        baseUrl: "https://ravegenie-backend.onrender.com/api"
     }),
     tagTypes: ['username'],
     endpoints: (builder) => ({

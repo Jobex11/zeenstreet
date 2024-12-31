@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // Define a service using a base URL and expected endpoints
 export const wealthClassApi = createApi({
     reducerPath: 'wealthClassApi',
-    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-vgm7.onrender.com/api" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api" }),
     tagTypes: ['WealthClasss'],
     endpoints: (builder) => ({
         getAllWealthClasss: builder.query({

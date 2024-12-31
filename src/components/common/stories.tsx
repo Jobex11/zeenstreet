@@ -64,7 +64,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                     shareType: `story gift_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`
                 }).unwrap();;
                 refetchStory()
-            }, 10000);
+            }, 12000);
 
         } catch (error) {
             console.error("Error sharing to story:", error);
@@ -76,7 +76,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                 <DrawerContent
                     aria-describedby={undefined}
                     aria-description="show task dialog"
-                    className="flex flex-col max-h-full pt-3 pb-10 bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 gap-3"
+                    className="flex flex-col max-h-full pb-10 bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 gap-3"
                 >
                     <Fragment>
                         {loadingStory &&
@@ -93,14 +93,17 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                                 <div className="absolute top-0 bottom-0 h-full w-full bg-transparent z-10" />
                             </div>
                             <DrawerTitle className="text-center work-sans text-lg text-white">
-                                Share to Your Story + {story?.reward}
+                                Share to Your Story
                             </DrawerTitle>
                             <DrawerDescription className="text-center text-white work-sans">
-                                {story?.text}
+                                Hi {user?.user?.first_name} 👋,
+                                welcome to RaveGenie! We'd love for
+                                you to share this to your story, and yes,
+                                you'll be rewarded for it!  + {story?.reward} shares 😀
                             </DrawerDescription>
                             <Button
                                 onClick={handleShareToStory}
-                                className="bg-orange-500 hover:bg-orange-600 text-center work-sans text-white px-4 py-3"
+                                className="bg-orange-500 hover:bg-orange-600 text-center work-sans text-white px-4 py-4"
                             >
                                 {checkingStatus ? "Checking status....." : "Share Now"}
                             </Button>

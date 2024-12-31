@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // Define a service using a base URL and expected endpoints
 export const referralsApi = createApi({
     reducerPath: 'referralsApi',
-    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-vgm7.onrender.com/api/referral" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api/referral" }),
     tagTypes: ['Referral'],
     endpoints: (builder) => ({
         getReferralCode: builder.query({
