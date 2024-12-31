@@ -179,8 +179,9 @@ function Referral() {
     }
   };
 
+
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col h-screen">
       {showConfetti && <Confetti width={width} height={height} />}
       <div
         style={{
@@ -188,9 +189,9 @@ function Referral() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
-        className="flex flex-col flex-1 py-3 "
+        className="flex flex-col flex-1 pt-3 "
       >
-        <div className="px-4 flex flex-col gap-8 pb-[8rem]">
+        <div className="px-4 flex flex-col gap-5">
           <CardWrapper>
             <CardHeader className="flex flex-col items-center py-0">
               <div className="h-[84px] w-[92px]">
@@ -272,137 +273,131 @@ function Referral() {
             </CardContent>
           </CardWrapper>
 
-          <div>
-            <div className="flex items-center justify-between py-4">
-              {btnTabs.map((tab) => (
-                <Button
-                  style={{
-                    backgroundImage: `url(${wavybg})`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                  key={tab.name}
-                  onClick={() => handleActiveTabs(tab.name)}
-                  className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name
-                    ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm"
-                    : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "
-                    }`}
-                >
-                  {tab.name}
-                  {tabs !== tab.name && (
-                    <div className="bg-black/20 absolute right-0 left-0 h-full w-full z-10" />
-                  )}
-                </Button>
-              ))}
-            </div>
+          <div className="flex items-center justify-between">
+            {btnTabs.map((tab) => (
+              <Button
+                style={{
+                  backgroundImage: `url(${wavybg})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+                key={tab.name}
+                onClick={() => handleActiveTabs(tab.name)}
+                className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name
+                  ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm"
+                  : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "
+                  }`}
+              >
+                {tab.name}
+                {tabs !== tab.name && (
+                  <div className="bg-black/20 absolute right-0 left-0 h-full w-full z-10" />
+                )}
+              </Button>
+            ))}
+          </div>
 
-            <Fragment>
-              {loading ? (
-                <div className="text-center text-white">
-                  <div className={"flex flex-col gap-3"}>
-                    {[0, 1, 2, 3].map((ske) => (
-                      <Skeleton
-                        key={ske}
-                        className={"h-14 w-full rounded bg-gray-600 shadow-lg"}
-                      />
-                    ))}
-                  </div>
+          <div className=" max-h-[500px] overflow-hidden overflow-y-auto pb-[5.5rem] pr-2">
+            {loading ? (
+              <div className="text-center text-white">
+                <div className={"flex flex-col gap-3"}>
+                  {[0, 1, 2, 3].map((ske) => (
+                    <Skeleton
+                      key={ske}
+                      className={"h-14 w-full rounded bg-gray-600 shadow-lg"}
+                    />
+                  ))}
                 </div>
-              ) : (
-                <Fragment>
-                  {tabs === "Tier 1" && (
-                    <Fragment>
-                      <ScrollArea className="flex-1 h-full p-1">
-                        <InfiniteScroll
-                          dataLength={tier1Data?.total}
-                          next={handleNextPageTier1}
-                          hasMore={tier1Data?.page < tier1Data?.totalPages}
-                          loader={
-                            <div className="flex flex-col items-center justify-center py-3">
-                              <FiLoader size={30} color="white" className="animate-spin" />
-                            </div>}
-                          scrollThreshold={0.9}
-                          scrollableTarget="scrollableDiv"
-                        >
-                          {!loading && tier1Data?.tier1.length > 0 ? (
-                            tier1Data?.tier1.map(
-                              (ref: {
-                                telegram_id: string;
-                                userLogo: string;
-                                username: string;
-                                dateJoined: string;
-                                accountName: string;
-                                isTier2?: boolean;
-                                shares: string;
-                              }) => (
-                                <Referrals key={ref.telegram_id} referrals={ref} />
-                              )
-                            )
-                          ) : (
-                            <div className="p-4 flex flex-col gap-3 items-center ">
-                              <img src={tier1_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
-                              <p
-                                className={
-                                  "text-white work-sans text-sm text-center"
-                                }
-                              >
-                                Your Direct Workforce Will Reside Here
-                              </p>
-                            </div>
-                          )}
-                        </InfiniteScroll>
-                      </ScrollArea>
-                    </Fragment>
-                  )}
+              </div>
+            ) : (
+              <Fragment>
+                {tabs === "Tier 1" && (
+                  <Fragment>
+                    <InfiniteScroll
+                      dataLength={tier1Data?.tier1.length || 0}
+                      next={handleNextPageTier1}
+                      hasMore={tier1Data?.page < tier1Data?.totalPages}
+                      loader={
+                        <div className="flex flex-col items-center justify-center py-3">
+                          <FiLoader size={30} color="white" className="animate-spin" />
+                        </div>}
+                      scrollThreshold={0.9}
+                      scrollableTarget="scrollableDiv"
+                    >
+                      {!loading && tier1Data?.tier1.length > 0 ? (
+                        tier1Data?.tier1.map(
+                          (ref: {
+                            telegram_id: string;
+                            userLogo: string;
+                            username: string;
+                            dateJoined: string;
+                            accountName: string;
+                            shares: string;
+                          }) => (
+                            <Referrals key={ref.telegram_id} referrals={ref} />
+                          )
+                        )
+                      ) : (
+                        <div className="p-4 flex flex-col gap-3 items-center ">
+                          <img src={tier1_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
+                          <p
+                            className={
+                              "text-white work-sans text-sm text-center"
+                            }
+                          >
+                            Your Direct Workforce Will Reside Here
+                          </p>
+                        </div>
+                      )}
+                    </InfiniteScroll>
+                  </Fragment>
+                )}
 
-                  {tabs === "Tier 2" && (
-                    <Fragment>
-                      <ScrollArea className="flex-1 h-full p-1">
-                        <InfiniteScroll
-                          dataLength={tier2Data?.total}
-                          next={handleNextPageTier2}
-                          hasMore={tier2Data?.page < tier2Data?.totalPages}
-                          loader={
-                            <div className="flex flex-col items-center justify-center py-3">
-                              <FiLoader size={30} color="white" className="animate-spin" />
-                            </div>}
-                          scrollThreshold={0.9}
-                          scrollableTarget="scrollableDiv"
-                        >
-                          {!loading && tier2Data?.tier2.length > 0 ? (
-                            tier2Data?.tier2.map(
-                              (ref: {
-                                telegram_id: string;
-                                userLogo: string;
-                                username: string;
-                                accountName: string;
-                                dateJoined: string;
-                                isTier2?: boolean | undefined;
-                                shares: string;
-                              }) => (
-                                <Referrals key={ref.telegram_id} referrals={ref} />
-                              )
+                {tabs === "Tier 2" && (
+                  <Fragment>
+                    <ScrollArea className="flex-1 h-full p-1">
+                      <InfiniteScroll
+                        dataLength={tier2Data?.tier2.length || 0}
+                        next={handleNextPageTier2}
+                        hasMore={tier2Data?.page < tier2Data?.totalPages}
+                        loader={
+                          <div className="flex flex-col items-center justify-center py-3">
+                            <FiLoader size={30} color="white" className="animate-spin" />
+                          </div>}
+                        scrollThreshold={0.9}
+                        scrollableTarget="scrollableDiv"
+                      >
+                        {!loading && tier2Data?.tier2.length > 0 ? (
+                          tier2Data?.tier2.map(
+                            (ref: {
+                              telegram_id: string;
+                              userLogo: string;
+                              username: string;
+                              accountName: string;
+                              dateJoined: string;
+                              shares: string;
+                            }) => (
+                              <Referrals key={ref.telegram_id} isTier2={ref.accountName} referrals={ref} />
                             )
-                          ) : (
-                            <div className="p-4 flex flex-col items-center gap-3 pt-3 ">
-                              <img src={tier2_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
-                              <p
-                                className={
-                                  "text-white work-sans text-center text-sm max-w-[250px]"
-                                }
-                              >
-                                Your Tier 2 Workforce Will Reside Here
-                              </p>
-                            </div>
-                          )}
-                        </InfiniteScroll>
-                      </ScrollArea>
-                    </Fragment>
-                  )}
-                </Fragment>
-              )}
-            </Fragment>
+                          )
+                        ) : (
+                          <div className="p-4 flex flex-col items-center gap-3 pt-3 ">
+                            <img src={tier2_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
+                            <p
+                              className={
+                                "text-white work-sans text-center text-sm max-w-[250px]"
+                              }
+                            >
+                              Your Tier 2 Workforce Will Reside Here
+                            </p>
+                          </div>
+                        )}
+                      </InfiniteScroll>
+                    </ScrollArea>
+                  </Fragment>
+                )}
+              </Fragment>
+            )}
           </div>
         </div>
       </div>
@@ -418,13 +413,13 @@ interface RefferalsProps {
     username: string;
     accountName: string;
     dateJoined: string;
-    isTier2?: boolean;
     shares: string;
     telegram_id?: string;
   };
+  isTier2?: string;
 }
 
-export const Referrals = ({ referrals }: RefferalsProps) => {
+export const Referrals = ({ referrals, isTier2 }: RefferalsProps) => {
   const { data: photoData, isSuccess: isPhotoSuccess } =
     useGetTelegramUserPhotoUrlQuery(referrals.telegram_id, {
       skip: !referrals.telegram_id,
@@ -451,7 +446,7 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
   const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
   return (
     <Fragment>
-      <div className="flex items-center justify-between my-2 py-3 border-b border-[#5F59598A]">
+      <div className="flex items-center justify-between  py-3 border-b border-[#5F59598A]">
         <div className="flex items-center gap-2">
           <div className="h-[50px] w-[50px] rounded-full">
             {filePath ? (
@@ -470,13 +465,13 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
             )}
           </div>
           <div className="flex flex-col">
-            <h1 className="text-xs font-medium font-mono text-white">
+            <h1 className="text-xs font-medium font-mono text-white mb-0.5">
               {referrals.username}
             </h1>
-            <p className="text-[#B7B3B3] text-[8px]">
+            <p className="text-[#B7B3B3] text-[8px] flex items-center gap-1">
               {referrals.dateJoined}{" "}
               <span className="font-bold">
-                {referrals.isTier2 && referrals.accountName}
+                {isTier2}
               </span>
             </p>
           </div>
