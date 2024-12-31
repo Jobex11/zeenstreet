@@ -14,7 +14,6 @@ interface StoriesLayoutProps {
 
 function StoriesLayout({ children }: StoriesLayoutProps) {
     const [telegramId, setTelegramId] = useState<string | null>(null);
-    const [isPremium, setIsPremium] = useState<boolean | undefined>(false);
     const { shareToStory } = useTelegramWebApp();
     const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(telegramId ?? "", {
         skip: !telegramId,
@@ -32,7 +31,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
 
     console.log("Story", story)
     const [shareStory] = useShareStoryMutation();
-    const [updateUserShares] = useUpdateUserSharesMutation();
+    const [updateUserShares, { isLoading: updatingShares }] = useUpdateUserSharesMutation();
 
     useEffect(() => {
         if (window.Telegram && window.Telegram.WebApp) {
@@ -41,7 +40,6 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
 
             if (user) {
                 setTelegramId(user.id ?? null);
-                setIsPremium(user.is_premium);
             }
         }
     }, []);
@@ -51,7 +49,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
         const mediaUrl = story?.image;
         try {
             shareToStory(mediaUrl, {
-                text: isPremium ? story?.text.slice(0, 2048) : story?.text.slice(0, 200),
+                text: `Hey guys, join me in RaveGenie Games to earn rewards by performing tasks and much more! \n ${user?.user?.referralLink}`,
                 widget_link: {
                     url: user?.user?.referralLink,
                     name: "RaveGenie Games",
@@ -59,10 +57,10 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
             });
 
             setTimeout(async () => {
-                await shareStory({ telegram_id: telegramId });
-                await updateUserShares({ telegram_id: telegramId, shares: 100, shareType: "story gift" });
+                await shareStory(telegramId);
+                await updateUserShares({ telegram_id: telegramId, shares: story?.reward, shareType: "story gift" });
                 refetchStory()
-            }, 5000);
+            }, 9000);
 
         } catch (error) {
             console.error("Error sharing to story:", error);
@@ -70,8 +68,8 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
     };
 
     return (
-        <section>
-            <Drawer open={!story?.hasShared} dismissible={false}>
+        <Fragment>
+            {userSuccess && storySuccess && <Drawer open={!story?.hasShared} dismissible={false}>
                 <DrawerContent
                     aria-describedby={undefined}
                     aria-description="show task dialog"
@@ -92,7 +90,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                                 <div className="absolute top-0 bottom-0 h-full w-full bg-transparent z-10" />
                             </div>
                             <DrawerTitle className="text-center work-sans text-lg text-white">
-                                Share to Your Story
+                                Share to Your Story + {story?.reward}
                             </DrawerTitle>
                             <DrawerDescription className="text-center text-white work-sans">
                                 {story?.text}
@@ -101,14 +99,15 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                                 onClick={handleShareToStory}
                                 className="bg-orange-500 hover:bg-orange-600 text-center work-sans text-white px-4 py-3"
                             >
-                                Share Now
+                                {updatingShares ? "Checking status....." : "Share Now"}
                             </Button>
                         </div>
                     }
                 </DrawerContent>
-            </Drawer>
+            </Drawer>}
+
             {children}
-        </section>
+        </Fragment>
     );
 }
 
