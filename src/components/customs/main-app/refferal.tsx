@@ -32,6 +32,10 @@ import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import tier1_img from "@assets/images/icons/tier1_friend.svg"
 import tier2_img from "@assets/images/icons/tier2_friend.svg"
+import { ScrollArea } from '@components/ui/scroll-area'
+import InfiniteScroll from "react-infinite-scroll-component";
+import { FiLoader } from "react-icons/fi"
+
 
 interface Referral {
   userLogo: string;
@@ -43,8 +47,10 @@ interface Referral {
 }
 
 function Referral() {
-
-  const [telegramId, setTelegramId] = useState<string | null>();
+  const [tier1Page, setTier1Page] = useState<number>(1);
+  const [tier2Page, setTier2Page] = useState<number>(1)
+  const limit = 10
+  const [telegramId, setTelegramId] = useState<string | null>(null);
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
@@ -70,8 +76,9 @@ function Referral() {
       refetchOnMountOrArgChange: true,
     }
   );
+
   const { data: tier1Data, isLoading: loading } = useGetTier1ReferralQuery(
-    telegramId ?? "",
+    { telegram_id: telegramId, page: tier1Page, limit: limit },
     {
       skip: !telegramId,
       refetchOnReconnect: true,
@@ -79,12 +86,17 @@ function Referral() {
       refetchOnMountOrArgChange: true,
     }
   );
-  const { data: tier2Data } = useGetTier2ReferralQuery(telegramId ?? "", {
-    skip: !telegramId,
-    refetchOnReconnect: true,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-  });
+
+  // Query for tier2 referrals with pagination
+  const { data: tier2Data } = useGetTier2ReferralQuery(
+    { telegram_id: telegramId, page: tier2Page, limit: limit },
+    {
+      skip: !telegramId,
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const { data: referralCode } = useGetReferralCodeQuery(telegramId ?? "", {
     skip: !telegramId,
@@ -148,6 +160,22 @@ function Referral() {
         className: "text-xs work-sans",
       });
       console.error("Claiming referral shares error:", error);
+    }
+  };
+
+  console.log("Data", tier1Data)
+
+
+  const handleNextPageTier1 = () => {
+    if (tier1Data?.page < tier1Data?.totalPages) {
+      setTier1Page((prev) => prev + 1);
+    }
+  };
+
+
+  const handleNextPageTier2 = () => {
+    if (tier2Data?.page < tier2Data?.totalPages) {
+      setTier2Page((prev) => prev + 1);
     }
   };
 
@@ -285,63 +313,91 @@ function Referral() {
                 <Fragment>
                   {tabs === "Tier 1" && (
                     <Fragment>
-                      {!loading && tier1Data?.tier1.length > 0 ? (
-                        tier1Data?.tier1.map(
-                          (ref: {
-                            telegram_id: string;
-                            userLogo: string;
-                            username: string;
-                            dateJoined: string;
-                            accountName: string;
-                            isTier2?: boolean;
-                            shares: string;
-                          }) => (
-                            <Referrals key={ref.telegram_id} referrals={ref} />
-                          )
-                        )
-                      ) : (
-                        <div className="p-4 flex flex-col gap-3 items-center ">
-                          <img src={tier1_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
-                          <p
-                            className={
-                              "text-white work-sans text-sm text-center"
-                            }
-                          >
-                            Your Direct Workforce Will Reside Here
-                          </p>
-                        </div>
-                      )}
+                      <ScrollArea className="flex-1 h-full p-1">
+                        <InfiniteScroll
+                          dataLength={tier1Data?.total}
+                          next={handleNextPageTier1}
+                          hasMore={tier1Data?.page < tier1Data?.totalPages}
+                          loader={
+                            <div className="flex flex-col items-center justify-center py-3">
+                              <FiLoader size={30} color="white" className="animate-spin" />
+                            </div>}
+                          scrollThreshold={0.9}
+                          scrollableTarget="scrollableDiv"
+                        >
+                          {!loading && tier1Data?.tier1.length > 0 ? (
+                            tier1Data?.tier1.map(
+                              (ref: {
+                                telegram_id: string;
+                                userLogo: string;
+                                username: string;
+                                dateJoined: string;
+                                accountName: string;
+                                isTier2?: boolean;
+                                shares: string;
+                              }) => (
+                                <Referrals key={ref.telegram_id} referrals={ref} />
+                              )
+                            )
+                          ) : (
+                            <div className="p-4 flex flex-col gap-3 items-center ">
+                              <img src={tier1_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
+                              <p
+                                className={
+                                  "text-white work-sans text-sm text-center"
+                                }
+                              >
+                                Your Direct Workforce Will Reside Here
+                              </p>
+                            </div>
+                          )}
+                        </InfiniteScroll>
+                      </ScrollArea>
                     </Fragment>
                   )}
 
                   {tabs === "Tier 2" && (
                     <Fragment>
-                      {!loading && tier2Data?.tier2.length > 0 ? (
-                        tier2Data?.tier2.map(
-                          (ref: {
-                            telegram_id: string;
-                            userLogo: string;
-                            username: string;
-                            accountName: string;
-                            dateJoined: string;
-                            isTier2?: boolean | undefined;
-                            shares: string;
-                          }) => (
-                            <Referrals key={ref.telegram_id} referrals={ref} />
-                          )
-                        )
-                      ) : (
-                        <div className="p-4 flex flex-col items-center gap-3 pt-3 ">
-                          <img src={tier2_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
-                          <p
-                            className={
-                              "text-white work-sans text-center text-sm max-w-[250px]"
-                            }
-                          >
-                            Your Tier 2 Workforce Will Reside Here
-                          </p>
-                        </div>
-                      )}
+                      <ScrollArea className="flex-1 h-full p-1">
+                        <InfiniteScroll
+                          dataLength={tier2Data?.total}
+                          next={handleNextPageTier2}
+                          hasMore={tier2Data?.page < tier2Data?.totalPages}
+                          loader={
+                            <div className="flex flex-col items-center justify-center py-3">
+                              <FiLoader size={30} color="white" className="animate-spin" />
+                            </div>}
+                          scrollThreshold={0.9}
+                          scrollableTarget="scrollableDiv"
+                        >
+                          {!loading && tier2Data?.tier2.length > 0 ? (
+                            tier2Data?.tier2.map(
+                              (ref: {
+                                telegram_id: string;
+                                userLogo: string;
+                                username: string;
+                                accountName: string;
+                                dateJoined: string;
+                                isTier2?: boolean | undefined;
+                                shares: string;
+                              }) => (
+                                <Referrals key={ref.telegram_id} referrals={ref} />
+                              )
+                            )
+                          ) : (
+                            <div className="p-4 flex flex-col items-center gap-3 pt-3 ">
+                              <img src={tier2_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
+                              <p
+                                className={
+                                  "text-white work-sans text-center text-sm max-w-[250px]"
+                                }
+                              >
+                                Your Tier 2 Workforce Will Reside Here
+                              </p>
+                            </div>
+                          )}
+                        </InfiniteScroll>
+                      </ScrollArea>
                     </Fragment>
                   )}
                 </Fragment>

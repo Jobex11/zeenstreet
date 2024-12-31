@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // Define a service using a base URL and expected endpoints
 export const referralsApi = createApi({
     reducerPath: 'referralsApi',
-    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api/referral" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.comapi/referral" }),
     tagTypes: ['Referral'],
     endpoints: (builder) => ({
         getReferralCode: builder.query({
@@ -16,12 +16,16 @@ export const referralsApi = createApi({
             providesTags: ['Referral']
         }),
         getTier1Referral: builder.query({
-            query: (telegram_id) => `/tier1/${telegram_id}`,
-            providesTags: ['Referral']
+            query: ({ telegram_id, page = 1, limit = 10 }) => ({
+                url: `/tier1/${telegram_id}?page=${page}&limit=${limit}`,
+                providesTags: ['Referral'],
+            })
         }),
         getTier2Referral: builder.query({
-            query: (telegram_id) => `/tier2/${telegram_id}`,
-            providesTags: ['Referral']
+            query: ({ telegram_id, page = 1, limit = 10 }) => ({
+                url: `/tier2/${telegram_id}?page=${page}&limit=${limit}`,
+                providesTags: ['Referral'],
+            })
         }),
         cliamReferralShares: builder.mutation({
             query: (telegram_id) => ({

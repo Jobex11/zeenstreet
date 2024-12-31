@@ -4,7 +4,11 @@ import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/red
 import { useGetAllUsersQuery } from '@hooks/redux/users'
 import { ShareFormatter } from '@components/common/shareFormatter'
 import avatarImg from "@assets/images/icons/users_avatar.svg"
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '@components/ui/skeleton'
+import { ScrollArea } from '@components/ui/scroll-area'
+import InfiniteScroll from "react-infinite-scroll-component";
+import { FiLoader } from "react-icons/fi"
+
 
 interface User {
     username: string;
@@ -43,7 +47,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
     const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
 
     return (
-        <div className={`relative flex flex-col items-center  ${index === 0 ? 'w-[85px] h-[85px] shadow-xl' : 'w-[67px] h-[67px]'}`} >
+        <div className={`relative flex flex-col items-center  ${index === 0 ? 'w-24 h-24 shadow-xl' : 'w-16 h-16'}`} >
             {filePath ? <Avatar className={`w-full h-full shadow-2xl`}>
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
@@ -66,8 +70,10 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
 }
 
 export default function GlobalLeaderboard() {
+    const [userPages, setUserPage] = useState<number>(1)
+    const limit = 10
     const [activeTab, setActiveTab] = useState<'shares' | 'unlockedCardsCount' | 'referralCount'>('shares');
-    const { data: allUsers, isLoading, isSuccess, } = useGetAllUsersQuery(undefined, {
+    const { data: allUsers, isLoading, isSuccess, } = useGetAllUsersQuery([userPages, limit], {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
@@ -97,7 +103,14 @@ export default function GlobalLeaderboard() {
     const handleActiveTabs = (tab: 'shares' | 'unlockedCardsCount' | 'referralCount') => {
         setActiveTab(tab)
     }
-    console.log("Cards", allUsers?.users)
+    console.log("Cards", sortedUsers)
+
+    const loadNextPage = () => {
+        if (allUsers?.currentPage < allUsers?.totalPages) {
+          setUserPage((prev) => prev + 1);
+        }
+      };
+
 
     return (
         <div className="flex flex-col h-screen text-white">
@@ -143,7 +156,19 @@ export default function GlobalLeaderboard() {
                 </div>
             </div>
 
-            <div className="flex-1 px-4 py-2 overflow-y-auto mt-7">
+
+            <ScrollArea className="flex-1 h-full px-4 py-2 mt-7">
+                <InfiniteScroll
+                      dataLength={restUsers?.length}
+                    next={loadNextPage}
+                    hasMore={allUsers?.currentPage < allUsers?.totalPages}
+                    loader={
+                        <div className="flex flex-col items-center justify-center py-5">
+                            <FiLoader size={30} color="white" className="animate-spin" />
+                        </div>}
+                    scrollThreshold={0.9}
+                    scrollableTarget="scrollableDiv"
+                >
                 {restUsers?.map((user, index) => {
                     return (
                         <div key={user._id} className={`${user?.telegram_id === telegramId && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
@@ -156,7 +181,8 @@ export default function GlobalLeaderboard() {
                         </div>
                     )
                 })}
-            </div>
+                </InfiniteScroll>
+            </ScrollArea>
         </div>
     )
 }

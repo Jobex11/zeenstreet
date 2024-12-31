@@ -40,7 +40,10 @@ export const usersApi = createApi({
             query: (telegram_id) => `/auth/${telegram_id}/user`
         }),
         getAllUsers: builder.query({
-            query: () => `/auth/all-users`,
+            query: ([page = 1, limit = 10]) => ({
+                url: `/auth/all-users?page=${page}&limit=${limit}`,
+                providesTags: ['username']
+            }),
         })
     }),
 })

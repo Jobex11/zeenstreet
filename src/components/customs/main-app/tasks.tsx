@@ -75,12 +75,12 @@ function Tasks() {
                 {/* task header */}
                 <header className="flex flex-col gap-3 w-full">
                     {isLoadingCards && <Skeleton className={"max-h-32 h-32 w-full bg-slate-700 shadow-xl"} />}
-                    <div className={`relative flex items-center gap-10 pb-5 mb-4 px-4 snap-x snap-mandatory overflow-x-auto`}>
+                    <div className={`relative flex items-center gap-8 pb-5 mb-4 px-4 snap-x snap-mandatory overflow-x-auto`}>
                         {!isLoadingCards && cards?.cards.length > 0 && cards?.cards.slice(0, 2).map((card: CardType) => (
                             <Card
                                 key={card._id}
                                 // ref={card.isCurrent && middleCardRef}
-                                className={`group bg-slate-800 relative rounded-lg snap-center max-h-32 w-full overflow-hidden ${card.isCurrent ? "min-w-[80%] shadow-xl shadow-slate-700" : "min-w-[70%] shadow-xl"}`}>
+                                className={`group bg-slate-800 relative rounded-lg snap-center max-h-32 w-full overflow-hidden ${card.isCurrent ? "min-w-[87%] shadow-xl shadow-slate-700" : "min-w-[70%] shadow-xl"}`}>
                                 <img
                                     src={card.image}
                                     alt={`card img ${card.title}`}

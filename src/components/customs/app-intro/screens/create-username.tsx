@@ -55,7 +55,7 @@ export function CreateUsername({
         await createUsername({
           telegram_id: telegramId,
           preferred_username: data.username,
-        }).unwrap(); // unwrap will throw an error if the request fails
+        }).unwrap(); 
 
         toast.success("Username successfully updated!", { className: "text-xs work-sans" });
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -66,9 +66,9 @@ export function CreateUsername({
     } catch (err) {
       // Error handling from unwrap
       if (err instanceof Error) {
-        toast.error(err.message || "An error occurred while creating username.", { className: "text-xs work-sans" });;
+        toast.error(err.message || "An error occurred while creating username. Try again", { className: "text-xs work-sans" });
       } else {
-        toast.error("An unknown error occurred.", { className: "text-xs work-sans" });;
+        toast.info("Make sure to start with a referral link or send /start to the bot.", { className: "text-xs work-sans" });
       }
     } finally {
       setIsSubmitting(false);
