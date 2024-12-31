@@ -315,7 +315,7 @@ function Referral() {
                     <Fragment>
                       <ScrollArea className="flex-1 h-full p-1">
                         <InfiniteScroll
-                          dataLength={tier1Data?.total}
+                          dataLength={tier1Data?.tier1?.length || 0}
                           next={handleNextPageTier1}
                           hasMore={tier1Data?.page < tier1Data?.totalPages}
                           loader={
@@ -360,7 +360,7 @@ function Referral() {
                     <Fragment>
                       <ScrollArea className="flex-1 h-full p-1">
                         <InfiniteScroll
-                          dataLength={tier2Data?.total}
+                          dataLength={tier2Data?.tier?.length || 0}
                           next={handleNextPageTier2}
                           hasMore={tier2Data?.page < tier2Data?.totalPages}
                           loader={
