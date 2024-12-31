@@ -13,7 +13,7 @@ interface StoriesLayoutProps {
 }
 
 function StoriesLayout({ children }: StoriesLayoutProps) {
-    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+    const [telegramId, setTelegramId] = useState<string | null>(null);
     const { shareToStory } = useTelegramWebApp();
     const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(telegramId ?? "", {
         skip: !telegramId,
