@@ -5,12 +5,13 @@ import { usersApi } from '@hooks/redux/users'
 import { sharesApi } from '@hooks/redux/shares'
 import { tasksApi } from '@hooks/redux/tasks'
 import { notificationApi } from '@hooks/redux/notifications'
-import { cardsApi } from '@/hooks/redux/cards'
-import { referralsApi } from '@/hooks/redux/referrals'
-import { tgUserPhotoApi } from '@/hooks/redux/tg_photo'
-import { ranksApi } from '@/hooks/redux/ranks'
-import { wealthClassApi } from '@/hooks/redux/wealthclass'
-import { storiesApi } from '@/hooks/redux/stories'
+import { cardsApi } from '@hooks/redux/cards'
+import { referralsApi } from '@hooks/redux/referrals'
+import { tgUserPhotoApi } from '@hooks/redux/tg_photo'
+import { ranksApi } from '@hooks/redux/ranks'
+import { wealthClassApi } from '@hooks/redux/wealthclass'
+import { storiesApi } from '@hooks/redux/stories'
+import { channelApi } from '@hooks/redux/channels'
 
 export const store = configureStore({
   reducer: {
@@ -25,7 +26,8 @@ export const store = configureStore({
     [tgUserPhotoApi.reducerPath]: tgUserPhotoApi.reducer,
     [ranksApi.reducerPath]: ranksApi.reducer,
     [wealthClassApi.reducerPath]: wealthClassApi.reducer,
-    [storiesApi.reducerPath]:storiesApi.reducer
+    [storiesApi.reducerPath]:storiesApi.reducer,
+    [channelApi.reducerPath]:channelApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -40,7 +42,8 @@ export const store = configureStore({
       tgUserPhotoApi.middleware,
       ranksApi.middleware,
       wealthClassApi.middleware,
-      storiesApi.middleware
+      storiesApi.middleware,
+      channelApi.middleware,
     ),
 })
 

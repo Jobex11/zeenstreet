@@ -64,7 +64,7 @@ export const Rewards = (
                 <h1 className="text-orange-600 text-2xl text-center aqum font-semibold uppercase">{user.province}</h1>
                 <h1 className="text-xl text-white text-center font-semibold work-sans pb-2">Province</h1>
                 <div className="relative h-28 w-28">
-                  <LazyLoadImage effect="blur" src={medal} alt="" className="h-full w-full object-contain object-center" />
+                  <LazyLoadImage effect="blur" src={medal} alt="Badge" className="h-full w-full object-contain object-center" />
                 </div>
 
               </div>

@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, Key, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import dotsbg from "@assets/images/dotted-bg.png";
+// import dotsbg from "@assets/images/dotted-bg.png";
 import trophy from "@assets/images/icons/trophy.png";
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
 import eclipse from "@assets/images/eclipse.png";
@@ -142,7 +142,7 @@ function Ranks() {
   }, []);
 
   return (
-    <div className="flex flex-col max-h-full pb-32">
+    <div className="flex flex-col min-h-full pb-32 flex-1">
 
       {loadingUsers &&
         <div className="flex flex-col gap-4 px-2 h-full">
@@ -161,17 +161,17 @@ function Ranks() {
         </div>
       }
 
-      <div
+      {/* <div
         style={{
           backgroundImage: `url(${dotsbg})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
-        className="flex flex-col min-h-full "
-      >
+        className="flex flex-col max-h-full flex-1 "
+      > */}
         {/* Embla Carousel */}
         {usersLoaded &&
-          <div className="relative h-full">
+          <div className="relative h-full flex-1 ">
             <div className="embla" ref={emblaRef}>
               <div className="embla__container flex">
                 {usersByRank.map((group: { rank: string | number, users: { username: string; shares: number; telegram_id: string; _id: string; }[]; }, index: Key | null | undefined) => (
@@ -255,8 +255,8 @@ function Ranks() {
             </div>
           </div>
         }
-      </div >
-    </div >
+      </div>
+    // </div >
   );
 }
 

@@ -8,7 +8,7 @@ import { Skeleton } from '@components/ui/skeleton'
 import { ScrollArea } from '@components/ui/scroll-area'
 import InfiniteScroll from "react-infinite-scroll-component";
 import { FiLoader } from "react-icons/fi"
-
+import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
 
 interface User {
     username: string;
@@ -107,59 +107,71 @@ export default function GlobalLeaderboard() {
 
     const loadNextPage = () => {
         if (allUsers?.currentPage < allUsers?.totalPages) {
-          setUserPage((prev) => prev + 1);
+            setUserPage((prev) => prev + 1);
         }
-      };
+    };
 
 
     return (
         <div className="flex flex-col h-screen text-white">
-            <div className="h-fit pt-10 px-4">
-                <Fragment>
-                    {isLoading && <div className='flex flex-col gap-3'>
-                        <div className=' grid grid-cols-3'>
-                            {[0, 1, 3].map((ske) => (
-                                <div key={ske} className={`flex flex-col h-full items-center ${ske === 0 ? 'order-2' : ske === 1 ? 'order-1' : 'order-3'}`}>
-                                    <Skeleton className='rounded-full h-20 w-20 bg-gray-600 shadow-lg' />
+            <Fragment>
+                {isLoading && <div className='flex flex-col gap-3'>
+                    <div className=' grid grid-cols-3'>
+                        {[0, 1, 3].map((ske) => (
+                            <div key={ske} className={`flex flex-col h-full items-center ${ske === 0 ? 'order-2' : ske === 1 ? 'order-1' : 'order-3'}`}>
+                                <Skeleton className='rounded-full h-20 w-20 bg-gray-600 shadow-lg' />
+                            </div>
+                        ))}
+                    </div>
+                    <Skeleton className='h-10 w-full rounded-md bg-gray-600 shadow-2xl' />
+                </div>}
+            </Fragment>
+            {isSuccess &&
+                <div style={
+                    {
+                        backgroundImage: `url(${sprinkledStars}), url(${sprinkledStars}), url(${sprinkledStars})`,
+                        backgroundSize: "contain, contain",
+                        backgroundRepeat: "no-repeat,",
+                        backgroundPosition: "center, top",
+                        backgroundBlendMode: "multiply",
+                        backfaceVisibility: "visible"
+                    }} className={`bg-black/5  rounded-b-lg`}>
+                    <h1 className={"jakarta text-center text-xl font-medium text-white py-3"}>Leaderboard</h1>
+                    <div className="h-fit pt-10 pb-6 px-4"  >
+                        <div className="grid grid-cols-3 place-content-evenly place-items-stretch">
+                            {topThree.map((user, index) => (
+                                <div key={user._id} className={`flex flex-col h-full items-center ${index === 0 ? 'order-2' : index === 1 ? 'order-1' : 'order-3'}`}>
+                                    <UserImages index={index} user={user} telegram_id={user.telegram_id} />
+                                    <span className="font-medium work-sans capitalize text-[10px] mt-3 line-clamp-1">{user.username.slice(0, 12)}</span>
+                                    <span className="text-sm work-sans"><ShareFormatter shares={user[activeTab]} /></span>
                                 </div>
                             ))}
                         </div>
-                        <Skeleton className='h-10 w-full rounded-md bg-gray-600 shadow-2xl' />
-                    </div>}
-                </Fragment>
-                <div className=" grid grid-cols-3 place-content-evenly place-items-stretch mt-4">
-                    {topThree.map((user, index) => (
-                        <div key={user._id} className={`flex flex-col h-full items-center ${index === 0 ? 'order-2' : index === 1 ? 'order-1' : 'order-3'}`}>
-                            <UserImages index={index} user={user} telegram_id={user.telegram_id} />
-                            <span className="font-medium work-sans capitalize text-[10px] mt-3 line-clamp-1">{user.username.slice(0, 12)}</span>
-                            <span className="text-sm work-sans"><ShareFormatter shares={user[activeTab]} /></span>
-                        </div>
-                    ))}
-                </div>
-
-                <div className='flex items-center w-full border-t border-white/10 mt-3'>
-                    {isSuccess && tabBtn.map((btn) => (
-                        <div key={btn.name} className='flex flex-col w-full'>
-                            <button
-                                onClick={() => handleActiveTabs(btn.tab as 'shares' | 'unlockedCardsCount' | 'referralCount')}
-                                className={` work-sans text-sm py-3 ${activeTab === btn.tab && "border-orange-600"} hover:text-gray-700 duration-150  w-full border-b-2 border-transparent`}
-                                aria-pressed={activeTab === btn.tab}
-                            >
-                                {btn.name}
-                            </button>
-                            <div
-                                className={`rounded-md w-full h-1 mx-auto transition-all duration-300 ease-in-out ${activeTab === btn.tab ? "bg-orange-500 scale-x-100" : "bg-transparent scale-x-0"
-                                    }`}
-                            />
-                        </div>
-                    ))}
-                </div>
+                    </div>
+                </div>}
+            <div className='flex items-center w-full mt-3' >
+                {isSuccess && tabBtn.map((btn) => (
+                    <div key={btn.name} className='flex flex-col w-full'>
+                        <button
+                            onClick={() => handleActiveTabs(btn.tab as 'shares' | 'unlockedCardsCount' | 'referralCount')}
+                            className={` work-sans text-sm py-3 ${activeTab === btn.tab && "border-orange-600"} hover:text-gray-700 duration-150  w-full border-b-2 border-transparent`}
+                            aria-pressed={activeTab === btn.tab}
+                        >
+                            {btn.name}
+                        </button>
+                        <div
+                            className={`rounded-md w-full h-1 mx-auto transition-all duration-300 ease-in-out ${activeTab === btn.tab ? "bg-orange-500 scale-x-100" : "bg-transparent scale-x-0"
+                                }`}
+                        />
+                    </div>
+                ))}
             </div>
+
 
 
             <ScrollArea className="flex-1 h-full px-4 py-2 mt-7">
                 <InfiniteScroll
-                      dataLength={restUsers?.length}
+                    dataLength={restUsers?.length}
                     next={loadNextPage}
                     hasMore={allUsers?.currentPage < allUsers?.totalPages}
                     loader={
@@ -169,18 +181,18 @@ export default function GlobalLeaderboard() {
                     scrollThreshold={0.9}
                     scrollableTarget="scrollableDiv"
                 >
-                {restUsers?.map((user, index) => {
-                    return (
-                        <div key={user._id} className={`${user?.telegram_id === telegramId && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
-                            <div className="flex items-center">
-                                <span className="w-6 text-center">{index + 4}</span>
-                                <MiniImage user={user} />
-                                <span className="ml-2 jakarta font-medium text-sm">{user.username.slice(0, 10)}</span>
+                    {restUsers?.map((user, index) => {
+                        return (
+                            <div key={user._id} className={`${user?.telegram_id === telegramId && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
+                                <div className="flex items-center">
+                                    <span className="w-6 text-center">{index + 4}</span>
+                                    <MiniImage user={user} />
+                                    <span className="ml-2 jakarta font-medium text-sm">{user.username.slice(0, 10)}</span>
+                                </div>
+                                <span className="text-sm work-sans pr-2"><ShareFormatter shares={user[activeTab]} /></span>
                             </div>
-                            <span className="text-sm work-sans pr-2"><ShareFormatter shares={user[activeTab]} /></span>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
                 </InfiniteScroll>
             </ScrollArea>
         </div>
@@ -234,3 +246,6 @@ export const MiniImage = ({ user }: MiniImageProps) => {
     )
 
 }
+
+
+

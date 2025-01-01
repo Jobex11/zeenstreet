@@ -41,6 +41,8 @@ import { Skeleton } from "@components/ui/skeleton"
 import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
 import { checkWealthClassUnlock } from "@/lib/utils";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
+// import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
+
 
 const wealthClass = [
     {
@@ -148,6 +150,7 @@ function Profile() {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
+    // const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
 
     // Initialize Telegram WebApp and set user data
     useEffect(() => {
@@ -204,15 +207,25 @@ function Profile() {
 
 
         const isUnlocked = checkWealthClassUnlock(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards, matchedData);
-
+        console.log("Rank", matchedData)
         return {
             ...item,
             isLocked: !isUnlocked,
             img: item.img,
             description: item.description,
             rewards: matchedData?.sharesReward || item.rewards,
+            name: matchedData?.name,
+            requiredCards: matchedData?.requiredCards,
+            // rank: getUserRank(userDataCard?.user.shares, ranks?.data?.map(
+            //     (rank: { rank: string; rankRange: { min: number; max: number } }) => ({
+            //         rank: rank.rank,
+            //         min: matchedData?.minRank,
+            //         max: matchedData?.maxRank,
+            //     })
+            // )),
         };
     });
+
 
 
     const achievement = [
@@ -224,6 +237,11 @@ function Profile() {
         { isLocked: true, name: "Refer 60 Friends", shareType: "milestone_6", reward: 300, img: milestone_6 },
         { isLocked: true, name: "Refer 70 Friends", shareType: "milestone_7", reward: 400, img: milestone_7 },
     ];
+
+
+    console.log("Classes", wealthClassWithDetails)
+
+
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -324,7 +342,7 @@ function Profile() {
                                             className="flex flex-col  min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                         >
                                             <DialogTitle className="sr-only" />
-                                            <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-5 gap-5">
+                                            <div className="h-full relative flex flex-col items-center justify-around w-full pb-10  gap-5">
                                                 <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                     <IoIosClose size={30} color="#A4A4A7" />
                                                 </DialogClose>
@@ -339,17 +357,12 @@ function Profile() {
                                                 <p className="text-white work-sans text-sm text-center max-w-sm">
                                                     {item.description}
                                                 </p>
-                                                <h1
-                                                    className={`flex items-center gap-2 ${checkIfClaimed(item.shareType) && "line-through"
-                                                        } text-white work-sans text-base`}
-                                                >
-                                                    {item.rewards}{" "}
-                                                    <img
-                                                        src={goldCoin}
-                                                        alt="coin"
-                                                        className="h-5 w-5 object-contain"
-                                                    />{" "}
-                                                </h1>
+                                                <div className={"h-[2px] w-16 bg-gray-400"} />
+                                                <p className="text-white work-sans text-sm text-center max-w-sm">
+                                                    You need {item.requiredCards} {" "} {item.name} cards {" "}
+                                                    {/* & {item.rank} rank */}
+                                                     to unlock</p>
+
                                                 <Button
                                                     onClick={() => {
                                                         handleUpdateShares(item.rewards, item.shareType, item.name);
@@ -372,8 +385,8 @@ function Profile() {
                                                         : checkIfClaimed(item.shareType)
                                                             ? "Shares already Claimed"
                                                             : item.isLocked
-                                                                ? "Unlock Requirements First"
-                                                                : "Claim Shares"}
+                                                                ? `+ ${item.rewards} Meet the Requirements `
+                                                                : `Claim Shares ${item.rewards}`}
                                                 </Button>
                                             </div>
                                         </DrawerContent>

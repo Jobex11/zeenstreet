@@ -24,6 +24,41 @@ export type UserProps = {
 
 type RankData = { rank: string; min: number; max: number };
 
+interface WealthClassData {
+  SOL: string;
+  USDT: string;
+  shares: string;
+  createdAt: string;
+  maxRank: number;
+  minRank: number;
+  name: string;
+  requiredCards: number;
+  sharesReward: number;
+}
+
+export const getUnlockDetails = (
+  totalShares: number,
+  rankData: RankData[],
+  wealthClass: WealthClassData
+): string => {
+  // Determine the user's rank
+  const rank = getUserRank(totalShares, rankData);
+
+  // Calculate how many cards the user still needs to unlock
+  const cardsNeeded = wealthClass.requiredCards - (totalShares / wealthClass.sharesReward);
+  
+  // If user is already above the required shares
+  if (cardsNeeded <= 0) {
+    return `You have already unlocked ${wealthClass.name}. Your rank is ${rank}.`;
+  }
+
+  // Determine the rank the user is in
+  const userRank = totalShares >= wealthClass.minRank ? rank : "Nobody";
+
+  return `To unlock ${wealthClass.name}, you need ${cardsNeeded.toFixed(0)} more cards and ${userRank} rank.`;
+};
+
+
 export const getUserRank = (totalShares: number, rankData: RankData[]): string => {
   if (!rankData || rankData.length === 0) return "Nobody";
 
