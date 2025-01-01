@@ -229,7 +229,7 @@ function Profile() {
 
 
     const achievement = [
-        { isLocked: userDataCard?.user?.referrals.length !== 10, name: "Refer 10 Friends", shareType: "milestone_1", reward: 30, img: milestone_1 },
+        { isLocked: userDataCard?.user?.referrals?.length !== 10, name: "Refer 10 Friends", shareType: "milestone_1", reward: 30, img: milestone_1 },
         { isLocked: true, name: "Refer 20 Friends", shareType: "milestone_2", reward: 50, img: milestone_2 },
         { isLocked: true, name: "Refer 30 Friends", shareType: "milestone_3", reward: 80, img: milestone_3 },
         { isLocked: true, name: "Refer 40 Friends", shareType: "milestone_4", reward: 100, img: milestone_4 },
