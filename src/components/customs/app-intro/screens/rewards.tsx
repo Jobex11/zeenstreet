@@ -8,6 +8,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useUpdateUserSharesMutation } from "@hooks/redux/shares";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { useUpdateUserDataMutation } from "@/hooks/redux/users";
 
 interface RewardsProps {
   shares: number;
@@ -25,6 +26,7 @@ export const Rewards = (
 ) => {
   const [telegramId, setTelegramId] = useState<string | null>(null)
   const [updateShare, { isLoading }] = useUpdateUserSharesMutation();
+  const [updateData, { isLoading: updating }] = useUpdateUserDataMutation();
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -41,6 +43,7 @@ export const Rewards = (
   const handleUpdateUserShare = async () => {
     try {
       const shares = await updateShare({ shares: user.shares, telegram_id: telegramId, shareType: "reward_shares" }).unwrap();
+      await updateData({ telegram_id: telegramId, data: user.province }).unwrap()
       if (shares) {
         setScreens?.("socials");
       }
@@ -88,7 +91,7 @@ export const Rewards = (
       </div>
       <TextButton
         name={`${isLoading ? "Processing..." : "Proceed"}`}
-        disabled={isLoading}
+        disabled={isLoading || updating}
         onClick={handleUpdateUserShare}
         className={"uppercase mt-4"}
       />

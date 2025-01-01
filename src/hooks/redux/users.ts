@@ -44,7 +44,15 @@ export const usersApi = createApi({
                 url: `/auth/all-users?page=${page}&limit=${limit}`,
                 providesTags: ['username']
             }),
-        })
+        }),
+        updateUserData: builder.mutation({
+            query: ({ telegram_id, data }) => ({
+                url: `/${telegram_id}/update-user`,
+                method: 'PUT',
+                body: data 
+            }),
+            invalidatesTags: ['username'],
+        }),
     }),
 })
 
@@ -54,4 +62,5 @@ export const {
     useCheckUsernameQuery,
     useGetUsersByIdQuery,
     useGetAllUsersQuery,
+    useUpdateUserDataMutation
 } = usersApi

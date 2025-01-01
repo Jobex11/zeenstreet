@@ -50,7 +50,7 @@ function Referral() {
   const [tier1Page, setTier1Page] = useState<number>(1);
   const [tier2Page, setTier2Page] = useState<number>(1)
   const limit = 10
-  const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+  const [telegramId, setTelegramId] = useState<string | null>(null);
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);

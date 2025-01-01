@@ -118,7 +118,6 @@ const wealthClass = [
 ];
 
 
-
 function Profile() {
 
     const [telegramId, setTelegramId] = useState<string | null>(null);
@@ -207,14 +206,13 @@ function Profile() {
 
 
         const isUnlocked = checkWealthClassUnlock(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards, matchedData);
-        console.log("Rank", matchedData)
         return {
             ...item,
             isLocked: !isUnlocked,
             img: item.img,
             description: item.description,
             rewards: matchedData?.sharesReward || item.rewards,
-            name: matchedData?.name,
+            name: matchedData?.name || item.name,
             requiredCards: matchedData?.requiredCards,
             // rank: getUserRank(userDataCard?.user.shares, ranks?.data?.map(
             //     (rank: { rank: string; rankRange: { min: number; max: number } }) => ({
@@ -358,10 +356,11 @@ function Profile() {
                                                     {item.description}
                                                 </p>
                                                 <div className={"h-[2px] w-16 bg-gray-400"} />
-                                                <p className="text-white work-sans text-sm text-center max-w-sm">
+                                                {/* <p className="text-white work-sans text-sm text-center max-w-sm">
                                                     You need {item.requiredCards} {" "} {item.name} cards {" "}
-                                                    {/* & {item.rank} rank */}
-                                                     to unlock</p>
+                                                     & {item.rank} rank 
+                                                     to unlock
+                                                     </p> */}
 
                                                 <Button
                                                     onClick={() => {
@@ -406,7 +405,7 @@ function Profile() {
                                             <Skeleton key={ske} className={"h-24 min-w-[70px] bg-gray-600 shadow-xl"} />
                                         ))}
                                     </div>}
-                                    {userDataCard?.user.unlockedCards.length === 0 ? (
+                                    {userDataCard?.user?.unlockedCards?.length === 0 ? (
                                         <div
                                             className={
                                                 "flex items-center justify-center flex-col gap-2  min-w-full"
@@ -419,7 +418,7 @@ function Profile() {
                                             </p>
                                         </div>
                                     ) : (
-                                        userDataCard?.user.unlockedCards.map(
+                                        userDataCard?.user?.unlockedCards.map(
                                             (card: {
                                                 _id: Key | string | undefined;
                                                 image: string | undefined;

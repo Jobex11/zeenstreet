@@ -136,8 +136,8 @@ export default function GlobalLeaderboard() {
                         backgroundBlendMode: "multiply",
                         backfaceVisibility: "visible"
                     }} className={`bg-black/5  rounded-b-lg`}>
-                    <h1 className={"jakarta text-center text-xl font-medium text-white py-3"}>Leaderboard</h1>
-                    <div className="h-fit pt-10 pb-6 px-4"  >
+                    <h1 className={"jakarta text-center text-xl font-semibold py-3 bg-gradient-to-r from-pink-600  via-orange-400 to-pink-600 bg-clip-text text-transparent"}>Leaderboard</h1>
+                    <div className="h-fit pt-5 pb-6 px-4"  >
                         <div className="grid grid-cols-3 place-content-evenly place-items-stretch">
                             {topThree.map((user, index) => (
                                 <div key={user._id} className={`flex flex-col h-full items-center ${index === 0 ? 'order-2' : index === 1 ? 'order-1' : 'order-3'}`}>
@@ -154,7 +154,7 @@ export default function GlobalLeaderboard() {
                     <div key={btn.name} className='flex flex-col w-full'>
                         <button
                             onClick={() => handleActiveTabs(btn.tab as 'shares' | 'unlockedCardsCount' | 'referralCount')}
-                            className={` work-sans text-sm py-3 ${activeTab === btn.tab && "border-orange-600"} hover:text-gray-700 duration-150  w-full border-b-2 border-transparent`}
+                            className={`work-sans text-sm py-3 ${activeTab === btn.tab && "border-orange-600"} hover:text-gray-300 duration-150  w-full border-b-2 border-transparent`}
                             aria-pressed={activeTab === btn.tab}
                         >
                             {btn.name}
@@ -169,7 +169,7 @@ export default function GlobalLeaderboard() {
 
 
 
-            <ScrollArea className="flex-1 h-full px-4 py-2 mt-7">
+            <ScrollArea className="flex-1 h-full px-4 py-2 mt-7 pb-24 overflow-y-auto scroll-smooth">
                 <InfiniteScroll
                     dataLength={restUsers?.length}
                     next={loadNextPage}
@@ -249,3 +249,31 @@ export const MiniImage = ({ user }: MiniImageProps) => {
 
 
 
+// export const testUsers = [
+//     { username: "john_doe", shares: 100, telegram_id: "12345", _id: "1" },
+//     { username: "jane_smith", shares: 200, telegram_id: "67890", _id: "2" },
+//     { username: "alex_brown", shares: 50, telegram_id: "54321", _id: "3" },
+//     { username: "maria_gonzalez", shares: 150, telegram_id: "98765", _id: "4" },
+//     { username: "chris_lee", shares: 80, telegram_id: "19283", _id: "5" },
+//     { username: "emma_wilson", shares: 300, telegram_id: "29384", _id: "6" },
+//     { username: "oliver_jones", shares: 120, telegram_id: "37465", _id: "7" },
+//     { username: "sophia_davis", shares: 90, telegram_id: "48576", _id: "8" },
+//     { username: "liam_moore", shares: 200, telegram_id: "59687", _id: "9" },
+//     { username: "ava_miller", shares: 60, telegram_id: "60798", _id: "10" },
+//     { username: "william_taylor", shares: 250, telegram_id: "71809", _id: "11" },
+//     { username: "isabella_anderson", shares: 40, telegram_id: "82910", _id: "12" },
+//     { username: "noah_thompson", shares: 130, telegram_id: "93021", _id: "13" },
+//     { username: "mia_harris", shares: 110, telegram_id: "10432", _id: "14" },
+//     { username: "james_clark", shares: 300, telegram_id: "11543", _id: "15" },
+//     { username: "lucas_white", shares: 70, telegram_id: "12654", _id: "16" },
+//     { username: "amelia_hall", shares: 180, telegram_id: "13765", _id: "17" },
+//     { username: "benjamin_lopez", shares: 220, telegram_id: "14876", _id: "18" },
+//     { username: "elijah_martin", shares: 140, telegram_id: "15987", _id: "19" },
+//     { username: "harper_walker", shares: 90, telegram_id: "16098", _id: "20" },
+//     { username: "james_clark", shares: 300, telegram_id: "11543", _id: "15" },
+//     { username: "lucas_white", shares: 70, telegram_id: "12654", _id: "16" },
+//     { username: "amelia_hall", shares: 180, telegram_id: "13765", _id: "17" },
+//     { username: "benjamin_lopez", shares: 220, telegram_id: "14876", _id: "18" },
+//     { username: "elijah_martin", shares: 140, telegram_id: "15987", _id: "19" },
+//     { username: "harper_walker", shares: 90, telegram_id: "16098", _id: "20" },
+//   ];

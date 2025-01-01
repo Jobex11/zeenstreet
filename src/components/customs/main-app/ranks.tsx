@@ -108,20 +108,19 @@ function Ranks() {
     return user
   }
 
-  const scrollPrev = () => {
-    if (embla) embla.scrollPrev();
+
+  const scrollPrev = async () => {
+    if (usersLoaded && ranksLoaded && embla) {
+      await embla.scrollPrev();
+    }
   };
 
-  const scrollNext = () => {
-    if (embla) embla.scrollNext();
+
+  const scrollNext = async () => {
+    if (usersLoaded && ranksLoaded && embla) {
+      await embla.scrollNext();
+    }
   };
-
-
-  // const loadNextPage = () => {
-  //   if (allUsers?.currentPage < allUsers?.totalPages) {
-  //     setUserPage((prev) => prev + 1);
-  //   }
-  // };
 
 
   const scrollableRef = useRef<HTMLDivElement>(null);
@@ -169,37 +168,37 @@ function Ranks() {
         }}
         className="flex flex-col max-h-full flex-1 "
       > */}
-        {/* Embla Carousel */}
-        {usersLoaded &&
-          <div className="relative h-full flex-1 ">
-            <div className="embla" ref={emblaRef}>
-              <div className="embla__container flex">
-                {usersByRank.map((group: { rank: string | number, users: { username: string; shares: number; telegram_id: string; _id: string; }[]; }, index: Key | null | undefined) => (
-                  <div className="embla__slide w-full " key={index}>
-                    <div className="flex flex-col gap-10 flex-1 h-full pb-28">
-                      <div
-                        style={{
-                          backgroundImage: `url(${eclipse}), url(${sprinkledStars})`,
-                          backgroundRepeat: "no-repeat, no-repeat",
-                          backgroundSize: "cover, cover",
-                          backgroundPosition: "center, center",
-                          backgroundBlendMode: "multiply,multiply ",
-                        }}
-                        className="h-[240px] flex flex-col items-center justify-center w-full rounded-md"
-                      >
-                        <img
-                          loading="eager"
-                          src={trophy}
-                          alt="Rank Trophy"
-                          className="h-full w-full object-center object-contain"
-                        />
-                        <h2 className="text-center text-lg font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
-                          {group.rank}
-                        </h2>
-                      </div>
+      {/* Embla Carousel */}
+      {usersLoaded &&
+        <div className="relative h-full flex-1 ">
+          <div className="embla" ref={emblaRef}>
+            <div className="embla__container flex">
+              {usersByRank.map((group: { rank: string | number, users: { username: string; shares: number; telegram_id: string; _id: string; }[]; }, index: Key | null | undefined) => (
+                <div className="embla__slide w-full " key={index}>
+                  <div className="flex flex-col gap-10 flex-1 h-full pb-28">
+                    <div
+                      style={{
+                        backgroundImage: `url(${eclipse}), url(${sprinkledStars})`,
+                        backgroundRepeat: "no-repeat, no-repeat",
+                        backgroundSize: "cover, cover",
+                        backgroundPosition: "center, center",
+                        backgroundBlendMode: "multiply,multiply ",
+                      }}
+                      className="h-[240px] flex flex-col items-center justify-center w-full rounded-md"
+                    >
+                      <img
+                        loading="eager"
+                        src={trophy}
+                        alt="Rank Trophy"
+                        className="h-full w-full object-center object-contain"
+                      />
+                      <h2 className="text-center text-lg font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
+                        {group.rank}
+                      </h2>
+                    </div>
 
 
-                      {/* <InfiniteScroll
+                    {/* <InfiniteScroll
                         dataLength={group?.users.length || 0}
                         next={loadNextPage}
                         hasMore={allUsers?.currentPage < allUsers?.totalPages}
@@ -212,50 +211,50 @@ function Ranks() {
                         //  className={"overflow-y-auto"}
                       > */}
 
-                      <div className="flex flex-col divide-y-2 divide-gray-800 my-3">
-                        {
-                          group?.users?.length > 0 ?
-                            group?.users?.map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
-                              <div key={user._id} className={`flex mb-3 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
-                                <div className="flex items-center gap-3">
-                                  <RankImage user={user} telegram_id={user.telegram_id} />
-                                  <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-sm capitalize font-semibold jakarta`}>
-                                    {user.username}
-                                  </h1>
-                                </div>
-                                <div>
-                                  <h1 className={`font-medium text-xs jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
-                                    <ShareFormatter shares={user.shares} />
-                                  </h1>
-                                </div>
+                    <div className="flex flex-col divide-y-2 divide-gray-800 my-3">
+                      {
+                        group?.users?.length > 0 ?
+                          group?.users?.map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
+                            <div key={user._id} className={`flex mb-3 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
+                              <div className="flex items-center gap-3">
+                                <RankImage user={user} telegram_id={user.telegram_id} />
+                                <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-sm capitalize font-semibold jakarta`}>
+                                  {user.username}
+                                </h1>
                               </div>
-                            )) : (
-                              <div className="text-center text-white text-lg flex flex-col gap-1 pt-5 items-center">
-                                <HiOutlineUserGroup size={45} className="" />
+                              <div>
+                                <h1 className={`font-medium text-xs jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
+                                  <ShareFormatter shares={user.shares} />
+                                </h1>
                               </div>
-                            )}
-                      </div>
-                      {/* </InfiniteScroll> */}
+                            </div>
+                          )) : (
+                            <div className="text-center text-white text-lg flex flex-col gap-1 pt-5 items-center">
+                              <HiOutlineUserGroup size={45} className="" />
+                            </div>
+                          )}
                     </div>
+                    {/* </InfiniteScroll> */}
                   </div>
-                ))}
-              </div>
-              <button
-                onClick={scrollPrev}
-                className="absolute top-1/4 h-10 w-10 flex items-center justify-center left-2 transform -translate-y-1/2 bg-orange-600 text-white active:scale-110 p-2 rounded-full shadow-md hover:bg-orange-700"
-              >
-                <IoIosArrowBack size={20} />
-              </button>
-              <button
-                onClick={scrollNext}
-                className="absolute top-1/4 h-10 w-10 flex items-center justify-center right-2 transform -translate-y-1/2 bg-orange-600 text-white active:scale-110 p-2 rounded-full shadow-md hover:bg-orange-700"
-              >
-                <IoIosArrowForward size={20} />
-              </button>
+                </div>
+              ))}
             </div>
+            <button
+              onClick={scrollPrev}
+              className="absolute top-1/4 h-10 w-10 flex items-center justify-center left-2 transform -translate-y-1/2 bg-orange-600 text-white active:scale-110 p-2 rounded-full shadow-md hover:bg-orange-700"
+            >
+              <IoIosArrowBack size={20} />
+            </button>
+            <button
+              onClick={scrollNext}
+              className="absolute top-1/4 h-10 w-10 flex items-center justify-center right-2 transform -translate-y-1/2 bg-orange-600 text-white active:scale-110 p-2 rounded-full shadow-md hover:bg-orange-700"
+            >
+              <IoIosArrowForward size={20} />
+            </button>
           </div>
-        }
-      </div>
+        </div>
+      }
+    </div>
     // </div >
   );
 }
