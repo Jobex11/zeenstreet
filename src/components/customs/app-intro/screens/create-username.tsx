@@ -96,7 +96,7 @@ export function CreateUsername({
       <div className="flex items-center mx-auto">
         <div className="relative max-h-[139px] max-w-[139px]">
           <LazyLoadImage
-            effect="blur"
+            effect="opacity"
             src={Logo}
             alt="Zenstreet Logo"
             className="h-full w-full object-contain mx-auto"
@@ -107,7 +107,7 @@ export function CreateUsername({
       {/* Genie Speech */}
       <div className="relative overflow-hidden">
         <LazyLoadImage
-          effect="blur"
+          effect="opacity"
           src={smily_man}
           alt="Smily Man"
           className="object-contain max-h-[514px]"

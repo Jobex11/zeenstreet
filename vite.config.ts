@@ -4,19 +4,25 @@ import { defineConfig } from "vite";
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 import { visualizer } from 'rollup-plugin-visualizer';
+import viteCompression from 'vite-plugin-compression';
+import viteImagemin from 'vite-plugin-imagemin';
 
 
 export default defineConfig({
   define: {
-    'process.env': {}, // Define global variables
+    'process.env': {}, 
   },
-  base: '/', // Set the base path for your app
+  base: '/',
   plugins: [
-    // React plugin with automatic JSX runtime
     react({
       jsxRuntime: 'automatic',
     }),
-
+    viteCompression({
+      algorithm: 'brotliCompress',
+    }),
+    viteImagemin({
+      optipng: { optimizationLevel: 7 },
+    }),
     // Node.js polyfills
     nodePolyfills(),
 
@@ -44,7 +50,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'vm': 'vm-browserify',
-      "@": path.resolve(__dirname, "./src/"), // Main alias
+      "@": path.resolve(__dirname, "./src/"), 
       "@components": path.resolve(__dirname, "./src/components/"),
       "@assets": path.resolve(__dirname, "./src/assets/"),
       "@hooks": path.resolve(__dirname, "./src/hooks/"),
@@ -52,27 +58,45 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['axios'], // Pre-bundle specific libraries
-    exclude: [''],      // Exclude unnecessary dependencies
+    include: ['axios'],   
+    exclude: [
+      'moment',
+      'socket.io-client',
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-icons',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-scroll-area',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-tabs',
+      'lucide-react',
+      'vite-plugin-node-polyfills',
+      'clsx',
+      'tailwind-merge',
+      'tailwindcss-animate',
+    ],
   },
   build: {
-    // Rollup options for splitting vendor code into chunks
+
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'], // Vendor libraries
+          vendor: ['react', 'react-dom'],
         },
       },
       plugins: [
-        // Include bundle analyzer during the build process
         visualizer({ open: true }),
       ],
     },
-    minify: 'terser', // Use Terser for better minification
+    minify: 'terser',
+    chunkSizeWarningLimit: 500, 
     terserOptions: {
       compress: {
-        drop_console: true,  // Remove console.log in production
-        drop_debugger: true, // Remove debugger statements
+        drop_console: true,  
+        drop_debugger: true,
       },
     },
   },

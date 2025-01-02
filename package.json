@@ -22,7 +22,7 @@
     "@radix-ui/react-scroll-area": "^1.2.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.2",
-    "@reduxjs/toolkit": "^2.3.0",
+    "@reduxjs/toolkit": "^2.5.0",
     "@telegram-apps/sdk-react": "^2.0.23",
     "@ton-api/client": "^0.3.0",
     "@ton/core": "^0.59.0",
@@ -54,6 +54,8 @@
     "tailwindcss-animate": "^1.0.7",
     "terser": "^5.37.0",
     "vaul": "^1.1.0",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-imagemin": "^0.6.1",
     "vite-plugin-node-polyfills": "^0.22.0",
     "zod": "^3.23.8"
   },

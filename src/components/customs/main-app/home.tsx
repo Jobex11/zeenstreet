@@ -155,7 +155,7 @@ function Home() {
             {/* No Tasks Available */}
             {!isLoading && (!filteredTasks || filteredTasks.length === 0) && (
               <div className="flex flex-col items-center gap-2">
-                  <img src={taskImg} alt={"no story image"} className={"h-24 w-24 object-contain object-center"}/>
+                  <img src={taskImg} loading='lazy' alt={"no story image"} className={"h-24 w-24 object-contain object-center"}/>
                 <p className="text-white work-sans text-base text-center">No Available Tasks</p>
               </div>
             )}

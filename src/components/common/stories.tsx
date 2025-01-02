@@ -1,4 +1,4 @@
-import { useGetUsersByIdQuery } from "@/hooks/redux/users";
+import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import { Button } from "@components/ui/button";
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from "@components/ui/drawer";
 import { Skeleton } from "@components/ui/skeleton";
@@ -86,6 +86,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                             <div className="relative h-[13rem] w-full">
                                 <img
                                     src={story?.image}
+                                     loading="lazy"
                                     alt="Welcome image"
                                     className="h-full w-full object-cover object-bottom rounded-md"
                                 />
@@ -110,7 +111,6 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                     }
                 </DrawerContent>
             </Drawer>}
-
             {children}
         </Fragment>
     );

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import dotsbg from "@assets/images/dotted-bg.png";
-import medalIcon from "@assets/images/icons/medal.svg";
-import mailIcon from "@assets/images/icons/mail-icon.svg";
-import dropbox from "@assets/images/icons/dropbox.svg";
 import { Link } from "react-router-dom";
 import { useGetNotificationsQuery } from "@hooks/redux/notifications"
 import avatarImg from "@assets/images/icons/users_avatar.svg"
+import { GiRank2 } from "react-icons/gi";
+import { LuMedal } from "react-icons/lu";
+import { MdOutlineMailOutline } from "react-icons/md";
 
 function Header() {
   const [page] = useState(0);
@@ -13,7 +13,7 @@ function Header() {
   const limit = 10
   const [telegramUsername, setTelegramUsername] = useState("");
   const { data: notifications } = useGetNotificationsQuery([page, limit],
-    { refetchOnReconnect: true, refetchOnFocus: true,refetchOnMountOrArgChange: true });
+    { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true });
 
 
   useEffect(() => {
@@ -43,24 +43,24 @@ function Header() {
       <header className="flex items-center justify-between w-full py-4 px-3 ">
         <div className="flex items-center gap-4">
           <Link to={"/leader-board"}>
-            <img
-              src={medalIcon}
-              alt="medial icon"
-              className="h-6 w-6" />
+            <LuMedal
+              size={32}
+              color={"white"} />
           </Link>
           <Link to={"/ranks"}>
-            <img
-              src={dropbox}
-              alt="dropbox"
-              className="h-6 w-6" />
+            <GiRank2
+              color={"white"}
+              size={34}
+            />
           </Link>
         </div>
 
         <div className="flex items-center gap-4">
           <Link to={"/profile"}>
-            <div className="flex items-center bg-transparent border hover:bg-transparent pr-2 rounded-md gap-2 h-7 min-w-16">
+            <div className="flex items-center bg-transparent border border-gray-400 hover:bg-transparent pr-2 rounded-md gap-2 h-7 min-w-16">
               <img
                 src={profileImage}
+                loading="lazy"
                 alt="user placeholder"
                 className="h-6 w-6 rounded-md"
               />
@@ -70,7 +70,7 @@ function Header() {
             </div>
           </Link>
           <Link to={"/notifications"} className="relative w-fit h-fit">
-            <img src={mailIcon} className={"h-7 w-7"} />
+            <MdOutlineMailOutline size={35} color="white"/>
             {
               notifications?.totalNotifications &&
               <div className="h-4 w-4 bg-[#D36519] text-xs text-white flex items-center justify-center rounded-full work-sans absolute -top-1 -left-1 z-20">

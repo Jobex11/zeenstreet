@@ -48,16 +48,18 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
 
     return (
         <div className={`relative flex flex-col items-center  ${index === 0 ? 'w-24 h-24 shadow-xl' : 'w-16 h-16'}`} >
-            {filePath ? <Avatar className={`w-full h-full shadow-2xl`}>
+            {filePath ? <Avatar className={`w-full h-full shadow-2xl relative`}>
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
                     alt={user.username} />
                 <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user.username.slice(0, 2)}</AvatarFallback>
+                <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
-                <Avatar className="w-full h-full">
+                <Avatar className="w-full h-full relative">
                     <AvatarImage
                         src={avatarImg}
                         alt={user.username} />
+                     <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
                 </Avatar>}
 
             <div className={`absolute -bottom-2 z-40 h-5 w-5 rounded-full flex items-center text-xs justify-center work-sans ${index === 0 ? "bg-yellow-500 font-medium" : index === 1 ? "bg-green-600" : index === 2 ? "bg-purple-700" : ""}`}>
@@ -229,16 +231,18 @@ export const MiniImage = ({ user }: MiniImageProps) => {
     const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
     return (
         <Fragment>
-            {filePath ? <Avatar className="w-12 h-12">
+            {filePath ? <Avatar className="w-12 h-12 relative">
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
                     alt={user.username} />
                 <AvatarFallback className='uppercase bg-orange-500 text-white jakarta text-lg font-normal'>{user.username.slice(0, 2)}</AvatarFallback>
+                <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
-                <Avatar className="w-12 h-12">
+                <Avatar className="w-12 h-12 relative">
                     <AvatarImage
                         src={avatarImg}
                         alt={user.username} />
+                    <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
                 </Avatar>
             }
         </Fragment>

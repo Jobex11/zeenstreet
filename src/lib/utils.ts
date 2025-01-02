@@ -45,26 +45,26 @@ export const getUnlockDetails = (
   const rank = getUserRank(totalShares, rankData);
 
   // Calculate how many cards the user still needs to unlock
-  const cardsNeeded = wealthClass.requiredCards - (totalShares / wealthClass.sharesReward);
+  const cardsNeeded = wealthClass?.requiredCards - (totalShares / wealthClass?.sharesReward);
   
   // If user is already above the required shares
   if (cardsNeeded <= 0) {
-    return `You have already unlocked ${wealthClass.name}. Your rank is ${rank}.`;
+    return `You have already unlocked ${wealthClass?.name}. Your rank is ${rank}.`;
   }
 
   // Determine the rank the user is in
-  const userRank = totalShares >= wealthClass.minRank ? rank : "Nobody";
+  const userRank = totalShares >= wealthClass?.minRank ? rank : "Nobody";
 
-  return `To unlock ${wealthClass.name}, you need ${cardsNeeded.toFixed(0)} more cards and ${userRank} rank.`;
+  return `To unlock ${wealthClass?.name}, you need ${cardsNeeded.toFixed(0)} more cards and ${userRank} rank.`;
 };
 
 
 export const getUserRank = (totalShares: number, rankData: RankData[]): string => {
-  if (!rankData || rankData.length === 0) return "Nobody";
+  if (!rankData || rankData?.length === 0) return "Nobody";
 
   for (const rank of rankData) {
-    if (totalShares >= rank.min && totalShares <= rank.max) {
-      return rank.rank;
+    if (totalShares >= rank?.min && totalShares <= rank?.max) {
+      return rank?.rank;
     }
   }
 

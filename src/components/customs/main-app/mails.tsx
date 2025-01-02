@@ -63,11 +63,11 @@ function MailNotification() {
       >
         <div className="flex flex-col px-4">
           <div className="flex items-center justify-between py-3 inter">
-            <h1 className="text-xl font-semibold text-white work-sans">Notifications</h1>
+            <h1 className="text-lg font-semibold text-white work-sans">Notifications</h1>
             <button
               type="button"
               onClick={() => { handleRefetch(); navigator.vibrate([50, 50]) }}
-              className="text-white work-sans hover:text-gray-500 flex items-center gap-2"
+              className="text-white work-sans text-sm hover:text-gray-500 flex items-center gap-2"
             >
               Refresh
               <FiRefreshCcw color="white" className={`${isLoading && "animate-spin"}`} />
@@ -78,9 +78,9 @@ function MailNotification() {
               placeholder="Search notifications..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full work-sans border rounded-lg py-6 bg-inherit pl-9 text-white"
+              className="w-full work-sans border rounded-lg py-5 bg-inherit pl-9 text-white"
             />
-            <RiSearch2Line color="white" size={25} className="absolute top-3 left-2" />
+            <RiSearch2Line color="white" size={23} className="absolute top-2.5 left-2" />
           </div>
 
           {isLoading && (

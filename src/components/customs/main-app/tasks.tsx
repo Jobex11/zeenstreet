@@ -84,6 +84,7 @@ function Tasks() {
                                 <img
                                     src={card.image}
                                     alt={`card img ${card.title}`}
+                                     loading="lazy"
                                     className={`h-32 !w-full object-cover rounded-lg ${card.isCurrent
                                         ? "duration-200 transition-transform"
                                         : ""
@@ -161,7 +162,7 @@ function Tasks() {
 
                     {tasks?.tasks?.filter((task: { category: string }) => tabs === "All" || task.category === tabs).length === 0 ? (
                         <div className="flex flex-col items-center gap-2 mt-5">
-                            <img src={taskImg} alt={""} className={"h-24 w-24 object-contain object-center"} />
+                            <img src={taskImg} alt={"No task image"}  loading="lazy" className={"h-24 w-24 object-contain object-center"} />
                             <p className="text-white work-sans text-base text-center">No Available Tasks on <span className="capitalize">{tabs}</span> </p>
                         </div>
 

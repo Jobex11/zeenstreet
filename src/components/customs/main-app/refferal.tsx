@@ -7,16 +7,12 @@ import { Button } from "@components/ui/button";
 import wavybg from "@assets/images/card_bg.svg";
 import { toast } from "sonner";
 import { GoTriangleUp } from "react-icons/go";
-import { IoMdShareAlt } from "react-icons/io";
-import { IconButton } from "@components/common/buttons/Iconbutton";
 import { MdInfo } from "react-icons/md";
-import { IoCopy } from "react-icons/io5";
 import { ShareFormatter } from "@components/common/shareFormatter";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Skeleton } from "@components/ui/skeleton";
 import {
   useGetReferralLinkQuery,
-  useGetReferralCodeQuery,
+  // useGetReferralCodeQuery,
   useGetTier1ReferralQuery,
   useGetTier2ReferralQuery,
   useCliamReferralSharesMutation,
@@ -35,7 +31,9 @@ import tier2_img from "@assets/images/icons/tier2_friend.svg"
 import { ScrollArea } from '@components/ui/scroll-area'
 import InfiniteScroll from "react-infinite-scroll-component";
 import { FiLoader } from "react-icons/fi"
-
+import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
+import { IoCopyOutline } from "react-icons/io5";
+import { RiShareLine } from "react-icons/ri";
 
 interface Referral {
   userLogo: string;
@@ -47,6 +45,7 @@ interface Referral {
 }
 
 function Referral() {
+
   const [tier1Page, setTier1Page] = useState<number>(1);
   const [tier2Page, setTier2Page] = useState<number>(1)
   const limit = 10
@@ -98,12 +97,12 @@ function Referral() {
     }
   );
 
-  const { data: referralCode } = useGetReferralCodeQuery(telegramId ?? "", {
-    skip: !telegramId,
-    refetchOnReconnect: true,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-  });
+  // const { data: referralCode } = useGetReferralCodeQuery(telegramId ?? "", {
+  //   skip: !telegramId,
+  //   refetchOnReconnect: true,
+  //   refetchOnFocus: true,
+  //   refetchOnMountOrArgChange: true,
+  // });
 
   const { data: referralLink } = useGetReferralLinkQuery(telegramId ?? "", {
     skip: !telegramId,
@@ -195,8 +194,8 @@ function Referral() {
           <CardWrapper>
             <CardHeader className="flex flex-col items-center py-0">
               <div className="h-[84px] w-[92px]">
-                <LazyLoadImage
-                  effect="blur"
+                <img
+                  loading="lazy"
                   src={logo}
                   alt="zeen streeet logo"
                   className={"min-h-full object-cover object-center w-full"}
@@ -215,41 +214,46 @@ function Referral() {
               <div className="flex flex-col items-center">
                 <div className="flex flex-col items-center justify-center">
                   <h1 className="aqum text-[11px] text-center font-bold text-white pt-2">
-                    Referral Link:
+                    Invite Friends
                   </h1>
-                  <div className="flex  items-center gap-2">
-                    <Button
-                      onClick={handleCopyReferralLink}
-                      className="h-[23px] w-24 bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins"
-                    >
-                      {referralCode?.referralCode.slice(0, 10) || "...."}
-                    </Button>
-                    <IconButton
-                      className="bg-transparent w-fit hover:bg-transparent"
-                      onClick={handleCopyReferralLink}
-                    >
-                      <IoCopy color="white" size={30} />
-                    </IconButton>
-                    <button
-                      onClick={handleShareReferralLink}
-                      className="bg-transparent w-fit hover:bg-transparent"
-                    >
-                      <span>
-                        <IoMdShareAlt color="white" size={25} />
-                      </span>
-                    </button>
+
+                  <div className="flex w-full items-center gap-2">
+                    <Drawer>
+                      <DrawerTrigger>
+                        <Button className="max-w-full px-10 mt-3 bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins">
+                          Invite Friends
+                        </Button>
+                      </DrawerTrigger>
+                      <DrawerContent
+                        aria-describedby={undefined}
+                        aria-description="dialog"
+                        className="flex flex-col justify-evenly h-fit py-8 bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3">
+                        <Button
+                          onClick={handleCopyReferralLink}
+                          className="flex justify-center py-5 work-sans items-center gap-3 bg-[#D25804] hover:bg-orange-500">
+                          Copy referral link
+                          <IoCopyOutline color="white" size={33} />
+                        </Button>
+
+                        <Button
+                          onClick={handleShareReferralLink}
+                          className="flex justify-center py-5 work-sans items-center gap-3 bg-[#D25804] hover:bg-orange-500">
+                          Share <RiShareLine color="white" size={33} />
+                        </Button>
+                      </DrawerContent>
+                    </Drawer>
                   </div>
                 </div>
                 <div
                   className={`flex flex-col items-center ${!userData?.user?.claimReferrals_shares && "hidden"}`}
                 >
-                  <h1 className="aqum text-[13px] font-bold text-center items-top flex   text-white py-2">
+                  <h1 className="aqum text-xs font-bold text-center items-top flex text-white py-2">
                     <span>
                       <MdInfo color="#D25804" size={10} />
                     </span>
                     You&apos;ve been awared
                     <br />
-                    <span className="mx-2"><ShareFormatter
+                    <span className="mx-1"><ShareFormatter
                       shares={userData?.user?.claimReferrals_shares}
                     /></span>
                     Shares
@@ -260,7 +264,7 @@ function Referral() {
                       claimingShares ||
                       !userData?.user?.claimReferrals_shares
                     }
-                    className="min-w-[111.2px] h-[30px] bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins"
+                    className="min-w-[111.2px] h-[30px] bg-[#D25804] px-3 hover:bg-orange-500 text-white text-xs font-semibold text-center poppins"
                   >
                     {claimingShares
                       ? "Claiming..."
@@ -339,7 +343,7 @@ function Referral() {
                         )
                       ) : (
                         <div className="p-4 flex flex-col gap-3 items-center ">
-                          <img src={tier1_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
+                          <img src={tier1_img} loading="lazy" alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
                           <p
                             className={
                               "text-white work-sans text-sm text-center"
@@ -448,21 +452,24 @@ export const Referrals = ({ referrals, isTier2 }: RefferalsProps) => {
     <Fragment>
       <div className="flex items-center justify-between  py-3 border-b border-[#5F59598A]">
         <div className="flex items-center gap-2">
-          <div className="h-[50px] w-[50px] rounded-full">
+          <div className="h-[50px] w-[50px] rounded-full relative">
             {filePath ? (
               <img
                 src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
                 alt={`${referrals.username} Logo`}
+                loading="lazy"
                 className="h-full w-full rounded-full object-cover object-center"
               />
             ) : (
               <img
                 src={avatarImg}
+                loading="lazy"
                 alt={`${referrals.username} Logo`}
                 className="h-full w-full rounded-full object-cover object-center"
               />
 
             )}
+            <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
           </div>
           <div className="flex flex-col">
             <h1 className="text-xs font-medium font-mono text-white mb-0.5">

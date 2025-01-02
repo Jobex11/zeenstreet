@@ -18,7 +18,6 @@ import water_force from "@assets/images/cards/water.png";
 import wave_force from "@assets/images/cards/wave.png";
 import wood_force from "@assets/images/cards/wood.png";
 import dotsbg from "@assets/images/dotted-bg.png";
-import goldCoin from "@assets/images/icons/gold_coin.svg";
 import CardWrapper from "@/components/common/cards/card-wrapper";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import ConnectTonWallet from "@components/common/ton-connect-btn";
@@ -32,16 +31,16 @@ import {
     useUpdateUserSharesMutation,
 } from "@hooks/redux/shares";
 import { useGetUsernameQuery, useGetUsersByIdQuery } from "@hooks/redux/users";
-import { Key, useEffect, useState } from "react";
+import { Key, useEffect, useMemo, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
 import { toast } from "sonner";
 import { Fragment } from "react";
 import { Skeleton } from "@components/ui/skeleton"
 import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
-import { checkWealthClassUnlock } from "@/lib/utils";
+import { getUserRank } from "@/lib/utils";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
-// import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
+import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
 
 
 const wealthClass = [
@@ -149,7 +148,12 @@ function Profile() {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
-    // const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
+    const { data: ranks } = useGetAllRanksQuery(undefined,
+        {
+            refetchOnReconnect: true,
+            refetchOnFocus: true,
+            refetchOnMountOrArgChange: true,
+        });
 
     // Initialize Telegram WebApp and set user data
     useEffect(() => {
@@ -199,47 +203,149 @@ function Profile() {
 
     const checkIfClaimed = (shareType: string) => claimedRewards[shareType] || false;
 
-    const wealthClassWithDetails = wealthClass.map((item) => {
-        const matchedData = wealthClasses?.data?.find(
-            (wclass: { name: string; }) => wclass.name === item.name
-        );
+    const userRank = useMemo(
+        () =>
+            getUserRank(
+                userDataCard?.user?.shares,
+                ranks?.data?.map(
+                    (rank: { rank: string; rankRange: { min: number; max: number; }; }) => ({
+                        rank: rank.rank,
+                        min: rank.rankRange.min,
+                        max: rank.rankRange.max,
+                    })
+                ) || []
+            ),
+        [ranks?.data, userDataCard?.user?.shares]
+    );
 
+    const determineWealthClassStatus = (
+        userRank: string,
+        userUnlockedCards: { _id: string; title: string; image: string; wealthClass: string }[]
+    ) => {
+        return wealthClass?.map((WealthClass) => {
+            // Find the matching wealth class for additional properties
+            const matchingWealthClass = wealthClasses?.data?.find(
+                (cls: { name: string; }) => cls.name === WealthClass.name
+            );
 
-        const isUnlocked = checkWealthClassUnlock(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards, matchedData);
-        return {
-            ...item,
-            isLocked: !isUnlocked,
-            img: item.img,
-            description: item.description,
-            rewards: matchedData?.sharesReward || item.rewards,
-            name: matchedData?.name || item.name,
-            requiredCards: matchedData?.requiredCards,
-            // rank: getUserRank(userDataCard?.user.shares, ranks?.data?.map(
-            //     (rank: { rank: string; rankRange: { min: number; max: number } }) => ({
-            //         rank: rank.rank,
-            //         min: matchedData?.minRank,
-            //         max: matchedData?.maxRank,
-            //     })
-            // )),
-        };
-    });
+            if (!matchingWealthClass) {
+                // If no matching wealth class is found, return a default structure
+                return {
+                    ...WealthClass,
+                    img: WealthClass.img,
+                    description: WealthClass.description,
+                    name: WealthClass.name,
+                    rewards: WealthClass.rewards,
+                    isLocked: true,
+                    unlockMessage: `No data available for the ${WealthClass.name} class.`,
+                };
+            }
 
+            // Find the rank range that the user's rank fits into
+            const matchingRank = ranks?.data?.find(
+                (rank: { rankRange: { min: number; max: number; }; rank: string; }) =>
+                    matchingWealthClass.minRank >= rank.rankRange.min &&
+                    matchingWealthClass.maxRank <= rank.rankRange.max &&
+                    userRank === rank.rank
+            );
 
+            // Check if the user's rank falls within the wealth class rank range
+            const hasRequiredRank = !!matchingRank;
+
+            // Count the number of cards unlocked for this wealth class
+            const unlockedCardsForClass = userUnlockedCards?.filter(
+                (card) => card.wealthClass === WealthClass.name
+            ).length;
+
+            const hasRequiredCards = unlockedCardsForClass >= matchingWealthClass.requiredCards;
+
+            const isUnlocked = hasRequiredRank && hasRequiredCards;
+
+            // Determine the required rank if the current rank does not match
+            const requiredRank = ranks?.data?.find(
+                (rank: { rankRange: { min: number; max: number; }; }) =>
+                    matchingWealthClass.minRank >= rank.rankRange.min &&
+                    matchingWealthClass.maxRank <= rank.rankRange.max
+            )?.rank;
+
+            // Construct the unlock message
+            const unlockMessage = isUnlocked
+                ? `You have unlocked the ${matchingWealthClass.name} class!`
+                : `You need ${matchingWealthClass.requiredCards - unlockedCardsForClass
+                } more cards and rank ${hasRequiredRank ? matchingRank.rank : requiredRank || "a valid rank"
+                } to unlock ${matchingWealthClass.name}.`;
+
+            return {
+                ...WealthClass,
+                img: WealthClass.img,
+                description: WealthClass.description,
+                name: matchingWealthClass.name || WealthClass.name,
+                rewards: matchingWealthClass.sharesReward || WealthClass.rewards,
+                isLocked: isUnlocked,
+                unlockMessage,
+            };
+        });
+    };
+    const wealthClassStatus = determineWealthClassStatus(userRank, userDataCard?.user?.unlockedCards);
 
     const achievement = [
-        { isLocked: userDataCard?.user?.referrals?.length !== 10, name: "Refer 10 Friends", shareType: "milestone_1", reward: 30, img: milestone_1 },
-        { isLocked: true, name: "Refer 20 Friends", shareType: "milestone_2", reward: 50, img: milestone_2 },
-        { isLocked: true, name: "Refer 30 Friends", shareType: "milestone_3", reward: 80, img: milestone_3 },
-        { isLocked: true, name: "Refer 40 Friends", shareType: "milestone_4", reward: 100, img: milestone_4 },
-        { isLocked: true, name: "Refer 50 Friends", shareType: "milestone_5", reward: 200, img: milestone_5 },
-        { isLocked: true, name: "Refer 60 Friends", shareType: "milestone_6", reward: 300, img: milestone_6 },
-        { isLocked: true, name: "Refer 70 Friends", shareType: "milestone_7", reward: 400, img: milestone_7 },
+        {
+            isLocked: userDataCard?.user?.referrals?.length !== 10,
+            name: "Refer 10 Friends",
+            unLockedText: "You unlocked this Achievments by Referring 10 Friends",
+            shareType: "milestone_1",
+            reward: 30,
+            img: milestone_1
+        },
+        {
+            isLocked: true,
+            name: "Refer 20 Friends",
+            unLockedText: "You unlocked this Achievments by Referring 20 Friends",
+            shareType: "milestone_2",
+            reward: 50,
+            img: milestone_2
+        },
+        {
+            isLocked: true,
+            name: "Refer 30 Friends",
+            unLockedText: "You unlocked this Achievments by Referring 30 Friends",
+            shareType: "milestone_3",
+            reward: 80,
+            img: milestone_3
+        },
+        {
+            isLocked: true,
+            name: "Refer 40 Friends",
+            unLockedText: "You unlocked this Achievments by Referring 40 Friends",
+            shareType: "milestone_4",
+            reward: 100
+            , img: milestone_4
+        },
+        {
+            isLocked: true,
+            name: "Refer 50 Friends",
+            unLockedText: "You unlocked this Achievments by Referring 50 Friends",
+            shareType: "milestone_5",
+            reward: 200
+            , img: milestone_5
+        },
+        {
+            isLocked: true,
+            name: "Refer 60 Friends",
+            unLockedText: "You unlocked this Achievments by Referring 60 Friends",
+            shareType: "milestone_6",
+            reward: 300
+            , img: milestone_6
+        },
+        {
+            isLocked: true,
+            name: "Refer 70 Friends",
+            unLockedText: "You unlocked this Achievments by Referring 70 Friends",
+            shareType: "milestone_7",
+            reward: 400
+            , img: milestone_7
+        },
     ];
-
-
-    console.log("Classes", wealthClassWithDetails)
-
-
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -255,10 +361,11 @@ function Profile() {
                     <div>
                         <CardWrapper className="min-h-32 flex flex-col w-full justify-end p-0">
                             <CardContent className="flex  justify-between px-2 py-0">
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center justify-between w-full gap-2">
                                     <div className="h-28 w-28">
                                         <img
                                             src={profileImage}
+                                            loading="lazy"
                                             alt="profile image"
                                             className="w-full h-full object-contain object-center rounded-full"
                                         />
@@ -276,11 +383,11 @@ function Profile() {
                                         <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF] line-clamp-1">
                                             {telegramUsername && `@${telegramUsername}`}
                                         </h1>
-                                        <div className="bg-[#D36519] rounded-md text-white w-full p-2 text-center">
-                                            <h1 className="text-[7px] aqum font-bold">
-                                                <ShareFormatter shares={userData?.shares} /> shares
-                                            </h1>
-                                        </div>
+                                        {/* <div className="bg-[#D36519] rounded-md text-white w-full p-2 text-center"> */}
+                                        <h1 className="text-xl text-white aqum font-bold">
+                                            <ShareFormatter shares={userData?.shares} /> shares
+                                        </h1>
+                                        {/* </div> */}
                                     </div>
                                 </div>
                             </CardContent>
@@ -296,7 +403,7 @@ function Profile() {
                             Wealth classes
                         </h1>
                         <div className="min-w-full flex items-center pb-4 gap-4 overflow-x-auto">
-                            {wealthClassWithDetails?.map((item) => {
+                            {wealthClassStatus?.map((item) => {
                                 return (
                                     <Drawer
                                         key={item.name}
@@ -320,10 +427,11 @@ function Profile() {
                                                 >
                                                     <img
                                                         src={item.img}
+                                                        loading="lazy"
                                                         alt={`wealth class ${item.name}`}
                                                         className="h-full w-full object-cover object-center rounded-md"
                                                     />
-                                                    {item.isLocked && (
+                                                    {!item.isLocked && (
                                                         <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
                                                             <SlLock size={25} color="white" />
                                                         </div>
@@ -340,12 +448,13 @@ function Profile() {
                                             className="flex flex-col  min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                         >
                                             <DialogTitle className="sr-only" />
-                                            <div className="h-full relative flex flex-col items-center justify-around w-full pb-10  gap-5">
+                                            <div className="h-full relative flex flex-col items-center justify-around w-full pb-10  gap-3">
                                                 <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                     <IoIosClose size={30} color="#A4A4A7" />
                                                 </DialogClose>
                                                 <img
                                                     src={item.img}
+                                                    loading="lazy"
                                                     alt="Wealth class images"
                                                     className="h-24 w-24 object-contain object-center"
                                                 />
@@ -356,11 +465,9 @@ function Profile() {
                                                     {item.description}
                                                 </p>
                                                 <div className={"h-[2px] w-16 bg-gray-400"} />
-                                                {/* <p className="text-white work-sans text-sm text-center max-w-sm">
-                                                    You need {item.requiredCards} {" "} {item.name} cards {" "}
-                                                     & {item.rank} rank 
-                                                     to unlock
-                                                     </p> */}
+                                                <p className="text-white work-sans text-sm text-center max-w-sm">
+                                                    {item.unlockMessage}
+                                                </p>
 
                                                 <Button
                                                     onClick={() => {
@@ -373,7 +480,7 @@ function Profile() {
                                                     disabled={
                                                         updatingShares ||
                                                         checkIfClaimed(item.shareType) ||
-                                                        item.isLocked
+                                                        !item.isLocked
                                                     }
                                                     className={`bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans ${(updatingShares || checkIfClaimed(item.shareType) || item.isLocked) &&
                                                         "opacity-50 cursor-not-allowed"
@@ -383,8 +490,8 @@ function Profile() {
                                                         ? "Processing..."
                                                         : checkIfClaimed(item.shareType)
                                                             ? "Shares already Claimed"
-                                                            : item.isLocked
-                                                                ? `+ ${item.rewards} Meet the Requirements `
+                                                            : !item.isLocked
+                                                                ? `+ ${item.rewards} Meet the Requirements first`
                                                                 : `Claim Shares ${item.rewards}`}
                                                 </Button>
                                             </div>
@@ -402,7 +509,7 @@ function Profile() {
                                 <Fragment>
                                     {loadingCollectedCards && <div className={"flex items-center gap-4"}>
                                         {[0, 1, 2, 3, 4, 5].map((ske) => (
-                                            <Skeleton key={ske} className={"h-24 min-w-[70px] bg-gray-600 shadow-xl"} />
+                                            <Skeleton key={ske} className={"h-24 min-w-40 bg-gray-600 shadow-xl"} />
                                         ))}
                                     </div>}
                                     {userDataCard?.user?.unlockedCards?.length === 0 ? (
@@ -411,7 +518,7 @@ function Profile() {
                                                 "flex items-center justify-center flex-col gap-2  min-w-full"
                                             }
                                         >
-                                            <img src={card_empty} alt="No card image" className="h-20 w-20 object-contain object-center" />
+                                            <img src={card_empty} loading="lazy" alt="No card image" className="h-20 w-20 object-contain object-center" />
 
                                             <p className={"text-sm text-white work-sans text-center"}>
                                                 You don't have any card yet
@@ -433,11 +540,12 @@ function Profile() {
                                                                     backgroundRepeat: "no-repeat",
                                                                     backgroundSize: "cover",
                                                                 }}
-                                                                className="h-24 min-w-28 relative shrink-0 rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
+                                                                className="h-24 min-w-40 relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
                                                             >
                                                                 <img
                                                                     src={card.image}
-                                                                    alt=""
+                                                                    loading="lazy"
+                                                                    alt="Card image"
                                                                     className="h-full w-full object-cover rounded-md"
                                                                 />
                                                                 <div
@@ -451,36 +559,22 @@ function Profile() {
                                                     <DrawerContent
                                                         aria-describedby={undefined}
                                                         aria-description="dialog"
-                                                        className="flex flex-col min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
+                                                        className="flex flex-col max-h-[50%] bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                                     >
                                                         <DialogTitle className="sr-only" />
-                                                        <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">
+                                                        <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-3 gap-5">
                                                             <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                                 <IoIosClose size={30} color="#A4A4A7" />
                                                             </DialogClose>
-                                                            <img
-                                                                src={card.image}
-                                                                alt="Refferal Images"
-                                                                className="h-[100px] w-[100px] object-contain object-center"
-                                                            />
-                                                            <h1 className="text-white work-sans font-semibold text-[15px] capitalize">
+                                                            <h1 className="text-white jarkata font-semibold text-lg capitalize">
                                                                 {card.title ? card.title : "Card title"}
                                                             </h1>
-                                                            <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">
-                                                                + 3000{" "}
-                                                                <img
-                                                                    src={goldCoin}
-                                                                    alt="coin"
-                                                                    className="h-5 w-5 object-contain"
-                                                                />{" "}
-                                                            </h1>
-                                                            {/* this button will be enabled if the user meets the requirements, condition will be via a state viarble or so */}
-                                                            <Button
-                                                                disabled={true}
-                                                                className="bg-[#D36519] hover:bg-orange-500 text-center py-4 h-12 w-full text-white work-sans"
-                                                            >
-                                                                Claim shares
-                                                            </Button>
+                                                            <img
+                                                                src={card.image}
+                                                                loading="lazy"
+                                                                alt="Refferal Images"
+                                                                className="h-full min-w-full object-cover object-center rounded-sm"
+                                                            />
                                                         </div>
                                                     </DrawerContent>
                                                 </Drawer>
@@ -505,6 +599,7 @@ function Profile() {
                                                     <div className="flex flex-col relative gap-1 min-w-fit">
                                                         <img
                                                             src={a.img}
+                                                            loading="lazy"
                                                             alt="Refferal Images"
                                                             className="max-h-[58px] max-w-[46px] object-cover object-center"
                                                         />
@@ -526,35 +621,19 @@ function Profile() {
                                                 className="flex flex-col min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                             >
                                                 <DialogTitle className="sr-only" />
-                                                <div className="h-full flex flex-col items-center justify-around w-full py-10 gap-5">
+                                                <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-5 gap-5">
                                                     <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                         <IoIosClose size={30} color="#A4A4A7" />
                                                     </DialogClose>
                                                     <img
                                                         src={a.img}
+                                                        loading="lazy"
                                                         alt="Refferal Images"
-                                                        className="h-[100px] w-[100px] object-contain object-center"
+                                                        className="h-auto w-auto object-contain object-center"
                                                     />
                                                     <h1 className="text-white work-sans font-semibold text-[15px]">
-                                                        {a.name}
+                                                        {a.isLocked ? a.name : a.unLockedText}
                                                     </h1>
-                                                    <h1 className="flex items-center gap-2 text-white work-sans text-[15px]">
-                                                        + {a.reward}{" "}
-                                                        <img
-                                                            src={goldCoin}
-                                                            alt="coin"
-                                                            className="h-5 w-5 object-contain"
-                                                        />{" "}
-                                                    </h1>
-                                                    <Button
-                                                        onClick={() => {
-                                                            handleUpdateShares(a.reward, a.shareType, a.name)
-                                                        }}
-                                                        disabled={a.isLocked}
-                                                        className="bg-[#D36519] hover:bg-orange-500 text-center rounded-lg py-4 h-12 w-full text-white work-sans"
-                                                    >
-                                                        Check
-                                                    </Button>
                                                 </div>
                                             </DrawerContent>
                                         </Drawer>

@@ -39,6 +39,7 @@ const CardCarousel: React.FC<PropType> = (props) => {
                             <img
                                 className="embla__slide__img border-2 object-bottom border-[#c781ff]"
                                 src={imageUrl}
+                                loading='lazy'
                                 alt={`Slide ${index + 1}`}
                             />
                         </div>

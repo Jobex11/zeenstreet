@@ -1,6 +1,5 @@
-import { useState, useMemo, useEffect, Key, useRef } from "react";
+import { useState, useMemo, useEffect, Key } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-// import dotsbg from "@assets/images/dotted-bg.png";
 import trophy from "@assets/images/icons/trophy.png";
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
 import eclipse from "@assets/images/eclipse.png";
@@ -12,9 +11,7 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Skeleton } from "@components/ui/skeleton";
-// import { ScrollArea, ScrollBar } from "@components/ui/scroll-area"
-// import InfiniteScroll from "react-infinite-scroll-component";
-// import { FiLoader } from "react-icons/fi"
+
 
 interface Rank {
   rankRange: { min: number; max: number };
@@ -123,28 +120,28 @@ function Ranks() {
   };
 
 
-  const scrollableRef = useRef<HTMLDivElement>(null);
+  // const scrollableRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const updateHeight = () => {
-      if (scrollableRef.current) {
-        const windowHeight = window.innerHeight;
-        const topOffset = scrollableRef.current.offsetTop;
-        const desiredHeight = windowHeight - topOffset - 20; // 20px buffer
-        scrollableRef.current.style.height = `${desiredHeight}px`;
-      }
-    };
+  // useEffect(() => {
+  //   const updateHeight = () => {
+  //     if (scrollableRef.current) {
+  //       const windowHeight = window.innerHeight;
+  //       const topOffset = scrollableRef.current.offsetTop;
+  //       const desiredHeight = windowHeight - topOffset - 20; // 20px buffer
+  //       scrollableRef.current.style.height = `${desiredHeight}px`;
+  //     }
+  //   };
 
-    updateHeight();
-    window.addEventListener('resize', updateHeight);
-    return () => window.removeEventListener('resize', updateHeight);
-  }, []);
+  //   updateHeight();
+  //   window.addEventListener('resize', updateHeight);
+  //   return () => window.removeEventListener('resize', updateHeight);
+  // }, []);
 
   return (
     <div className="flex flex-col min-h-full pb-32 flex-1">
 
       {loadingUsers &&
-        <div className="flex flex-col gap-4 px-2 h-full">
+        <div className="flex flex-col gap-5 px-2 h-full mt-10">
           <Skeleton className='h-52 relative w-full rounded-md bg-gray-600 shadow-2xl'>
             <div
               className="absolute top-1/2 h-10 w-10 flex items-center justify-center left-2 transform -translate-y-1/2 bg-gray-900 text-white p-2 rounded-full shadow-md hover:bg-gray-600"
@@ -154,6 +151,9 @@ function Ranks() {
             />
           </Skeleton>
           <div>
+            <Skeleton className='h-11 mb-2 w-full rounded-md bg-gray-600 shadow-2xl' />
+            <Skeleton className='h-11 mb-2 w-full rounded-md bg-gray-600 shadow-2xl' />
+            <Skeleton className='h-11 mb-2 w-full rounded-md bg-gray-600 shadow-2xl' />
             <Skeleton className='h-11 mb-2 w-full rounded-md bg-gray-600 shadow-2xl' />
             <Skeleton className='h-11 w-full rounded-md bg-gray-600 shadow-2xl' />
           </div>
@@ -284,7 +284,7 @@ export const RankImage = ({ telegram_id, user }: ImageProps) => {
   const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
   const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
   return (
-    <div className="h-[49px] w-[49px]">
+    <div className="h-[49px] w-[49px] relative">
       {filePath ? <img
         src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
         alt="Rank badge"
@@ -293,11 +293,13 @@ export const RankImage = ({ telegram_id, user }: ImageProps) => {
         :
         <img
           src={avatarImg}
+          loading="lazy"
           alt={`${user.username}'s Logo`}
           className="h-full w-full rounded-full object-cover object-center"
         />
 
       }
+      <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
     </div>
   )
 }
