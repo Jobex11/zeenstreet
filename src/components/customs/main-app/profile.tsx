@@ -373,21 +373,21 @@ function Profile() {
                                     <div className="flex flex-col pb-4">
                                         <h1 className="text-white text-base font-bold aqum">
                                             {isLoading ? (
-                                                <span>User</span>
+                                              telegramUsername
                                             ) : (
                                                 <span className="line-clamp-1">
-                                                    Hi {data?.preferred_username.slice(0, 10) || "........"}
+                                                    Hi {data?.preferred_username.slice(0, 10)}
                                                 </span>
                                             )}
                                         </h1>
                                         <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF] line-clamp-1">
                                             {telegramUsername && `@${telegramUsername}`}
                                         </h1>
-                                        {/* <div className="bg-[#D36519] rounded-md text-white w-full p-2 text-center"> */}
-                                        <h1 className="text-xl text-white aqum font-bold">
+                                        <div className="bg-[#D36519] rounded-md text-white w-full p-2 text-center">
+                                        <h1 className="text-xs text-white aqum font-bold">
                                             <ShareFormatter shares={userData?.shares} /> shares
                                         </h1>
-                                        {/* </div> */}
+                                        </div>
                                     </div>
                                 </div>
                             </CardContent>

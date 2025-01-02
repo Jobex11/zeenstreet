@@ -44,20 +44,20 @@ function Header() {
         <div className="flex items-center gap-4">
           <Link to={"/leader-board"}>
             <LuMedal
-              size={32}
+              size={26}
               color={"white"} />
           </Link>
           <Link to={"/ranks"}>
             <GiRank2
               color={"white"}
-              size={34}
+              size={30}
             />
           </Link>
         </div>
 
         <div className="flex items-center gap-4">
           <Link to={"/profile"}>
-            <div className="flex items-center bg-transparent border border-gray-400 hover:bg-transparent pr-2 rounded-md gap-2 h-7 min-w-16">
+            <div className="flex items-center bg-transparent border border-gray-500 hover:bg-transparent pr-2 rounded-md gap-2 h-7 min-w-16">
               <img
                 src={profileImage}
                 loading="lazy"
@@ -70,7 +70,7 @@ function Header() {
             </div>
           </Link>
           <Link to={"/notifications"} className="relative w-fit h-fit">
-            <MdOutlineMailOutline size={35} color="white"/>
+            <MdOutlineMailOutline size={30} color="white"/>
             {
               notifications?.totalNotifications &&
               <div className="h-4 w-4 bg-[#D36519] text-xs text-white flex items-center justify-center rounded-full work-sans absolute -top-1 -left-1 z-20">

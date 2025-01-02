@@ -59,7 +59,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
                     <AvatarImage
                         src={avatarImg}
                         alt={user.username} />
-                     <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
+                    <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
                 </Avatar>}
 
             <div className={`absolute -bottom-2 z-40 h-5 w-5 rounded-full flex items-center text-xs justify-center work-sans ${index === 0 ? "bg-yellow-500 font-medium" : index === 1 ? "bg-green-600" : index === 2 ? "bg-purple-700" : ""}`}>
@@ -117,15 +117,20 @@ export default function GlobalLeaderboard() {
     return (
         <div className="flex flex-col h-screen text-white">
             <Fragment>
-                {isLoading && <div className='flex flex-col gap-3'>
-                    <div className=' grid grid-cols-3'>
+                {isLoading && <div className='flex flex-col gap-4 mt-10 px-3'>
+                    <div className=' grid grid-cols-3 mb-3'>
                         {[0, 1, 3].map((ske) => (
                             <div key={ske} className={`flex flex-col h-full items-center ${ske === 0 ? 'order-2' : ske === 1 ? 'order-1' : 'order-3'}`}>
                                 <Skeleton className='rounded-full h-20 w-20 bg-gray-600 shadow-lg' />
                             </div>
                         ))}
                     </div>
-                    <Skeleton className='h-10 w-full rounded-md bg-gray-600 shadow-2xl' />
+                    <Fragment>
+                        <Skeleton className='h-10 w-full rounded-md bg-gray-600 shadow-2xl' />
+                        <Skeleton className='h-10 w-full rounded-md bg-gray-600 shadow-2xl' />
+                        <Skeleton className='h-10 w-full rounded-md bg-gray-600 shadow-2xl' />
+                        <Skeleton className='h-10 w-full rounded-md bg-gray-600 shadow-2xl' />
+                    </Fragment>
                 </div>}
             </Fragment>
             {isSuccess &&
@@ -151,7 +156,7 @@ export default function GlobalLeaderboard() {
                         </div>
                     </div>
                 </div>}
-            <div className='flex items-center w-full mt-3' >
+            <div className='flex items-center w-full mt-3 border-t border-gray-700' >
                 {isSuccess && tabBtn.map((btn) => (
                     <div key={btn.name} className='flex flex-col w-full'>
                         <button

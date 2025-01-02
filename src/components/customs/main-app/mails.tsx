@@ -63,7 +63,7 @@ function MailNotification() {
       >
         <div className="flex flex-col px-4">
           <div className="flex items-center justify-between py-3 inter">
-            <h1 className="text-lg font-semibold text-white work-sans">Notifications</h1>
+            <h1 className="text-sm font-semibold text-white work-sans">Notifications</h1>
             <button
               type="button"
               onClick={() => { handleRefetch(); navigator.vibrate([50, 50]) }}
@@ -73,7 +73,7 @@ function MailNotification() {
               <FiRefreshCcw color="white" className={`${isLoading && "animate-spin"}`} />
             </button>
           </div>
-          <div className="relative mb-3">
+          <div className={`${notifications?.notifications.length === 10 ? "block" : "hidden"} relative mb-3`}>
             <Input
               placeholder="Search notifications..."
               value={searchQuery}
