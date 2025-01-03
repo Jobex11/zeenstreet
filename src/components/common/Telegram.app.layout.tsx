@@ -61,7 +61,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
         };
     }, []);
 
-    if (!isTelegram) {
+    if (isTelegram) {
         return <Fragment>{children}</Fragment>;
     }
     return (

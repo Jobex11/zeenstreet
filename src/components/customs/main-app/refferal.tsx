@@ -6,14 +6,14 @@ import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import wavybg from "@assets/images/card_bg.svg";
 import { toast } from "sonner";
-import { GoTriangleUp } from "react-icons/go";
+// import { GoTriangleUp } from "react-icons/go";
 import { MdInfo } from "react-icons/md";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { Skeleton } from "@components/ui/skeleton";
 import {
   useGetReferralLinkQuery,
   // useGetReferralCodeQuery,
-  useGetTier1ReferralQuery,
+  useGetTier1ReferralQuery, 
   useGetTier2ReferralQuery,
   useCliamReferralSharesMutation,
 } from "@hooks/redux/referrals";
@@ -339,6 +339,7 @@ function Referral() {
                             username: string;
                             dateJoined: string;
                             accountName: string;
+                            province:string;
                             shares: string;
                           }) => (
                             <Referrals key={ref.telegram_id} referrals={ref} />
@@ -381,6 +382,7 @@ function Referral() {
                               userLogo: string;
                               username: string;
                               accountName: string;
+                              province:string;
                               dateJoined: string;
                               shares: string;
                             }) => (
@@ -420,6 +422,7 @@ interface RefferalsProps {
     username: string;
     accountName: string;
     dateJoined: string;
+    province:string;
     shares: string;
     telegram_id?: string;
   };
@@ -488,8 +491,8 @@ export const Referrals = ({ referrals, isTier2 }: RefferalsProps) => {
         </div>
         <div className="flex flex-col gap-1">
           <h1 className="text-white text-xs font-bold">{referrals.shares}</h1>
-          <span className="flex items-center justify-end">
-            <GoTriangleUp size={18} color={"#00D95F"} />
+          <span className="flex items-center justify-end text-[#00D95F]">
+            {referrals.province}
           </span>
         </div>
       </div>
