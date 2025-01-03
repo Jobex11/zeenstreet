@@ -24,7 +24,7 @@ export const Rewards = (
     setScreens?: (value: React.SetStateAction<string>) => void
   }
 ) => {
-  const [telegramId, setTelegramId] = useState<string | null>(null)
+  const [telegramId, setTelegramId] = useState<string | null>(null);
   const [updateShare, { isLoading }] = useUpdateUserSharesMutation();
   const [updateData, { isLoading: updating }] = useUpdateUserDataMutation();
 
@@ -42,14 +42,20 @@ export const Rewards = (
 
   const handleUpdateUserShare = async () => {
     try {
-      const shares = await updateShare({ shares: user.shares, telegram_id: telegramId, shareType: "reward_shares" }).unwrap();
-      await updateData({ telegram_id: telegramId, data: user.province }).unwrap()
+      // const updatePayload = { };
+      const shares = await updateShare({ shares: user.shares, telegram_id: telegramId, shareType: "reward_shares23" }).unwrap();
+      const updatedUser = await updateData({
+        telegram_id: telegramId,
+        province: user.province
+      }).unwrap();
+      console.log("Updated user:", updatedUser);
       if (shares) {
         setScreens?.("socials");
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
     } catch (error: any) {
-      toast.error("someting went wrong", { className: "text-xs work-sans" });
+      toast.error(error?.data?.error, { className: "text-xs work-sans" });
+      console.log(error.data.error)
     }
   }
   return (

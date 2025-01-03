@@ -48,10 +48,6 @@ export function CreateUsername({
   const onSubmit = async (data: CreateUsernameFormValues) => {
     setIsSubmitting(true);
     try {
-      if (
-        typeof window !== "undefined" &&
-        window.Telegram?.WebApp?.initDataUnsafe?.user?.id
-      ) {
         await createUsername({
           telegram_id: telegramId,
           preferred_username: data.username,
@@ -60,21 +56,14 @@ export function CreateUsername({
         toast.success("Username successfully updated!", { className: "text-xs work-sans" });
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         setScreens && setScreens("check-account");
-      } else {
-        toast.error("Telegram WebApp is not available.", { className: "text-xs work-sans" });
-      }
-    } catch (err) {
-      // Error handling from unwrap
-      if (err instanceof Error) {
-        toast.error(err.message || "An error occurred while creating username. Try again", { className: "text-xs work-sans" });
-      } else {
-        toast.info("Make sure to start with a referral link or send /start to the bot.", { className: "text-xs work-sans" });
-      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error:any) {
+        console.log(error)
+        toast.error(error.data.error || "An error occurred while creating username. Try again", { className: "text-xs work-sans" });
     } finally {
       setIsSubmitting(false);
     }
-  };
-
+  }
   // Initialize Telegram WebApp and set user data
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {

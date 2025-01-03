@@ -46,10 +46,10 @@ export const usersApi = createApi({
             }),
         }),
         updateUserData: builder.mutation({
-            query: ({ telegram_id, data }) => ({
-                url: `/${telegram_id}/update-user`,
+            query: ({ telegram_id, province }) => ({
+                url: `/auth/${telegram_id}/update-user`,
                 method: 'PUT',
-                body: data 
+                body: {province} 
             }),
             invalidatesTags: ['username'],
         }),

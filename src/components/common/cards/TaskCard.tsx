@@ -14,7 +14,8 @@ import { useGetUsersByIdQuery } from "@hooks/redux/users";
 
 
 export function RavegenieCard({ task, refetch }: TaskcardType) {
-    const [telegramId, setTelegramId] = useState<string | null>(null);
+
+    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
     const [remainingTime, setRemainingTime] = useState(0);
     const [currentReward, setCurrentReward] = useState<number>(0);
     const [progressValue, setProgressValue] = useState(0);
@@ -108,9 +109,9 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
     };
 
 
-    useEffect(() => {
+    useEffect( ()  => {
         if (userById?.user?.completedTasks?.includes(task?._id)) {
-            setIsTaskCompleted(true);
+           setIsTaskCompleted(userById?.user?.isTaskCompleted);
             refetch?.();
         } else {
             setIsTaskCompleted(false);

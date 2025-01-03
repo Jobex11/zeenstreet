@@ -46,9 +46,10 @@ interface Referral {
 
 function Referral() {
 
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false)
   const [tier1Page, setTier1Page] = useState<number>(1);
-  const [tier2Page, setTier2Page] = useState<number>(1)
-  const limit = 10
+  const [tier2Page, setTier2Page] = useState<number>(1);
+  const limit = 10;
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
@@ -124,6 +125,7 @@ function Referral() {
       await navigator.clipboard.writeText(referralLink?.referralLink);
       navigator.vibrate([50, 50]);
       toast.info("Referral link copied!", { className: "text-xs work-sans" });
+      setOpenDrawer((open) => !open)
     }
   };
 
@@ -136,6 +138,7 @@ function Referral() {
         referralLink.referralLink
       )}&text=${encodeURIComponent(shareText)}`;
       tg.openTelegramLink(fullUrl);
+      setOpenDrawer((open) => !open)
     }
   };
 
@@ -218,7 +221,7 @@ function Referral() {
                   </h1>
 
                   <div className="flex w-full items-center gap-2">
-                    <Drawer>
+                    <Drawer open={openDrawer} onOpenChange={() => setOpenDrawer(!openDrawer)}>
                       <DrawerTrigger>
                         <Button className="max-w-full px-10 mt-3 bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins">
                           Invite Friends

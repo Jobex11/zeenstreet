@@ -384,7 +384,7 @@ function Profile() {
                                             {telegramUsername && `@${telegramUsername}`}
                                         </h1>
                                         <div className="bg-[#D36519] rounded-md text-white w-full p-2 text-center">
-                                        <h1 className="text-xs text-white aqum font-bold">
+                                        <h1 className="text-xs text-white aqum font-semibold">
                                             <ShareFormatter shares={userData?.shares} /> shares
                                         </h1>
                                         </div>
