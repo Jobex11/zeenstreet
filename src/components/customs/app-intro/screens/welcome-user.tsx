@@ -22,7 +22,6 @@ export const WelcomeUser = () => {
                     <br /> of Gaming.
                 </h1>
             </Fade>
-
             <div
                 style={{
                     backgroundImage: `url(${rave}), url(${genie})`,
@@ -38,7 +37,6 @@ export const WelcomeUser = () => {
                 <div className="flex items-center text-white gap-3 text-sm">
                     Twitter / Youtube / Telegram
                 </div>
-
                 <IconButton className="h-12 w-12 md:h-16 md:w-16 rounded-full bg-[rgba(210,88,4,1)] text-3xl">
                     <LazyLoadImage effect="opacity" src={handwave} alt="handwave" className="h-full w-full" />
                 </IconButton>

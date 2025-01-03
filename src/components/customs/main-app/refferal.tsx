@@ -13,7 +13,7 @@ import { Skeleton } from "@components/ui/skeleton";
 import {
   useGetReferralLinkQuery,
   // useGetReferralCodeQuery,
-  useGetTier1ReferralQuery, 
+  useGetTier1ReferralQuery,
   useGetTier2ReferralQuery,
   useCliamReferralSharesMutation,
 } from "@hooks/redux/referrals";
@@ -50,7 +50,7 @@ function Referral() {
   const [tier1Page, setTier1Page] = useState<number>(1);
   const [tier2Page, setTier2Page] = useState<number>(1);
   const limit = 10;
-  const [telegramId, setTelegramId] = useState<string | null>(null);
+  const [telegramId, setTelegramId] = useState<string | null>("6880808269");
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
@@ -339,7 +339,7 @@ function Referral() {
                             username: string;
                             dateJoined: string;
                             accountName: string;
-                            province:string;
+                            province: string;
                             shares: string;
                           }) => (
                             <Referrals key={ref.telegram_id} referrals={ref} />
@@ -382,11 +382,12 @@ function Referral() {
                               userLogo: string;
                               username: string;
                               accountName: string;
-                              province:string;
+                              province: string;
+                              referredBy: string;
                               dateJoined: string;
                               shares: string;
                             }) => (
-                              <Referrals key={ref.telegram_id} isTier2={ref.accountName} referrals={ref} />
+                              <Referrals key={ref.telegram_id} referrals={ref} />
                             )
                           )
                         ) : (
@@ -422,14 +423,15 @@ interface RefferalsProps {
     username: string;
     accountName: string;
     dateJoined: string;
-    province:string;
+    province: string;
     shares: string;
+    referredBy?: string;
     telegram_id?: string;
   };
   isTier2?: string;
 }
 
-export const Referrals = ({ referrals, isTier2 }: RefferalsProps) => {
+export const Referrals = ({ referrals }: RefferalsProps) => {
   const { data: photoData, isSuccess: isPhotoSuccess } =
     useGetTelegramUserPhotoUrlQuery(referrals.telegram_id, {
       skip: !referrals.telegram_id,
@@ -473,25 +475,24 @@ export const Referrals = ({ referrals, isTier2 }: RefferalsProps) => {
                 alt={`${referrals.username} Logo`}
                 className="h-full w-full rounded-full object-cover object-center"
               />
-
             )}
             <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
           </div>
           <div className="flex flex-col">
             <h1 className="text-xs font-medium font-mono text-white mb-0.5">
-              {referrals.username}
+              {referrals.accountName}
             </h1>
             <p className="text-[#B7B3B3] text-[8px] flex items-center gap-1">
               {referrals.dateJoined}{" "}
-              <span className="font-bold">
-                {isTier2}
+              <span className="font-semibold work-sans">
+                {referrals.referredBy && `Referred By ${referrals.referredBy}`}
               </span>
             </p>
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <h1 className="text-white text-xs font-bold">{referrals.shares}</h1>
-          <span className="flex items-center justify-end text-[#00D95F]">
+          <span className="flex items-center justify-end text-[11px] work-sans text-[#00D95F]">
             {referrals.province}
           </span>
         </div>

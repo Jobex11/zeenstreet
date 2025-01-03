@@ -111,7 +111,7 @@ export function RavegenieCard({ task, refetch }: TaskcardType) {
 
     useEffect( ()  => {
         if (userById?.user?.completedTasks?.includes(task?._id)) {
-           setIsTaskCompleted(userById?.user?.isTaskCompleted);
+           setIsTaskCompleted(true);
             refetch?.();
         } else {
             setIsTaskCompleted(false);
