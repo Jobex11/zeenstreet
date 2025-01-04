@@ -11,7 +11,7 @@ export const formatTime = (seconds: number) => {
   const minutes = Math.floor((seconds % 3600) / 60); // Remaining minutes
   const secs = seconds % 60; // Remaining seconds
 
-  return `${days > 0 ? `${days}d ` : ""}${hours}h ${minutes}m ${secs}s`;
+  return `${days > 0 ? `${days}d ` : ""} ${hours > 0 ? `${hours}h` : ""} ${minutes > 0 ? `${minutes}m` : ""} ${secs}s`;
 };
 
 export type UserProps = {
@@ -46,7 +46,7 @@ export const getUnlockDetails = (
 
   // Calculate how many cards the user still needs to unlock
   const cardsNeeded = wealthClass?.requiredCards - (totalShares / wealthClass?.sharesReward);
-  
+
   // If user is already above the required shares
   if (cardsNeeded <= 0) {
     return `You have already unlocked ${wealthClass?.name}. Your rank is ${rank}.`;

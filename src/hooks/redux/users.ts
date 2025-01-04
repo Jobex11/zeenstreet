@@ -4,9 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // Define a service using a base URL and expected endpoints
 export const usersApi = createApi({
     reducerPath: 'usersApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: "https://ravegenie-backend.onrender.com/api"
-    }),
+    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api" }),
     tagTypes: ['username'],
     endpoints: (builder) => ({
         createUsername: builder.mutation({
@@ -40,8 +38,8 @@ export const usersApi = createApi({
             query: (telegram_id) => `/auth/${telegram_id}/user`
         }),
         getAllUsers: builder.query({
-            query: ([page = 1, limit = 10]) => ({
-                url: `/auth/all-users?page=${page}&limit=${limit}`,
+            query: () => ({
+                url: `/auth/all-users`,
                 providesTags: ['username']
             }),
         }),

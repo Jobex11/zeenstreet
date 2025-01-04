@@ -1,24 +1,24 @@
 import { useGetAllcardsQuery } from "@/hooks/redux/cards";
-import { useGetAllTasksQuery } from "@/hooks/redux/tasks";
 import { CardType } from "@/types/card.types";
 import wavybg from "@assets/images/card_bg.svg";
 import dotsbg from "@assets/images/dotted-bg.png";
-import { RavegenieCard } from "@components/common/cards/TaskCard";
 import { Button } from '@components/ui/button';
 import { Skeleton } from "@components/ui/skeleton"
 import { Card } from "@components/ui/card";
 import * as Progress from "@radix-ui/react-progress";
 import { Fragment, useEffect, useState, useRef } from 'react';
-import { FiLoader } from "react-icons/fi";
+// import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
-import taskImg from "@assets/images/icons/tasks_img.svg";
-
+// import taskImg from "@assets/images/icons/tasks_img.svg";
+import RaveLogo from "@assets/images/icons/zenstreet_logo.png"
+import ReferralsCategory from "@components/common/main-app/task-categories/referrals";
+import { useGetReferralTaskByIdQuery } from "@/hooks/redux/referrals";
 
 function Tasks() {
 
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-    const [tabs, setTabs] = useState<string>("All");
+    const [tabs, setTabs] = useState<string>("Referral");
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
 
     const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
@@ -27,44 +27,25 @@ function Tasks() {
         refetchOnMountOrArgChange: true,
     })
 
-    const { data: tasks, isLoading } = useGetAllTasksQuery(undefined, {
-        refetchOnReconnect: true,
+    const { data: refTasks, refetch: refetchRefTasks } = useGetReferralTaskByIdQuery(telegramId, {
+        skip: !telegramId, refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
-    });
+    })
     const handleActiveTabs = (name: string) => {
         setTabs(name)
     }
-
 
     useEffect(() => {
         if (window.Telegram && window.Telegram.WebApp) {
             const initData = window.Telegram.WebApp.initDataUnsafe;
             const user = initData?.user;
-
             if (user) {
                 setTelegramId(user.id ?? null);
             }
         }
-
     }, []);
 
-    useEffect(() => {
-        const container = scrollContainerRef.current;
-
-        if (container) {
-            const scrollAmount = 400;
-            const scrollSpeed = 300;
-
-            const animateScroll = async () => {
-                container.scrollTo({ left: scrollAmount, behavior: "smooth" });
-                await new Promise((resolve) => setTimeout(resolve, scrollSpeed));
-                container.scrollTo({ left: 0, behavior: "smooth" });
-            };
-
-            animateScroll();
-        }
-    }, []);
     return (
         <div className='flex flex-col min-h-full w-full'>
             <div style={{
@@ -79,12 +60,11 @@ function Tasks() {
                         {!isLoadingCards && cards?.cards.length > 0 && cards?.cards.slice(0, 2).map((card: CardType) => (
                             <Card
                                 key={card._id}
-                                // ref={card.isCurrent && middleCardRef}
                                 className={`group bg-slate-800 relative rounded-lg snap-center max-h-32 w-full overflow-hidden ${card.isCurrent ? "min-w-[87%] shadow-xl shadow-slate-700" : "min-w-[70%] shadow-xl"}`}>
                                 <img
                                     src={card.image}
                                     alt={`card img ${card.title}`}
-                                     loading="lazy"
+                                    loading="lazy"
                                     className={`h-32 !w-full object-cover rounded-lg ${card.isCurrent
                                         ? "duration-200 transition-transform"
                                         : ""
@@ -135,7 +115,6 @@ function Tasks() {
                     )}
                 </header>
 
-
                 <div className='h-auto w-full'>
                     <div ref={scrollContainerRef} className='flex items-center gap-6 overflow-x-auto max-w-full h-auto py-5 '>
                         {btnTabs.map((tab) => (
@@ -153,28 +132,29 @@ function Tasks() {
 
                 {/* task cards */}
                 <div className='flex flex-col gap-5 pt-6 pb-[7rem]'>
-                    <Fragment>
+                    {/* <Fragment>
                         {isLoading && <div className="flex flex-col items-center py-5">
                             <FiLoader size={30} color="white" className="animate-spin" />
                             <p className="text-white work-sans pt-4 text-sm">Updating tasks.....</p>
                         </div>}
-                    </Fragment>
+                    </Fragment> */}
 
-                    {tasks?.tasks?.filter((task: { category: string }) => tabs === "All" || task.category === tabs).length === 0 ? (
-                        <div className="flex flex-col items-center gap-2 mt-5">
-                            <img src={taskImg} alt={"No task image"}  loading="lazy" className={"h-24 w-24 object-contain object-center"} />
-                            <p className="text-white work-sans text-base text-center">No Available Tasks on <span className="capitalize">{tabs}</span> </p>
-                        </div>
-
-                    ) : (
-                        tasks?.tasks?.filter((task: { category: string }) => tabs === "All" || task.category === tabs)
-                            .map((task: { _id: string; title: string; taskUrl: string; diminishingPercentage: number; diminishingPoints: number[]; image: string; taskType: "one-time" | "recurring"; category: "Special" | "Daily" | "Referral" | "Partners" | "Social" | "Events"; diminishingRewards: "Yes" | "No"; countdown: number; baseReward: number; isExpired: boolean; remainingTime: number; reward: number; }) => (
-                                <RavegenieCard
-                                    key={task._id}
-                                    task={task}
-                                    refetch={async () => await refetchCards()} />
-                            ))
-                    )}
+                    {tabs === "Referral"
+                        && <Fragment>
+                            {refTasks?.refTasks?.map((tasks: { _id: string; title: string; shares: number; refCount: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                                <ReferralsCategory
+                                    key={tasks?._id}
+                                    tasks={tasks}
+                                    refetch={() => {
+                                        refetchRefTasks();
+                                        refetchCards();
+                                    }}
+                                    telegram_id={telegramId}
+                                    image={RaveLogo}
+                                    type={"Referral tasks"}
+                                />
+                            ))}
+                        </Fragment>}
                 </div>
             </div>
         </div>

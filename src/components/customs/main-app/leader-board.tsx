@@ -6,8 +6,8 @@ import { ShareFormatter } from '@components/common/shareFormatter'
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Skeleton } from '@components/ui/skeleton'
 import { ScrollArea } from '@components/ui/scroll-area'
-import InfiniteScroll from "react-infinite-scroll-component";
-import { FiLoader } from "react-icons/fi"
+// import InfiniteScroll from "react-infinite-scroll-component";
+// import { FiLoader } from "react-icons/fi"
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
 
 interface User {
@@ -72,10 +72,10 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
 }
 
 export default function GlobalLeaderboard() {
-    const [userPages, setUserPage] = useState<number>(1)
-    const limit = 10
+    // const [userPages, setUserPage] = useState<number>(2)
+    // const limit = 10
     const [activeTab, setActiveTab] = useState<'shares' | 'unlockedCardsCount' | 'referralCount'>('shares');
-    const { data: allUsers, isLoading, isSuccess, } = useGetAllUsersQuery([userPages, limit], {
+    const { data: allUsers, isLoading, isSuccess, } = useGetAllUsersQuery(undefined, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
@@ -105,13 +105,13 @@ export default function GlobalLeaderboard() {
     const handleActiveTabs = (tab: 'shares' | 'unlockedCardsCount' | 'referralCount') => {
         setActiveTab(tab)
     }
-    console.log("Cards", sortedUsers)
 
-    const loadNextPage = () => {
-        if (allUsers?.currentPage < allUsers?.totalPages) {
-            setUserPage((prev) => prev + 1);
-        }
-    };
+
+    // const loadNextPage = () => {
+    //     if (allUsers?.currentPage < allUsers?.totalPages) {
+    //         setUserPage((prev) => prev + 1);
+    //     }
+    // };
 
 
     return (
@@ -177,7 +177,7 @@ export default function GlobalLeaderboard() {
 
 
             <ScrollArea className="flex-1 h-full px-4 py-2 mt-7 pb-24 overflow-y-auto scroll-smooth">
-                <InfiniteScroll
+                {/* <InfiniteScroll
                     dataLength={restUsers?.length}
                     next={loadNextPage}
                     hasMore={allUsers?.currentPage < allUsers?.totalPages}
@@ -187,7 +187,7 @@ export default function GlobalLeaderboard() {
                         </div>}
                     scrollThreshold={0.9}
                     scrollableTarget="scrollableDiv"
-                >
+                > */}
                     {restUsers?.map((user, index) => {
                         return (
                             <div key={user._id} className={`${user?.telegram_id === telegramId && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
@@ -200,7 +200,7 @@ export default function GlobalLeaderboard() {
                             </div>
                         )
                     })}
-                </InfiniteScroll>
+                {/* </InfiniteScroll> */}
             </ScrollArea>
         </div>
     )

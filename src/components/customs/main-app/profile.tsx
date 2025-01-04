@@ -8,10 +8,8 @@ import milestone_6 from "@assets/images/milestone_6.png";
 import milestone_7 from "@assets/images/milestone_7.png";
 import cosmic_force from "@assets/images/cards/cosmic.png";
 import earth_force from "@assets/images/cards/earth.png";
-import {
-    default as fire_force,
-    default as metal_force,
-} from "@assets/images/cards/fire.png";
+import fire_force from "@assets/images/cards/fire.png";
+import metal_force from "@assets/images/cards/metal.png";
 import ice_force from "@assets/images/cards/ice.png";
 import light_force from "@assets/images/cards/Light.png";
 import water_force from "@assets/images/cards/water.png";
@@ -373,7 +371,7 @@ function Profile() {
                                     <div className="flex flex-col pb-4">
                                         <h1 className="text-white text-base font-bold aqum">
                                             {isLoading ? (
-                                              telegramUsername
+                                                telegramUsername
                                             ) : (
                                                 <span className="line-clamp-1">
                                                     Hi {data?.preferred_username.slice(0, 10)}
@@ -384,9 +382,9 @@ function Profile() {
                                             {telegramUsername && `@${telegramUsername}`}
                                         </h1>
                                         <div className="bg-[#D36519] rounded-md text-white w-full p-2 text-center">
-                                        <h1 className="text-xs text-white aqum font-semibold">
-                                            <ShareFormatter shares={userData?.shares} /> shares
-                                        </h1>
+                                            <h1 className="text-xs text-white aqum font-semibold">
+                                                <ShareFormatter shares={userData?.shares} /> shares
+                                            </h1>
                                         </div>
                                     </div>
                                 </div>
