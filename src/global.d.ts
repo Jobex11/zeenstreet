@@ -38,6 +38,7 @@ declare global {
         ready: () => void;
         setBottomBarColor: (color: string) => void;
         openTelegramLink: (url: string) => void;
+        openLink: (url: string, options?: openLinkParams) => void;
         setHeaderColor: (color: string) => void;
         enableClosingConfirmation: () => void;
         disableClosingConfirmation: () => void;
@@ -56,4 +57,8 @@ export interface ShareToStoryParams {
     url: string;
     name: string;
   }
+}
+
+interface openLinkParams {
+  try_instant_view?: false
 }

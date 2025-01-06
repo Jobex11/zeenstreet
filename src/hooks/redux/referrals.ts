@@ -34,11 +34,9 @@ export const referralsApi = createApi({
             }),
             invalidatesTags: ['Referral'],
         }),
-        getReferralTaskById: builder.query({
-            query: (telegram_id) => ({
-                url: `/tasks/${telegram_id}`,
-                providesTags: ['Referral'],
-            }),
+        getReferralTask: builder.query({
+            query: (telegram_id) => `/tasks/${telegram_id}`,
+            providesTags: ['Referral'],
         }),
         completeRefTasks: builder.mutation({
             query: ({ telegram_id, taskId }) => ({
@@ -57,6 +55,6 @@ export const {
     useGetTier1ReferralQuery,
     useGetTier2ReferralQuery,
     useCliamReferralSharesMutation,
-    useGetReferralTaskByIdQuery,
+    useGetReferralTaskQuery,
     useCompleteRefTasksMutation,
 } = referralsApi

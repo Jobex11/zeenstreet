@@ -1,5 +1,3 @@
-import { RavegenieCard } from "@/components/common/cards/TaskCard";
-import { useGetAllTasksQuery } from "@/hooks/redux/tasks";
 import bell_icon from "@assets/images/bell_icon.png";
 import firstBannerImg from "@assets/images/cards/Banner1.jpg";
 import secondBannerImg from "@assets/images/cards/Banner2.jpg";
@@ -12,13 +10,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import { useGetAllRanksQuery } from "@hooks/redux/ranks"
 import { useEffect, useState, useMemo } from "react";
-import { FiLoader } from "react-icons/fi";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { SlBadge } from "react-icons/sl";
 import { getUserRank, getRankIconColor } from "@lib/utils"
 import { Skeleton } from "@components/ui/skeleton";
-import taskImg from "@assets/images/icons/tasks_img.svg";
+
 
 const imageUrls = [
   firstBannerImg,
@@ -32,13 +29,8 @@ function Home() {
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
-  const { data: user, refetch: refetchShares, isLoading: loadingShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, })
-  const { data: tasks, isLoading } = useGetAllTasksQuery(null,
-     { refetchOnReconnect: true,
-       refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-       }
-    );
+  const { data: user, isLoading: loadingShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, })
+  // const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true});
 
   const userRank = useMemo(
     () =>
@@ -57,10 +49,9 @@ function Home() {
 
   const rankColor = getRankIconColor(userRank);
 
-
-  const filteredTasks = tasks?.tasks.filter((task: { category: string; }) =>
-    selectedFilter === null || selectedFilter === "All" || task.category === selectedFilter
-  );
+  // const filteredTasks = tasks?.tasks.filter((task: { category: string; }) =>
+  //   selectedFilter === null || selectedFilter === "All" || task.category === selectedFilter
+  // );
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -104,7 +95,7 @@ function Home() {
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-2 work-sans">
               <h1 className="text-white text-lg font-semibold">Today&apos;s Tasks</h1>
-              <h1 className="text-white text-sm">{filteredTasks?.length} Tasks Available</h1>
+              <h1 className="text-white text-sm">0 Tasks Available</h1>
             </div>
             <div className="flex items-center gap-3">
               <DropdownMenu>
@@ -114,7 +105,7 @@ function Home() {
                   </span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-orange-600 rounded text-white flex flex-col-reverse border-none tahoma">
-                  <DropdownMenuItem className={`${selectedFilter === null && "bg-white text-black"}`} onClick={() => setSelectedFilter("All")} >All</DropdownMenuItem>
+                  {/* <DropdownMenuItem className={`${selectedFilter === null && "bg-white text-black"}`} onClick={() => setSelectedFilter("All")} >All</DropdownMenuItem> */}
                   <DropdownMenuItem className={`${selectedFilter == "Special" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Special")} >Special</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter === "Events" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Events")} >Events</DropdownMenuItem>
                   <DropdownMenuItem className={`${selectedFilter === "Referral" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Referral")} >Referral</DropdownMenuItem>
@@ -145,23 +136,12 @@ function Home() {
           {/* task cards */}
           <div className="flex flex-col gap-5 pt-6 pb-[7rem]">
             {/* Loading State */}
-            {isLoading && (
-              <div className="flex flex-col items-center py-5">
-                <FiLoader size={30} color="white" className="animate-spin" />
-                <p className="text-white work-sans pt-4 text-sm">Updating tasks.....</p>
-              </div>
-            )}
+
 
             {/* No Tasks Available */}
-            {!isLoading && (!filteredTasks || filteredTasks.length === 0) && (
-              <div className="flex flex-col items-center gap-2">
-                  <img src={taskImg} loading='lazy' alt={"no story image"} className={"h-24 w-24 object-contain object-center"}/>
-                <p className="text-white work-sans text-base text-center">No Available Tasks</p>
-              </div>
-            )}
 
             {/* Tasks List */}
-            {!isLoading && filteredTasks?.length > 0 && (
+            {/* {!isLoading && filteredTasks?.length > 0 && (
               filteredTasks.map((task: {
                 _id: string;
                 title: string;
@@ -183,7 +163,7 @@ function Home() {
                   task={task}
                   refetch={refetchShares} />
               ))
-            )}
+            )} */}
           </div>
         </div>
       </div>

@@ -9,10 +9,14 @@ import * as Progress from "@radix-ui/react-progress";
 import { Fragment, useEffect, useState, useRef } from 'react';
 // import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
-// import taskImg from "@assets/images/icons/tasks_img.svg";
+import taskImg from "@assets/images/icons/tasks_img.svg";
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png"
 import ReferralsCategory from "@components/common/main-app/task-categories/referrals";
-import { useGetReferralTaskByIdQuery } from "@/hooks/redux/referrals";
+import { useGetReferralTaskQuery } from "@/hooks/redux/referrals";
+import { useGetSocialTasksQuery } from "@/hooks/redux/tasks";
+import SocialsCategory from "@/components/common/main-app/task-categories/socials";
+import { FiLoader } from "react-icons/fi";
+import React from "react";
 
 function Tasks() {
 
@@ -22,16 +26,16 @@ function Tasks() {
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
 
     const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
-        skip: !telegramId, refetchOnReconnect: true,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
+        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
     })
 
-    const { data: refTasks, refetch: refetchRefTasks } = useGetReferralTaskByIdQuery(telegramId, {
-        skip: !telegramId, refetchOnReconnect: true,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
+    const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
+        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
     })
+    const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
+        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
+    })
+
     const handleActiveTabs = (name: string) => {
         setTabs(name)
     }
@@ -132,16 +136,22 @@ function Tasks() {
 
                 {/* task cards */}
                 <div className='flex flex-col gap-5 pt-6 pb-[7rem]'>
-                    {/* <Fragment>
-                        {isLoading && <div className="flex flex-col items-center py-5">
+                    <Fragment>
+                        {isLoadingRef && isLoadingSocial && <div className="flex flex-col items-center py-5">
                             <FiLoader size={30} color="white" className="animate-spin" />
                             <p className="text-white work-sans pt-4 text-sm">Updating tasks.....</p>
                         </div>}
-                    </Fragment> */}
+                    </Fragment>
 
                     {tabs === "Referral"
                         && <Fragment>
-                            {refTasks?.refTasks?.map((tasks: { _id: string; title: string; shares: number; refCount: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                            <NoDataMessage
+                                isLoading={isLoadingRef}
+                                data={refTasks}
+                                imageSrc={taskImg}
+                                message="No Available Tasks"
+                            />
+                            {isSuccess && refTasks?.tasks.length > 0 && refTasks?.tasks?.map((tasks: { _id: string; title: string; image: string; shares: number; refCount: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                                 <ReferralsCategory
                                     key={tasks?._id}
                                     tasks={tasks}
@@ -150,8 +160,31 @@ function Tasks() {
                                         refetchCards();
                                     }}
                                     telegram_id={telegramId}
+                                    type={`${tasks.countdown !== 0 ? "Referral" : ""}`}
+                                />
+                            ))}
+                        </Fragment>}
+
+
+                    {tabs === "Social"
+                        && <Fragment>
+                            <NoDataMessage
+                                isLoading={isLoadingRef || isLoadingSocial}
+                                data={socialTasks}
+                                imageSrc={taskImg}
+                                message="No Available Social Tasks"
+                            />
+                            {socialTasks?.tasks.length > 0 && socialTasks?.tasks?.map((tasks: { _id: string; chat_id: string; title: string; shares: number; socialUrl: string; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                                <SocialsCategory
+                                    key={tasks?._id}
+                                    tasks={tasks}
+                                    refetch={() => {
+                                        refetchSocialTasks();
+                                        refetchCards();
+                                    }}
+                                    telegram_id={telegramId}
                                     image={RaveLogo}
-                                    type={"Referral tasks"}
+                                    type={`${tasks.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
                         </Fragment>}
@@ -163,3 +196,33 @@ function Tasks() {
 
 export default Tasks
 
+
+
+
+interface NoDataMessageProps {
+    isLoading: boolean;
+    data?: { tasks?: unknown[] };
+    message?: string;
+    imageSrc: string;
+}
+
+export const NoDataMessage: React.FC<NoDataMessageProps> = ({
+    isLoading,
+    data,
+    message = "No Available Tasks",
+    imageSrc,
+}) => {
+    if (isLoading || (data?.tasks && data.tasks.length > 0)) return null;
+
+    return (
+        <div className="flex flex-col items-center gap-2">
+            <img
+                src={imageSrc}
+                loading="lazy"
+                alt="no data image"
+                className="h-24 w-24 object-contain object-center"
+            />
+            <p className="text-white work-sans text-base text-center">{message}</p>
+        </div>
+    );
+};

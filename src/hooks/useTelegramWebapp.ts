@@ -91,9 +91,15 @@ export function useTelegramWebApp() {
         window.Telegram?.WebApp?.shareToStory(mediaUrl, params);
     }, []);
 
+    const openLink = useCallback((url: string, options: { try_instant_view: false }) => {
+        window.Telegram?.WebApp?.openLink(url, options);
+    },[])
+
     const isVersionAtLeast = useCallback((version: string) => {
         return window.Telegram?.WebApp?.isVersionAtLeast(version) || false
     }, [])
+
+
 
     return {
         ...webAppData,
@@ -104,5 +110,6 @@ export function useTelegramWebApp() {
         checkHomeScreenStatus,
         shareToStory,
         isVersionAtLeast,
+        openLink,
     }
 }

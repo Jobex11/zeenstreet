@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
+// baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api/tasks" }),
 
 // Define a service using a base URL and expected endpoints
 export const tasksApi = createApi({
@@ -7,24 +7,22 @@ export const tasksApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api/tasks" }),
     tagTypes: ['Tasks'],
     endpoints: (builder) => ({
-        getAllTasks: builder.query({
-            query: () => `/`,
+        getSocialTasks: builder.query({
+            query: (telegram_id) => `/social-tasks/tasks/${telegram_id}`,
             providesTags: ['Tasks']
         }),
-        completeTasks: builder.mutation({
-            query: ({ taskId, telegram_id, reward }) => ({
-                url: `/${taskId}/complete`,
-                method: 'POST',
-                body: { telegram_id, reward },
-            }),
-            invalidatesTags: ['Tasks'],
-        }),
-        checkTaskStatus: builder.query({
-            query: (taskId) => `/${taskId}/complete`,
-            providesTags: ['Tasks']
+        completeSocialTasks: builder.mutation({
+            query: ({ telegram_id, taskId }) => ({
+                url: `/social-tasks/${telegram_id}/complete`,
+                method: "POST",
+                body: { taskId }
+            })
         })
     }),
 })
 
 
-export const { useGetAllTasksQuery, useCompleteTasksMutation, useCheckTaskStatusQuery } = tasksApi
+export const {
+    useGetSocialTasksQuery,
+    useCompleteSocialTasksMutation
+} = tasksApi

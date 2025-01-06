@@ -44,13 +44,13 @@ function Header() {
         <div className="flex items-center gap-4">
           <Link to={"/leader-board"}>
             <LuMedal
-              size={26}
+              size={23}
               color={"white"} />
           </Link>
           <Link to={"/ranks"}>
             <GiRank2
               color={"white"}
-              size={30}
+              size={28}
             />
           </Link>
         </div>
@@ -70,7 +70,7 @@ function Header() {
             </div>
           </Link>
           <Link to={"/notifications"} className="relative w-fit h-fit">
-            <MdOutlineMailOutline size={30} color="white"/>
+            <MdOutlineMailOutline size={28} color="white"/>
             {
               notifications?.totalNotifications &&
               <div className="h-4 w-4 bg-[#D36519] text-xs text-white flex items-center justify-center rounded-full work-sans absolute -top-1 -left-1 z-20">

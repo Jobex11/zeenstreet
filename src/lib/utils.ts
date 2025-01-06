@@ -212,3 +212,12 @@ export const checkWealthClassUnlock: CheckWealthClassUnlock = (
   // Determine if unlocked
   return isWithinRank && hasRequiredCards;
 };
+
+
+export function triggerErrorVibration() {
+    if (navigator.vibrate) {
+        navigator.vibrate([500, 200, 500]);
+    } else {
+        console.warn("Vibration API is not supported on this device.");
+    }
+}
