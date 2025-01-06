@@ -53,13 +53,13 @@ export default function SocialsCategory({
                 toast.success(completeTask.message);
                 refetch?.();
             } else {
-                toast.error("You must join the channel to complete this task!", {className:"text-xs work-sans"});
+                toast.error("You must join the channel to complete this task!", { className: "text-xs work-sans" });
                 triggerErrorVibration()
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error("Error confirming membership:", error);
-            toast.error(error.data.error);
+            toast.error(error.data.error || error.data.message || "You must join the channel to complete this task!");
             triggerErrorVibration()
         }
     };
