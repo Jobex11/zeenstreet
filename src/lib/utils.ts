@@ -216,7 +216,7 @@ export const checkWealthClassUnlock: CheckWealthClassUnlock = (
 
 export function triggerErrorVibration() {
     if (navigator.vibrate) {
-        navigator.vibrate([500, 200, 500]);
+        navigator.vibrate([500]);
     } else {
         console.warn("Vibration API is not supported on this device.");
     }
