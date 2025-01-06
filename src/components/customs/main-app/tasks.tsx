@@ -1,22 +1,20 @@
-import { useGetAllcardsQuery } from "@/hooks/redux/cards";
+import SocialsCategory from "@/components/common/main-app/task-categories/socials";
 import { CardType } from "@/types/card.types";
 import wavybg from "@assets/images/card_bg.svg";
 import dotsbg from "@assets/images/dotted-bg.png";
-import { Button } from '@components/ui/button';
-import { Skeleton } from "@components/ui/skeleton"
-import { Card } from "@components/ui/card";
-import * as Progress from "@radix-ui/react-progress";
-import { Fragment, useEffect, useState, useRef } from 'react';
-// import { FiLoader } from "react-icons/fi";
-import { SlLock } from 'react-icons/sl';
 import taskImg from "@assets/images/icons/tasks_img.svg";
-import RaveLogo from "@assets/images/icons/zenstreet_logo.png"
+import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
 import ReferralsCategory from "@components/common/main-app/task-categories/referrals";
-import { useGetReferralTaskQuery } from "@/hooks/redux/referrals";
-import { useGetSocialTasksQuery } from "@/hooks/redux/tasks";
-import SocialsCategory from "@/components/common/main-app/task-categories/socials";
+import { Button } from '@components/ui/button';
+import { Card } from "@components/ui/card";
+import { Skeleton } from "@components/ui/skeleton";
+import { useGetAllcardsQuery } from "@hooks/redux/cards";
+import { useGetReferralTaskQuery } from "@hooks/redux/referrals";
+import { useGetSocialTasksQuery } from "@hooks/redux/tasks";
+import * as Progress from "@radix-ui/react-progress";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { FiLoader } from "react-icons/fi";
-import React from "react";
+import { SlLock } from 'react-icons/sl';
 
 function Tasks() {
 
@@ -59,7 +57,7 @@ function Tasks() {
             }} className=' py-3 h-full px-3 min-w-full '>
                 {/* task header */}
                 <header className="flex flex-col gap-3 w-full">
-                    {isLoadingCards && <Skeleton className={"max-h-32 h-32 w-full bg-slate-700 shadow-xl"} />}
+                    {isLoadingCards && <Skeleton className={"max-h-32 h-32 w-full bg-slate-700 shadow-2xl"} />}
                     <div className={`relative flex items-center gap-8 pb-5 mb-4 px-4 snap-x snap-mandatory overflow-x-auto`}>
                         {!isLoadingCards && cards?.cards.length > 0 && cards?.cards.slice(0, 2).map((card: CardType) => (
                             <Card
@@ -126,7 +124,7 @@ function Tasks() {
                                 style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}
                                 key={tab}
                                 onClick={() => handleActiveTabs(tab)}
-                                className={`poppins object-cover px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm  w-[117px] h-[39px] " : "w-[88px] h-[31px] rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "}`}>
+                                className={`work-sans  object-cover px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm  w-[117px] h-[39px] " : "w-[88px] h-[31px] rounded-md outline-none ring-0 border-none shadow-none font-normal text-[11px] "}`}>
                                 {tab}
                                 {tabs !== tab && <div className='bg-black/10 absolute right-0 left-0 h-full w-full z-10' />}
                             </Button>
@@ -160,7 +158,7 @@ function Tasks() {
                                         refetchCards();
                                     }}
                                     telegram_id={telegramId}
-                                    type={`${tasks.countdown !== 0 ? "Referral" : ""}`}
+                                    type={`${tasks.countdown !== 0 ? "Special" : ""}`}
                                 />
                             ))}
                         </Fragment>}

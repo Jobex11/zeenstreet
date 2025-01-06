@@ -36,7 +36,7 @@ import { toast } from "sonner";
 import { Fragment } from "react";
 import { Skeleton } from "@components/ui/skeleton"
 import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
-import { getUserRank } from "@/lib/utils";
+import { getUserRank, triggerErrorVibration } from "@/lib/utils";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
 
@@ -45,7 +45,7 @@ const wealthClass = [
     {
         shareType: "bottom_feeders",
         name: "Bottom Feeders",
-        rewards: 50,
+        rewards: 500,
         img: wood_force,
         description:
             "For those who rise from the deep, a humble start that they keep.",
@@ -53,7 +53,7 @@ const wealthClass = [
     {
         shareType: "the_aspirers",
         name: "The Aspirers",
-        rewards: 70,
+        rewards: 700,
         img: earth_force,
         description:
             "Dreams take flight and reach the sky, as these souls soar high.",
@@ -61,7 +61,7 @@ const wealthClass = [
     {
         shareType: "stable_money",
         name: "Stable Money",
-        rewards: 85,
+        rewards: 800,
         img: metal_force,
         description:
             "Built on strength, steadfast and sure, wealth that will always endure.",
@@ -69,7 +69,7 @@ const wealthClass = [
     {
         shareType: "high_achievers",
         name: "High Achievers",
-        rewards: 100,
+        rewards: 1000,
         img: wave_force,
         description:
             "With goals in sight, they climb and strive, their success comes alive.",
@@ -77,21 +77,21 @@ const wealthClass = [
     {
         shareType: "elite_circle",
         name: "Elite Circle",
-        rewards: 110,
+        rewards: 1500,
         img: water_force,
         description: "A select few who stand apart, their wisdom flowing like art.",
     },
     {
         shareType: "legacy_wealth",
         name: "Legacy Wealth",
-        rewards: 120,
+        rewards: 1700,
         img: ice_force,
         description: "Built to last, a timeless blend, wealth that will never end.",
     },
     {
         shareType: "titans",
         name: "Titans",
-        rewards: 200,
+        rewards: 1800,
         img: fire_force,
         description:
             "Mighty and strong, they rise above, their power known far and wide, like a burning love.",
@@ -99,7 +99,7 @@ const wealthClass = [
     {
         shareType: "planet_shakers",
         name: "Planet Shakers",
-        rewards: 130,
+        rewards: 1900,
         img: light_force,
         description:
             "With force and flair, they change the game, their impact is never the same.",
@@ -107,7 +107,7 @@ const wealthClass = [
     {
         shareType: "sovereign_wealth",
         name: "Sovereign Wealth",
-        rewards: 140,
+        rewards: 2000,
         img: cosmic_force,
         description:
             "Their wealth is vast, beyond the skies, a legacy that never dies.",
@@ -195,7 +195,7 @@ function Profile() {
             toast.error(err?.data?.error || "Error updating shares", {
                 className: "text-xs work-sans",
             });
-            navigator.vibrate([50, 50]);
+            triggerErrorVibration()
         }
     };
 
@@ -480,7 +480,7 @@ function Profile() {
                                                         checkIfClaimed(item.shareType) ||
                                                         !item.isLocked
                                                     }
-                                                    className={`bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans ${(updatingShares || checkIfClaimed(item.shareType) || item.isLocked) &&
+                                                    className={`bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans ${(updatingShares || checkIfClaimed(item.shareType) || !item.isLocked) &&
                                                         "opacity-50 cursor-not-allowed"
                                                         }`}
                                                 >

@@ -84,7 +84,7 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
 
                     <Button onClick={handleCompleteRefTasks}
                         disabled={completing || taskCompleted}
-                        className={"bg-orange-500 text-white h-8 tex-[11px] rounded-full hover:bg-orange-600 work-sans"}>
+                        className={"bg-orange-500 text-white h-7 tex-[10px] rounded-md hover:bg-orange-600 work-sans"}>
                         {completing ? "Check.." : `Check`}
                     </Button>
                 </div>

@@ -9,6 +9,8 @@ import { useUpdateUserSharesMutation } from "@hooks/redux/shares";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useUpdateUserDataMutation } from "@/hooks/redux/users";
+import Confetti from "react-confetti";
+import useWindowSize from "@hooks/useWindowsize";
 
 interface RewardsProps {
   shares: number;
@@ -24,10 +26,12 @@ export const Rewards = (
     setScreens?: (value: React.SetStateAction<string>) => void
   }
 ) => {
+
+  const [showConfetti, setShowConfetti] = useState(false);
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const [updateShare, { isLoading }] = useUpdateUserSharesMutation();
   const [updateData, { isLoading: updating }] = useUpdateUserDataMutation();
-
+  const { width, height } = useWindowSize();
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       const initData = window.Telegram.WebApp.initDataUnsafe;
@@ -42,26 +46,33 @@ export const Rewards = (
 
   const handleUpdateUserShare = async () => {
     try {
-      // const updatePayload = { };
-      const shares = await updateShare({ shares: user.shares, telegram_id: telegramId, shareType: "reward_shares23" }).unwrap();
+      const shares = await updateShare({ shares: user.shares, telegram_id: telegramId, shareType: "reward_shares" }).unwrap();
       const updatedUser = await updateData({
         telegram_id: telegramId,
         province: user.province
       }).unwrap();
       console.log("Updated user:", updatedUser);
       if (shares) {
-        setScreens?.("socials");
+        setShowConfetti(true);
+        setTimeout(() => {
+          setShowConfetti(false)
+          setScreens?.("socials");
+        }
+          , 6000);
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error?.data?.error, { className: "text-xs work-sans" });
       console.log(error.data.error)
     }
   }
+
+
   return (
     <div className="flex flex-col flex-1  justify-stretch gap-10 w-full min-h-full p-4 relative">
+      {showConfetti && <Confetti width={width} height={height} />}
       <div className="flex  flex-col justify-stretch gap-5">
-        <div className="relative h-fit w-[139px] mx-auto">
+        <div className="relative h-fit w-36 mx-auto">
           <LazyLoadImage effect="blur" src={Logo} alt="" className="h-full w-full object-contain" />
         </div>
 

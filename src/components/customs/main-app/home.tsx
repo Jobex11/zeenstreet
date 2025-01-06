@@ -9,12 +9,20 @@ import { ShareFormatter } from "@components/common/shareFormatter";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import { useGetAllRanksQuery } from "@hooks/redux/ranks"
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, Fragment } from "react";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { SlBadge } from "react-icons/sl";
 import { getUserRank, getRankIconColor } from "@lib/utils"
 import { Skeleton } from "@components/ui/skeleton";
+import ReferralsCategory from "@/components/common/main-app/task-categories/referrals";
+import { NoDataMessage } from "./tasks";
+import SocialsCategory from "@/components/common/main-app/task-categories/socials";
+import { useGetReferralTaskQuery } from "@/hooks/redux/referrals";
+import { useGetSocialTasksQuery } from "@/hooks/redux/tasks";
+import { FiLoader } from "react-icons/fi";
+import taskImg from "@assets/images/icons/tasks_img.svg";
+import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
 
 
 const imageUrls = [
@@ -27,10 +35,15 @@ const imageUrls = [
 function Home() {
 
   const [telegramId, setTelegramId] = useState<string | null>(null);
-  const [selectedFilter, setSelectedFilter] = useState("All");
+  const [selectedFilter, setSelectedFilter] = useState("Social");
   const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
   const { data: user, isLoading: loadingShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, })
-  // const { data: tasks, isLoading } = useGetAllTasksQuery(null, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true});
+  const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
+    skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
+  })
+  const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
+    skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
+  })
 
   const userRank = useMemo(
     () =>
@@ -49,9 +62,9 @@ function Home() {
 
   const rankColor = getRankIconColor(userRank);
 
-  // const filteredTasks = tasks?.tasks.filter((task: { category: string; }) =>
-  //   selectedFilter === null || selectedFilter === "All" || task.category === selectedFilter
-  // );
+  const handleActiveTabs = (name: string) => {
+    setSelectedFilter(name)
+  }
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -95,7 +108,7 @@ function Home() {
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-2 work-sans">
               <h1 className="text-white text-lg font-semibold">Today&apos;s Tasks</h1>
-              <h1 className="text-white text-sm">0 Tasks Available</h1>
+              <h1 className="text-white text-sm">{refTasks?.tasks.length + socialTasks?.tasks.length} Tasks Available</h1>
             </div>
             <div className="flex items-center gap-3">
               <DropdownMenu>
@@ -105,10 +118,10 @@ function Home() {
                   </span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-orange-600 rounded text-white flex flex-col-reverse border-none tahoma">
-                  {/* <DropdownMenuItem className={`${selectedFilter === null && "bg-white text-black"}`} onClick={() => setSelectedFilter("All")} >All</DropdownMenuItem> */}
-                  <DropdownMenuItem className={`${selectedFilter == "Special" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Special")} >Special</DropdownMenuItem>
-                  <DropdownMenuItem className={`${selectedFilter === "Events" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Events")} >Events</DropdownMenuItem>
-                  <DropdownMenuItem className={`${selectedFilter === "Referral" && "bg-white text-black"}`} onClick={() => setSelectedFilter("Referral")} >Referral</DropdownMenuItem>
+                  <DropdownMenuItem className={`${selectedFilter == "Special" && "bg-white text-black"}`} onClick={() => handleActiveTabs("Special")} >Special</DropdownMenuItem>
+                  <DropdownMenuItem className={`${selectedFilter === "Events" && "bg-white text-black"}`} onClick={() => handleActiveTabs("Events")} >Events</DropdownMenuItem>
+                  <DropdownMenuItem className={`${selectedFilter === "Referral" && "bg-white text-black"}`} onClick={() => handleActiveTabs("Referral")} >Referral</DropdownMenuItem>
+                  <DropdownMenuItem className={`${selectedFilter === "Social" && "bg-white text-black"}`} onClick={() => handleActiveTabs("Social")} >Social</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
@@ -134,36 +147,81 @@ function Home() {
 
 
           {/* task cards */}
-          <div className="flex flex-col gap-5 pt-6 pb-[7rem]">
-            {/* Loading State */}
+          <div className='flex flex-col gap-5 pt-6 pb-[7rem]'>
+            <Fragment>
+              {isLoadingRef && isLoadingSocial && <div className="flex flex-col items-center py-5">
+                <FiLoader size={30} color="white" className="animate-spin" />
+                <p className="text-white work-sans pt-4 text-sm">Updating tasks.....</p>
+              </div>}
+            </Fragment>
+
+            {selectedFilter === "Events" &&
+              <Fragment>
+                <NoDataMessage
+                  isLoading={isLoadingRef}
+                  data={refTasks}
+                  imageSrc={taskImg}
+                  message="No Available Tasks"
+                />
+              </Fragment>
+            }
+
+            {selectedFilter === "Special" &&
+              <Fragment>
+                <NoDataMessage
+                  isLoading={isLoadingRef}
+                  data={refTasks}
+                  imageSrc={taskImg}
+                  message="No Available Tasks"
+                />
+              </Fragment>
+            }
+
+            {selectedFilter === "Referral"
+              && <Fragment>
+                <NoDataMessage
+                  isLoading={isLoadingRef}
+                  data={refTasks}
+                  imageSrc={taskImg}
+                  message="No Available Tasks"
+                />
+                {isSuccess && refTasks?.tasks.length > 0 && refTasks?.tasks?.map((tasks: { _id: string; title: string; image: string; shares: number; refCount: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                  <ReferralsCategory
+                    key={tasks?._id}
+                    tasks={tasks}
+                    refetch={() => {
+                      refetchRefTasks();
+                      // refetchCards();
+                    }}
+                    telegram_id={telegramId}
+                    type={`${tasks.countdown !== 0 ? "Special" : ""}`}
+                  />
+                ))}
+              </Fragment>}
 
 
-            {/* No Tasks Available */}
-
-            {/* Tasks List */}
-            {/* {!isLoading && filteredTasks?.length > 0 && (
-              filteredTasks.map((task: {
-                _id: string;
-                title: string;
-                diminishingPoints: number[];
-                diminishingPercentage: number;
-                taskUrl: string;
-                image: string;
-                taskType: "one-time" | "recurring";
-                category: "Special" | "Events" | "Referral" | "Daily" | "Partners" | "Social";
-                diminishingRewards: "Yes" | "No";
-                countdown: number;
-                baseReward: number;
-                isExpired: boolean;
-                remainingTime: number;
-                reward: number;
-              }) => (
-                <RavegenieCard
-                  key={task._id}
-                  task={task}
-                  refetch={refetchShares} />
-              ))
-            )} */}
+            {selectedFilter === "Social"
+              && <Fragment>
+                <NoDataMessage
+                  isLoading={isLoadingRef || isLoadingSocial}
+                  data={socialTasks}
+                  imageSrc={taskImg}
+                  message="No Available Social Tasks"
+                />
+                {socialTasks?.tasks.length > 0 && socialTasks?.tasks?.map((tasks: { _id: string; chat_id: string; title: string; shares: number; socialUrl: string; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                  <SocialsCategory
+                    key={tasks?._id}
+                    tasks={tasks}
+                    refetch={() => {
+                      refetchSocialTasks();
+                      // refetchCards();
+                    }}
+                    telegram_id={telegramId}
+                    image={RaveLogo}
+                    type={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                  />
+                ))}
+              </Fragment>}
           </div>
         </div>
       </div>

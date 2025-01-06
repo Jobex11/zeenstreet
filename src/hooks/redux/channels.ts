@@ -13,7 +13,7 @@ export const channelApi = createApi({
             providesTags: ['Channel']
         }),
         getChatMemberById: builder.query({
-            query: ({ chat_id, userId }) => `/getChatMember?chat_id=${chat_id}&user_id=${userId}`,
+            query: ([chat_id, userId]) => `/getChatMember?chat_id=${chat_id}&user_id=${userId}`,
             providesTags: ['Channel']
         }),
 

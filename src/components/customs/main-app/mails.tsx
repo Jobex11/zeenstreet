@@ -73,7 +73,7 @@ function MailNotification() {
               <FiRefreshCcw color="white" className={`${isLoading && "animate-spin"}`} />
             </button>
           </div>
-          <div className={`${notifications?.notifications.length === 10 ? "block" : "hidden"} relative mb-3`}>
+          <div className={`${notifications?.notifications.length >= 10 ? "block" : "hidden"} relative mb-3`}>
             <Input
               placeholder="Search notifications..."
               value={searchQuery}

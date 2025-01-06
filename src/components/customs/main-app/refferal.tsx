@@ -6,13 +6,11 @@ import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import wavybg from "@assets/images/card_bg.svg";
 import { toast } from "sonner";
-// import { GoTriangleUp } from "react-icons/go";
 import { MdInfo } from "react-icons/md";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { Skeleton } from "@components/ui/skeleton";
 import {
   useGetReferralLinkQuery,
-  // useGetReferralCodeQuery,
   useGetTier1ReferralQuery,
   useGetTier2ReferralQuery,
   useCliamReferralSharesMutation,
@@ -34,6 +32,7 @@ import { FiLoader } from "react-icons/fi"
 import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
 import { IoCopyOutline } from "react-icons/io5";
 import { RiShareLine } from "react-icons/ri";
+import { triggerErrorVibration } from "@/lib/utils";
 
 interface Referral {
   userLogo: string;
@@ -50,7 +49,7 @@ function Referral() {
   const [tier1Page, setTier1Page] = useState<number>(1);
   const [tier2Page, setTier2Page] = useState<number>(1);
   const limit = 10;
-  const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+  const [telegramId, setTelegramId] = useState<string | null>(null);
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
@@ -97,13 +96,6 @@ function Referral() {
       refetchOnMountOrArgChange: true,
     }
   );
-
-  // const { data: referralCode } = useGetReferralCodeQuery(telegramId ?? "", {
-  //   skip: !telegramId,
-  //   refetchOnReconnect: true,
-  //   refetchOnFocus: true,
-  //   refetchOnMountOrArgChange: true,
-  // });
 
   const { data: referralLink } = useGetReferralLinkQuery(telegramId ?? "", {
     skip: !telegramId,
@@ -158,9 +150,10 @@ function Referral() {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      toast.error(error?.data || "Failed to claim referral shares.", {
+      toast.error(error?.data.error || "Failed to claim referral shares.", {
         className: "text-xs work-sans",
       });
+      triggerErrorVibration()
       console.error("Claiming referral shares error:", error);
     }
   };

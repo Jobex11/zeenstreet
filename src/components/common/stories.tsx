@@ -6,6 +6,8 @@ import { useUpdateUserSharesMutation } from "@hooks/redux/shares";
 import { useGetAllStoryQuery, useShareStoryMutation } from "@hooks/redux/stories";
 import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
 import React, { Fragment, useEffect, useState } from "react";
+import { toast } from "sonner";
+import { triggerErrorVibration } from "@/lib/utils";
 
 
 interface StoriesLayoutProps {
@@ -65,8 +67,11 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                 refetchStory()
             }, 10000);
 
-        } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
             console.error("Error sharing to story:", error);
+            toast.success(error?.data?.error || "Something went wrong!..", { className: "text-xs work-sans" })
+            triggerErrorVibration()
         }
     };
     return (
@@ -86,7 +91,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                             <div className="relative h-[13rem] w-full">
                                 <img
                                     src={story?.image}
-                                     loading="lazy"
+                                    loading="lazy"
                                     alt="Welcome image"
                                     className="h-full w-full object-cover object-bottom rounded-md"
                                 />

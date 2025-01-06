@@ -1,10 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-// baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api/tasks" }),
 
 // Define a service using a base URL and expected endpoints
 export const tasksApi = createApi({
     reducerPath: 'tasksApi',
-baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api/tasks" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api" }),
     tagTypes: ['Tasks'],
     endpoints: (builder) => ({
         getSocialTasks: builder.query({

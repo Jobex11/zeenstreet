@@ -120,8 +120,6 @@ function Ranks() {
   };
 
 
-  // const scrollableRef = useRef<HTMLDivElement>(null);
-
   // useEffect(() => {
   //   const updateHeight = () => {
   //     if (scrollableRef.current) {

@@ -96,7 +96,7 @@ export const CountdownTimer = ({ timeRemaining,countdown, _id, shares, baseRewar
                     <GiToken color={"#fca311"} size={25} />
                     {timeLeft === 0 ? shares : `${baseReward}/${shares}`} shares
                 </h1>
-                <span className={`flex items-center justify-end pb-0.5 gap-2 text-sm text-white`}>
+                <span className={`flex items-center justify-end pb-0.5 gap-2 text-xs text-white`}>
                     <IoMdClock size={25} />
                     {timeLeft > 0 ? `${Math.floor(timeLeft / 60)}:${timeLeft % 60}` : ""}
                 </span>
