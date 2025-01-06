@@ -50,6 +50,7 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.data.message, { className: "text-xs work-sans" });
+            triggerErrorVibration()
         }
     };
 
