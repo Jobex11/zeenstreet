@@ -133,8 +133,7 @@ function Profile() {
             skip: !telegramId,
             refetchOnReconnect: true,
             refetchOnFocus: true,
-            refetchOnMountOrArgChange: true,
-            pollingInterval: 2
+            refetchOnMountOrArgChange: true
         }
     );
     const { data: data, isLoading } = useGetUsernameQuery(telegramId, {

@@ -15,6 +15,7 @@ interface StoriesLayoutProps {
 }
 
 function StoriesLayout({ children }: StoriesLayoutProps) {
+    
     const chat_id = "-1002465265495"
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const { shareToStory } = useTelegramWebApp();
@@ -32,8 +33,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
         refetchOnMountOrArgChange: true,
     });
     const { data: chat } = useGetChatMemberByIdQuery([chat_id, telegramId], {
-        refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
-        pollingInterval: 2
+        refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true
     });
 
     const [shareStory, { isLoading: checkingStatus }] = useShareStoryMutation();
@@ -71,7 +71,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
 
     const handleConfirmShareToStory = async () => {
         try {
-            if (chat?.ok && ["member", "administrator", "creator"].includes(chat?.result?.status)) {
+            if (chat.ok && ["member", "administrator", "creator"].includes(chat.result.status)) {
                 const share = await shareStory(telegramId).unwrap();
                 toast.success(share.message, { className: "text-xs work-sans py-3" });
                 refetchStory();

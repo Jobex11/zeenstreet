@@ -28,6 +28,7 @@ interface User {
 
 
 function Ranks() {
+  
   const [userPages] = useState<number>(1)
   const limit = 10
   const [telegramId, setTelegramId] = useState<string | null>(null);
@@ -35,14 +36,12 @@ function Ranks() {
   const { data: allUsers, isLoading: loadingUsers, isSuccess: usersLoaded } = useGetAllUsersQuery([userPages, limit], {
     refetchOnReconnect: true,
     refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-    pollingInterval: 2
+    refetchOnMountOrArgChange: true
   });
   const { data: ranks, isSuccess: ranksLoaded } = useGetAllRanksQuery(undefined, {
     refetchOnReconnect: true,
     refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-    pollingInterval: 2
+    refetchOnMountOrArgChange: true
   });
 
 

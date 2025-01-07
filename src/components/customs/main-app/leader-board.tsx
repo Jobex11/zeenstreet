@@ -29,8 +29,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
         skip: !telegram_id,
         refetchOnReconnect: true,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        pollingInterval: 2
+        refetchOnMountOrArgChange: true
         
     });
 
@@ -40,8 +39,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
         skip: !fileId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        pollingInterval: 2
+        refetchOnMountOrArgChange: true
     });
 
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
@@ -81,8 +79,7 @@ export default function GlobalLeaderboard() {
     const { data: allUsers, isLoading, isSuccess, } = useGetAllUsersQuery(undefined, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        pollingInterval: 2
+        refetchOnMountOrArgChange: true
     });
 
 

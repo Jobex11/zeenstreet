@@ -36,7 +36,6 @@ export default function SocialsCategory({
     const [complete, { isLoading: completing }] = useCompleteSocialTasksMutation();
     const { data: chat } = useGetChatMemberByIdQuery([tasks.chat_id, telegram_id], {
         refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
-        pollingInterval: 2,
         skipPollingIfUnfocused: true
     });
     const [isMember, setIsMember] = useState(false);
@@ -54,7 +53,7 @@ export default function SocialsCategory({
                     taskId: tasks?._id,
                     telegram_id,
                 }).unwrap();
-                toast.success(completeTask.message);
+                toast.success(completeTask.message, { className: "text-xs py-3 work-sans" });
                 refetch?.();
             } else {
                 toast.error("You must join the channel to complete this task!", { className: "text-xs py-3 work-sans" });

@@ -62,8 +62,7 @@ function Referral() {
       skip: !telegramId,
       refetchOnReconnect: true,
       refetchOnFocus: true,
-      refetchOnMountOrArgChange: true,
-      pollingInterval: 2
+      refetchOnMountOrArgChange: true
     }
   );
   const { data: userData, refetch: refetchUserData } = useGetUsersByIdQuery(
@@ -82,8 +81,7 @@ function Referral() {
       skip: !telegramId,
       refetchOnReconnect: true,
       refetchOnFocus: true,
-      refetchOnMountOrArgChange: true,
-      pollingInterval: 5
+      refetchOnMountOrArgChange: true
     }
   );
 
@@ -95,7 +93,6 @@ function Referral() {
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
-      pollingInterval: 5
     }
   );
 
@@ -117,8 +114,8 @@ function Referral() {
   const handleCopyReferralLink = async () => {
     if (referralLink) {
       await navigator.clipboard.writeText(referralLink?.referralLink);
-      navigator.vibrate([50, 50]);
-      toast.info("Referral link copied!", { className: "text-xs work-sans" });
+      triggerErrorVibration()
+      toast.info("Referral link copied!", { className: "text-xs work-sans py-3" });
       setOpenDrawer((open) => !open)
     }
   };
@@ -144,7 +141,7 @@ function Referral() {
     try {
       const refShares = await claimReferralShares(telegramId).unwrap();
       if (refShares) {
-        toast.success(refShares.message, { className: "text-xs work-sans" });
+        toast.success(refShares.message, { className: "text-xs work-sans py-3" });
         refetchUserData();
         refetch()
         setShowConfetti(true);
@@ -153,7 +150,7 @@ function Referral() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error?.data.error || error?.data?.message || "Failed to claim referral shares.", {
-        className: "text-xs work-sans",
+        className: "text-xs work-sans py-3",
       });
       triggerErrorVibration()
       console.error("Claiming referral shares error:", error);
@@ -280,7 +277,7 @@ function Referral() {
               <Button
                 key={tab.name}
                 onClick={() => handleActiveTabs(tab.name)}
-                className={`work-sans object-cover w-24 h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name
+                className={`work-sans object-cover max-w-24 h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name
                   ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm"
                   : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "
                   }`}

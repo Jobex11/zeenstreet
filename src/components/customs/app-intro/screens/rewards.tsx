@@ -58,7 +58,7 @@ export const Rewards = (
           setShowConfetti(false)
           setScreens?.("socials");
         }
-          , 6000);
+          , 5000);
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -94,7 +94,7 @@ export const Rewards = (
                 <h1 className="capitalise text-lg font-bold text-white text-center py-3 aqum">Here is your Reward</h1>
 
                 <Card className="aqum flex w-56 h-[89px] mx-auto border-none flex-col rounded-xl items-center justify-center gap-2 p-3 bg-[#D25804] text-white">
-                  <h1 className=""><CountUp start={0} separator="," end={user.shares} /></h1>
+                  <h1><CountUp start={0} separator="," end={user.shares} /></h1>
                   <h1>$SHARES</h1>
                 </Card>
 
@@ -108,7 +108,7 @@ export const Rewards = (
       </div>
       <TextButton
         name={`${isLoading ? "Processing..." : "Proceed"}`}
-        disabled={isLoading || updating}
+        disabled={isLoading || updating || showConfetti}
         onClick={handleUpdateUserShare}
         className={"uppercase mt-4"}
       />
