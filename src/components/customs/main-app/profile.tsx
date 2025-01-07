@@ -21,9 +21,8 @@ import { ShareFormatter } from "@components/common/shareFormatter";
 import ConnectTonWallet from "@components/common/ton-connect-btn";
 import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
-import { DialogClose, DialogTitle } from "@components/ui/dialog";
 import card_empty from "@assets/images/icons/empty_card.svg"
-import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
+import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerTrigger } from "@components/ui/drawer";
 import {
     useGetUserSharesQuery,
     useUpdateUserSharesMutation,
@@ -133,7 +132,7 @@ function Profile() {
             skip: !telegramId,
             refetchOnReconnect: true,
             refetchOnFocus: true,
-            refetchOnMountOrArgChange: true
+            refetchOnMountOrArgChange: true,
         }
     );
     const { data: data, isLoading } = useGetUsernameQuery(telegramId, {
@@ -182,7 +181,6 @@ function Profile() {
             // console.log({ telegramId:6880808269, shares, shareType });
             console.log("Shares updated successfully:", response);
             toast.success(response?.message, { className: "text-xs work-sans" });
-            navigator.vibrate([50, 50]);
             setDrawerState((prevState) => ({
                 ...prevState,
                 [itemName]: false,
@@ -445,11 +443,11 @@ function Profile() {
                                             aria-description="dialog"
                                             className="flex flex-col  min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                         >
-                                            <DialogTitle className="sr-only" />
+                                            <DrawerTitle className="sr-only" />
                                             <div className="h-full relative flex flex-col items-center justify-around w-full pb-10  gap-3">
-                                                <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
+                                                <DrawerClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                     <IoIosClose size={30} color="#A4A4A7" />
-                                                </DialogClose>
+                                                </DrawerClose>
                                                 <img
                                                     src={item.img}
                                                     loading="lazy"
@@ -559,11 +557,11 @@ function Profile() {
                                                         aria-description="dialog"
                                                         className="flex flex-col max-h-[50%] bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                                     >
-                                                        <DialogTitle className="sr-only" />
+                                                        <DrawerTitle className="sr-only" />
                                                         <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-3 gap-5">
-                                                            <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
+                                                            <DrawerClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                                 <IoIosClose size={30} color="#A4A4A7" />
-                                                            </DialogClose>
+                                                            </DrawerClose>
                                                             <h1 className="text-white jarkata font-semibold text-lg capitalize">
                                                                 {card.title ? card.title : "Card title"}
                                                             </h1>
@@ -618,11 +616,11 @@ function Profile() {
                                                 aria-description="dialog"
                                                 className="flex flex-col min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
                                             >
-                                                <DialogTitle className="sr-only" />
+                                                <DrawerTitle className="sr-only" />
                                                 <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-5 gap-5">
-                                                    <DialogClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
+                                                    <DrawerClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                         <IoIosClose size={30} color="#A4A4A7" />
-                                                    </DialogClose>
+                                                    </DrawerClose>
                                                     <img
                                                         src={a.img}
                                                         loading="lazy"

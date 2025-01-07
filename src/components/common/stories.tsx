@@ -15,8 +15,8 @@ interface StoriesLayoutProps {
 }
 
 function StoriesLayout({ children }: StoriesLayoutProps) {
-    
-    const chat_id = "-1002465265495"
+
+    // const chat_id = "-1002465265495"
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const { shareToStory } = useTelegramWebApp();
     const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(telegramId ?? "", {
@@ -32,9 +32,13 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
-    const { data: chat } = useGetChatMemberByIdQuery([chat_id, telegramId], {
-        refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true
+    const { data: chat } = useGetChatMemberByIdQuery(telegramId, {
+        skip: !telegramId,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
     });
+    console.log("Chat", chat)
 
     const [shareStory, { isLoading: checkingStatus }] = useShareStoryMutation();
 
