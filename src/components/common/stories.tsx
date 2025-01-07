@@ -32,7 +32,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
-    const { data: chat } = useGetChatMemberByIdQuery([chat_id, telegram_id:telegramId], {
+    const { data: chat } = useGetChatMemberByIdQuery([chat_id, telegramId], {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
