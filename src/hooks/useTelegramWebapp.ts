@@ -71,6 +71,10 @@ export function useTelegramWebApp() {
         window.Telegram?.WebApp?.expand()
     }, [])
 
+    const closeApp = useCallback(() => {
+        window.Telegram?.WebApp?.close()
+    }, [])
+
     const requestFullscreen = useCallback(() => {
         window.Telegram?.WebApp?.requestFullscreen()
     }, [])
@@ -104,6 +108,7 @@ export function useTelegramWebApp() {
     return {
         ...webAppData,
         expandApp,
+        closeApp,
         requestFullscreen,
         exitFullscreen,
         addToHomeScreen,

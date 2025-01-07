@@ -2,15 +2,26 @@ import { Fragment, useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import zeenstreetLogo from "@assets/images/icons/zenstreet_logo.png";
-
+import { useGetUsersByIdQuery } from '@hooks/redux/users';
+import { useTelegramWebApp } from "@hooks/useTelegramWebapp"
 
 
 interface TelegramWrapperProps {
     children: React.ReactNode;
 }
 
+
 export default function TelegramWrapper({ children }: TelegramWrapperProps) {
     const [isTelegram, setIsTelegram] = useState(true);
+    const [telegramId, setTelegramId] = useState<string | null>(null);
+    const { closeApp } = useTelegramWebApp()
+
+    const { data: user, isSuccess, isFetching } = useGetUsersByIdQuery(telegramId ?? "", {
+        skip: !telegramId,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+    });
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
@@ -21,7 +32,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
         if (tg) {
             // Initialize Telegram WebApp settings
             tg?.ready();
-
+            setTelegramId(tg?.initDataUnsafe?.user?.id ?? null);
 
             if (tg.headerColor !== "#FFFFFF") {
                 tg.setHeaderColor("#292734");
@@ -33,7 +44,6 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
             if (tg.isVerticalSwipesEnabled) {
                 tg.disableVerticalSwipes();
             }
-
 
             // if (!tg.isClosingConfirmationEnabled) {
             //     tg.enableClosingConfirmation();
@@ -60,6 +70,14 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
             }
         };
     }, []);
+
+    useEffect(() => {
+        if (!isFetching && isSuccess && !user && !user?.user) {
+            closeApp(); //close the app if not a user
+            console.log("User", user)
+        }
+    }, [isFetching, isSuccess, user, closeApp]);
+
 
     if (isTelegram) {
         return <Fragment>{children}</Fragment>;

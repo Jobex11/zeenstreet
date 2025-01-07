@@ -28,6 +28,7 @@ declare global {
         BackButton;
         isVersionAtLeast: (version: string) => boolean;
         expand: () => void;
+        close:() => void;
         requestFullscreen: () => void;
         exitFullscreen: () => void;
         addToHomeScreen: () => void;
