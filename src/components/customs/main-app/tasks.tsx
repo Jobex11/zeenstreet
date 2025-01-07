@@ -1,6 +1,5 @@
 import SocialsCategory from "@/components/common/main-app/task-categories/socials";
 import { CardType } from "@/types/card.types";
-import wavybg from "@assets/images/card_bg.svg";
 import dotsbg from "@assets/images/dotted-bg.png";
 import taskImg from "@assets/images/icons/tasks_img.svg";
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
@@ -24,7 +23,7 @@ function Tasks() {
     const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
 
     const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
-        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
+        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, pollingInterval: 60
     })
 
     const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
@@ -121,7 +120,7 @@ function Tasks() {
                     <div ref={scrollContainerRef} className='flex items-center gap-6 overflow-x-auto max-w-full h-auto py-5 '>
                         {btnTabs.map((tab) => (
                             <Button
-                                style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}
+                                // style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}
                                 key={tab}
                                 onClick={() => handleActiveTabs(tab)}
                                 className={`work-sans  object-cover px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm  w-[117px] h-[39px] " : "w-[88px] h-[31px] rounded-md outline-none ring-0 border-none shadow-none font-normal text-[11px] "}`}>

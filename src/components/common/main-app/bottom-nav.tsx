@@ -47,7 +47,7 @@ function BottmNavigation() {
 
     return (
         <div className='fixed bottom-0 mx-auto max-w-xl w-full right-0 left-0 h-auto py-2 px-2 z-30 bg-black/95'>
-            <div className='bg-[#1C1B23] rounded-2xl h-16 w-full shadow-md '>
+            <div className='bg-[#1C1B23] rounded-2xl h-[62px] w-full shadow-md '>
                 <div className='flex items-center w-full justify-around h-full'>
                     {navLinks.map((links) => (
                         <NavLink

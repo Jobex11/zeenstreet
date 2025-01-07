@@ -1,13 +1,13 @@
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import { Button } from "@components/ui/button";
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from "@components/ui/drawer";
+import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerTitle } from "@components/ui/drawer";
 import { Skeleton } from "@components/ui/skeleton";
-import { useUpdateUserSharesMutation } from "@hooks/redux/shares";
 import { useGetAllStoryQuery, useShareStoryMutation } from "@hooks/redux/stories";
 import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
 import React, { Fragment, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { triggerErrorVibration } from "@/lib/utils";
+import { triggerErrorVibration } from "@lib/utils";
+import { useGetChatMemberByIdQuery } from "@hooks/redux/channels";
 
 
 interface StoriesLayoutProps {
@@ -15,6 +15,7 @@ interface StoriesLayoutProps {
 }
 
 function StoriesLayout({ children }: StoriesLayoutProps) {
+    const chat_id = "-1002465265495"
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const { shareToStory } = useTelegramWebApp();
     const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(telegramId ?? "", {
@@ -30,9 +31,12 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
+    const { data: chat } = useGetChatMemberByIdQuery([chat_id, telegramId], {
+        refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
+        pollingInterval: 2
+    });
 
     const [shareStory, { isLoading: checkingStatus }] = useShareStoryMutation();
-    const [updateUserShares] = useUpdateUserSharesMutation();
 
     useEffect(() => {
         if (window.Telegram && window.Telegram.WebApp) {
@@ -45,10 +49,11 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
         }
     }, []);
 
-    const handleShareToStory = async () => {
+    const handleShareStory = async () => {
         if (!story) return;
         const mediaUrl = story?.image;
         try {
+
             shareToStory(mediaUrl, {
                 text: `Hey guys it's me ${user?.user?.first_name}, join me in RaveGenie Games to earn rewards by performing tasks 🎉 and much more! \n https://t.me/RaveGenie_Bot/game?start=${user?.user?.referralCode}`,
                 widget_link: {
@@ -56,21 +61,28 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                     name: "RaveGenie Games",
                 },
             });
-
-            setTimeout(async () => {
-                await shareStory(telegramId).unwrap();
-                await updateUserShares({
-                    telegram_id: telegramId,
-                    shares: story?.reward,
-                    shareType: `story gift_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`
-                }).unwrap();
-                refetchStory()
-            }, 10000);
-
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error("Error sharing to story:", error);
-            toast.success(error?.data?.error || "Something went wrong!..", { className: "text-xs work-sans" })
+            toast.error("Something went wrong!..", { className: "text-xs work-sans py-3" })
+            triggerErrorVibration()
+        }
+    }
+
+    const handleConfirmShareToStory = async () => {
+        try {
+            if (chat?.ok && ["member", "administrator", "creator"].includes(chat?.result?.status)) {
+                const share = await shareStory(telegramId).unwrap();
+                toast.success(share.message, { className: "text-xs work-sans py-3" });
+                refetchStory();
+            } else {
+                toast.error("Did you subscribe to Ravegenie channel? 😀", { className: "text-xs py-3 work-sans" });
+                triggerErrorVibration()
+            }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.error("Error sharing to story:", error);
+            toast.error(error?.data?.message || error?.data?.error || "Something went wrong!..", { className: "text-xs work-sans py-3" })
             triggerErrorVibration()
         }
     };
@@ -106,12 +118,22 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
                                 you to share this to your story, and yes,
                                 you'll be rewarded for it!  + {story?.reward} shares 😀
                             </DrawerDescription>
-                            <Button
-                                onClick={handleShareToStory}
-                                className="bg-orange-500 hover:bg-orange-600 text-center work-sans text-white px-4 py-4"
-                            >
-                                {checkingStatus ? "Checking status....." : "Share Now"}
-                            </Button>
+                            <DrawerFooter className="flex flex-row w-full px-0">
+                                <Button
+                                    disabled={checkingStatus}
+                                    onClick={handleShareStory}
+                                    className="bg-orange-500 w-full hover:bg-orange-600 text-center work-sans text-white px-4 py-4"
+                                >
+                                    Share Now
+                                </Button>
+                                <Button
+                                    disabled={checkingStatus}
+                                    onClick={handleConfirmShareToStory}
+                                    className="bg-orange-500 w-full hover:bg-orange-600 text-center work-sans text-white px-4 py-4"
+                                >
+                                    {checkingStatus ? "Processing..." : "Confirm"}
+                                </Button>
+                            </DrawerFooter>
                         </div>
                     }
                 </DrawerContent>

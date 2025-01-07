@@ -8,10 +8,9 @@ interface Timer {
     baseReward: number;
     shares: number;
     _id: string
-
 }
 
-export const CountdownTimer = ({ timeRemaining,countdown, _id, shares, baseReward }: Timer) => {
+export const CountdownTimer = ({ timeRemaining, countdown, _id, shares, baseReward }: Timer) => {
     const TIMER_KEY = "countdown-timer";
     const [progress, setProgress] = useState<number>(0);
 
@@ -24,15 +23,13 @@ export const CountdownTimer = ({ timeRemaining,countdown, _id, shares, baseRewar
             const elapsed = Math.floor((now - lastUpdated) / 1000); // Time elapsed in seconds
             const calculatedTimeLeft = Math.max(savedTimeLeft - elapsed, 0);
 
-            // Use timeRemaining only if it is greater than the calculated value
-            return Math.max(timeRemaining, calculatedTimeLeft);
+            // Use the smaller of timeRemaining and calculatedTimeLeft
+            return Math.min(timeRemaining, calculatedTimeLeft);
         }
 
         // If no saved time, use the `timeRemaining` from the data
-        return Math.max(timeRemaining, 0);
+        return timeRemaining;
     });
-
-
 
     useEffect(() => {
         if (countdown <= 0) {
@@ -44,16 +41,14 @@ export const CountdownTimer = ({ timeRemaining,countdown, _id, shares, baseRewar
             setTimeLeft((prevTime) => {
                 const newTime = Math.max(prevTime - 1, 0);
 
-                // Save only valid `newTime` to localStorage
-                if (newTime > 0) {
-                    localStorage.setItem(
-                        TIMER_KEY + _id,
-                        JSON.stringify({
-                            savedTimeLeft: newTime,
-                            lastUpdated: Date.now(),
-                        })
-                    );
-                }
+                // Save the new time to localStorage
+                localStorage.setItem(
+                    TIMER_KEY + _id,
+                    JSON.stringify({
+                        savedTimeLeft: newTime,
+                        lastUpdated: Date.now(),
+                    })
+                );
 
                 setProgress((newTime / countdown) * 100);
                 return newTime;
@@ -63,15 +58,19 @@ export const CountdownTimer = ({ timeRemaining,countdown, _id, shares, baseRewar
         return () => clearInterval(interval);
     }, [_id, countdown]);
 
-
     useEffect(() => {
         setProgress((timeLeft / countdown) * 100);
     }, [timeLeft, countdown]);
 
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    };
+
     return (
         <div>
             <div className={`${timeLeft === 0 && "hidden"}`}>
-
                 <div
                     style={{
                         width: "100%",
@@ -97,8 +96,11 @@ export const CountdownTimer = ({ timeRemaining,countdown, _id, shares, baseRewar
                     {timeLeft === 0 ? shares : `${baseReward}/${shares}`} shares
                 </h1>
                 <span className={`flex items-center justify-end pb-0.5 gap-2 text-xs text-white`}>
+                    <span className="caption-top select-text text-gray-400 line-through">
+                        {timeLeft === 0 && baseReward}
+                    </span>
                     <IoMdClock size={25} />
-                    {timeLeft > 0 ? `${Math.floor(timeLeft / 60)}:${timeLeft % 60}` : ""}
+                    {timeLeft > 0 ? formatTime(timeLeft) : ""}
                 </span>
             </div>
         </div>

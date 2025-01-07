@@ -16,7 +16,7 @@ const schema = z.object({
   username: z
     .string()
     .min(3, "Username must be at least 3 characters.")
-    .max(20, "Username must be at most 20 characters.")
+    .max(20, "Username must be at most 13 characters.")
     .regex(
       /^[a-zA-Z0-9_]+$/,
       "Username can only contain letters, numbers, and underscores."
@@ -53,13 +53,13 @@ export function CreateUsername({
           preferred_username: data.username,
         }).unwrap(); 
 
-        toast.success("Username successfully updated!", { className: "text-xs work-sans" });
+        toast.success("Username successfully updated!", { className: "text-xs work-sans py-3" });
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         setScreens && setScreens("check-account");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error:any) {
         console.log(error)
-        toast.error(error.data.error || "An error occurred while creating username. Try again", { className: "text-xs work-sans" });
+        toast.error(error?.data?.error || error?.data?.message || "An error occurred while creating username. Try again", { className: "text-xs work-sans py-3" });
     } finally {
       setIsSubmitting(false);
     }

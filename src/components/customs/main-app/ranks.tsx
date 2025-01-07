@@ -36,11 +36,13 @@ function Ranks() {
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
+    pollingInterval: 2
   });
   const { data: ranks, isSuccess: ranksLoaded } = useGetAllRanksQuery(undefined, {
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
+    pollingInterval: 2
   });
 
 
@@ -209,11 +211,11 @@ function Ranks() {
                         //  className={"overflow-y-auto"}
                       > */}
 
-                    <div className="flex flex-col divide-y-2 divide-gray-800 my-3">
+                    <div className="flex flex-col divide-y-2 divide-gray-800">
                       {
                         group?.users?.length > 0 ?
-                          group?.users?.map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
-                            <div key={user._id} className={`flex mb-3 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
+                          group?.users?.slice(0, 30).map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
+                            <div key={user._id} className={`flex mt-3 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
                               <div className="flex items-center gap-3">
                                 <RankImage user={user} telegram_id={user.telegram_id} />
                                 <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-sm capitalize font-semibold jakarta`}>
@@ -221,7 +223,7 @@ function Ranks() {
                                 </h1>
                               </div>
                               <div>
-                                <h1 className={`font-medium text-xs jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
+                                <h1 className={`font-medium text-[11px] jakarta flex items-center gap-1 ${currentUser(user.telegram_id) ? " text-black" : "text-white"}`}>
                                   <ShareFormatter shares={user.shares} />
                                 </h1>
                               </div>

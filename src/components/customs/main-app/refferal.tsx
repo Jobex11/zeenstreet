@@ -4,7 +4,6 @@ import logo from "@assets/images/icons/zenstreet_logo.png";
 import CardWrapper from "@/components/common/cards/card-wrapper";
 import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { Button } from "@components/ui/button";
-import wavybg from "@assets/images/card_bg.svg";
 import { toast } from "sonner";
 import { MdInfo } from "react-icons/md";
 import { ShareFormatter } from "@components/common/shareFormatter";
@@ -64,6 +63,7 @@ function Referral() {
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
+      pollingInterval: 2
     }
   );
   const { data: userData, refetch: refetchUserData } = useGetUsersByIdQuery(
@@ -83,6 +83,7 @@ function Referral() {
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
+      pollingInterval: 5
     }
   );
 
@@ -94,6 +95,7 @@ function Referral() {
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
+      pollingInterval: 5
     }
   );
 
@@ -150,7 +152,7 @@ function Referral() {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      toast.error(error?.data.error || "Failed to claim referral shares.", {
+      toast.error(error?.data.error || error?.data?.message || "Failed to claim referral shares.", {
         className: "text-xs work-sans",
       });
       triggerErrorVibration()
@@ -276,15 +278,9 @@ function Referral() {
           <div className="flex items-center justify-between">
             {btnTabs.map((tab) => (
               <Button
-                style={{
-                  backgroundImage: `url(${wavybg})`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
                 key={tab.name}
                 onClick={() => handleActiveTabs(tab.name)}
-                className={`poppins object-cover  w-[88px] h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name
+                className={`work-sans object-cover w-24 h-8 px-10 bg-[#171717] relative hover:bg-transparent capitalize ${tabs === tab.name
                   ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm"
                   : "rounded-none outline-none ring-0 border-none shadow-none font-normal text-[11px] "
                   }`}
@@ -297,7 +293,7 @@ function Referral() {
             ))}
           </div>
 
-          <div className=" max-h-[500px] overflow-hidden overflow-y-auto pb-[5.5rem] pr-2">
+          <div className="max-h-[500px] overflow-hidden overflow-y-auto pb-[5.5rem] pr-2">
             {loading ? (
               <div className="text-center text-white">
                 <div className={"flex flex-col gap-3"}>

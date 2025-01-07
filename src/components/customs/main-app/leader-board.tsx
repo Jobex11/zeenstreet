@@ -6,8 +6,6 @@ import { ShareFormatter } from '@components/common/shareFormatter'
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Skeleton } from '@components/ui/skeleton'
 import { ScrollArea } from '@components/ui/scroll-area'
-// import InfiniteScroll from "react-infinite-scroll-component";
-// import { FiLoader } from "react-icons/fi"
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
 
 interface User {
@@ -32,6 +30,8 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
+        pollingInterval: 2
+        
     });
 
     const fileId = isPhotoSuccess ? photoData?.result?.photos?.[0]?.[2]?.file_id : null;
@@ -41,6 +41,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
+        pollingInterval: 2
     });
 
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
@@ -72,6 +73,8 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
 }
 
 export default function GlobalLeaderboard() {
+
+    const [telegramId, setTelegramId] = useState<string | null>(null);
     // const [userPages, setUserPage] = useState<number>(2)
     // const limit = 10
     const [activeTab, setActiveTab] = useState<'shares' | 'unlockedCardsCount' | 'referralCount'>('shares');
@@ -79,8 +82,8 @@ export default function GlobalLeaderboard() {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
+        pollingInterval: 2
     });
-    const [telegramId, setTelegramId] = useState<string | null>(null);
 
 
     useEffect(() => {
@@ -188,18 +191,18 @@ export default function GlobalLeaderboard() {
                     scrollThreshold={0.9}
                     scrollableTarget="scrollableDiv"
                 > */}
-                    {restUsers?.map((user, index) => {
-                        return (
-                            <div key={user._id} className={`${user?.telegram_id === telegramId && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
-                                <div className="flex items-center">
-                                    <span className="w-6 text-center">{index + 4}</span>
-                                    <MiniImage user={user} />
-                                    <span className="ml-2 jakarta font-medium text-sm">{user.username.slice(0, 10)}</span>
-                                </div>
-                                <span className="text-sm work-sans pr-2"><ShareFormatter shares={user[activeTab]} /></span>
+                {restUsers?.slice(0, 30).map((user, index) => {
+                    return (
+                        <div key={user._id} className={`${user?.telegram_id === telegramId && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
+                            <div className="flex items-center">
+                                <span className="w-6 text-center">{index + 4}</span>
+                                <MiniImage user={user} />
+                                <span className="ml-2 jakarta font-medium text-sm">{user.username}</span>
                             </div>
-                        )
-                    })}
+                            <span className="text-sm work-sans pr-2"><ShareFormatter shares={user[activeTab]} /></span>
+                        </div>
+                    )
+                })}
                 {/* </InfiniteScroll> */}
             </ScrollArea>
         </div>

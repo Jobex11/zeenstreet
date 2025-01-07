@@ -24,7 +24,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
 
 
             if (tg.headerColor !== "#FFFFFF") {
-                tg.setHeaderColor("#292734");
+                tg.setHeaderColor("#29273");
             }
             if (tg.bottomBarColor !== "#000000") {
                 tg.setBottomBarColor("#000000");

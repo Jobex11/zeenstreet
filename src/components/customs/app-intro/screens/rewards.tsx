@@ -62,7 +62,7 @@ export const Rewards = (
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      toast.error(error?.data?.error, { className: "text-xs work-sans" });
+      toast.error(error?.data?.error, { className: "text-xs work-sans py-3" });
       console.log(error.data.error)
     }
   }

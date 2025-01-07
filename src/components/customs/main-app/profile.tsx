@@ -134,6 +134,7 @@ function Profile() {
             refetchOnReconnect: true,
             refetchOnFocus: true,
             refetchOnMountOrArgChange: true,
+            pollingInterval: 2
         }
     );
     const { data: data, isLoading } = useGetUsernameQuery(telegramId, {

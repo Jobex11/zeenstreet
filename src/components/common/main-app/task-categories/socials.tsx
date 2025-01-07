@@ -34,11 +34,15 @@ export default function SocialsCategory({
 }: SocialTasksProps) {
     const { openLink } = useTelegramWebApp();
     const [complete, { isLoading: completing }] = useCompleteSocialTasksMutation();
-    const { data: chat } = useGetChatMemberByIdQuery([tasks.chat_id, telegram_id]);
+    const { data: chat } = useGetChatMemberByIdQuery([tasks.chat_id, telegram_id], {
+        refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
+        pollingInterval: 2,
+        skipPollingIfUnfocused: true
+    });
     const [isMember, setIsMember] = useState(false);
 
     const handleJoinChannel = () => {
-        openLink(tasks.socialUrl, { try_instant_view: false });
+        openLink(tasks?.socialUrl, { try_instant_view: false });
         setIsMember(true);
     };
 
@@ -53,13 +57,13 @@ export default function SocialsCategory({
                 toast.success(completeTask.message);
                 refetch?.();
             } else {
-                toast.error("You must join the channel to complete this task!", { className: "text-xs work-sans" });
+                toast.error("You must join the channel to complete this task!", { className: "text-xs py-3 work-sans" });
                 triggerErrorVibration()
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error("Error confirming membership:", error);
-            toast.error(error.data.error || error.data.message || "You must join the channel to complete this task!");
+            toast.error(error.data.error || error.data.message || "You must join the channel to complete this task!", { className: "text-xs py-3 work-sans" });
             triggerErrorVibration()
         }
     };
@@ -83,10 +87,9 @@ export default function SocialsCategory({
                             src={image}
                             alt="referrals logo"
                             loading="lazy"
-                            className="h-16 w-16 rounded-lg object-cover object-center"
-                        />
+                            className={"h-12 w-12 rounded-full object-cover object-center"} />
                         <div className="gap-1 flex flex-col">
-                            <h1 className={"text-base work-sans font-semibold text-white"}>{tasks.title}</h1>
+                            <h1 className={"text-sm work-sans font-semibold text-white line-clamp-2"}>{tasks.title}</h1>
                             <h1 className="text-xs poppins text-orange-500">{type}</h1>
                         </div>
                     </div>
