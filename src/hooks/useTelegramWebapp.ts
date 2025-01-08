@@ -99,6 +99,10 @@ export function useTelegramWebApp() {
         window.Telegram?.WebApp?.openLink(url, options);
     }, [])
 
+    const openTelegramLink = useCallback((url: string) => {
+        window.Telegram?.WebApp?.openTelegramLink(url);
+    }, [])
+
     const isVersionAtLeast = useCallback((version: string) => {
         return window.Telegram?.WebApp?.isVersionAtLeast(version) || false
     }, [])
@@ -115,5 +119,6 @@ export function useTelegramWebApp() {
         shareToStory,
         isVersionAtLeast,
         openLink,
+        openTelegramLink
     }
 }

@@ -16,6 +16,28 @@ export const tasksApi = createApi({
                 method: "POST",
                 body: { taskId }
             })
+        }),
+        getPartnersTasks: builder.query({
+            query: (telegram_id) => `/partners/tasks/${telegram_id}`,
+            providesTags: ['Tasks']
+        }),
+        completePartnersTasks: builder.mutation({
+            query: ({ telegram_id, taskId }) => ({
+                url: `/partners/${telegram_id}/complete`,
+                method: "POST",
+                body: { taskId },
+            })
+        }),
+        getEventsTasks: builder.query({
+            query: (telegram_id) => `/events/tasks/${telegram_id}`,
+            providesTags: ['Tasks']
+        }),
+        completeEventsTasks: builder.mutation({
+            query: ({ telegram_id, taskId }) => ({
+                url: `/events/${telegram_id}/complete`,
+                method: "POST",
+                body: { taskId },
+            })
         })
     }),
 })
@@ -23,5 +45,9 @@ export const tasksApi = createApi({
 
 export const {
     useGetSocialTasksQuery,
-    useCompleteSocialTasksMutation
+    useCompleteSocialTasksMutation,
+    useGetPartnersTasksQuery,
+    useCompletePartnersTasksMutation,
+    useGetEventsTasksQuery,
+    useCompleteEventsTasksMutation,
 } = tasksApi

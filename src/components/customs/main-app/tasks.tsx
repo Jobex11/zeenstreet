@@ -1,15 +1,16 @@
+import EventsTasksCategory from "@/components/common/main-app/task-categories/events";
+import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
 import SocialsCategory from "@/components/common/main-app/task-categories/socials";
 import { CardType } from "@/types/card.types";
 import dotsbg from "@assets/images/dotted-bg.png";
 import taskImg from "@assets/images/icons/tasks_img.svg";
-import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
 import ReferralsCategory from "@components/common/main-app/task-categories/referrals";
 import { Button } from '@components/ui/button';
 import { Card } from "@components/ui/card";
 import { Skeleton } from "@components/ui/skeleton";
 import { useGetAllcardsQuery } from "@hooks/redux/cards";
 import { useGetReferralTaskQuery } from "@hooks/redux/referrals";
-import { useGetSocialTasksQuery } from "@hooks/redux/tasks";
+import { useGetEventsTasksQuery, useGetPartnersTasksQuery, useGetSocialTasksQuery } from "@hooks/redux/tasks";
 import * as Progress from "@radix-ui/react-progress";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { FiLoader } from "react-icons/fi";
@@ -19,18 +20,41 @@ function Tasks() {
 
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-    const [tabs, setTabs] = useState<string>("Referral");
-    const btnTabs = ["All", "Special", "Daily", "events", "Referral", "Partners", "Social"];
+    const [tabs, setTabs] = useState<string>("Events");
+    const btnTabs = ["Events", "Referral", "Partners", "Social"];
 
     const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
-        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, pollingInterval: 3600
+        skip: !telegramId,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+        pollingInterval: 3600
     })
 
     const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
-        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
+        skip: !telegramId,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
     })
     const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
-        skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
+        skip: !telegramId,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+    })
+
+    const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(telegramId, {
+        skip: !telegramId,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+    })
+    const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(telegramId, {
+        skip: !telegramId,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
     })
 
     const handleActiveTabs = (name: string) => {
@@ -120,7 +144,6 @@ function Tasks() {
                     <div ref={scrollContainerRef} className='flex items-center gap-6 overflow-x-auto max-w-full h-auto py-5 '>
                         {btnTabs.map((tab) => (
                             <Button
-                                // style={{ backgroundImage: `url(${wavybg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}
                                 key={tab}
                                 onClick={() => handleActiveTabs(tab)}
                                 className={`work-sans max-w-28 object-cover px-10 bg-[#000000] relative hover:bg-transparent capitalize ${tabs === tab ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm  w-[117px] h-[39px] " : "w-[88px] h-[31px] rounded-md outline-none ring-0 border-none shadow-none font-normal text-[11px] "}`}>
@@ -134,7 +157,7 @@ function Tasks() {
                 {/* task cards */}
                 <div className='flex flex-col gap-5 pt-6 pb-[7rem]'>
                     <Fragment>
-                        {isLoadingRef && isLoadingSocial && <div className="flex flex-col items-center py-5">
+                        {isLoadingRef && isLoadingSocial && isLoadingEvents && isLoadingPartners && <div className="flex flex-col items-center py-5">
                             <FiLoader size={30} color="white" className="animate-spin" />
                             <p className="text-white work-sans pt-4 text-sm">Updating tasks.....</p>
                         </div>}
@@ -166,12 +189,12 @@ function Tasks() {
                     {tabs === "Social"
                         && <Fragment>
                             <NoDataMessage
-                                isLoading={isLoadingRef || isLoadingSocial}
+                                isLoading={isLoadingSocial}
                                 data={socialTasks}
                                 imageSrc={taskImg}
                                 message="No Available Social Tasks"
                             />
-                            {socialTasks?.tasks.length > 0 && socialTasks?.tasks?.map((tasks: { _id: string; chat_id: string; title: string; shares: number; socialUrl: string; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                            {socialTasks?.tasks.length > 0 && socialTasks?.tasks?.map((tasks: { _id: string; chat_id: string; image: string; title: string; shares: number; socialUrl: string; countdown: number; baseReward: number; timeRemaining: number; }) => (
                                 <SocialsCategory
                                     key={tasks?._id}
                                     tasks={tasks}
@@ -180,7 +203,50 @@ function Tasks() {
                                         refetchCards();
                                     }}
                                     telegram_id={telegramId}
-                                    image={RaveLogo}
+                                    type={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                                />
+                            ))}
+                        </Fragment>}
+
+                    {tabs === "Events"
+                        && <Fragment>
+                            <NoDataMessage
+                                isLoading={isLoadingEvents}
+                                data={eventsTasks}
+                                imageSrc={taskImg}
+                                message="No Available Events Tasks"
+                            />
+                            {eventsTasks?.tasks.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                                <EventsTasksCategory
+                                    key={tasks?._id}
+                                    tasks={tasks}
+                                    refetch={() => {
+                                        refetchEventsTasks();
+                                        refetchCards();
+                                    }}
+                                    telegram_id={telegramId}
+                                    type={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                                />
+                            ))}
+                        </Fragment>}
+
+                    {tabs === "Partners"
+                        && <Fragment>
+                            <NoDataMessage
+                                isLoading={isLoadingPartners}
+                                data={partnersTasks}
+                                imageSrc={taskImg}
+                                message="No Available Partners Tasks"
+                            />
+                            {partnersTasks?.tasks.length > 0 && partnersTasks?.tasks?.map((tasks: { _id: string; url: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                                <PartnersTasksCategory
+                                    key={tasks?._id}
+                                    tasks={tasks}
+                                    refetch={() => {
+                                        refetchPartnersTasks();
+                                        refetchCards();
+                                    }}
+                                    telegram_id={telegramId}
                                     type={`${tasks.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}

@@ -1,20 +1,21 @@
 import { Fragment, useEffect, useState } from "react";
 import CardWrapper from "@components/common/cards/card-wrapper"
-import { useCompleteRefTasksMutation } from "@hooks/redux/referrals"
 import { useGetUsersByIdQuery } from "@hooks/redux/users"
 import { toast } from "sonner"
 import { CountdownTimer } from "../countdown-timer";
 import { triggerErrorVibration } from "@/lib/utils";
 import { Badge } from "@components/ui/badge";
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
+import { useCompleteEventsTasksMutation } from "@hooks/redux/tasks";
+import { useTelegramWebApp } from "@/hooks/useTelegramWebapp";
 
-export interface RefProps {
+export interface EventsProps {
     tasks: {
         title: string;
         shares: number;
         image: string;
         _id: string;
-        refCount: number;
+        url: string;
         countdown: number;
         baseReward: number;
         timeRemaining: number;
@@ -25,16 +26,24 @@ export interface RefProps {
 }
 
 
-export default function ReferralsCategory({ tasks, telegram_id, refetch, type }: RefProps) {
-    
+export default function EventsTasksCategory({ tasks, telegram_id, refetch, type }: EventsProps) {
+
     const [taskCompleted, setTaskCompleted] = useState(false)
+    const [hasClickedLink, setHasClickedLink] = useState(false);
+    const { openTelegramLink } = useTelegramWebApp()
     const { data: user } = useGetUsersByIdQuery(telegram_id, {
         refetchOnReconnect: true, refetchOnFocus: true
     })
+    const [complete, { isLoading: completing }] = useCompleteEventsTasksMutation();
 
-    const [complete, { isLoading: completing }] = useCompleteRefTasksMutation();
 
-    const handleCompleteRefTasks = async () => {
+    const handleClickLink = () => {
+        openTelegramLink(tasks?.url);
+        setHasClickedLink(true);
+    };
+
+
+    const handleCompleteEventsTasks = async () => {
         if (taskCompleted) {
             toast.error("You have performed this task already!", { className: "text-xs work-sans py-3" });
             triggerErrorVibration();
@@ -42,11 +51,11 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
         }
 
         try {
-            const completeRefTasks = await complete({
+            const completeEventsTasks = await complete({
                 taskId: tasks._id,
                 telegram_id,
             }).unwrap();
-            toast.success(completeRefTasks.message, { className: "text-xs work-sans py-3" });
+            toast.success(completeEventsTasks.message, { className: "text-xs work-sans py-3" });
             refetch?.();
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -66,13 +75,22 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
         }
     }, [user?.user, tasks._id, refetch]);
 
+
+    const handleButtonClick = () => {
+        if (!hasClickedLink) {
+            handleClickLink();
+        } else {
+            handleCompleteEventsTasks();
+        }
+    };
+
     return (
         <Fragment>
             <CardWrapper className={`flex flex-col px-2 min-h-fit border-[3px] border-[#c781ff]`}>
                 <div className={`flex items-center justify-between pb-2`}>
                     <div className={"flex items-center flex-row gap-3 py-3"}>
                         <img
-                             src={tasks.image || RaveLogo}
+                            src={tasks.image || RaveLogo}
                             alt={"referrals logo"}
                             loading={"lazy"}
                             className={"h-12 w-12 rounded-full object-cover object-center"} />
@@ -88,7 +106,7 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
                         timeRemaining={tasks.timeRemaining}
                         disabled={completing || taskCompleted}
                         btnTitle={completing ? "Check.." : `Check`}
-                        onClick={handleCompleteRefTasks}
+                        onClick={handleButtonClick}
                         countdown={tasks.countdown}
                         shares={tasks.shares}
                         baseReward={tasks.baseReward}

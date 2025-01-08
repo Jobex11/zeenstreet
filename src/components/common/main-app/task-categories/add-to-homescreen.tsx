@@ -6,14 +6,15 @@ import { Download, X, CheckCircle, HelpCircle, AlertTriangle } from 'lucide-reac
 import { useTelegramWebApp } from '@hooks/useTelegramWebapp'
 import { useUpdateUserSharesMutation } from '@hooks/redux/shares'
 import { toast } from 'sonner'
-
+import { triggerErrorVibration } from "@lib/utils"
 
 interface Props {
-    telegram_id: string | null
+    telegram_id: string | null;
+    disableBtn: boolean;
 }
 
-export function AddToHomeScreen({ telegram_id }: Props) {
-    
+export function AddToHomeScreen({ telegram_id, disableBtn }: Props) {
+
     const [status, setStatus] = useState<'initial' | 'added' | 'unsupported' | 'unknown' | 'missed'>('initial')
     const { addToHomeScreen, checkHomeScreenStatus } = useTelegramWebApp()
 
@@ -49,8 +50,12 @@ export function AddToHomeScreen({ telegram_id }: Props) {
         } catch (error: any) {
             console.error('Error updating user shares:', error)
             toast.error(error?.data?.error || error?.data?.message || "Something went wrong please try again!", { className: "text-xs work-sans py-3" })
+            triggerErrorVibration()
         }
+
     }
+
+
     if (status === 'added') {
         return (
             <Alert className={"bg-[#1a1823] flex flex-col text-white work-sans"}>
@@ -60,10 +65,16 @@ export function AddToHomeScreen({ telegram_id }: Props) {
                     The app has been added to your home screen.
                 </AlertDescription>
                 <Button
-                    disabled={isLoading}
+                    disabled={isLoading || disableBtn}
                     onClick={handleClaimShares}
-                    className={"bg-orange-500 hover:bg-orange-600 w-full text-white text-center "}>
-                    {isLoading ? "processing...." : " Claim 500 shares"}
+                    className={`bg-orange-500 hover:bg-orange-600 w-full text-white text-center ${isLoading || disableBtn ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                >
+                    {isLoading
+                        ? "Processing...."
+                        : disableBtn
+                            ? "Reward Claimed"
+                            : "Claim 500 Shares"}
                 </Button>
             </Alert>
         )

@@ -343,6 +343,9 @@ function Profile() {
             , img: milestone_7
         },
     ];
+
+    const disableClaimShareBtn =
+        userDataCard?.user?.claimedShares?.["Add to home screen"] || false;
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -639,10 +642,12 @@ function Profile() {
                             </div>
                         </div>
                     </div>
-                    <AddToHomeScreen telegram_id={telegramId} />
+                    <AddToHomeScreen
+                        telegram_id={telegramId}
+                        disableBtn={disableClaimShareBtn} />
                 </div>
             </div>
-          
+
         </div>
     );
 }

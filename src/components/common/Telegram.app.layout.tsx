@@ -14,7 +14,7 @@ interface TelegramWrapperProps {
 export default function TelegramWrapper({ children }: TelegramWrapperProps) {
     const [isTelegram, setIsTelegram] = useState(true);
     const [telegramId, setTelegramId] = useState<string | null>(null);
-    const { closeApp } = useTelegramWebApp()
+    const { closeApp } = useTelegramWebApp();
 
     const { data: user, isSuccess, isFetching } = useGetUsersByIdQuery(telegramId ?? "", {
         skip: !telegramId,

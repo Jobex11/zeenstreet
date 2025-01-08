@@ -7,6 +7,7 @@ import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
 import { triggerErrorVibration } from "@lib/utils";
 import { useGetChatMemberByIdQuery } from "@hooks/redux/channels";
 import { Badge } from "@components/ui/badge"
+import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
 
 export interface SocialTasksProps {
     tasks: {
@@ -18,28 +19,28 @@ export interface SocialTasksProps {
         countdown: number;
         baseReward: number;
         timeRemaining: number;
+        image: string;
     };
     refetch?: () => void;
     telegram_id?: string | null;
-    image: string;
     type?: string;
 }
 
 export default function SocialsCategory({
     tasks,
-    image,
     telegram_id,
     refetch,
     type,
 }: SocialTasksProps) {
     
     const { openLink } = useTelegramWebApp();
+    const [isMember, setIsMember] = useState(false);
     const [complete, { isLoading: completing }] = useCompleteSocialTasksMutation();
     const { data: chat } = useGetChatMemberByIdQuery([tasks.chat_id, telegram_id], {
         refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true,
         skipPollingIfUnfocused: true
     });
-    const [isMember, setIsMember] = useState(false);
+
 
     const handleJoinChannel = () => {
         openLink(tasks?.socialUrl, { try_instant_view: false });
@@ -84,7 +85,7 @@ export default function SocialsCategory({
                 >
                     <div className="flex items-center flex-row gap-3 py-3">
                         <img
-                            src={image}
+                            src={tasks.image || RaveLogo}
                             alt="referrals logo"
                             loading="lazy"
                             className={"h-12 w-12 rounded-full object-cover object-center"} />
