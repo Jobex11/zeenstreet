@@ -5,7 +5,7 @@ import { useGetUsersByIdQuery } from "@hooks/redux/users"
 import { toast } from "sonner"
 import { CountdownTimer } from "../countdown-timer";
 import { triggerErrorVibration } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export interface RefProps {
     tasks: {
@@ -25,6 +25,7 @@ export interface RefProps {
 
 
 export default function ReferralsCategory({ tasks, telegram_id, refetch, type }: RefProps) {
+    
     const [taskCompleted, setTaskCompleted] = useState(false)
     const { data: user } = useGetUsersByIdQuery(telegram_id, {
         refetchOnReconnect: true, refetchOnFocus: true
@@ -67,8 +68,8 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
     return (
         <Fragment>
             <CardWrapper className={`flex flex-col px-2 min-h-fit border-[3px] border-[#c781ff]`}>
-                <div className={`flex items-center justify-between pb-2 ${tasks.timeRemaining === 0 && "border-b border-orange-300"}`}>
-                    <div className={"flex items-center flex-row gap-3 py-2"}>
+                <div className={`flex items-center justify-between pb-2`}>
+                    <div className={"flex items-center flex-row gap-3 py-3"}>
                         <img
                             src={tasks.image}
                             alt={"referrals logo"}
@@ -76,21 +77,17 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
                             className={"h-12 w-12 rounded-full object-cover object-center"} />
                         <div className={"gap-1 flex flex-col"}>
                             <h1 className={"text-sm work-sans font-semibold text-white line-clamp-2"}>{tasks.title}</h1>
-                            <h1 className={"text-xs work-sans text-orange-500"}>{type}</h1>
-
+                            <Badge variant="outline" className="text-[8px] w-fit poppins text-orange-500">{type}</Badge>
                         </div>
                     </div>
-
-                    <Button onClick={handleCompleteRefTasks}
-                        disabled={completing || taskCompleted}
-                        className={"bg-orange-500 text-white h-6 px-2 text-[10px] rounded-md hover:bg-orange-600 work-sans"}>
-                        {completing ? "Check.." : `Check`}
-                    </Button>
                 </div>
                 <div>
                     <CountdownTimer
                         _id={tasks._id}
                         timeRemaining={tasks.timeRemaining}
+                        disabled={completing || taskCompleted}
+                        btnTitle={completing ? "Check.." : `Check`}
+                        onClick={handleCompleteRefTasks}
                         countdown={tasks.countdown}
                         shares={tasks.shares}
                         baseReward={tasks.baseReward}

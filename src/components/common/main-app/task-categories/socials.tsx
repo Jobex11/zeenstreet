@@ -1,12 +1,12 @@
 import { Fragment, useState } from "react";
 import CardWrapper from "@components/common/cards/card-wrapper";
-import { Button } from "@components/ui/button";
 import { toast } from "sonner";
 import { CountdownTimer } from "../countdown-timer";
 import { useCompleteSocialTasksMutation } from "@hooks/redux/tasks";
 import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
 import { triggerErrorVibration } from "@lib/utils";
 import { useGetChatMemberByIdQuery } from "@hooks/redux/channels";
+import { Badge } from "@components/ui/badge"
 
 export interface SocialTasksProps {
     tasks: {
@@ -32,6 +32,7 @@ export default function SocialsCategory({
     refetch,
     type,
 }: SocialTasksProps) {
+    
     const { openLink } = useTelegramWebApp();
     const [complete, { isLoading: completing }] = useCompleteSocialTasksMutation();
     const { data: chat } = useGetChatMemberByIdQuery([tasks.chat_id, telegram_id], {
@@ -79,37 +80,31 @@ export default function SocialsCategory({
         <Fragment>
             <CardWrapper className="flex flex-col px-2 min-h-fit border-[3px] border-[#c781ff]">
                 <div
-                    className={`flex items-center justify-between ${tasks.timeRemaining === 0 && "border-b border-gray-300"}`}
+                    className={`flex items-center justify-between`}
                 >
-                    <div className="flex items-center flex-row gap-3 py-2">
+                    <div className="flex items-center flex-row gap-3 py-3">
                         <img
                             src={image}
                             alt="referrals logo"
                             loading="lazy"
                             className={"h-12 w-12 rounded-full object-cover object-center"} />
                         <div className="gap-1 flex flex-col">
-                            <h1 className={"text-sm work-sans font-semibold text-white line-clamp-2"}>{tasks.title}</h1>
-                            <h1 className="text-xs poppins text-orange-500">{type}</h1>
+                            <h1 className={"text-sm work-sans font-medium text-white line-clamp-2"}>{tasks.title}</h1>
+                            <Badge variant="outline" className="text-[8px] w-fit poppins text-orange-500">{type}</Badge>
                         </div>
-                    </div>
-                    <div>
-                        <Button
-                            onClick={handleButtonClick}
-                            disabled={completing}
-                            className="bg-orange-500 text-white h-7 tex-[10px] rounded-md hover:bg-orange-600 work-sans"
-                        >
-                            {completing
-                                ? "Check..."
-                                : isMember
-                                    ? "Check"
-                                    : "Join"}
-                        </Button>
-                    </div>
+                    </div>     
                 </div>
                 <div>
                     <CountdownTimer
                         _id={tasks._id}
                         timeRemaining={tasks.timeRemaining}
+                        onClick={handleButtonClick}
+                        btnTitle={completing
+                            ? "Check..."
+                            : isMember
+                                ? "Check"
+                                : "Join"}
+                        disabled={completing}
                         countdown={tasks.countdown}
                         shares={tasks.shares}
                         baseReward={tasks.baseReward}

@@ -37,7 +37,6 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
-    console.log("Chat", chat)
 
     const [shareStory, { isLoading: checkingStatus }] = useShareStoryMutation();
 

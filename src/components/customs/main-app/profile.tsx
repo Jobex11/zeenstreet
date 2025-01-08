@@ -38,6 +38,7 @@ import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
 import { getUserRank, triggerErrorVibration } from "@/lib/utils";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
+import { AddToHomeScreen } from "@components/common/main-app/task-categories/add-to-homescreen";
 
 
 const wealthClass = [
@@ -461,7 +462,7 @@ function Profile() {
                                                     {item.description}
                                                 </p>
                                                 <div className={"h-[2px] w-16 bg-gray-400"} />
-                                                <p className="text-white work-sans text-sm text-center max-w-sm">
+                                                <p className="text-white work-sans text-xs text-center max-w-sm">
                                                     {item.unlockMessage}
                                                 </p>
 
@@ -640,6 +641,7 @@ function Profile() {
                     </div>
                 </div>
             </div>
+            <AddToHomeScreen telegram_id={telegramId} />
         </div>
     );
 }

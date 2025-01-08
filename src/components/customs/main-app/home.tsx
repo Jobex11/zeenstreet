@@ -24,7 +24,6 @@ import { FiLoader } from "react-icons/fi";
 import taskImg from "@assets/images/icons/tasks_img.svg";
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
 
-
 const imageUrls = [
   firstBannerImg,
   secondBannerImg,
@@ -74,6 +73,16 @@ function Home() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 100, // Scroll to the bottom
+        behavior: 'smooth',
+      });
+    }, 2000);
+  }, []);
+
 
   return (
     <div className="flex flex-col min-h-full">
@@ -127,8 +136,8 @@ function Home() {
 
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
               <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <span><IoAdd color="white" size={26} /></span>
+                <DropdownMenuTrigger disabled={true}>
+                  <span><IoAdd color="gray" size={26} /></span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="left" className="bg-orange-600 rounded text-white border-none tahoma p-2">
                   <div className="flex items-center gap-4">

@@ -58,7 +58,7 @@ export const Rewards = (
           setShowConfetti(false)
           setScreens?.("socials");
         }
-          , 5000);
+          , 4000);
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -107,7 +107,7 @@ export const Rewards = (
         </div>
       </div>
       <TextButton
-        name={`${isLoading ? "Processing..." : "Proceed"}`}
+        name={`${isLoading || showConfetti ? "Processing..." : "Proceed"}`}
         disabled={isLoading || updating || showConfetti}
         onClick={handleUpdateUserShare}
         className={"uppercase mt-4"}

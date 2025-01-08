@@ -28,11 +28,11 @@ declare global {
         BackButton;
         isVersionAtLeast: (version: string) => boolean;
         expand: () => void;
-        close:() => void;
+        close: () => void;
         requestFullscreen: () => void;
         exitFullscreen: () => void;
         addToHomeScreen: () => void;
-        checkHomeScreenStatus: (callback?: (isAdded: boolean) => void) => void;
+        checkHomeScreenStatus: (callback?: (isAdded: boolean, unsupported: boolean, unknown: boolean, missed: boolean) => void) => void;
         shareToStory: (mediaUrl: string, params?: ShareToStoryParams) => void;
         onEvent: (eventType: string, eventHandler: () => void) => void;
         offEvent: (eventType: string, eventHandler: () => void) => void;

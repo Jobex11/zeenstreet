@@ -1,6 +1,9 @@
+import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { GiToken } from "react-icons/gi";
-import { IoMdClock } from "react-icons/io";
+import { Clock } from 'lucide-react'
+import { AiOutlineSwap, AiFillFire } from "react-icons/ai";
+
 
 interface Timer {
     timeRemaining: number;
@@ -8,9 +11,12 @@ interface Timer {
     baseReward: number;
     shares: number;
     _id: string
+    disabled: boolean;
+    onClick: () => void;
+    btnTitle: string
 }
 
-export const CountdownTimer = ({ timeRemaining, countdown, _id, shares, baseReward }: Timer) => {
+export const CountdownTimer = ({ timeRemaining, disabled, btnTitle, onClick, countdown, _id, shares, baseReward }: Timer) => {
     const TIMER_KEY = "countdown-timer";
     const [progress, setProgress] = useState<number>(0);
 
@@ -23,11 +29,9 @@ export const CountdownTimer = ({ timeRemaining, countdown, _id, shares, baseRewa
             const elapsed = Math.floor((now - lastUpdated) / 1000); // Time elapsed in seconds
             const calculatedTimeLeft = Math.max(savedTimeLeft - elapsed, 0);
 
-            // Use the smaller of timeRemaining and calculatedTimeLeft
             return Math.min(timeRemaining, calculatedTimeLeft);
         }
 
-        // If no saved time, use the `timeRemaining` from the data
         return timeRemaining;
     });
 
@@ -89,19 +93,29 @@ export const CountdownTimer = ({ timeRemaining, countdown, _id, shares, baseRewa
                         }}
                     />
                 </div>
+                <div className="flex items-center justify-between">
+                    <span className={`flex items-center justify-start pb-0.5 mt-1 text-[10px] text-white`}>
+                        <span className="caption-top select-text text-gray-400 line-through">
+                            {timeLeft === 0 && baseReward}
+                        </span>
+                        <Clock className="mr-2 h-5 w-5" />
+                        {timeLeft > 0 ? formatTime(timeLeft) : ""}
+                    </span>
+                    <span className={`flex items-center gap-1 pb-0.5 mt-1 text-[10px] text-white`}>
+                        <AiFillFire color={"#fca311"} size={20} />  {baseReward}
+                    </span>
+                </div>
             </div>
             <div className="flex items-center justify-between py-2">
-                <h1 className="work-sans text-sm flex items-center gap-2 font-semibold text-white">
-                    <GiToken color={"#fca311"} size={25} />
-                    {timeLeft === 0 ? shares : `${baseReward}/${shares}`} shares
+                <h1 className={`jakarta text-xs ${timeLeft !== 0 ? "line-through text-gray-500 animate-pulse" : " text-white"} flex items-center gap-2 font-medium`}>
+                    <GiToken color={"#fca311"} size={20} />
+                    {shares}
+                    {timeLeft === 0 ? null : <AiOutlineSwap color="white" size={19} />}
                 </h1>
-                <span className={`flex items-center justify-end pb-0.5 gap-2 text-xs text-white`}>
-                    <span className="caption-top select-text text-gray-400 line-through">
-                        {timeLeft === 0 && baseReward}
-                    </span>
-                    <IoMdClock size={25} />
-                    {timeLeft > 0 ? formatTime(timeLeft) : ""}
-                </span>
+
+                <Button disabled={disabled} onClick={onClick} className="bg-orange-500 text-white h-7 tex-[10px] rounded-md hover:bg-orange-600 work-sans">
+                    {btnTitle}
+                </Button>
             </div>
         </div>
     );

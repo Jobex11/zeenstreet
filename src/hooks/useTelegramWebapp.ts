@@ -87,7 +87,7 @@ export function useTelegramWebApp() {
         window.Telegram?.WebApp?.addToHomeScreen()
     }, [])
 
-    const checkHomeScreenStatus = useCallback((callback?: (isAdded: boolean) => void) => {
+    const checkHomeScreenStatus = useCallback((callback?: (isAdded: boolean, unsupported: boolean, unknown: boolean, missed: boolean) => void) => {
         window.Telegram?.WebApp?.checkHomeScreenStatus(callback)
     }, [])
 
@@ -97,12 +97,11 @@ export function useTelegramWebApp() {
 
     const openLink = useCallback((url: string, options: { try_instant_view: false }) => {
         window.Telegram?.WebApp?.openLink(url, options);
-    },[])
+    }, [])
 
     const isVersionAtLeast = useCallback((version: string) => {
         return window.Telegram?.WebApp?.isVersionAtLeast(version) || false
     }, [])
-
 
 
     return {
