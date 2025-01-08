@@ -639,9 +639,10 @@ function Profile() {
                             </div>
                         </div>
                     </div>
+                    <AddToHomeScreen telegram_id={telegramId} />
                 </div>
             </div>
-            <AddToHomeScreen telegram_id={telegramId} />
+          
         </div>
     );
 }
