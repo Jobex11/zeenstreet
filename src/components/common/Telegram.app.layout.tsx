@@ -6,6 +6,7 @@ import { useGetUsersByIdQuery } from '@hooks/redux/users';
 import { useTelegramWebApp } from "@hooks/useTelegramWebapp"
 
 
+
 interface TelegramWrapperProps {
     children: React.ReactNode;
 }
@@ -30,7 +31,6 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
         );
 
         if (tg) {
-            // Initialize Telegram WebApp settings
             tg?.ready();
             setTelegramId(tg?.initDataUnsafe?.user?.id ?? null);
 
@@ -50,7 +50,7 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
             // }
 
             if (tg?.BackButton) {
-                if (window.location.pathname !== "/") {
+                if (location.pathname !== "/") {
                     tg.BackButton.show();
 
                     tg.onEvent("backButtonClicked", () => {

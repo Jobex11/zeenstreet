@@ -8,6 +8,7 @@ import confetti from "@assets/images/confetti.png";
 import dottedBg from "@assets/images/dotted-bg.png";
 import { useNavigate } from "react-router-dom";
 import { useCheckUsernameQuery } from "@hooks/redux/users";
+import { FiLoader } from "react-icons/fi"
 
 const SCREENS = {
     WELCOME: "welcome-user",
@@ -22,7 +23,7 @@ const TIMEOUT = 4000;
 export default function ZeenAppIntro() {
 
     const [currentScreen, setCurrentScreen] = useState<string>(SCREENS.WELCOME);
-    const [loading,] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
     const navigate = useNavigate();
 
@@ -72,22 +73,36 @@ export default function ZeenAppIntro() {
         }
     }, []);
 
+
     useEffect(() => {
-        if (isLoading) return;
+        if (isLoading) {
+            setLoading(true);
+            return;
+        }
 
         if (data?.hasPreferredUsername) {
             if (!isFirstTime) {
                 // If not first time and has username, show welcome briefly then go to home
-                setTimeout(() => navigate("/home"), TIMEOUT);
+                setLoading(true)
+                setTimeout(() => {
+                    setLoading(false)
+                    navigate("/home");
+                }, TIMEOUT);
             } else {
                 // If first time and has username, go through the flow
                 setCurrentScreen(SCREENS.CHECK_ACCOUNT);
+                setLoading(false);
             }
         } else if (currentScreen === SCREENS.WELCOME) {
+            setLoading(true);
             // If no username, start the flow from create username
-            setTimeout(() => setCurrentScreen(SCREENS.CREATE_USERNAME), TIMEOUT);
+            setTimeout(() => {
+                setCurrentScreen(SCREENS.CREATE_USERNAME);
+                setLoading(false);
+            }, TIMEOUT);
         }
     }, [isLoading, data, isFirstTime, navigate, currentScreen]);
+
 
 
 
@@ -109,12 +124,9 @@ export default function ZeenAppIntro() {
             style={getBackgroundStyles()}
             className="min-h-screen w-full flex flex-col max-w-xl relative mx-auto bg-gradient-to-b from-[#292734] to-[#000000]"
         >
-            <div className="h-1 w-full absolute flex flex-col justify-center items-center overflow-hidden">
+            <div className="h-full w-full absolute flex flex-col justify-center items-center overflow-hidden">
                 {loading && (
-                    <div
-                        className="bg-orange-600 h-full transition-all duration-500 animate-pulse"
-                        style={{ width: isLoading ? "100%" : "0%" }}
-                    />
+                    <FiLoader size={30} color="white" className="animate-spin" />
                 )}
             </div>
 

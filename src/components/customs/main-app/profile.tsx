@@ -117,7 +117,7 @@ const wealthClass = [
 
 function Profile() {
 
-    const [telegramId, setTelegramId] = useState<string | null>(null);
+    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
     const [profileImage, setProfileImage] = useState<string>(avatarImg);
     const [telegramUsername, setTelegramUsername] = useState<string>("");
     const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
@@ -362,12 +362,17 @@ function Profile() {
                         <CardWrapper className="min-h-32 flex flex-col w-full justify-end p-0">
                             <CardContent className="flex  justify-between px-2 py-0">
                                 <div className="flex items-center justify-between w-full gap-2">
-                                    <div className="h-28 w-28">
+                                    <div className="h-28 w-28 relative">
                                         <img
                                             src={profileImage}
                                             loading="lazy"
                                             alt="profile image"
                                             className="w-full h-full object-contain object-center rounded-full"
+                                        />
+                                        <div
+                                            className={
+                                                "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                                            }
                                         />
                                     </div>
                                     <div className="flex flex-col pb-4">
@@ -376,7 +381,7 @@ function Profile() {
                                                 telegramUsername
                                             ) : (
                                                 <span className="line-clamp-1">
-                                                    Hi {data?.preferred_username.slice(0, 10)}
+                                                    Hi {data?.preferred_username.slice(0, 13)}
                                                 </span>
                                             )}
                                         </h1>
@@ -461,7 +466,7 @@ function Profile() {
                                                     src={item.img}
                                                     loading="lazy"
                                                     alt="Wealth class images"
-                                                    className="h-24 w-24 object-contain object-center"
+                                                    className="h-24 w-24 object-contain object-center rounded-sm"
                                                 />
                                                 <h1 className="text-white work-sans font-semibold text-base capitalize">
                                                     {item.name}
@@ -509,7 +514,10 @@ function Profile() {
 
                     <div className="flex flex-col gap-7">
                         <div>
-                            <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold">Cards collected</h1>
+                            <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold">
+                                Cards collected
+                                ({userDataCard?.user?.unlockedCards?.length === 0 ? "" : userDataCard?.user?.unlockedCards?.length})
+                            </h1>
                             <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">
                                 <Fragment>
                                     {loadingCollectedCards && <div className={"flex items-center gap-4"}>
@@ -574,12 +582,19 @@ function Profile() {
                                                             <h1 className="text-white jarkata font-semibold text-lg capitalize">
                                                                 {card.title ? card.title : "Card title"}
                                                             </h1>
-                                                            <img
-                                                                src={card.image}
-                                                                loading="lazy"
-                                                                alt="Refferal Images"
-                                                                className="h-full min-w-full object-cover object-center rounded-sm"
-                                                            />
+                                                            <div className={"relative"}>
+                                                                <img
+                                                                    src={card.image}
+                                                                    loading="lazy"
+                                                                    alt="Refferal Images"
+                                                                    className="h-full min-w-full object-cover object-center rounded-sm"
+                                                                />
+                                                                <div
+                                                                    className={
+                                                                        "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                                                                    }
+                                                                />
+                                                            </div>
                                                         </div>
                                                     </DrawerContent>
                                                 </Drawer>
@@ -647,11 +662,15 @@ function Profile() {
                             </div>
                         </div>
                     </div>
+
                     <div>
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
                             Bonus tasks
                         </h1>
                         <AddToHomeScreen
+                            refetch={() => {
+                                refetchShares()
+                            }}
                             telegram_id={telegramId}
                             disableBtn={disableClaimShareBtn} />
                     </div>

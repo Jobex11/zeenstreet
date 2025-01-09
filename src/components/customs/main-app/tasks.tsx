@@ -11,6 +11,7 @@ import { Skeleton } from "@components/ui/skeleton";
 import { useGetAllcardsQuery } from "@hooks/redux/cards";
 import { useGetReferralTaskQuery } from "@hooks/redux/referrals";
 import { useGetEventsTasksQuery, useGetPartnersTasksQuery, useGetSocialTasksQuery } from "@hooks/redux/tasks";
+import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import * as Progress from "@radix-ui/react-progress";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { FiLoader } from "react-icons/fi";
@@ -57,6 +58,7 @@ function Tasks() {
         refetchOnMountOrArgChange: true,
     })
 
+    const { refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
     const handleActiveTabs = (name: string) => {
         setTabs(name)
     }
@@ -77,7 +79,7 @@ function Tasks() {
                 backgroundImage: `url(${dotsbg})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover"
-            }} className=' py-3 h-full px-3 min-w-full '>
+            }} className='py-3 h-full px-3 min-w-full '>
                 {/* task header */}
                 <header className="flex flex-col gap-3 w-full">
                     {isLoadingCards && <Skeleton className={"max-h-32 h-32 w-full bg-slate-700 shadow-2xl"} />}
@@ -175,9 +177,10 @@ function Tasks() {
                                 <ReferralsCategory
                                     key={tasks?._id}
                                     tasks={tasks}
-                                    refetch={() => {
-                                        refetchRefTasks();
-                                        refetchCards();
+                                    refetch={async () => {
+                                        await refetchRefTasks();
+                                        await refetchCards();
+                                        await refetchShares()
                                     }}
                                     telegram_id={telegramId}
                                     type={`${tasks.countdown !== 0 ? "Special" : ""}`}
@@ -198,9 +201,10 @@ function Tasks() {
                                 <SocialsCategory
                                     key={tasks?._id}
                                     tasks={tasks}
-                                    refetch={() => {
-                                        refetchSocialTasks();
-                                        refetchCards();
+                                    refetch={async () => {
+                                        await refetchSocialTasks();
+                                        await refetchCards();
+                                        await refetchShares()
                                     }}
                                     telegram_id={telegramId}
                                     type={`${tasks.countdown !== 0 ? "Special" : " "}`}
@@ -220,9 +224,10 @@ function Tasks() {
                                 <EventsTasksCategory
                                     key={tasks?._id}
                                     tasks={tasks}
-                                    refetch={() => {
-                                        refetchEventsTasks();
-                                        refetchCards();
+                                    refetch={async () => {
+                                        await refetchEventsTasks();
+                                        await refetchCards();
+                                        await refetchShares()
                                     }}
                                     telegram_id={telegramId}
                                     type={`${tasks.countdown !== 0 ? "Special" : " "}`}
@@ -242,9 +247,10 @@ function Tasks() {
                                 <PartnersTasksCategory
                                     key={tasks?._id}
                                     tasks={tasks}
-                                    refetch={() => {
-                                        refetchPartnersTasks();
-                                        refetchCards();
+                                    refetch={async () => {
+                                        await refetchPartnersTasks();
+                                        await refetchCards();
+                                        await refetchShares()
                                     }}
                                     telegram_id={telegramId}
                                     type={`${tasks.countdown !== 0 ? "Special" : " "}`}

@@ -10,6 +10,7 @@ import Typewriter from "@components/common/typewriter";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { toast } from "sonner";
 import { useCreateUsernameMutation } from "@hooks/redux/users";
+import { triggerErrorVibration } from "@lib/utils";
 
 // Define Zod schema
 const schema = z.object({
@@ -48,29 +49,30 @@ export function CreateUsername({
   const onSubmit = async (data: CreateUsernameFormValues) => {
     setIsSubmitting(true);
     try {
-        await createUsername({
-          telegram_id: telegramId,
-          preferred_username: data.username,
-        }).unwrap(); 
+      await createUsername({
+        telegram_id: telegramId,
+        preferred_username: data.username,
+      }).unwrap();
 
-        toast.success("Username successfully updated!", { className: "text-xs work-sans py-3" });
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        setScreens && setScreens("check-account");
+      toast.success("Username successfully updated!", { className: "text-xs work-sans py-3" });
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      setScreens && setScreens("check-account");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error:any) {
-        console.log(error)
-        toast.error(error?.data?.error || error?.data?.message || "An error occurred while creating username. Try again", { className: "text-xs work-sans py-3" });
+    } catch (error: any) {
+      console.log(error)
+      toast.error(error?.data?.error || error?.data?.message || "An error occurred while creating username. Try again", { className: "text-xs work-sans py-3" });
+      triggerErrorVibration()
     } finally {
       setIsSubmitting(false);
     }
   }
-  // Initialize Telegram WebApp and set user data
+
+
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       const initData = window.Telegram.WebApp.initDataUnsafe;
       const user = initData?.user;
 
-      // Set Telegram user data
       if (user) {
         setTelegramId(user.id ?? null);
       }

@@ -58,7 +58,7 @@ function BottmNavigation() {
                             }
                         >
                             {links.icon}
-                            <span className={`text-[8px] font-medium work-sans  ${links.path === location.pathname && "text-white"}`}>{links.name}</span>
+                            <span className={`text-[8px] font-medium work-sans ${links.path === location.pathname && "text-white"}`}>{links.name}</span>
                         </NavLink>
                     ))}
                 </div>

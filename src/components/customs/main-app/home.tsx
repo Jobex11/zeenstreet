@@ -38,7 +38,7 @@ function Home() {
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const [selectedFilter, setSelectedFilter] = useState("Social");
   const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
-  const { data: user, isLoading: loadingShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
+  const { data: user, isLoading: loadingShares, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
   const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
     skip: !telegramId,
     refetchOnReconnect: true,
@@ -97,16 +97,6 @@ function Home() {
     }
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      window.scrollTo({
-        top: 100, // Scroll to the bottom
-        behavior: 'smooth',
-      });
-    }, 2000);
-  }, []);
-
-
 
   return (
     <div className="flex flex-col min-h-full">
@@ -124,8 +114,10 @@ function Home() {
             Total shares
           </h1>
           <h1 className="text-3xl font-bold aqum text-white text-center">
-            {loadingShares ? <Skeleton className="bg-gray-700 h-9 w-32 animate-pulse rounded-md shadow-lg" /> : <ShareFormatter shares={user?.shares} />}
-
+            {loadingShares ?
+              <Skeleton className="bg-gray-700 h-9 w-32 animate-pulse rounded-md shadow-lg" />
+              :
+              <ShareFormatter shares={user?.shares} />}
           </h1>
           <div className={"mb-5 pb-1 flex items-center gap-4 border-b border-gray-500"}>
             <span className={"work-sans text-white"}>{userRank}</span>
@@ -202,7 +194,7 @@ function Home() {
                     tasks={tasks}
                     refetch={() => {
                       refetchRefTasks();
-                      // refetchCards();
+                      refetchShares()
                     }}
                     telegram_id={telegramId}
                     type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
@@ -225,7 +217,7 @@ function Home() {
                     tasks={tasks}
                     refetch={() => {
                       refetchSocialTasks();
-                      // refetchCards();
+                      refetchShares()
                     }}
                     telegram_id={telegramId}
                     type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
@@ -248,6 +240,7 @@ function Home() {
                     tasks={tasks}
                     refetch={() => {
                       refetchEventsTasks();
+                      refetchShares()
                     }}
                     telegram_id={telegramId}
                     type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
@@ -269,6 +262,7 @@ function Home() {
                     tasks={tasks}
                     refetch={() => {
                       refetchPartnersTasks();
+                      refetchShares()
                     }}
                     telegram_id={telegramId}
                     type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}

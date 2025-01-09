@@ -11,9 +11,10 @@ import { triggerErrorVibration } from "@lib/utils"
 interface Props {
     telegram_id: string | null;
     disableBtn: boolean;
+    refetch:() => void;
 }
 
-export function AddToHomeScreen({ telegram_id, disableBtn }: Props) {
+export function AddToHomeScreen({ telegram_id, disableBtn, refetch }: Props) {
 
     const [status, setStatus] = useState<'initial' | 'added' | 'unsupported' | 'unknown' | 'missed'>('initial')
     const { addToHomeScreen, checkHomeScreenStatus } = useTelegramWebApp()
@@ -46,6 +47,7 @@ export function AddToHomeScreen({ telegram_id, disableBtn }: Props) {
             }).unwrap();
             toast.success(`Weldone Gamer you just recived ${shares} shares`, { className: "text-xs work-sans py-3" })
             console.log('User shares updated successfully:', shares)
+            refetch()
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error('Error updating user shares:', error)
