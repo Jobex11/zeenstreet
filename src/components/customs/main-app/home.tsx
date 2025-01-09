@@ -205,7 +205,7 @@ function Home() {
                       // refetchCards();
                     }}
                     telegram_id={telegramId}
-                    type={`${tasks.countdown !== 0 ? "Special" : ""}`}
+                    type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
               </Fragment>}
@@ -228,7 +228,7 @@ function Home() {
                       // refetchCards();
                     }}
                     telegram_id={telegramId}
-                    type={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                    type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
               </Fragment>}
@@ -250,7 +250,7 @@ function Home() {
                       refetchEventsTasks();
                     }}
                     telegram_id={telegramId}
-                    type={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                    type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
               </Fragment>}
@@ -271,7 +271,7 @@ function Home() {
                       refetchPartnersTasks();
                     }}
                     telegram_id={telegramId}
-                    type={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                    type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
               </Fragment>}

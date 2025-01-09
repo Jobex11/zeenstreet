@@ -67,7 +67,7 @@ export function AddToHomeScreen({ telegram_id, disableBtn }: Props) {
                 <Button
                     disabled={isLoading || disableBtn}
                     onClick={handleClaimShares}
-                    className={`bg-orange-500 hover:bg-orange-600 w-full text-white text-center ${isLoading || disableBtn ? "opacity-50 cursor-not-allowed" : ""
+                    className={`bg-orange-500 hover:bg-orange-600 mt-3 w-full text-white text-center ${isLoading || disableBtn ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                 >
                     {isLoading
@@ -84,7 +84,7 @@ export function AddToHomeScreen({ telegram_id, disableBtn }: Props) {
         <Card className="w-full max-w-md">
             <CardHeader>
                 <CardTitle>Add to Home Screen</CardTitle>
-                <CardDescription>Enhance your experience by adding our app to your home screen</CardDescription>
+                <CardDescription>Enhance your experience by adding our app to your home screen and recieve 500 shares</CardDescription>
             </CardHeader>
             <CardContent>
                 {status === 'unsupported' && (

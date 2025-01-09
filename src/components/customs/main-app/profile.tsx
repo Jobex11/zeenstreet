@@ -124,7 +124,7 @@ function Profile() {
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>(
         {}
     );
-    const { data: wealthClasses } = useGetAllWealthClasssQuery(undefined);
+    const { data: wealthClasses, isLoading: loadingClasses } = useGetAllWealthClasssQuery(undefined);
     const [updateUserShares, { isLoading: updatingShares }] =
         useUpdateUserSharesMutation();
     const { data: userData, refetch: refetchShares } = useGetUserSharesQuery(
@@ -288,7 +288,7 @@ function Profile() {
     const achievement = [
         {
             isLocked: userDataCard?.user?.referrals?.length !== 10,
-            name: "Refer 10 Friends",
+            name: "Refer 10 Friends to unlock",
             unLockedText: "You unlocked this Achievments by Referring 10 Friends",
             shareType: "milestone_1",
             reward: 30,
@@ -296,7 +296,7 @@ function Profile() {
         },
         {
             isLocked: true,
-            name: "Refer 20 Friends",
+            name: "Refer 20 Friends to unlock",
             unLockedText: "You unlocked this Achievments by Referring 20 Friends",
             shareType: "milestone_2",
             reward: 50,
@@ -304,7 +304,7 @@ function Profile() {
         },
         {
             isLocked: true,
-            name: "Refer 30 Friends",
+            name: "Refer 30 Friends to unlock",
             unLockedText: "You unlocked this Achievments by Referring 30 Friends",
             shareType: "milestone_3",
             reward: 80,
@@ -312,7 +312,7 @@ function Profile() {
         },
         {
             isLocked: true,
-            name: "Refer 40 Friends",
+            name: "Refer 40 Friends to unlock",
             unLockedText: "You unlocked this Achievments by Referring 40 Friends",
             shareType: "milestone_4",
             reward: 100
@@ -320,7 +320,7 @@ function Profile() {
         },
         {
             isLocked: true,
-            name: "Refer 50 Friends",
+            name: "Refer 50 Friends to unlock",
             unLockedText: "You unlocked this Achievments by Referring 50 Friends",
             shareType: "milestone_5",
             reward: 200
@@ -328,7 +328,7 @@ function Profile() {
         },
         {
             isLocked: true,
-            name: "Refer 60 Friends",
+            name: "Refer 60 Friends to unlock",
             unLockedText: "You unlocked this Achievments by Referring 60 Friends",
             shareType: "milestone_6",
             reward: 300
@@ -336,7 +336,7 @@ function Profile() {
         },
         {
             isLocked: true,
-            name: "Refer 70 Friends",
+            name: "Refer 70 Friends to unlock",
             unLockedText: "You unlocked this Achievments by Referring 70 Friends",
             shareType: "milestone_7",
             reward: 400
@@ -431,11 +431,16 @@ function Profile() {
                                                         alt={`wealth class ${item.name}`}
                                                         className="h-full w-full object-cover object-center rounded-md"
                                                     />
-                                                    {!item.isLocked && (
+                                                    {loadingClasses ?
                                                         <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
                                                             <SlLock size={25} color="white" />
                                                         </div>
-                                                    )}
+                                                        :
+                                                        !item.isLocked && (
+                                                            <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
+                                                                <SlLock size={25} color="white" />
+                                                            </div>
+                                                        )}
                                                 </Card>
                                                 <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1 whitespace-nowrap">
                                                     {item.name}
@@ -642,9 +647,14 @@ function Profile() {
                             </div>
                         </div>
                     </div>
-                    <AddToHomeScreen
-                        telegram_id={telegramId}
-                        disableBtn={disableClaimShareBtn} />
+                    <div>
+                        <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
+                            Bonus tasks
+                        </h1>
+                        <AddToHomeScreen
+                            telegram_id={telegramId}
+                            disableBtn={disableClaimShareBtn} />
+                    </div>
                 </div>
             </div>
 

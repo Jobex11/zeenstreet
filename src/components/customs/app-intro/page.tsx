@@ -107,9 +107,9 @@ export default function ZeenAppIntro() {
     return (
         <section
             style={getBackgroundStyles()}
-            className="min-h-screen w-full flex flex-col max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000]"
+            className="min-h-screen w-full flex flex-col max-w-xl relative mx-auto bg-gradient-to-b from-[#292734] to-[#000000]"
         >
-            <div className="h-1 w-full relative overflow-hidden">
+            <div className="h-1 w-full absolute flex flex-col justify-center items-center overflow-hidden">
                 {loading && (
                     <div
                         className="bg-orange-600 h-full transition-all duration-500 animate-pulse"

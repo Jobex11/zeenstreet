@@ -128,12 +128,12 @@ function MailNotification() {
                   </div>
                 }
               >
-                <div className="flex flex-col gap-3 pb-[8rem]">
+                <div className="flex flex-col gap-3 pb-[6rem]">
                   {filteredNotifications.map((notification: NotificationTypes) => (
                     <Link
                       to={notification.url}
                       key={notification._id}
-                      className="py-5 px-2 flex items-center gap-3 rounded border-b border-[#3E3D3D] hover:bg-gray-900 duration-200 inter"
+                      className="py-4 px-2 flex items-center gap-3 rounded border-b border-[#3E3D3D] hover:bg-gray-900 duration-200 inter"
                     >
                       <div className="rounded-full h-[50px] w-[50px]">
                         <img

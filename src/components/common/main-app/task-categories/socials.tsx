@@ -91,7 +91,7 @@ export default function SocialsCategory({
                             className={"h-12 w-12 rounded-full object-cover object-center"} />
                         <div className="gap-1 flex flex-col">
                             <h1 className={"text-sm work-sans font-medium text-white line-clamp-2"}>{tasks.title}</h1>
-                            <Badge variant="outline" className="text-[8px] w-fit poppins text-orange-500">{type}</Badge>
+                            {type ? <Badge variant="outline" className="text-[8px] w-fit poppins text-orange-500">{type}</Badge> : null}
                         </div>
                     </div>     
                 </div>
