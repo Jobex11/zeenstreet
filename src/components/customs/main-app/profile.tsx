@@ -117,14 +117,18 @@ const wealthClass = [
 
 function Profile() {
 
-    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+    const [telegramId, setTelegramId] = useState<string | null>(null);
     const [profileImage, setProfileImage] = useState<string>(avatarImg);
     const [telegramUsername, setTelegramUsername] = useState<string>("");
     const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>(
         {}
     );
-    const { data: wealthClasses, isLoading: loadingClasses } = useGetAllWealthClasssQuery(undefined);
+    const { data: wealthClasses, isLoading: loadingClasses } = useGetAllWealthClasssQuery(undefined, {
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+    });
     const [updateUserShares, { isLoading: updatingShares }] =
         useUpdateUserSharesMutation();
     const { data: userData, refetch: refetchShares } = useGetUserSharesQuery(
