@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
 // Define a service using a base URL and expected endpoints
-const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
+const BOT_TOKEN = "7876229498:AAHScK7Fae1Huhr4LXuY9btIt2RbBkbOoL4"
 export const channelApi = createApi({
     reducerPath: 'channelApi',
     baseQuery: fetchBaseQuery({ baseUrl: `https://api.telegram.org/bot${BOT_TOKEN}` }),

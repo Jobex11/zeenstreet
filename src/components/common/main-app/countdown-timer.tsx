@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { GiToken } from "react-icons/gi";
 import { Clock } from 'lucide-react'
 import { AiOutlineSwap, AiFillFire } from "react-icons/ai";
-
+import { formatTime } from "@lib/utils"
 
 interface Timer {
     timeRemaining: number;
@@ -66,11 +66,7 @@ export const CountdownTimer = ({ timeRemaining, disabled, btnTitle, onClick, cou
         setProgress((timeLeft / countdown) * 100);
     }, [timeLeft, countdown]);
 
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-    };
+
 
     return (
         <div>
@@ -99,7 +95,7 @@ export const CountdownTimer = ({ timeRemaining, disabled, btnTitle, onClick, cou
                             {timeLeft === 0 && baseReward}
                         </span>
                         <Clock className="mr-2 h-5 w-5" />
-                        {timeLeft > 0 ? formatTime(timeLeft) : ""}
+                        {timeLeft > 0 ? formatTime(timeLeft) : 0}
                     </span>
                     <span className={`flex items-center gap-1 pb-0.5 mt-1 text-[10px] text-white`}>
                         <AiFillFire color={"#fca311"} size={20} />  {baseReward}
