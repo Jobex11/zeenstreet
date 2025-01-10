@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
- const BOT_TOKEN = "7876229498:AAHScK7Fae1Huhr4LXuY9btIt2RbBkbOoL4"
+ const BOT_TOKEN = "7876229498:AAHrtRmfZIau6GznH2xXE8H00y3TASHKy28"
 console.log("Bot Token:", BOT_TOKEN);
 
 export const tgUserPhotoApi = createApi({

@@ -25,7 +25,13 @@ declare global {
         headerColor: string;
         backgroundColor: string;
         bottomBarColor: string;
-        BackButton;
+        BackButton: {
+          isVisible: boolean;
+          onClick: (callback: () => void) => BackButton;
+          offClick: (callback: () => void) => BackButton;
+          show: () => BackButton;
+          hide: () => BackButton;
+        };
         isVersionAtLeast: (version: string) => boolean;
         expand: () => void;
         close: () => void;

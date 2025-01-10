@@ -281,7 +281,7 @@ export const RankImage = ({ telegram_id, user }: ImageProps) => {
   });
 
   const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
-  const BOT_TOKEN = "7876229498:AAHScK7Fae1Huhr4LXuY9btIt2RbBkbOoL4"
+  const BOT_TOKEN = "7876229498:AAHrtRmfZIau6GznH2xXE8H00y3TASHKy28"
   return (
     <div className="h-[49px] w-[49px] relative">
       {filePath ? <img

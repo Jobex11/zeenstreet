@@ -5,12 +5,11 @@ import moment from 'moment';
 import { useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
 import { TbBellRinging2 } from "react-icons/tb";
-import { Link } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { FiLoader } from "react-icons/fi"
 import { Input } from "@components/ui/input";
 import { RiSearch2Line } from "react-icons/ri";
-
+import { useTelegramWebApp } from "@hooks/useTelegramWebapp"
 
 interface NotificationTypes {
   _id: string
@@ -26,6 +25,7 @@ function MailNotification() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [notificationPage, setNotificationPage] = useState<number>(1)
   const limit = 10
+  const { openLink } = useTelegramWebApp()
 
   const { data: notifications, isLoading, refetch, } = useGetNotificationsQuery([notificationPage, limit],
     {
@@ -130,8 +130,10 @@ function MailNotification() {
               >
                 <div className="flex flex-col gap-3 pb-[6rem]">
                   {filteredNotifications.map((notification: NotificationTypes) => (
-                    <Link
-                      to={notification.url}
+                    <button
+                      onClick={() => {
+                        openLink(notification.url, { try_instant_view: false })
+                      }}
                       key={notification._id}
                       className="py-4 px-2 flex items-center gap-3 rounded border-b border-[#3E3D3D] hover:bg-gray-900 duration-200 inter"
                     >
@@ -154,7 +156,7 @@ function MailNotification() {
                           Posted {moment(notification.createdAt).fromNow()}
                         </h1>
                       </div>
-                    </Link>
+                    </button>
                   ))}
                 </div>
               </InfiniteScroll>

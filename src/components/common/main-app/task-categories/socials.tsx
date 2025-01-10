@@ -104,7 +104,7 @@ export default function SocialsCategory({
                             ? "Check..."
                             : isMember
                                 ? "Check"
-                                : "Join"}
+                                : "Start"}
                         disabled={completing}
                         countdown={tasks.countdown}
                         shares={tasks.shares}
