@@ -35,13 +35,18 @@ const CardCarousel: React.FC<PropType> = (props) => {
             <div className="embla__viewport" ref={emblaRef}>
                 <div className="embla__container">
                     {slides.map((imageUrl, index) => (
-                        <div className="embla__slide" key={index}>
+                        <div className="embla__slide relative" key={index}>
                             <img
                                 className="embla__slide__img border-2 object-bottom border-[#c781ff]"
                                 src={imageUrl}
                                 loading='lazy'
                                 alt={`Slide ${index + 1}`}
                             />
+                             <div
+                             className={
+                              "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                            }
+                           />
                         </div>
                     ))}
                 </div>

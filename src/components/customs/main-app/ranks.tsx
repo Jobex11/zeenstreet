@@ -183,7 +183,7 @@ function Ranks() {
                         backgroundPosition: "center, center",
                         backgroundBlendMode: "multiply,multiply ",
                       }}
-                      className="h-[240px] flex flex-col items-center justify-center w-full rounded-md"
+                      className="h-[240px] flex flex-col relative items-center justify-center w-full rounded-md"
                     >
                       <img
                         loading="eager"
@@ -191,6 +191,11 @@ function Ranks() {
                         alt="Rank Trophy"
                         className="h-full w-full object-center object-contain"
                       />
+                        <div
+                             className={
+                              "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                            }
+                           />
                       <h2 className="text-center text-lg font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
                         {group.rank}
                       </h2>
@@ -213,7 +218,7 @@ function Ranks() {
                     <div className="flex flex-col divide-y-2 divide-gray-800">
                       {
                         group?.users?.length > 0 ?
-                          group?.users?.slice(0, 30).map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
+                          group?.users?.slice(0, 100).map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
                             <div key={user._id} className={`flex mt-3 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
                               <div className="flex items-center gap-3">
                                 <RankImage user={user} telegram_id={user.telegram_id} />

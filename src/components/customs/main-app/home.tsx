@@ -133,7 +133,12 @@ function Home() {
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-2 work-sans">
               <h1 className="text-white text-lg font-semibold">Today&apos;s Tasks</h1>
-              <h1 className="text-white text-sm">{refTasks && socialTasks ? (refTasks?.tasks.length + socialTasks?.tasks.length) : 0} Tasks Available</h1>
+              <h1 className="text-white text-sm">
+                {refTasks?.tasks?.length && socialTasks?.tasks?.length && eventsTasks?.tasks?.length && partnersTasks?.tasks?.length  ? 
+                ( refTasks?.tasks?.length +
+                  socialTasks?.tasks?.length +
+                  eventsTasks?.tasks?.length +
+                  partnersTasks?.tasks?.length ) : "No"} Available Tasks</h1>
             </div>
             <div className="flex items-center gap-3">
               <DropdownMenu>
@@ -197,7 +202,7 @@ function Home() {
                       refetchShares()
                     }}
                     telegram_id={telegramId}
-                    type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
+                    type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
               </Fragment>}
@@ -220,7 +225,7 @@ function Home() {
                       refetchShares()
                     }}
                     telegram_id={telegramId}
-                    type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
+                    type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
               </Fragment>}
@@ -243,7 +248,7 @@ function Home() {
                       refetchShares()
                     }}
                     telegram_id={telegramId}
-                    type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
+                    type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
               </Fragment>}
@@ -265,7 +270,7 @@ function Home() {
                       refetchShares()
                     }}
                     telegram_id={telegramId}
-                    type={`${tasks.countdown !== 0 ? "Special" : "Normal"}`}
+                    type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
               </Fragment>}

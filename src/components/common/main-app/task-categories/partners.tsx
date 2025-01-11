@@ -90,12 +90,17 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, typ
         <Fragment>
             <CardWrapper className={`flex flex-col px-2 min-h-fit border-[3px] border-[#c781ff]`}>
                 <div className={`flex items-center justify-between pb-2`}>
-                    <div className={"flex items-center flex-row gap-3 py-3"}>
+                    <div className={"flex items-center flex-row gap-3 py-3 relative"}>
                         <img
                             src={tasks.image || RaveLogo}
                             alt={"referrals logo"}
                             loading={"lazy"}
                             className={"h-12 w-12 rounded-full object-cover object-center"} />
+                             <div
+                             className={
+                              "absolute z-20 bg-transparent h-12 w-12 rounded-full top-0 bottom-0"
+                            }
+                           />
                         <div className={"gap-1 flex flex-col"}>
                             <h1 className={"text-sm work-sans font-semibold text-white line-clamp-2"}>{tasks.title}</h1>
                             {type ? <Badge variant="outline" className="text-[8px] w-fit poppins text-orange-500">{type}</Badge> : null}

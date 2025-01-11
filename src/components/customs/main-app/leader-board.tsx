@@ -43,7 +43,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
     });
 
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
-    const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
+    const BOT_TOKEN = "7876229498:AAHrtRmfZIau6GznH2xXE8H00y3TASHKy28"
 
     return (
         <div className={`relative flex flex-col items-center  ${index === 0 ? 'w-24 h-24 shadow-xl' : 'w-16 h-16'}`} >
@@ -233,7 +233,7 @@ export const MiniImage = ({ user }: MiniImageProps) => {
     });
 
     const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
-    const BOT_TOKEN = "7876229498:AAEvj3K6fNEOOtr9vb1FeJY7Epp8bPh0VcU"
+    const BOT_TOKEN = "7876229498:AAHrtRmfZIau6GznH2xXE8H00y3TASHKy28"
     return (
         <Fragment>
             {filePath ? <Avatar className="w-12 h-12 relative">

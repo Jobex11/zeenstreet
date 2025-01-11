@@ -19,7 +19,7 @@ import { SlLock } from 'react-icons/sl';
 
 function Tasks() {
 
-    const [telegramId, setTelegramId] = useState<string | null>(null);
+    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const [tabs, setTabs] = useState<string>("Events");
     const btnTabs = ["Events", "Referral", "Partners", "Social"];

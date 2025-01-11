@@ -195,7 +195,7 @@ function Profile() {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             console.error("Error updating shares:", err);
-            toast.error(err?.data?.error || "Error updating shares", {
+            toast.error(err?.data?.error || error?.data?.message || "Error updating shares", {
                 className: "text-xs work-sans",
             });
             triggerErrorVibration()
@@ -518,9 +518,11 @@ function Profile() {
 
                     <div className="flex flex-col gap-7">
                         <div>
-                            <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold">
+                            <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold flex items-center gap-2">
                                 Cards collected
-                                {userDataCard?.user?.unlockedCards?.length === 0 ? "" : (userDataCard?.user?.unlockedCards?.length)}
+                             <span>
+                             {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length})`}
+                             </span>
                             </h1>
                             <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">
                                 <Fragment>
@@ -532,7 +534,7 @@ function Profile() {
                                     {userDataCard?.user?.unlockedCards?.length === 0 ? (
                                         <div
                                             className={
-                                                "flex items-center justify-center flex-col gap-2  min-w-full"
+                                                "flex items-center justify-center relative flex-col gap-2  min-w-full"
                                             }
                                         >
                                             <img src={card_empty} loading="lazy" alt="No card image" className="h-20 w-20 object-contain object-center" />
@@ -540,6 +542,11 @@ function Profile() {
                                             <p className={"text-sm text-white work-sans text-center"}>
                                                 You don't have any card yet
                                             </p>
+                                            <div
+                                                className={
+                                                    "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                                                }
+                                            />
                                         </div>
                                     ) : (
                                         userDataCard?.user?.unlockedCards.map(
@@ -667,7 +674,7 @@ function Profile() {
                         </div>
                     </div>
 
-                    <div>
+                    {/* <div>
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
                             Bonus tasks
                         </h1>
@@ -677,7 +684,7 @@ function Profile() {
                             }}
                             telegram_id={telegramId}
                             disableBtn={disableClaimShareBtn} />
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
