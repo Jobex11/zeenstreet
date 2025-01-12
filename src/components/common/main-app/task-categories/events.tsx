@@ -125,8 +125,12 @@ export default function EventsTasksCategory({ tasks, telegram_id, refetch, speci
                     <CountdownTimer
                         _id={tasks._id}
                         timeRemaining={tasks.timeRemaining}
-                        disabled={completing || taskCompleted || !hasClickedLink}
-                        btnTitle={completing ? "Start.." : `Start`}
+                        disabled={completing || taskCompleted}
+                        btnTitle={completing
+                            ? "Check..."
+                            : hasClickedLink
+                                ? "Check"
+                                : "Start"}
                         onClick={handleButtonClick}
                         countdown={tasks.countdown}
                         shares={tasks.shares}

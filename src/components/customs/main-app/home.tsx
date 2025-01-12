@@ -134,12 +134,21 @@ function Home() {
             <div className="flex flex-col gap-2 work-sans">
               <h1 className="text-white text-lg font-semibold">Today&apos;s Tasks</h1>
               <h1 className="text-white text-sm">
-                {refTasks?.tasks?.length && socialTasks?.tasks?.length && eventsTasks?.tasks?.length && partnersTasks?.tasks?.length  ? 
-                ( refTasks?.tasks?.length +
-                  socialTasks?.tasks?.length +
-                  eventsTasks?.tasks?.length +
-                  partnersTasks?.tasks?.length ) : "No"} Available Tasks</h1>
+                {refTasks?.tasks?.length >= 0 &&
+                  socialTasks?.tasks?.length >= 0 &&
+                  eventsTasks?.tasks?.length >= 0 &&
+                  partnersTasks?.tasks?.length >= 0 ?
+                  (
+                    (refTasks?.tasks?.length || 0) +
+                    (socialTasks?.tasks?.length || 0) +
+                    (eventsTasks?.tasks?.length || 0) +
+                    (partnersTasks?.tasks?.length || 0)
+                  ) :
+                  "No"
+                } Available Tasks
+              </h1>
             </div>
+
             <div className="flex items-center gap-3">
               <DropdownMenu>
                 <DropdownMenuTrigger>
@@ -239,7 +248,7 @@ function Home() {
                   imageSrc={taskImg}
                   message="No Available Events Tasks"
                 />
-                {eventsTasks?.tasks.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string; type:string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                {eventsTasks?.tasks.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string; type: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                   <EventsTasksCategory
                     key={tasks?._id}
                     tasks={tasks}
