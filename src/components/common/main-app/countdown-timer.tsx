@@ -92,7 +92,7 @@ export const CountdownTimer = ({ timeRemaining, disabled, btnTitle, onClick, cou
                 <div className="flex items-center justify-between">
                     <span className={`flex items-center justify-start pb-0.5 mt-1 text-[10px] ${timeLeft === 0 ? "text-gray-400" : "text-white"}`}>
                         <Clock className="mr-2 h-5 w-5" />
-                        {timeLeft > 0 ? formatTime(timeLeft) : 0}
+                        {timeLeft > 0 ? formatTime(timeLeft) : '00:00'}
                     </span>
                     <span className={`${timeLeft === 0 ? "text-gray-400 line-through" : "text-white"} flex items-center gap-1 pb-0.5 mt-1 text-[10px] `}>
                         <AiFillFire color={`${timeLeft === 0 ? "gray" : "#fca311"}`} size={20} />

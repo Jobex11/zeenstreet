@@ -5,11 +5,10 @@ import moment from 'moment';
 import { useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
 import { TbBellRinging2 } from "react-icons/tb";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { FiLoader } from "react-icons/fi"
 import { Input } from "@components/ui/input";
 import { RiSearch2Line } from "react-icons/ri";
 import { useTelegramWebApp } from "@hooks/useTelegramWebapp"
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface NotificationTypes {
   _id: string
@@ -40,6 +39,13 @@ function MailNotification() {
     }
   };
 
+  const loadPreviousPage = () => {
+    if (notifications?.currentPage > 1) {
+      setNotificationPage((prev) => prev - 1);
+    }
+  };
+
+
 
   const handleRefetch = async () => {
     await refetch();
@@ -67,7 +73,7 @@ function MailNotification() {
             <button
               type="button"
               onClick={() => { handleRefetch(); navigator.vibrate([50, 50]) }}
-              className="text-white work-sans text-sm hover:text-gray-500 flex items-center gap-2"
+              className="text-white work-sans text-xs hover:text-gray-500 flex items-center gap-2"
             >
               Refresh
               <FiRefreshCcw color="white" className={`${isLoading && "animate-spin"}`} />
@@ -99,43 +105,15 @@ function MailNotification() {
           )}
 
           {hasFilteredResults && (
-            <div className="flex-1 overflow-y-auto">
-              <InfiniteScroll
-                dataLength={filteredNotifications.length}
-                next={loadNextPage}
-                hasMore={notifications?.currentPage < notifications?.totalPages}
-                loader={
-                  <div className="flex flex-col items-center justify-center py-5">
-                    <FiLoader size={30} color="white" className="animate-spin" />
-                  </div>
-                }
-                scrollThreshold={0.9}
-                refreshFunction={async () => {
-                  await refetch();
-                }}
-                pullDownToRefresh
-                pullDownToRefreshThreshold={50}
-                pullDownToRefreshContent={
-                  <div className="flex items-center justify-center gap-2">
-                    <FiRefreshCcw color="white" className={`${isLoading && "animate-spin"}`} />
-                    <span className="work-sans text-sm text-white">Pull to refresh</span>
-                  </div>
-                }
-                releaseToRefreshContent={
-                  <div className="flex items-center justify-center gap-2">
-                    <FiRefreshCcw color="white" className={`${isLoading && "animate-spin"}`} />
-                    <span className="work-sans text-sm text-white">Release to refresh</span>
-                  </div>
-                }
-              >
-                <div className="flex flex-col gap-3 pb-[6rem]">
-                  {filteredNotifications.map((notification: NotificationTypes) => (
-                    <button
+            <div className="flex-1 overflow-y-auto pb-[6rem]">
+              <div className="flex flex-col gap-3 ">
+                {filteredNotifications.map((notification: NotificationTypes) => (
+                    <div
                       onClick={() => {
                         openLink(notification.url, { try_instant_view: false })
                       }}
                       key={notification._id}
-                      className="py-4 px-2 flex items-center gap-3 rounded border-b border-[#3E3D3D] hover:bg-gray-900 duration-200 inter"
+                      className="py-4 px-2 flex items-center gap-3  border-b border-[#3E3D3D] hover:bg-gray-900 duration-200 inter"
                     >
                       <div className="rounded-full h-[50px] w-[50px]">
                         <img
@@ -156,13 +134,37 @@ function MailNotification() {
                           Posted {moment(notification.createdAt).fromNow()}
                         </h1>
                       </div>
+                    </div>
+                ))}
+              </div>
+
+              {notifications?.totalPages > 1 && (
+                <div className="flex items-center justify-center gap-5 py-3">
+                  {notifications?.currentPage > 1 && (
+                    <button
+                      className="bg-white rounded-full h-6 w-6 shadow-lg flex items-center justify-center"
+                      onClick={loadPreviousPage}
+                    >
+                      <IoIosArrowBack />
                     </button>
-                  ))}
+                  )}
+
+                  {notifications?.currentPage < notifications?.totalPages && (
+                    <button
+                      className="bg-white rounded-full h-6 w-6 shadow-lg flex items-center justify-center"
+                      onClick={loadNextPage}
+                    >
+                      <IoIosArrowForward />
+                    </button>
+                  )}
                 </div>
-              </InfiniteScroll>
+              )}
+
             </div>
           )}
+
         </div>
+
       </div>
     </div>
 

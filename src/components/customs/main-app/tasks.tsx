@@ -19,7 +19,7 @@ import { SlLock } from 'react-icons/sl';
 
 function Tasks() {
 
-    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+    const [telegramId, setTelegramId] = useState<string | null>(null);
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const [tabs, setTabs] = useState<string>("Events");
     const btnTabs = ["Events", "Referral", "Partners", "Social"];
@@ -220,7 +220,7 @@ function Tasks() {
                                 imageSrc={taskImg}
                                 message="No Available Events Tasks"
                             />
-                            {eventsTasks?.tasks.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                            {eventsTasks?.tasks.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string;type:string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                                 <EventsTasksCategory
                                     key={tasks?._id}
                                     tasks={tasks}
@@ -230,7 +230,7 @@ function Tasks() {
                                         await refetchShares()
                                     }}
                                     telegram_id={telegramId}
-                                    type={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                                    special={`${tasks.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
                         </Fragment>}

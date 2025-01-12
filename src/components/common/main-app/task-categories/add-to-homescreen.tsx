@@ -22,19 +22,26 @@ export function AddToHomeScreen({ telegram_id, disableBtn, refetch }: Props) {
     const [updateUserShares, { isLoading }] =
         useUpdateUserSharesMutation();
 
-    useEffect(() => {
-        checkHomeScreenStatus((isAdded, unsupported, unknown, missed) => {
-            if (isAdded) setStatus('added')
-            else if (unsupported) setStatus('unsupported')
-            else if (unknown) setStatus('unknown')
-            else if (missed) setStatus('missed')
-        })
-    }, [checkHomeScreenStatus])
+        useEffect(() => {
+            checkHomeScreenStatus((isAdded, unsupported, unknown, missed) => {
+                console.log({ isAdded, unsupported, unknown, missed });
+                if (isAdded) setStatus('added');
+                else if (unsupported) setStatus('unsupported');
+                else if (unknown) setStatus('unknown');
+                else if (missed) setStatus('missed');
+            });
+        }, [checkHomeScreenStatus]);
+        
 
     const handleAddToHomeScreen = () => {
-        addToHomeScreen()
-        setStatus('added')
-    }
+        addToHomeScreen();
+        checkHomeScreenStatus((isAdded) => {
+            if (isAdded) {
+                setStatus('added');
+            }
+        });
+    };
+    
 
     const handleClaimShares = async () => {
         const shares = 500

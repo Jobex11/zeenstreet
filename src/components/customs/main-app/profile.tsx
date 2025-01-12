@@ -193,9 +193,9 @@ function Profile() {
             setClaimedRewards((prev) => ({ ...prev, [shareType]: true }));
             refetchShares();
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (err: any) {
-            console.error("Error updating shares:", err);
-            toast.error(err?.data?.error || error?.data?.message || "Error updating shares", {
+        } catch (error: any) {
+            console.error("Error updating shares:", error);
+            toast.error(error?.data?.error || error?.data?.message || "Error updating shares", {
                 className: "text-xs work-sans",
             });
             triggerErrorVibration()
@@ -466,12 +466,19 @@ function Profile() {
                                                 <DrawerClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                     <IoIosClose size={30} color="#A4A4A7" />
                                                 </DrawerClose>
-                                                <img
-                                                    src={item.img}
-                                                    loading="lazy"
-                                                    alt="Wealth class images"
-                                                    className="h-24 w-24 object-contain object-center rounded-sm"
-                                                />
+                                                <div className="h-24 w-24 relative">
+                                                    <img
+                                                        src={item.img}
+                                                        loading="lazy"
+                                                        alt="Wealth class images"
+                                                        className="h-24 w-24 object-contain object-center rounded-sm"
+                                                    />
+                                                    <div
+                                                        className={
+                                                            "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                                                        }
+                                                    />
+                                                </div>
                                                 <h1 className="text-white work-sans font-semibold text-base capitalize">
                                                     {item.name}
                                                 </h1>
@@ -520,9 +527,9 @@ function Profile() {
                         <div>
                             <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold flex items-center gap-2">
                                 Cards collected
-                             <span>
-                             {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length})`}
-                             </span>
+                                <span>
+                                    {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length})`}
+                                </span>
                             </h1>
                             <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">
                                 <Fragment>
@@ -674,7 +681,7 @@ function Profile() {
                         </div>
                     </div>
 
-                    {/* <div>
+                    <div>
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
                             Bonus tasks
                         </h1>
@@ -684,7 +691,8 @@ function Profile() {
                             }}
                             telegram_id={telegramId}
                             disableBtn={disableClaimShareBtn} />
-                    </div> */}
+                    </div>
+
                 </div>
             </div>
 
