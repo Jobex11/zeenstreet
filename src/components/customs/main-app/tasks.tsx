@@ -84,7 +84,7 @@ function Tasks() {
                 <header className="flex flex-col gap-3 w-full">
                     {isLoadingCards && <Skeleton className={"max-h-32 h-32 w-full bg-slate-700 shadow-2xl"} />}
                     <div className={`relative flex items-center gap-8 pb-5 mb-4 px-4 snap-x snap-mandatory overflow-x-auto`}>
-                        {!isLoadingCards && cards?.cards.length > 0 && cards?.cards.slice(0, 2).map((card: CardType) => (
+                        {!isLoadingCards && cards?.cards?.length > 0 && cards?.cards?.slice(0, 2).map((card: CardType) => (
                             <Card
                                 key={card._id}
                                 className={`group bg-slate-800 relative rounded-lg snap-center max-h-32 w-full overflow-hidden ${card.isCurrent ? "min-w-[87%] shadow-xl shadow-slate-700" : "min-w-[70%] shadow-xl"}`}>
@@ -113,7 +113,7 @@ function Tasks() {
 
                     {cards?.cards.map(
                         (card: CardType) =>
-                            card.isCurrent && (
+                            card?.isCurrent && (
                                 <div key={card._id} className="flex flex-col items-center w-full">
                                     <div className="flex justify-between w-full text-sm font-medium text-white">
                                         <span className={"text-xs work-sans"}>{card.progress?.progressDisplay || "0/0"}</span>
@@ -121,7 +121,7 @@ function Tasks() {
                                     </div>
                                     {/* Progress Bar */}
                                     <Progress.Root
-                                        className="relative h-[9px] w-full overflow-hidden rounded-full bg-white my-1"
+                                        className="relative h-[10px] w-full overflow-hidden rounded-full bg-white my-1"
                                         style={{
                                             transform: "translateZ(0)",
                                         }}
@@ -130,7 +130,7 @@ function Tasks() {
                                         <Progress.Indicator
                                             className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] size-full bg-[#D25804] rounded-r-full transition-transform duration-200"
                                             style={{
-                                                transform: `translateX(-${100 - (card.progress?.progressInPercentage || 0)
+                                                transform: `translateX(-${100 - (card?.progress?.progressInPercentage || 0)
                                                     }%)`,
                                                 background:
                                                     "linear-gradient(#D25804, #fff0), repeating-linear-gradient(135deg, rgb(232,6,6) 0 7px, #0000 0 20px), #D25804",

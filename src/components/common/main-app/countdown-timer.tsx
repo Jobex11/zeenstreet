@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@components/ui/button";
 import { useState, useEffect } from "react";
 import { GiToken } from "react-icons/gi";
 import { Clock } from 'lucide-react'
@@ -66,8 +66,6 @@ export const CountdownTimer = ({ timeRemaining, disabled, btnTitle, onClick, cou
         setProgress((timeLeft / countdown) * 100);
     }, [timeLeft, countdown]);
 
-
-
     return (
         <div>
             <div>
@@ -107,7 +105,7 @@ export const CountdownTimer = ({ timeRemaining, disabled, btnTitle, onClick, cou
                     {timeLeft === 0 ? null : <AiOutlineSwap color="white" size={19} />}
                 </h1>
 
-                <Button disabled={disabled} onClick={onClick} className="bg-orange-500 text-white h-7 tex-[10px] rounded-md hover:bg-orange-600 work-sans">
+                <Button disabled={disabled} onClick={onClick} className="bg-orange-500 text-white h-7 tex-[10px] max-w-sm rounded-md hover:bg-orange-600 work-sans">
                     {btnTitle}
                 </Button>
             </div>

@@ -58,9 +58,10 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, typ
             }).unwrap();
             toast.success(completePartnersTasks.message, { className: "text-xs work-sans py-3" });
             refetch?.();
+            localStorage.removeItem(`countdown-timer${tasks._id}`);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            toast.error(error.data.message, { className: "text-xs work-sans py-3" });
+            toast.error(error.data.message || error?.data?.error, { className: "text-xs work-sans py-3" });
             triggerErrorVibration()
         }
     };

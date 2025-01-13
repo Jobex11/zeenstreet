@@ -28,7 +28,7 @@ export interface SocialTasksProps {
 
 export default function SocialsCategory({
     tasks,
-    telegram_id = "6880808269",
+    telegram_id,
     refetch,
     type,
 }: SocialTasksProps) {
@@ -42,7 +42,7 @@ export default function SocialsCategory({
         refetchOnMountOrArgChange: true,
         skipPollingIfUnfocused: true
     });
-console.log("CHAT", chat)
+
     const handleJoinChannel = () => {
         openLink(tasks?.socialUrl, { try_instant_view: false });
         setIsMember(true);
@@ -58,6 +58,7 @@ console.log("CHAT", chat)
                 }).unwrap();
                 toast.success(completeTask.message, { className: "text-xs py-3 work-sans" });
                 refetch?.();
+                localStorage.removeItem(`countdown-timer${tasks._id}`);
             } else {
                 toast.error("You must join the channel to complete this task!", { className: "text-xs py-3 work-sans" });
                 triggerErrorVibration()

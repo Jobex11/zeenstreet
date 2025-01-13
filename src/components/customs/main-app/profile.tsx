@@ -38,7 +38,7 @@ import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
 import { getUserRank, triggerErrorVibration } from "@/lib/utils";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
-import { AddToHomeScreen } from "@components/common/main-app/task-categories/add-to-homescreen";
+// import { AddToHomeScreen } from "@components/common/main-app/task-categories/add-to-homescreen";
 
 
 const wealthClass = [
@@ -348,8 +348,9 @@ function Profile() {
         },
     ];
 
-    const disableClaimShareBtn =
-        userDataCard?.user?.claimedShares?.["Add to home screen"] || false;
+    // const disableClaimShareBtn =
+    //     userDataCard?.user?.claimedShares?.["Add to home screen"] || false;
+
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -681,7 +682,7 @@ function Profile() {
                         </div>
                     </div>
 
-                    <div>
+                    {/* <div>
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
                             Bonus tasks
                         </h1>
@@ -691,7 +692,7 @@ function Profile() {
                             }}
                             telegram_id={telegramId}
                             disableBtn={disableClaimShareBtn} />
-                    </div>
+                    </div> */}
 
                 </div>
             </div>

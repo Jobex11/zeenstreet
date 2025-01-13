@@ -74,7 +74,6 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
     useEffect(() => {
         if (!isFetching && isSuccess && !user && !user?.user) {
             closeApp(); //close the app if not a user
-            console.log("User", user)
         }
     }, [isFetching, isSuccess, user, closeApp]);
 
