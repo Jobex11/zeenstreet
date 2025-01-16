@@ -108,33 +108,33 @@ function MailNotification() {
             <div className="flex-1 overflow-y-auto pb-[6rem]">
               <div className="flex flex-col gap-3 ">
                 {filteredNotifications.map((notification: NotificationTypes) => (
-                    <div
-                      onClick={() => {
-                        openLink(notification.url, { try_instant_view: false })
-                      }}
-                      key={notification._id}
-                      className="py-4 px-2 flex items-center gap-3  border-b border-[#3E3D3D] hover:bg-gray-900 duration-200 inter"
-                    >
-                      <div className="rounded-full h-[50px] w-[50px]">
-                        <img
-                          src={notification.logo}
-                          alt="Notification Logo"
-                          className="h-full w-full object-cover object-center rounded-full"
-                        />
-                      </div>
-                      <div>
-                        <h1 className="text-[10px] font-semibold text-[#FFFFFF] line-clamp-1">
-                          {notification.title}
-                          <span className="text-[#9EA6FF] text-[8px] font-semibold"> @{notification.name}</span>
-                        </h1>
-                        <h1 className="text-[9px] italic text-[#FFFFFF] font-normal line-clamp-1 pt-0.5">
-                          {notification.description}
-                        </h1>
-                        <h1 className="text-[#D25804] text-[8px] font-medium pt-0.5">
-                          Posted {moment(notification.createdAt).fromNow()}
-                        </h1>
-                      </div>
+                  <div
+                    onClick={() => {
+                      openLink(notification.url, { try_instant_view: false })
+                    }}
+                    key={notification._id}
+                    className="py-4 px-2 flex items-center gap-3  border-b border-[#3E3D3D] hover:bg-gray-900 duration-200 inter"
+                  >
+                    <div className="rounded-full h-[50px] w-[50px]">
+                      <img
+                        src={notification.logo}
+                        alt="Notification Logo"
+                        className="h-full w-full object-cover object-center rounded-full"
+                      />
                     </div>
+                    <div>
+                      <h1 className="text-[10px] font-semibold text-[#FFFFFF] line-clamp-1">
+                        {notification.title}
+                        <span className="text-[#9EA6FF] text-[8px] font-semibold"> @{notification.name}</span>
+                      </h1>
+                      <h1 className="text-[9px] italic text-[#FFFFFF] font-normal line-clamp-1 pt-0.5">
+                        {notification.description}
+                      </h1>
+                      <h1 className="text-[#D25804] text-[8px] font-medium pt-0.5">
+                        Posted {moment(notification.createdAt).fromNow()}
+                      </h1>
+                    </div>
+                  </div>
                 ))}
               </div>
 

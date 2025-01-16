@@ -1,38 +1,37 @@
-import { useGetUsersByIdQuery } from "@hooks/redux/users";
+import { RootState } from "@/lib/store";
 import { Button } from "@components/ui/button";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerTitle } from "@components/ui/drawer";
 import { Skeleton } from "@components/ui/skeleton";
-import { useGetAllStoryQuery, useShareStoryMutation } from "@hooks/redux/stories";
-import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
-import React, { Fragment, useEffect, useState } from "react";
-import { toast } from "sonner";
-import { triggerErrorVibration } from "@lib/utils";
 import { useGetChatMemberByIdQuery } from "@hooks/redux/channels";
+import { useGetAllStoryQuery, useShareStoryMutation } from "@hooks/redux/stories";
+import { useGetUsersByIdQuery } from "@hooks/redux/users";
+import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
+import { triggerErrorVibration } from "@lib/utils";
+import React, { Fragment, PropsWithChildren } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 
-interface StoriesLayoutProps {
-    children: React.ReactNode;
-}
 
-function StoriesLayout({ children }: StoriesLayoutProps) {
+function StoriesLayout({ children }: PropsWithChildren) {
 
     const chat_id = "-1002465265495"
-    const [telegramId, setTelegramId] = useState<string | null>(null);
+    const users = useSelector((state: RootState) => state.userData);
     const { shareToStory } = useTelegramWebApp();
-    const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(telegramId ?? "", {
-        skip: !telegramId,
+    const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(users.telegram_id ?? "", {
+        skip: !users.telegram_id,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
 
-    const { data: story, isLoading: loadingStory, isSuccess: storySuccess, refetch: refetchStory } = useGetAllStoryQuery(telegramId ?? "", {
-        skip: !telegramId,
+    const { data: story, isLoading: loadingStory, isSuccess: storySuccess, refetch: refetchStory } = useGetAllStoryQuery(users.telegram_id ?? "", {
+        skip: !users.telegram_id,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
-    const { data: chat } = useGetChatMemberByIdQuery([chat_id, telegramId], {
+    const { data: chat } = useGetChatMemberByIdQuery([chat_id, users.telegram_id], {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
@@ -40,16 +39,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
 
     const [shareStory, { isLoading: checkingStatus }] = useShareStoryMutation();
 
-    useEffect(() => {
-        if (window.Telegram && window.Telegram.WebApp) {
-            const initData = window.Telegram.WebApp.initDataUnsafe;
-            const user = initData?.user;
 
-            if (user) {
-                setTelegramId(user.id ?? null);
-            }
-        }
-    }, []);
 
     const handleShareStory = async () => {
         if (!story) return;
@@ -74,7 +64,7 @@ function StoriesLayout({ children }: StoriesLayoutProps) {
     const handleConfirmShareToStory = async () => {
         try {
             if (chat.ok && ["member", "administrator", "creator"].includes(chat.result.status)) {
-                const share = await shareStory(telegramId).unwrap();
+                const share = await shareStory(users.telegram_id).unwrap();
                 toast.success(share.message, { className: "text-xs work-sans py-3" });
                 refetchStory();
             } else {

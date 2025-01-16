@@ -18,6 +18,9 @@ import Intro from "./pages/app-intro/page";
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import LeaderBoard from "./pages/leader-board/page";
 import { ErrorBoundary, ErrorBoundaryError } from '@components/common/error-boundary';
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor } from "./lib/store";
+import Loader from "./components/common/Loader";
 
 const router = createBrowserRouter([
   {
@@ -76,9 +79,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     >
       <ErrorBoundary fallback={ErrorBoundaryError}>
         <ReduxProvider>
-          <TelegramWrapper>
-            <RouterProvider router={router} />
-          </TelegramWrapper>
+          <PersistGate loading={<Loader />} persistor={persistor}>
+            <TelegramWrapper>
+              <RouterProvider router={router} />
+            </TelegramWrapper>
+          </PersistGate>
         </ReduxProvider>
       </ErrorBoundary>
     </TonConnectUIProvider>

@@ -13,65 +13,57 @@ import { useGetReferralTaskQuery } from "@hooks/redux/referrals";
 import { useGetEventsTasksQuery, useGetPartnersTasksQuery, useGetSocialTasksQuery } from "@hooks/redux/tasks";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import * as Progress from "@radix-ui/react-progress";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 function Tasks() {
 
-    const [telegramId, setTelegramId] = useState<string | null>(null);
+
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const [tabs, setTabs] = useState<string>("Events");
     const btnTabs = ["Events", "Referral", "Partners", "Social"];
-
-    const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
-        skip: !telegramId,
+    const users = useSelector((state: RootState) => state.userData);
+    const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(users.telegram_id ?? "", {
+        skip: !users.telegram_id,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         pollingInterval: 3600
     })
 
-    const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
-        skip: !telegramId,
+    const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(users.telegram_id ?? "", {
+        skip: !users.telegram_id,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     })
-    const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
-        skip: !telegramId,
-        refetchOnReconnect: true,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-    })
-
-    const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(telegramId, {
-        skip: !telegramId,
-        refetchOnReconnect: true,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-    })
-    const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(telegramId, {
-        skip: !telegramId,
+    const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(users.telegram_id, {
+        skip: !users.telegram_id,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     })
 
-    const { refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
+    const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(users.telegram_id, {
+        skip: !users.telegram_id,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+    })
+    const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(users.telegram_id, {
+        skip: !users.telegram_id,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+    })
+
+    const { refetch: refetchShares } = useGetUserSharesQuery(users.telegram_id ?? "", { skip: !users.telegram_id, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
     const handleActiveTabs = (name: string) => {
         setTabs(name)
     }
-
-    useEffect(() => {
-        if (window.Telegram && window.Telegram.WebApp) {
-            const initData = window.Telegram.WebApp.initDataUnsafe;
-            const user = initData?.user;
-            if (user) {
-                setTelegramId(user.id ?? null);
-            }
-        }
-    }, []);
 
     return (
         <div className='flex flex-col min-h-full w-full'>
@@ -182,7 +174,7 @@ function Tasks() {
                                         await refetchCards();
                                         await refetchShares()
                                     }}
-                                    telegram_id={telegramId}
+                                    telegram_id={users.telegram_id}
                                     type={`${tasks.countdown !== 0 ? "Special" : ""}`}
                                 />
                             ))}
@@ -206,7 +198,7 @@ function Tasks() {
                                         await refetchCards();
                                         await refetchShares()
                                     }}
-                                    telegram_id={telegramId}
+                                    telegram_id={users.telegram_id}
                                     type={`${tasks.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
@@ -220,7 +212,7 @@ function Tasks() {
                                 imageSrc={taskImg}
                                 message="No Available Events Tasks"
                             />
-                            {eventsTasks?.tasks.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string;type:string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                            {eventsTasks?.tasks.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string; type: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                                 <EventsTasksCategory
                                     key={tasks?._id}
                                     tasks={tasks}
@@ -229,7 +221,7 @@ function Tasks() {
                                         await refetchCards();
                                         await refetchShares()
                                     }}
-                                    telegram_id={telegramId}
+                                    telegram_id={users.telegram_id}
                                     special={`${tasks.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
@@ -243,7 +235,7 @@ function Tasks() {
                                 imageSrc={taskImg}
                                 message="No Available Partners Tasks"
                             />
-                            {partnersTasks?.tasks.length > 0 && partnersTasks?.tasks?.map((tasks: { _id: string; url: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                            {partnersTasks?.tasks.length > 0 && partnersTasks?.tasks?.map((tasks: { _id: string; url: string; chat_id: string; type: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                                 <PartnersTasksCategory
                                     key={tasks?._id}
                                     tasks={tasks}
@@ -252,8 +244,8 @@ function Tasks() {
                                         await refetchCards();
                                         await refetchShares()
                                     }}
-                                    telegram_id={telegramId}
-                                    type={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                                    telegram_id={users.telegram_id}
+                                    special={`${tasks.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
                         </Fragment>}

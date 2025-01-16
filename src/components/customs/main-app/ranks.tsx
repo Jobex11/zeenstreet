@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, Key } from "react";
+import { useState, useMemo, Key } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import trophy from "@assets/images/icons/trophy.png";
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
@@ -11,6 +11,8 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Skeleton } from "@components/ui/skeleton";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 
 interface Rank {
@@ -28,11 +30,12 @@ interface User {
 
 
 function Ranks() {
-  
+
   const [userPages] = useState<number>(1)
   const limit = 10
-  const [telegramId, setTelegramId] = useState<string | null>(null);
+
   const [emblaRef, embla] = useEmblaCarousel({ dragFree: false, watchDrag: false });
+  const users = useSelector((state: RootState) => state.userData);
   const { data: allUsers, isLoading: loadingUsers, isSuccess: usersLoaded } = useGetAllUsersQuery([userPages, limit], {
     refetchOnReconnect: true,
     refetchOnFocus: true,
@@ -43,16 +46,6 @@ function Ranks() {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true
   });
-
-
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const tgData = window.Telegram.WebApp.initDataUnsafe;
-      if (tgData && tgData.user && tgData.user.id) {
-        setTelegramId(tgData.user.id.toString());
-      }
-    }
-  }, []);
 
   const rankRanges = useMemo(() => {
     if (!ranksLoaded || !ranks) return [];
@@ -73,7 +66,7 @@ function Ranks() {
 
     // Include the current user in the highest rank if they exceed the range
     const currentUserDetails = allUsers.users.find(
-      (user: User) => user.telegram_id === telegramId
+      (user: User) => user.telegram_id === users.telegram_id
     );
 
     if (currentUserDetails) {
@@ -98,11 +91,11 @@ function Ranks() {
       };
 
     });
-  }, [allUsers, loadingUsers, rankRanges, telegramId]);
+  }, [allUsers, loadingUsers, rankRanges, users.telegram_id]);
 
 
   const currentUser = (telegram_id: string) => {
-    const user = telegram_id === telegramId;
+    const user = telegram_id === users.telegram_id;
     return user
   }
 
@@ -191,11 +184,11 @@ function Ranks() {
                         alt="Rank Trophy"
                         className="h-full w-full object-center object-contain"
                       />
-                        <div
-                             className={
-                              "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
-                            }
-                           />
+                      <div
+                        className={
+                          "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                        }
+                      />
                       <h2 className="text-center text-lg font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
                         {group.rank}
                       </h2>

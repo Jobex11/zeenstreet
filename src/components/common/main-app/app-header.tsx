@@ -6,13 +6,14 @@ import avatarImg from "@assets/images/icons/users_avatar.svg";
 import { GiRank2 } from "react-icons/gi";
 import { LuMedal } from "react-icons/lu";
 import { MdOutlineMailOutline } from "react-icons/md";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
 function Header() {
   const [page] = useState(0);
   const [unseenCount, setUnseenCount] = useState(0);
-  const [profileImage, setProfileImage] = useState<string>(avatarImg);
   const limit = 10;
-  const [telegramUsername, setTelegramUsername] = useState("");
+  const users = useSelector((state: RootState) => state.userData);
   const { data: notifications, isLoading } = useGetNotificationsQuery([page, limit], {
     refetchOnReconnect: true,
     refetchOnFocus: true,
@@ -21,17 +22,7 @@ function Header() {
 
   const notificationRefs = useRef<Record<string, HTMLElement | null>>({});
 
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const initData = window.Telegram.WebApp.initDataUnsafe;
-      const user = initData?.user;
 
-      if (user) {
-        setProfileImage(user.photo_url || avatarImg);
-        setTelegramUsername(user.username ?? "User");
-      }
-    }
-  }, []);
 
   useEffect(() => {
     if (notifications?.notifications) {
@@ -107,13 +98,13 @@ function Header() {
           <Link to={"/profile"}>
             <div className="flex items-center bg-transparent border border-gray-500 hover:bg-transparent pr-2 rounded-md gap-2 h-7 min-w-16">
               <img
-                src={profileImage}
+                src={users.photo_url ?? avatarImg}
                 loading="lazy"
                 alt="user placeholder"
                 className="h-6 w-6 rounded-md"
               />
               <span className="text-[9px] work-sans font-medium text-white">
-                @{telegramUsername.slice(0, 10) || "You"}
+                @{users.username}
               </span>
             </div>
           </Link>

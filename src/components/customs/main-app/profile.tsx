@@ -27,8 +27,8 @@ import {
     useGetUserSharesQuery,
     useUpdateUserSharesMutation,
 } from "@hooks/redux/shares";
-import { useGetUsernameQuery, useGetUsersByIdQuery } from "@hooks/redux/users";
-import { Key, useEffect, useMemo, useState } from "react";
+import { useGetUsersByIdQuery } from "@hooks/redux/users";
+import { Key, useMemo, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
 import { toast } from "sonner";
@@ -36,8 +36,9 @@ import { Fragment } from "react";
 import { Skeleton } from "@components/ui/skeleton"
 import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
 import { getUserRank, triggerErrorVibration } from "@/lib/utils";
-import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 // import { AddToHomeScreen } from "@components/common/main-app/task-categories/add-to-homescreen";
 
 
@@ -117,10 +118,9 @@ const wealthClass = [
 
 function Profile() {
 
-    const [telegramId, setTelegramId] = useState<string | null>(null);
-    const [profileImage, setProfileImage] = useState<string>(avatarImg);
-    const [telegramUsername, setTelegramUsername] = useState<string>("");
+
     const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
+    const users = useSelector((state: RootState) => state.userData);
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>(
         {}
     );
@@ -131,21 +131,17 @@ function Profile() {
     });
     const [updateUserShares, { isLoading: updatingShares }] =
         useUpdateUserSharesMutation();
-    const { data: userData, refetch: refetchShares } = useGetUserSharesQuery(
-        telegramId ?? "",
+    const { refetch: refetchShares } = useGetUserSharesQuery(
+        users.telegram_id ?? "",
         {
-            skip: !telegramId,
+            skip: !users.telegram_id,
             refetchOnReconnect: true,
             refetchOnFocus: true,
             refetchOnMountOrArgChange: true,
         }
     );
-    const { data: data, isLoading } = useGetUsernameQuery(telegramId, {
-        refetchOnReconnect: true,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-    });
-    const { data: userDataCard, isLoading: loadingCollectedCards } = useGetUsersByIdQuery(telegramId, {
+
+    const { data: userDataCard, isLoading: loadingCollectedCards } = useGetUsersByIdQuery(users.telegram_id, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
@@ -157,21 +153,6 @@ function Profile() {
             refetchOnMountOrArgChange: true,
         });
 
-    // Initialize Telegram WebApp and set user data
-    useEffect(() => {
-        if (window.Telegram && window.Telegram.WebApp) {
-            const initData = window.Telegram.WebApp.initDataUnsafe;
-            const user = initData?.user;
-
-            // Set Telegram user data
-            if (user) {
-                setTelegramId(user.id ?? null);
-                setTelegramUsername(user.username ?? "User");
-                setProfileImage(user.photo_url || avatarImg);
-            }
-        }
-    }, []);
-
     const handleUpdateShares = async (
         shares: number,
         shareType: string,
@@ -179,7 +160,7 @@ function Profile() {
     ) => {
         try {
             const response = await updateUserShares({
-                telegram_id: telegramId,
+                telegram_id: users.telegram_id,
                 shares,
                 shareType,
             }).unwrap();
@@ -350,7 +331,6 @@ function Profile() {
 
     // const disableClaimShareBtn =
     //     userDataCard?.user?.claimedShares?.["Add to home screen"] || false;
-
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -369,7 +349,7 @@ function Profile() {
                                 <div className="flex items-center justify-between w-full gap-2">
                                     <div className="h-28 w-28 relative">
                                         <img
-                                            src={profileImage}
+                                            src={users.photo_url ?? ""}
                                             loading="lazy"
                                             alt="profile image"
                                             className="w-full h-full object-contain object-center rounded-full"
@@ -382,20 +362,16 @@ function Profile() {
                                     </div>
                                     <div className="flex flex-col pb-4">
                                         <h1 className="text-white text-base font-bold aqum">
-                                            {isLoading ? (
-                                                telegramUsername
-                                            ) : (
-                                                <span className="line-clamp-1">
-                                                    Hi {data?.preferred_username.slice(0, 13)}
-                                                </span>
-                                            )}
+                                            <span className="line-clamp-1">
+                                                Hi {users.username}
+                                            </span>
                                         </h1>
                                         <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF] line-clamp-1">
-                                            {telegramUsername && `@${telegramUsername}`}
+                                            {`@${users.accountName}`}
                                         </h1>
                                         <div className="bg-[#D36519] rounded-md text-white w-full p-2 text-center">
                                             <h1 className="text-xs text-white aqum font-semibold">
-                                                <ShareFormatter shares={userData?.shares} /> shares
+                                                <ShareFormatter shares={users.shares} /> shares
                                             </h1>
                                         </div>
                                     </div>

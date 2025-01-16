@@ -8,6 +8,8 @@ import { triggerErrorVibration } from "@lib/utils";
 import { useGetChatMemberByIdQuery } from "@hooks/redux/channels";
 import { Badge } from "@components/ui/badge"
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
+import { useDispatch } from 'react-redux';
+import { markTaskAsCompleted } from "@/hooks/redux/slices/tasksSlice";
 
 export interface SocialTasksProps {
     tasks: {
@@ -35,6 +37,7 @@ export default function SocialsCategory({
 
     const { openLink } = useTelegramWebApp();
     const [isMember, setIsMember] = useState(false);
+    const dispatch = useDispatch()
     const [complete, { isLoading: completing }] = useCompleteSocialTasksMutation();
     const { data: chat } = useGetChatMemberByIdQuery([tasks.chat_id, telegram_id], {
         refetchOnReconnect: true,
@@ -48,6 +51,7 @@ export default function SocialsCategory({
         setIsMember(true);
     };
 
+
     const handleConfirmMembership = async () => {
         try {
             if (chat.ok && ["member", "administrator", "creator"].includes(chat.result.status)) {
@@ -57,6 +61,7 @@ export default function SocialsCategory({
                     telegram_id,
                 }).unwrap();
                 toast.success(completeTask.message, { className: "text-xs py-3 work-sans" });
+                dispatch(markTaskAsCompleted(tasks?._id));
                 refetch?.();
                 localStorage.removeItem(`countdown-timer${tasks._id}`);
             } else {

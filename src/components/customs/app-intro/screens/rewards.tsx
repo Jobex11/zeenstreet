@@ -6,11 +6,13 @@ import { Fade, Zoom } from "react-awesome-reveal";
 import CountUp from "react-countup"
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useUpdateUserSharesMutation } from "@hooks/redux/shares";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useUpdateUserDataMutation } from "@/hooks/redux/users";
 import Confetti from "react-confetti";
 import useWindowSize from "@hooks/useWindowsize";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 interface RewardsProps {
   shares: number;
@@ -28,27 +30,16 @@ export const Rewards = (
 ) => {
 
   const [showConfetti, setShowConfetti] = useState(false);
-  const [telegramId, setTelegramId] = useState<string | null>(null);
   const [updateShare, { isLoading }] = useUpdateUserSharesMutation();
   const [updateData, { isLoading: updating }] = useUpdateUserDataMutation();
   const { width, height } = useWindowSize();
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const initData = window.Telegram.WebApp.initDataUnsafe;
-      const user = initData?.user;
-
-      // Set Telegram user data
-      if (user) {
-        setTelegramId(user.id ?? null);
-      }
-    }
-  }, []);
+  const users = useSelector((state: RootState) => state.userData);
 
   const handleUpdateUserShare = async () => {
     try {
-      const shares = await updateShare({ shares: user.shares, telegram_id: telegramId, shareType: "reward_shares" }).unwrap();
+      const shares = await updateShare({ shares: user.shares, telegram_id: users.telegram_id, shareType: "reward_shares" }).unwrap();
       const updatedUser = await updateData({
-        telegram_id: telegramId,
+        telegram_id: users.telegram_id,
         province: user.province
       }).unwrap();
       console.log("Updated user:", updatedUser);

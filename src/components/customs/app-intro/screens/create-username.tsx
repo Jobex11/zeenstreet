@@ -43,8 +43,9 @@ export function CreateUsername({
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const [username, setUsername] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [createUsername,] = useCreateUsernameMutation()
 
+
+  const [createUsername,] = useCreateUsernameMutation()
 
   const onSubmit = async (data: CreateUsernameFormValues) => {
     setIsSubmitting(true);
@@ -103,6 +104,7 @@ export function CreateUsername({
           alt="Smily Man"
           className="object-contain max-h-[514px]"
         />
+
         <div className="absolute right-0 top-2 border border-white bg-[#292734] rounded-r-xl rounded-tl-xl w-[50%] min-h-[210px] py-3 px-2 z-30 h-fit">
           <h1 className="text-sm inter text-gray-300">
             <Typewriter

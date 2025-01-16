@@ -95,6 +95,8 @@ export const Socials = () => {
         }
     };
 
+    
+
     return (
         <div className="flex flex-col flex-1 justify-self-start w-full min-h-full p-4 relative">
             <div className="flex flex-col gap-4 items-center mb-10">
@@ -160,5 +162,4 @@ export const Socials = () => {
         </div>
     );
 };
-
 

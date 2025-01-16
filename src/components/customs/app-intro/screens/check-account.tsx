@@ -16,9 +16,9 @@ export const CheckAccount = ({ setScreens }: CheckAccountProps) => {
     const minEmberOfEnlightmentLevel = 1000;
     const maxEmberOfEnlightmentLevel = 90000;
     const minVeilofFortune = 1000;
-    const maxVeilofFortune = 90000; 
+    const maxVeilofFortune = 90000;
     const minBonusEligible = 1000;
-    const maxBonusEligible = 90000; 
+    const maxBonusEligible = 90000;
 
     const getRandomValue = (min: number, max: number) =>
         Math.floor(Math.random() * (max - min + 1)) + min;

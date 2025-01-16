@@ -8,6 +8,9 @@ import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
 import { useCompleteEventsTasksMutation } from "@hooks/redux/tasks";
 import { useTelegramWebApp } from "@/hooks/useTelegramWebapp";
 import { CountdownTimer } from "../countdown-timer";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { setLinkClicked } from "@/hooks/redux/slices/tasksSlice";
 
 export interface EventsProps {
     tasks: {
@@ -33,7 +36,7 @@ export default function EventsTasksCategory({
     special,
 }: EventsProps) {
     const [taskCompleted, setTaskCompleted] = useState(false);
-    const [enableBtn, setEnableBtn] = useState(false);
+    const dispatch = useDispatch();
     const { openLink } = useTelegramWebApp();
     const { data: user } = useGetUsersByIdQuery(telegram_id, {
         refetchOnReconnect: true,
@@ -42,12 +45,6 @@ export default function EventsTasksCategory({
     const [complete, { isLoading: completing }] = useCompleteEventsTasksMutation();
 
     useEffect(() => {
-        // Load enableBtn state from localStorage on component mount
-        const storedEnableBtn = localStorage.getItem(`task-${tasks._id}-enableBtn`);
-        if (storedEnableBtn !== null) {
-            setEnableBtn(JSON.parse(storedEnableBtn));
-        }
-
         if (user?.user) {
             const completed = user.user.completedTasks.some(
                 (task: { taskId: { toString: () => string } }) =>
@@ -75,7 +72,6 @@ export default function EventsTasksCategory({
                 className: "text-xs work-sans py-3",
             });
             refetch?.();
-            localStorage.removeItem(`task-${tasks._id}-enableBtn`)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.data.message || error?.data?.error, { className: "text-xs work-sans py-3" });
@@ -83,17 +79,18 @@ export default function EventsTasksCategory({
         }
     };
 
+    const clickedLinks = useSelector((state: RootState) => state.tasks.clickedLinks);
+    const hasClickedLink = clickedLinks[tasks._id] || false;
+
     const handleTaskType = () => {
         openLink(tasks.url, { try_instant_view: false });
         setTimeout(() => {
-            setEnableBtn(true);
-            // Save the enableBtn state to localStorage after it's updated
-            localStorage.setItem(`task-${tasks._id}-enableBtn`, JSON.stringify(true));
+            dispatch(setLinkClicked({ taskId: tasks._id }));
         }, 5000);
     };
 
     const handleButtonClick = () => {
-        if (!enableBtn) {
+        if (!hasClickedLink) {
             handleTaskType();
         } else {
             handleCompleteEventsTasks();
@@ -102,7 +99,7 @@ export default function EventsTasksCategory({
 
     const btnTitle = completing
         ? "Check..."
-        : enableBtn
+        : hasClickedLink
             ? "Check"
             : "Start";
 

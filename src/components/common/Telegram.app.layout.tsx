@@ -1,21 +1,23 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, PropsWithChildren, useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import zeenstreetLogo from "@assets/images/icons/zenstreet_logo.png";
 import { useGetUsersByIdQuery } from '@hooks/redux/users';
 import { useTelegramWebApp } from "@hooks/useTelegramWebapp"
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "@/hooks/redux/slices/usersSlice";
+import { useGetUserSharesQuery } from "@/hooks/redux/shares";
+import avatarImg from "@assets/images/icons/users_avatar.svg"
 
 
-
-interface TelegramWrapperProps {
-    children: React.ReactNode;
-}
-
-
-export default function TelegramWrapper({ children }: TelegramWrapperProps) {
-    const [isTelegram, setIsTelegram] = useState(true);
+export default function TelegramWrapper({ children }: PropsWithChildren) {
+    const [isTelegram, setIsTelegram] = useState(false);
     const [telegramId, setTelegramId] = useState<string | null>(null);
+    const [telegramUsername, setTelegramUsername] = useState<string | null>(null);
+    const [telegramImage, setTelegramImage] = useState<string | null>(null);
+
     const { closeApp } = useTelegramWebApp();
+    const dispatch = useDispatch();
 
     const { data: user, isSuccess, isFetching } = useGetUsersByIdQuery(telegramId ?? "", {
         skip: !telegramId,
@@ -24,45 +26,39 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
         refetchOnMountOrArgChange: true,
     });
 
+    const { data: shares, } = useGetUserSharesQuery(telegramId ?? "", {
+        skip: !telegramId,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+    });
+
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
-        setIsTelegram(
-            typeof window !== "undefined" && tg?.initDataUnsafe?.user?.id !== undefined
-        );
 
         if (tg) {
-            tg?.ready();
-            setTelegramId(tg?.initDataUnsafe?.user?.id ?? null);
+            tg.ready();
+            const user = tg.initDataUnsafe?.user;
 
-            if (tg.headerColor !== "#FFFFFF") {
+            if (user) {
+                setIsTelegram(true);
+                setTelegramId(user.id ?? null);
+                setTelegramUsername(user.username ?? null);
+                setTelegramImage(user.photo_url ?? null);
+
+                // Configure Telegram UI
                 tg.setHeaderColor("#292734");
-            }
-            if (tg.bottomBarColor !== "#000000") {
                 tg.setBottomBarColor("#000000");
-            }
-
-            if (tg.isVerticalSwipesEnabled) {
                 tg.disableVerticalSwipes();
-            }
 
-            // if (!tg.isClosingConfirmationEnabled) {
-            //     tg.enableClosingConfirmation();
-            // }
-
-            if (tg?.BackButton) {
-                if (location.pathname !== "/") {
-                    tg.BackButton.show();
-
-                    tg.onEvent("backButtonClicked", () => {
-                        window.history.back();
-                    });
-                } else {
-                    tg.BackButton.hide();
+                if (tg?.BackButton) {
+                    tg.BackButton[location.pathname !== "/" ? "show" : "hide"]();
+                    tg.onEvent("backButtonClicked", () => window.history.back());
                 }
             }
         }
 
-        // Clean up when the component unmounts or when the location changes
+        // Cleanup on unmount
         return () => {
             if (tg?.BackButton) {
                 tg.BackButton.hide();
@@ -72,15 +68,29 @@ export default function TelegramWrapper({ children }: TelegramWrapperProps) {
     }, []);
 
     useEffect(() => {
-        if (!isFetching && isSuccess && !user && !user?.user) {
-            closeApp(); //close the app if not a user
+        if (!isFetching && isSuccess && (!user || !user.user)) {
+            closeApp();
         }
     }, [isFetching, isSuccess, user, closeApp]);
 
+    useEffect(() => {
+        if (user?.user) {
+            dispatch(
+                setUserDetails({
+                    username: telegramUsername ?? "",
+                    accountName: user?.user?.accountName,
+                    shares: shares?.shares,
+                    telegram_id: telegramId ?? "",
+                    photo_url: telegramImage ?? avatarImg,
+                })
+            );
+        }
+    }, [dispatch, user, telegramId, telegramUsername, telegramImage, shares?.shares]);
 
     if (isTelegram) {
-        return <Fragment>{children}</Fragment>;
+        return <Fragment>{children}</Fragment>
     }
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 p-4">
             <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full text-center">

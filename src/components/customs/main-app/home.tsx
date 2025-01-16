@@ -9,12 +9,11 @@ import { ShareFormatter } from "@components/common/shareFormatter";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import { useGetAllRanksQuery } from "@hooks/redux/ranks"
-import { useEffect, useState, useMemo, Fragment } from "react";
+import { useState, useMemo, Fragment } from "react";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { SlBadge } from "react-icons/sl";
 import { getUserRank, getRankIconColor } from "@lib/utils"
-import { Skeleton } from "@components/ui/skeleton";
 import ReferralsCategory from "@/components/common/main-app/task-categories/referrals";
 import { NoDataMessage } from "./tasks";
 import SocialsCategory from "@/components/common/main-app/task-categories/socials";
@@ -24,7 +23,8 @@ import { FiLoader } from "react-icons/fi";
 import taskImg from "@assets/images/icons/tasks_img.svg";
 import EventsTasksCategory from "@/components/common/main-app/task-categories/events";
 import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 const imageUrls = [
   firstBannerImg,
@@ -32,35 +32,34 @@ const imageUrls = [
   thirdBannerImg,
 ];
 
-
 function Home() {
 
-  const [telegramId, setTelegramId] = useState<string | null>(null);
-  const [selectedFilter, setSelectedFilter] = useState("Social");
+  const [selectedFilter, setSelectedFilter] = useState("Events");
+  const users = useSelector((state: RootState) => state.userData);
   const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
-  const { data: user, isLoading: loadingShares, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
-  const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
-    skip: !telegramId,
+  const { data: user, refetch: refetchShares } = useGetUserSharesQuery(users.telegram_id ?? "", { skip: !users.telegram_id, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
+  const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(users.telegram_id ?? "", {
+    skip: !users.telegram_id,
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
 
-  const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
-    skip: !telegramId,
+  const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(users.telegram_id, {
+    skip: !users.telegram_id,
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
 
-  const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(telegramId, {
-    skip: !telegramId,
+  const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(users.telegram_id, {
+    skip: !users.telegram_id,
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
-  const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(telegramId, {
-    skip: !telegramId,
+  const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(users.telegram_id, {
+    skip: !users.telegram_id,
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -88,15 +87,6 @@ function Home() {
     setSelectedFilter(name)
   }
 
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const telegramUserId = window.Telegram.WebApp.initDataUnsafe?.user?.id;
-      if (telegramUserId) {
-        setTelegramId(telegramUserId);
-      }
-    }
-  }, []);
-
 
   return (
     <div className="flex flex-col min-h-full">
@@ -114,10 +104,7 @@ function Home() {
             Total shares
           </h1>
           <h1 className="text-3xl font-bold aqum text-white text-center">
-            {loadingShares ?
-              <Skeleton className="bg-gray-700 h-9 w-32 animate-pulse rounded-md shadow-lg" />
-              :
-              <ShareFormatter shares={user?.shares} />}
+            <ShareFormatter shares={users?.shares} />
           </h1>
           <div className={"mb-5 pb-1 flex items-center gap-4 border-b border-gray-500"}>
             <span className={"work-sans text-white"}>{userRank}</span>
@@ -210,7 +197,7 @@ function Home() {
                       refetchRefTasks();
                       refetchShares()
                     }}
-                    telegram_id={telegramId}
+                    telegram_id={users.telegram_id}
                     type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
@@ -233,7 +220,7 @@ function Home() {
                       refetchSocialTasks();
                       refetchShares()
                     }}
-                    telegram_id={telegramId}
+                    telegram_id={users.telegram_id}
                     type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
@@ -256,7 +243,7 @@ function Home() {
                       refetchEventsTasks();
                       refetchShares()
                     }}
-                    telegram_id={telegramId}
+                    telegram_id={users.telegram_id}
                     special={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
@@ -270,7 +257,7 @@ function Home() {
                   imageSrc={taskImg}
                   message="No Available Partners Tasks"
                 />
-                {partnersTasks?.tasks.length > 0 && partnersTasks?.tasks?.map((tasks: { _id: string; url: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                {partnersTasks?.tasks.length > 0 && partnersTasks?.tasks?.map((tasks: { _id: string; url: string; type: string; chat_id: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                   <PartnersTasksCategory
                     key={tasks?._id}
                     tasks={tasks}
@@ -278,8 +265,8 @@ function Home() {
                       refetchPartnersTasks();
                       refetchShares()
                     }}
-                    telegram_id={telegramId}
-                    type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
+                    telegram_id={users.telegram_id}
+                    special={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
               </Fragment>}

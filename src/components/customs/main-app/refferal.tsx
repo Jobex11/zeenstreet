@@ -1,37 +1,39 @@
-import { useEffect, useState, Fragment } from "react";
-import dotsbg from "@assets/images/dotted-bg.png";
-import logo from "@assets/images/icons/zenstreet_logo.png";
 import CardWrapper from "@/components/common/cards/card-wrapper";
-import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
-import { Button } from "@components/ui/button";
-import { toast } from "sonner";
-import { MdInfo } from "react-icons/md";
+import { RootState } from "@/lib/store";
+import { triggerErrorVibration } from "@/lib/utils";
+import dotsbg from "@assets/images/dotted-bg.png";
+import tier1_img from "@assets/images/icons/tier1_friend.svg";
+import tier2_img from "@assets/images/icons/tier2_friend.svg";
+import avatarImg from "@assets/images/icons/users_avatar.svg";
+import logo from "@assets/images/icons/zenstreet_logo.png";
 import { ShareFormatter } from "@components/common/shareFormatter";
+import { Button } from "@components/ui/button";
+import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
+import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from "@components/ui/skeleton";
 import {
+  useCliamReferralSharesMutation,
   useGetReferralLinkQuery,
   useGetTier1ReferralQuery,
   useGetTier2ReferralQuery,
-  useCliamReferralSharesMutation,
 } from "@hooks/redux/referrals";
+import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import {
-  useGetTelegramUserPhotoUrlQuery,
   useGetFilePathQuery,
+  useGetTelegramUserPhotoUrlQuery,
 } from "@hooks/redux/tg_photo";
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import useWindowSize from "@hooks/useWindowsize";
+import { Fragment, useState } from "react";
 import Confetti from "react-confetti";
-import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import avatarImg from "@assets/images/icons/users_avatar.svg"
-import tier1_img from "@assets/images/icons/tier1_friend.svg"
-import tier2_img from "@assets/images/icons/tier2_friend.svg"
-import { ScrollArea } from '@components/ui/scroll-area'
-import InfiniteScroll from "react-infinite-scroll-component";
-import { FiLoader } from "react-icons/fi"
-import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
+import { FiLoader } from "react-icons/fi";
 import { IoCopyOutline } from "react-icons/io5";
+import { MdInfo } from "react-icons/md";
 import { RiShareLine } from "react-icons/ri";
-import { triggerErrorVibration } from "@/lib/utils";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 interface Referral {
   userLogo: string;
@@ -48,27 +50,27 @@ function Referral() {
   const [tier1Page, setTier1Page] = useState<number>(1);
   const [tier2Page, setTier2Page] = useState<number>(1);
   const limit = 10;
-  const [telegramId, setTelegramId] = useState<string | null>(null);
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
+  const users = useSelector((state: RootState) => state.userData);
   const btnTabs = [{ name: "Tier 1" }, { name: "Tier 2" }];
 
   const [claimReferralShares, { isLoading: claimingShares }] =
     useCliamReferralSharesMutation();
   const { refetch } = useGetUserSharesQuery(
-    telegramId ?? "",
+    users.telegram_id ?? "",
     {
-      skip: !telegramId,
+      skip: !users.telegram_id,
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true
     }
   );
   const { data: userData, refetch: refetchUserData } = useGetUsersByIdQuery(
-    telegramId ?? "",
+    users.telegram_id ?? "",
     {
-      skip: !telegramId,
+      skip: !users.telegram_id,
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
@@ -76,9 +78,9 @@ function Referral() {
   );
 
   const { data: tier1Data, isLoading: loading } = useGetTier1ReferralQuery(
-    { telegram_id: telegramId, page: tier1Page, limit: limit },
+    { telegram_id: users.telegram_id, page: tier1Page, limit: limit },
     {
-      skip: !telegramId,
+      skip: !users.telegram_id,
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true
@@ -87,29 +89,21 @@ function Referral() {
 
   // Query for tier2 referrals with pagination
   const { data: tier2Data } = useGetTier2ReferralQuery(
-    { telegram_id: telegramId, page: tier2Page, limit: limit },
+    { telegram_id: users.telegram_id, page: tier2Page, limit: limit },
     {
-      skip: !telegramId,
+      skip: !users.telegram_id,
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
     }
   );
 
-  const { data: referralLink } = useGetReferralLinkQuery(telegramId ?? "", {
-    skip: !telegramId,
+  const { data: referralLink } = useGetReferralLinkQuery(users.telegram_id ?? "", {
+    skip: !users.telegram_id,
     refetchOnReconnect: true,
     refetchOnFocus: true,
   });
-  // Initialize Telegram WebApp
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const tgData = window.Telegram.WebApp.initDataUnsafe;
-      if (tgData && tgData.user && tgData.user.id) {
-        setTelegramId(tgData.user.id.toString());
-      }
-    }
-  }, []);
+
 
   const handleCopyReferralLink = async () => {
     if (referralLink) {
@@ -139,7 +133,7 @@ function Referral() {
 
   const handleClaimReferralShares = async () => {
     try {
-      const refShares = await claimReferralShares(telegramId).unwrap();
+      const refShares = await claimReferralShares(users.telegram_id).unwrap();
       if (refShares) {
         toast.success(refShares.message, { className: "text-xs work-sans py-3" });
         refetchUserData();
@@ -156,9 +150,6 @@ function Referral() {
       console.error("Claiming referral shares error:", error);
     }
   };
-
-  console.log("Data", tier2Data)
-
 
   const handleNextPageTier1 = () => {
     if (tier1Data?.page < tier1Data?.totalPages) {
@@ -190,7 +181,7 @@ function Referral() {
             <CardHeader className="flex flex-col items-center py-0">
               <div className="h-[84px] w-[92px]">
                 <img
-                  loading="lazy"
+                  loading="eager"
                   src={logo}
                   alt="zeen streeet logo"
                   className={"min-h-full object-cover object-center w-full"}
