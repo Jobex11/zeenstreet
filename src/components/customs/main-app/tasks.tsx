@@ -165,7 +165,7 @@ function Tasks() {
                                 imageSrc={taskImg}
                                 message="No Available Tasks"
                             />
-                            {isSuccess && refTasks?.tasks.length > 0 && refTasks?.tasks?.map((tasks: { _id: string; title: string; image: string; shares: number; refCount: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                            {isSuccess && refTasks?.tasks?.length > 0 && refTasks?.tasks?.map((tasks: { _id: string; title: string; image: string; shares: number; refCount: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                                 <ReferralsCategory
                                     key={tasks?._id}
                                     tasks={tasks}
@@ -175,7 +175,7 @@ function Tasks() {
                                         await refetchShares()
                                     }}
                                     telegram_id={users.telegram_id}
-                                    type={`${tasks.countdown !== 0 ? "Special" : ""}`}
+                                    type={`${tasks?.countdown !== 0 ? "Special" : ""}`}
                                 />
                             ))}
                         </Fragment>}
@@ -189,7 +189,7 @@ function Tasks() {
                                 imageSrc={taskImg}
                                 message="No Available Social Tasks"
                             />
-                            {socialTasks?.tasks.length > 0 && socialTasks?.tasks?.map((tasks: { _id: string; chat_id: string; image: string; title: string; shares: number; socialUrl: string; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                            {socialTasks?.tasks?.length > 0 && socialTasks?.tasks?.map((tasks: { _id: string; chat_id: string; image: string; title: string; shares: number; socialUrl: string; countdown: number; baseReward: number; timeRemaining: number; }) => (
                                 <SocialsCategory
                                     key={tasks?._id}
                                     tasks={tasks}
@@ -199,7 +199,7 @@ function Tasks() {
                                         await refetchShares()
                                     }}
                                     telegram_id={users.telegram_id}
-                                    type={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                                    type={`${tasks?.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
                         </Fragment>}
@@ -212,7 +212,7 @@ function Tasks() {
                                 imageSrc={taskImg}
                                 message="No Available Events Tasks"
                             />
-                            {eventsTasks?.tasks.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string; type: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                            {eventsTasks?.tasks?.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string; type: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                                 <EventsTasksCategory
                                     key={tasks?._id}
                                     tasks={tasks}
@@ -222,7 +222,7 @@ function Tasks() {
                                         await refetchShares()
                                     }}
                                     telegram_id={users.telegram_id}
-                                    special={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                                    special={`${tasks?.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
                         </Fragment>}
@@ -235,7 +235,7 @@ function Tasks() {
                                 imageSrc={taskImg}
                                 message="No Available Partners Tasks"
                             />
-                            {partnersTasks?.tasks.length > 0 && partnersTasks?.tasks?.map((tasks: { _id: string; url: string; chat_id: string; type: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                            {partnersTasks?.tasks?.length > 0 && partnersTasks?.tasks?.map((tasks: { _id: string; url: string; chat_id: string; type: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                                 <PartnersTasksCategory
                                     key={tasks?._id}
                                     tasks={tasks}
@@ -245,7 +245,7 @@ function Tasks() {
                                         await refetchShares()
                                     }}
                                     telegram_id={users.telegram_id}
-                                    special={`${tasks.countdown !== 0 ? "Special" : " "}`}
+                                    special={`${tasks?.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
                         </Fragment>}

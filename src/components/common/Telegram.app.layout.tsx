@@ -1,4 +1,3 @@
-import { Fragment, PropsWithChildren, useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import zeenstreetLogo from "@assets/images/icons/zenstreet_logo.png";
@@ -8,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { setUserDetails } from "@/hooks/redux/slices/usersSlice";
 import { useGetUserSharesQuery } from "@/hooks/redux/shares";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
-
+import { Fragment, PropsWithChildren, useEffect, useState } from "react";
 
 export default function TelegramWrapper({ children }: PropsWithChildren) {
     const [isTelegram, setIsTelegram] = useState(false);
@@ -35,13 +34,13 @@ export default function TelegramWrapper({ children }: PropsWithChildren) {
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
-
+        setIsTelegram( typeof window !== "undefined" && tg?.initDataUnsafe?.user?.id !== undefined);
+        
         if (tg) {
             tg.ready();
             const user = tg.initDataUnsafe?.user;
 
             if (user) {
-                setIsTelegram(true);
                 setTelegramId(user.id ?? null);
                 setTelegramUsername(user.username ?? null);
                 setTelegramImage(user.photo_url ?? null);
@@ -116,4 +115,3 @@ export default function TelegramWrapper({ children }: PropsWithChildren) {
         </div>
     );
 }
-

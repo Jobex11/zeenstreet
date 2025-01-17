@@ -1,4 +1,4 @@
-import { RootState } from '@/lib/store'
+// import { RootState } from '@/lib/store'
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png"
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { ShareFormatter } from '@components/common/shareFormatter'
@@ -7,8 +7,8 @@ import { ScrollArea } from '@components/ui/scroll-area'
 import { Skeleton } from '@components/ui/skeleton'
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo'
 import { useGetAllUsersQuery } from '@hooks/redux/users'
-import { Fragment, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { Fragment, useEffect, useState } from 'react'
+// import { useSelector } from 'react-redux'
 
 interface User {
     username: string;
@@ -77,7 +77,8 @@ export default function GlobalLeaderboard() {
 
     // const [userPages, setUserPage] = useState<number>(2)
     // const limit = 10
-    const users = useSelector((state: RootState) => state.userData);
+    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
+    // const users = useSelector((state: RootState) => state.userData);
     const [activeTab, setActiveTab] = useState<'shares' | 'unlockedCardsCount' | 'referralCount'>('shares');
     const { data: allUsers, isLoading, isSuccess, } = useGetAllUsersQuery(undefined, {
         refetchOnReconnect: true,
@@ -107,6 +108,18 @@ export default function GlobalLeaderboard() {
     //     }
     // };
 
+    
+  useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      const user = tg?.initDataUnsafe?.user;
+      if (user) {
+        setTelegramId(user?.id ?? null);
+
+      }
+    }
+  }, [])
 
     return (
         <div className="flex flex-col h-screen text-white">
@@ -171,10 +184,9 @@ export default function GlobalLeaderboard() {
 
 
             <ScrollArea className="flex-1 h-full px-4 py-2 mt-7 pb-24 overflow-y-auto scroll-smooth">
-
-                {restUsers?.slice(0, 30).map((user, index) => {
+                {restUsers?.slice(0, 100).map((user, index) => {
                     return (
-                        <div key={user._id} className={`${user?.telegram_id === users.telegram_id && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
+                        <div key={user._id} className={`${user?.telegram_id === telegramId && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
                             <div className="flex items-center">
                                 <span className="w-6 text-center">{index + 4}</span>
                                 <MiniImage user={user} />

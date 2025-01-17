@@ -1,4 +1,4 @@
-import { useState, useMemo, Key } from "react";
+import { useState, useMemo, Key, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import trophy from "@assets/images/icons/trophy.png";
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
@@ -11,8 +11,8 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Skeleton } from "@components/ui/skeleton";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
+// import { useSelector } from "react-redux";
+// import { RootState } from "@/lib/store";
 
 
 interface Rank {
@@ -33,9 +33,9 @@ function Ranks() {
 
   const [userPages] = useState<number>(1)
   const limit = 10
-
   const [emblaRef, embla] = useEmblaCarousel({ dragFree: false, watchDrag: false });
-  const users = useSelector((state: RootState) => state.userData);
+  // const users = useSelector((state: RootState) => state.userData);
+  const [telegramId, setTelegramId] = useState<string | null>(null);
   const { data: allUsers, isLoading: loadingUsers, isSuccess: usersLoaded } = useGetAllUsersQuery([userPages, limit], {
     refetchOnReconnect: true,
     refetchOnFocus: true,
@@ -66,7 +66,7 @@ function Ranks() {
 
     // Include the current user in the highest rank if they exceed the range
     const currentUserDetails = allUsers.users.find(
-      (user: User) => user.telegram_id === users.telegram_id
+      (user: User) => user.telegram_id === telegramId
     );
 
     if (currentUserDetails) {
@@ -91,11 +91,11 @@ function Ranks() {
       };
 
     });
-  }, [allUsers, loadingUsers, rankRanges, users.telegram_id]);
+  }, [allUsers, loadingUsers, rankRanges, telegramId]);
 
 
   const currentUser = (telegram_id: string) => {
-    const user = telegram_id === users.telegram_id;
+    const user = telegram_id === telegramId;
     return user
   }
 
@@ -129,6 +129,18 @@ function Ranks() {
   //   return () => window.removeEventListener('resize', updateHeight);
   // }, []);
 
+  useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      const user = tg?.initDataUnsafe?.user;
+      if (user) {
+        setTelegramId(user?.id ?? null);
+
+      }
+    }
+  }, [])
+
   return (
     <div className="flex flex-col min-h-full pb-32 flex-1">
 
@@ -152,14 +164,6 @@ function Ranks() {
         </div>
       }
 
-      {/* <div
-        style={{
-          backgroundImage: `url(${dotsbg})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        }}
-        className="flex flex-col max-h-full flex-1 "
-      > */}
       {/* Embla Carousel */}
       {usersLoaded &&
         <div className="relative h-full flex-1 ">
@@ -195,19 +199,6 @@ function Ranks() {
                     </div>
 
 
-                    {/* <InfiniteScroll
-                        dataLength={group?.users.length || 0}
-                        next={loadNextPage}
-                        hasMore={allUsers?.currentPage < allUsers?.totalPages}
-                        loader={
-                          <div className="flex flex-col items-center justify-center py-5">
-                            <FiLoader size={30} color="white" className="animate-spin" />
-                          </div>}
-                        scrollThreshold={0.9}
-                        scrollableTarget="scrollableDiv"
-                        //  className={"overflow-y-auto"}
-                      > */}
-
                     <div className="flex flex-col divide-y-2 divide-gray-800">
                       {
                         group?.users?.length > 0 ?
@@ -231,7 +222,6 @@ function Ranks() {
                             </div>
                           )}
                     </div>
-                    {/* </InfiniteScroll> */}
                   </div>
                 </div>
               ))}

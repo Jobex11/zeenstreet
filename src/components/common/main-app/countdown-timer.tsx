@@ -77,6 +77,7 @@ export const CountdownTimer = ({ timeRemaining, disabled, btnTitle, onClick, cou
                         borderRadius: "5px",
                         overflow: "hidden",
                     }}
+                    className={`${timeLeft === 0 && "grayscale-0"}`}
                 >
                     <div
                         className="bg-orange-500 rounded-r-full"
