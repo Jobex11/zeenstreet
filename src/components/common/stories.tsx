@@ -7,10 +7,12 @@ import { useGetAllStoryQuery, useShareStoryMutation } from "@hooks/redux/stories
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
 import { triggerErrorVibration } from "@lib/utils";
-import React, { Fragment, PropsWithChildren } from "react";
+import { Fragment, PropsWithChildren } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
-
+import {
+    useGetUserSharesQuery
+} from "@hooks/redux/shares";
 
 
 function StoriesLayout({ children }: PropsWithChildren) {
@@ -24,7 +26,15 @@ function StoriesLayout({ children }: PropsWithChildren) {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
-
+    const { refetch: refetchShares } = useGetUserSharesQuery(
+        users.telegram_id ?? "",
+        {
+            skip: !users.telegram_id,
+            refetchOnReconnect: true,
+            refetchOnFocus: true,
+            refetchOnMountOrArgChange: true,
+        }
+    );
     const { data: story, isLoading: loadingStory, isSuccess: storySuccess, refetch: refetchStory } = useGetAllStoryQuery(users.telegram_id ?? "", {
         skip: !users.telegram_id,
         refetchOnReconnect: true,
@@ -38,8 +48,6 @@ function StoriesLayout({ children }: PropsWithChildren) {
     });
 
     const [shareStory, { isLoading: checkingStatus }] = useShareStoryMutation();
-
-
 
     const handleShareStory = async () => {
         if (!story) return;
@@ -67,6 +75,7 @@ function StoriesLayout({ children }: PropsWithChildren) {
                 const share = await shareStory(users.telegram_id).unwrap();
                 toast.success(share.message, { className: "text-xs work-sans py-3" });
                 refetchStory();
+                refetchShares();
             } else {
                 toast.error("Did you subscribe to Ravegenie channel? 😀", { className: "text-xs py-3 work-sans" });
                 triggerErrorVibration()
