@@ -6,7 +6,7 @@ import { CountdownTimer } from "../countdown-timer";
 import { triggerErrorVibration } from "@/lib/utils";
 import { Badge } from "@components/ui/badge";
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
-import { useCompletePartnersTasksMutation, useCompleteSocialTasksMutation } from "@hooks/redux/tasks";
+import { useCompletePartnersTasksMutation } from "@hooks/redux/tasks";
 import { useTelegramWebApp } from "@/hooks/useTelegramWebapp";
 import { useGetChatMemberByIdQuery } from "@/hooks/redux/channels";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +32,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
     });
 
     const [completePartners, { isLoading: completingPartners }] = useCompletePartnersTasksMutation();
-    const [completeSocial, { isLoading: completingSocial }] = useCompleteSocialTasksMutation();
+    // const [completeSocial, { isLoading: completingSocial }] = useCompleteSocialTasksMutation();
     const clickedLinks = useSelector((state: RootState) => state.tasks.clickedLinks);
     const hasClickedLink = clickedLinks[tasks._id] || false;
 
@@ -68,7 +68,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
     const handleConfirmMembership = async () => {
         try {
             if (chat.ok && ["member", "administrator", "creator"].includes(chat.result.status)) {
-                const completeTask = await completeSocial({
+                const completeTask = await completePartners({
                     taskId: tasks?._id,
                     telegram_id,
                 }).unwrap();
@@ -140,11 +140,11 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
     };
 
     const isSocialTask = [
-        "Youtube", "Twitter", "Instagram", "Website", "Facebook", 
+        "Youtube", "Twitter", "Instagram", "Website", "Facebook",
         "Tiktok", "Linkedin", "Discord", "Thread"
     ].includes(tasks?.type);
-    
-    const btnTitle = completingPartners || completingSocial
+
+    const btnTitle = completingPartners
         ? "Hold..."
         : isSocialTask
             ? hasClickedLink
@@ -178,7 +178,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
                     <CountdownTimer
                         _id={tasks._id}
                         timeRemaining={tasks.timeRemaining}
-                        disabled={completingPartners || completingSocial || taskCompleted}
+                        disabled={completingPartners  || taskCompleted}
                         btnTitle={btnTitle}
                         onClick={handleButtonClick}
                         countdown={tasks.countdown}
