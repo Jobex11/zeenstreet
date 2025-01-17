@@ -505,7 +505,7 @@ function Profile() {
                             <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold flex items-center gap-2">
                                 Cards collected
                                 <span>
-                                    {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length})`}
+                                    {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length || 0})`}
                                 </span>
                             </h1>
                             <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">

@@ -74,7 +74,7 @@ function Tasks() {
                 {/* task header */}
                 <header className="flex flex-col gap-3 w-full">
                     {isLoadingCards && <Skeleton className={"max-h-32 h-32 w-full bg-slate-700 shadow-2xl"} />}
-                    <div className={`relative flex items-center gap-8 pb-5 mb-4  snap-x snap-mandatory overflow-x-auto`}>
+                    <div className={`relative flex items-center gap-8 pb-5 mb-4 px-2 snap-x snap-mandatory overflow-x-auto`}>
                         {!isLoadingCards && cards?.cards?.length > 0 && cards?.cards?.slice(0, 2).map((card: CardType) => (
                             <Card
                                 key={card._id}

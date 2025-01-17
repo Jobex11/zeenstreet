@@ -10,11 +10,11 @@ import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Fragment, PropsWithChildren, useEffect, useState } from "react";
 
 export default function TelegramWrapper({ children }: PropsWithChildren) {
-    const [isTelegram, setIsTelegram] = useState(false);
+
+    const [isTelegram, setIsTelegram] = useState(true);
     const [telegramId, setTelegramId] = useState<string | null>(null);
     const [telegramUsername, setTelegramUsername] = useState<string | null>(null);
     const [telegramImage, setTelegramImage] = useState<string | null>(null);
-
     const { closeApp } = useTelegramWebApp();
     const dispatch = useDispatch();
 
@@ -34,8 +34,8 @@ export default function TelegramWrapper({ children }: PropsWithChildren) {
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
-        setIsTelegram( typeof window !== "undefined" && tg?.initDataUnsafe?.user?.id !== undefined);
-        
+        setIsTelegram(typeof window !== "undefined" && tg?.initDataUnsafe?.user?.id !== undefined);
+
         if (tg) {
             tg.ready();
             const user = tg.initDataUnsafe?.user;
