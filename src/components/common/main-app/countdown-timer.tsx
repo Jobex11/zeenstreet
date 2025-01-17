@@ -13,11 +13,12 @@ interface Timer {
     _id: string
     disabled: boolean;
     onClick: () => void;
-    btnTitle: string
+    btnTitle: string;
+    telegram_id:string;
 }
 
-export const CountdownTimer = ({ timeRemaining, disabled, btnTitle, onClick, countdown, _id, shares, baseReward }: Timer) => {
-    const TIMER_KEY = "countdown-timer";
+export const CountdownTimer = ({ timeRemaining, disabled,telegram_id, btnTitle, onClick, countdown, _id, shares, baseReward }: Timer) => {
+    const TIMER_KEY = `timer-${telegram_id}`;
     const [progress, setProgress] = useState<number>(0);
 
     const [timeLeft, setTimeLeft] = useState(() => {
@@ -60,7 +61,7 @@ export const CountdownTimer = ({ timeRemaining, disabled, btnTitle, onClick, cou
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [_id, countdown]);
+    }, [TIMER_KEY, _id, countdown]);
 
     useEffect(() => {
         setProgress((timeLeft / countdown) * 100);

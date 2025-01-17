@@ -70,7 +70,7 @@ export default function EventsTasksCategory({
     const handleTaskType = () => {
         openLink(tasks.url, { try_instant_view: false });
         setTimeout(() => {
-            dispatch(setLinkClicked({ taskId: tasks._id }));
+            dispatch(setLinkClicked({ taskId: tasks._id + telegram_id }));
         }, 5000);
     };
 
@@ -118,6 +118,7 @@ export default function EventsTasksCategory({
                         timeRemaining={tasks.timeRemaining}
                         disabled={completing || taskCompleted}
                         btnTitle={btnTitle}
+                        telegram_id={user?.user?.telegram_id}
                         onClick={handleButtonClick}
                         countdown={tasks.countdown}
                         shares={tasks.shares}

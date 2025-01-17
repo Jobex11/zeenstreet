@@ -11,8 +11,7 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Skeleton } from "@components/ui/skeleton";
-// import { useSelector } from "react-redux";
-// import { RootState } from "@/lib/store";
+
 
 
 interface Rank {
@@ -34,7 +33,6 @@ function Ranks() {
   const [userPages] = useState<number>(1)
   const limit = 10
   const [emblaRef, embla] = useEmblaCarousel({ dragFree: false, watchDrag: false });
-  // const users = useSelector((state: RootState) => state.userData);
   const [telegramId, setTelegramId] = useState<string | null>(null);
   const { data: allUsers, isLoading: loadingUsers, isSuccess: usersLoaded } = useGetAllUsersQuery([userPages, limit], {
     refetchOnReconnect: true,
@@ -93,12 +91,10 @@ function Ranks() {
     });
   }, [allUsers, loadingUsers, rankRanges, telegramId]);
 
-
   const currentUser = (telegram_id: string) => {
     const user = telegram_id === telegramId;
     return user
   }
-
 
   const scrollPrev = async () => {
     if (usersLoaded && ranksLoaded && embla) {
@@ -106,34 +102,17 @@ function Ranks() {
     }
   };
 
-
   const scrollNext = async () => {
     if (usersLoaded && ranksLoaded && embla) {
       await embla.scrollNext();
     }
   };
 
-
-  // useEffect(() => {
-  //   const updateHeight = () => {
-  //     if (scrollableRef.current) {
-  //       const windowHeight = window.innerHeight;
-  //       const topOffset = scrollableRef.current.offsetTop;
-  //       const desiredHeight = windowHeight - topOffset - 20; // 20px buffer
-  //       scrollableRef.current.style.height = `${desiredHeight}px`;
-  //     }
-  //   };
-
-  //   updateHeight();
-  //   window.addEventListener('resize', updateHeight);
-  //   return () => window.removeEventListener('resize', updateHeight);
-  // }, []);
-
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.ready();
-      const user = tg?.initDataUnsafe?.user;
+      const user = tg.initDataUnsafe?.user;
       if (user) {
         setTelegramId(user?.id ?? null);
 
@@ -143,7 +122,6 @@ function Ranks() {
 
   return (
     <div className="flex flex-col min-h-full pb-32 flex-1">
-
       {loadingUsers &&
         <div className="flex flex-col gap-5 px-2 h-full mt-10">
           <Skeleton className='h-52 relative w-full rounded-md bg-gray-600 shadow-2xl'>
@@ -290,34 +268,3 @@ export const RankImage = ({ telegram_id, user }: ImageProps) => {
     </div>
   )
 }
-
-
-// const testUsers = [
-//   { username: "john_doe", shares: 100, telegram_id: "12345", _id: "1" },
-//   { username: "jane_smith", shares: 200, telegram_id: "67890", _id: "2" },
-//   { username: "alex_brown", shares: 50, telegram_id: "54321", _id: "3" },
-//   { username: "maria_gonzalez", shares: 150, telegram_id: "98765", _id: "4" },
-//   { username: "chris_lee", shares: 80, telegram_id: "19283", _id: "5" },
-//   { username: "emma_wilson", shares: 300, telegram_id: "29384", _id: "6" },
-//   { username: "oliver_jones", shares: 120, telegram_id: "37465", _id: "7" },
-//   { username: "sophia_davis", shares: 90, telegram_id: "48576", _id: "8" },
-//   { username: "liam_moore", shares: 200, telegram_id: "59687", _id: "9" },
-//   { username: "ava_miller", shares: 60, telegram_id: "60798", _id: "10" },
-//   { username: "william_taylor", shares: 250, telegram_id: "71809", _id: "11" },
-//   { username: "isabella_anderson", shares: 40, telegram_id: "82910", _id: "12" },
-//   { username: "noah_thompson", shares: 130, telegram_id: "93021", _id: "13" },
-//   { username: "mia_harris", shares: 110, telegram_id: "10432", _id: "14" },
-//   { username: "james_clark", shares: 300, telegram_id: "11543", _id: "15" },
-//   { username: "lucas_white", shares: 70, telegram_id: "12654", _id: "16" },
-//   { username: "amelia_hall", shares: 180, telegram_id: "13765", _id: "17" },
-//   { username: "benjamin_lopez", shares: 220, telegram_id: "14876", _id: "18" },
-//   { username: "elijah_martin", shares: 140, telegram_id: "15987", _id: "19" },
-//   { username: "harper_walker", shares: 90, telegram_id: "16098", _id: "20" },
-//   { username: "mia_harris", shares: 110, telegram_id: "10432", _id: "14" },
-//   { username: "james_clark", shares: 300, telegram_id: "11543", _id: "15" },
-//   { username: "lucas_white", shares: 70, telegram_id: "12654", _id: "16" },
-//   { username: "amelia_hall", shares: 180, telegram_id: "13765", _id: "17" },
-//   { username: "benjamin_lopez", shares: 220, telegram_id: "14876", _id: "18" },
-//   { username: "elijah_martin", shares: 140, telegram_id: "15987", _id: "19" },
-//   { username: "harper_walker", shares: 90, telegram_id: "16098", _id: "20" },
-// ];

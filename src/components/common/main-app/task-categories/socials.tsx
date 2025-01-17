@@ -11,7 +11,7 @@ import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
 import { useDispatch } from 'react-redux';
 import { markTaskAsCompleted } from "@hooks/redux/slices/tasksSlice";
 import { SocialTasksProps } from "@/types/task.type";
-
+import { useGetUsersByIdQuery } from "@hooks/redux/users"
 
 export default function SocialsCategory({
     tasks,
@@ -30,7 +30,9 @@ export default function SocialsCategory({
         refetchOnMountOrArgChange: true,
         skipPollingIfUnfocused: true
     });
-
+    const { data: user } = useGetUsersByIdQuery(telegram_id, {
+        refetchOnReconnect: true, refetchOnFocus: true
+    })
     const handleJoinChannel = () => {
         openLink(tasks?.socialUrl, { try_instant_view: false });
         setIsMember(true);
@@ -97,6 +99,7 @@ export default function SocialsCategory({
                         _id={tasks._id}
                         timeRemaining={tasks.timeRemaining}
                         onClick={handleButtonClick}
+                        telegram_id={user?.user?.telegram_id}
                         btnTitle={completing
                             ? "Check..."
                             : isMember

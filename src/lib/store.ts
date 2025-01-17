@@ -17,8 +17,6 @@ import { channelApi } from '@hooks/redux/channels';
 import { tasksSlice } from '@/hooks/redux/slices/tasksSlice';
 import { userSlice } from '@/hooks/redux/slices/usersSlice';
 
-
-
 // Combine reducers
 const rootReducer = combineReducers({
   [usersApi.reducerPath]: usersApi.reducer,
@@ -32,43 +30,56 @@ const rootReducer = combineReducers({
   [wealthClassApi.reducerPath]: wealthClassApi.reducer,
   [storiesApi.reducerPath]: storiesApi.reducer,
   [channelApi.reducerPath]: channelApi.reducer,
-  tasks: tasksSlice.reducer, // Add tasks slice
+  tasks: tasksSlice.reducer,
   userData: userSlice.reducer,
 });
 
-// Persist configuration
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['tasks', "userData"],
+
+export const createStore = (telegramId = 'default') => {
+  // Dynamic persist configuration
+  const persistConfig = {
+    key: `persist:${telegramId}`,
+    storage,
+    whitelist: ['tasks', 'userData'],
+  };
+
+  // Persisted reducer
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+  // Configure store
+  const store = configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false, // Required for Redux Persist
+      }).concat(
+        usersApi.middleware,
+        sharesApi.middleware,
+        tasksApi.middleware,
+        notificationApi.middleware,
+        cardsApi.middleware,
+        referralsApi.middleware,
+        tgUserPhotoApi.middleware,
+        ranksApi.middleware,
+        wealthClassApi.middleware,
+        storiesApi.middleware,
+        channelApi.middleware
+      ),
+  });
+
+  // Persist store
+  const persistor = persistStore(store);
+
+  // Setup listeners
+  setupListeners(store.dispatch);
+  return { store, persistor };
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const telegramId = 'default';
+const { store, persistor } = createStore(telegramId);
 
-// Configure store
-export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false, // Required for Redux Persist
-    }).concat(
-      usersApi.middleware,
-      sharesApi.middleware,
-      tasksApi.middleware,
-      notificationApi.middleware,
-      cardsApi.middleware,
-      referralsApi.middleware,
-      tgUserPhotoApi.middleware,
-      ranksApi.middleware,
-      wealthClassApi.middleware,
-      storiesApi.middleware,
-      channelApi.middleware
-    ),
-});
+export { store, persistor };
 
-// Persist store
-export const persistor = persistStore(store);
-export type RootState = ReturnType<typeof store.getState>;
+// Types
+export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
-// Setup listeners
-setupListeners(store.dispatch);

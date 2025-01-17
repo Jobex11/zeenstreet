@@ -39,7 +39,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
     const handleJoinSocials = () => {
         openLink(tasks?.url, { try_instant_view: false });
         setTimeout(() => {
-            dispatch(setLinkClicked({ taskId: tasks._id }));
+            dispatch(setLinkClicked({ taskId: tasks._id + telegram_id }));
         }, 5000);
     };
 
@@ -180,6 +180,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
                         timeRemaining={tasks.timeRemaining}
                         disabled={completingPartners  || taskCompleted}
                         btnTitle={btnTitle}
+                        telegram_id={user?.user?.telegram_id}
                         onClick={handleButtonClick}
                         countdown={tasks.countdown}
                         shares={tasks.shares}

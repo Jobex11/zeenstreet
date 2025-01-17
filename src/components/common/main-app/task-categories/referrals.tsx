@@ -78,6 +78,7 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
                         disabled={completing || taskCompleted}
                         btnTitle={completing ? "Check.." : `Check`}
                         onClick={handleCompleteRefTasks}
+                        telegram_id={user?.user?.telegram_id}
                         countdown={tasks.countdown}
                         shares={tasks.shares}
                         baseReward={tasks.baseReward}
