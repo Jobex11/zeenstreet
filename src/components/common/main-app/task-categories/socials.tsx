@@ -9,24 +9,9 @@ import { useGetChatMemberByIdQuery } from "@hooks/redux/channels";
 import { Badge } from "@components/ui/badge"
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
 import { useDispatch } from 'react-redux';
-import { markTaskAsCompleted } from "@/hooks/redux/slices/tasksSlice";
+import { markTaskAsCompleted } from "@hooks/redux/slices/tasksSlice";
+import { SocialTasksProps } from "@/types/task.type";
 
-export interface SocialTasksProps {
-    tasks: {
-        title: string;
-        shares: number;
-        _id: string;
-        socialUrl: string;
-        chat_id: string;
-        countdown: number;
-        baseReward: number;
-        timeRemaining: number;
-        image: string;
-    };
-    refetch?: () => void;
-    telegram_id?: string | null;
-    type?: string;
-}
 
 export default function SocialsCategory({
     tasks,

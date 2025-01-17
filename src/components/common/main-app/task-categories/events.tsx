@@ -6,28 +6,13 @@ import { triggerErrorVibration } from "@/lib/utils";
 import { Badge } from "@components/ui/badge";
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
 import { useCompleteEventsTasksMutation } from "@hooks/redux/tasks";
-import { useTelegramWebApp } from "@/hooks/useTelegramWebapp";
+import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
 import { CountdownTimer } from "../countdown-timer";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
-import { setLinkClicked } from "@/hooks/redux/slices/tasksSlice";
+import { RootState } from "@lib/store";
+import { setLinkClicked } from "@hooks/redux/slices/tasksSlice";
+import { EventsProps } from "@/types/task.type";
 
-export interface EventsProps {
-    tasks: {
-        title: string;
-        shares: number;
-        image: string;
-        _id: string;
-        url: string;
-        countdown: number;
-        baseReward: number;
-        timeRemaining: number;
-        type: string;
-    };
-    refetch?: () => void;
-    telegram_id?: string | null;
-    special: string;
-}
 
 export default function EventsTasksCategory({
     tasks,

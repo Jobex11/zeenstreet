@@ -6,35 +6,18 @@ import { CountdownTimer } from "../countdown-timer";
 import { triggerErrorVibration } from "@/lib/utils";
 import { Badge } from "@components/ui/badge";
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
-import { useCompletePartnersTasksMutation } from "@hooks/redux/tasks";
+import { useCompletePartnersTasksMutation, useCompleteSocialTasksMutation } from "@hooks/redux/tasks";
 import { useTelegramWebApp } from "@/hooks/useTelegramWebapp";
 import { useGetChatMemberByIdQuery } from "@/hooks/redux/channels";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { setLinkClicked } from "@/hooks/redux/slices/tasksSlice";
+import { PartnersProps } from "@/types/task.type";
 
-
-export interface PartnersProps {
-    tasks: {
-        title: string;
-        shares: number;
-        image: string;
-        _id: string;
-        chat_id: string;
-        url: string;
-        type: string;
-        countdown: number;
-        baseReward: number;
-        timeRemaining: number;
-    };
-    refetch?: () => void;
-    telegram_id?: string | null;
-    special: string;
-}
 
 export default function PartnersTasksCategory({ tasks, telegram_id, refetch, special }: PartnersProps) {
     const [taskCompleted, setTaskCompleted] = useState(false);
-    const { openTelegramLink } = useTelegramWebApp();
+    const { openLink } = useTelegramWebApp();
     const dispatch = useDispatch();
     const { data: user } = useGetUsersByIdQuery(telegram_id, {
         refetchOnReconnect: true,
@@ -48,13 +31,13 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
         skipPollingIfUnfocused: true,
     });
 
-    const [complete, { isLoading: completing }] = useCompletePartnersTasksMutation();
-
+    const [completePartners, { isLoading: completingPartners }] = useCompletePartnersTasksMutation();
+    const [completeSocial, { isLoading: completingSocial }] = useCompleteSocialTasksMutation();
     const clickedLinks = useSelector((state: RootState) => state.tasks.clickedLinks);
     const hasClickedLink = clickedLinks[tasks._id] || false;
 
     const handleJoinSocials = () => {
-        openTelegramLink(tasks?.url);
+        openLink(tasks?.url, { try_instant_view: false });
         setTimeout(() => {
             dispatch(setLinkClicked({ taskId: tasks._id }));
         }, 5000);
@@ -68,7 +51,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
         }
 
         try {
-            const completePartnersTasks = await complete({
+            const completePartnersTasks = await completePartners({
                 taskId: tasks._id,
                 telegram_id,
             }).unwrap();
@@ -85,7 +68,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
     const handleConfirmMembership = async () => {
         try {
             if (chat.ok && ["member", "administrator", "creator"].includes(chat.result.status)) {
-                const completeTask = await complete({
+                const completeTask = await completeSocial({
                     taskId: tasks?._id,
                     telegram_id,
                 }).unwrap();
@@ -156,11 +139,14 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
         }
     };
 
-    const btnTitle = completing
+    const isSocialTask = [
+        "Youtube", "Twitter", "Instagram", "Website", "Facebook", 
+        "Tiktok", "Linkedin", "Discord", "Thread"
+    ].includes(tasks?.type);
+    
+    const btnTitle = completingPartners || completingSocial
         ? "Hold..."
-        : [
-            "Youtube", "Twitter", "Instagram", "Website", "Facebook", "Tiktok", "Linkedin", "Discord", "Thread"
-        ].includes(tasks?.type)
+        : isSocialTask
             ? hasClickedLink
                 ? "Claim"
                 : "Start"
@@ -192,7 +178,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
                     <CountdownTimer
                         _id={tasks._id}
                         timeRemaining={tasks.timeRemaining}
-                        disabled={completing || taskCompleted}
+                        disabled={completingPartners || completingSocial || taskCompleted}
                         btnTitle={btnTitle}
                         onClick={handleButtonClick}
                         countdown={tasks.countdown}

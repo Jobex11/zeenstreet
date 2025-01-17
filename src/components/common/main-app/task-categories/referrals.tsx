@@ -7,22 +7,7 @@ import { CountdownTimer } from "../countdown-timer";
 import { triggerErrorVibration } from "@/lib/utils";
 import { Badge } from "@components/ui/badge";
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
-
-export interface RefProps {
-    tasks: {
-        title: string;
-        shares: number;
-        image: string;
-        _id: string;
-        refCount: number;
-        countdown: number;
-        baseReward: number;
-        timeRemaining: number;
-    }
-    refetch?: () => void;
-    telegram_id?: string | null;
-    type: string;
-}
+import { RefProps } from "@/types/task.type";
 
 
 export default function ReferralsCategory({ tasks, telegram_id, refetch, type }: RefProps) {
@@ -31,9 +16,7 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
     const { data: user } = useGetUsersByIdQuery(telegram_id, {
         refetchOnReconnect: true, refetchOnFocus: true
     })
-
     const [complete, { isLoading: completing }] = useCompleteRefTasksMutation();
-
     const handleCompleteRefTasks = async () => {
         if (taskCompleted) {
             toast.error("You have performed this task already!", { className: "text-xs work-sans py-3" });
