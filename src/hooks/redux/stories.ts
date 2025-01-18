@@ -11,9 +11,10 @@ export const storiesApi = createApi({
             providesTags: ['Story'],
         }),
         shareStory: builder.mutation({
-            query: (telegram_id) => ({
+            query: ({ telegram_id, storyId }) => ({
                 url: `/${telegram_id}/share`,
                 method: 'PUT',
+                body: { storyId }
             }),
             invalidatesTags: ['Story'],
         }),

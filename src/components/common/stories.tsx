@@ -54,7 +54,8 @@ function StoriesLayout({ children }: PropsWithChildren) {
         try {
 
             shareToStory(mediaUrl, {
-                text: `Hey guys it's me ${user?.user?.first_name}, join me in RaveGenie Games to earn rewards by performing tasks 🎉 and much more! \n https://t.me/RaveGenie_Bot/game?start=${user?.user?.referralCode}`,
+                // text: `Hey guys it's me ${user?.user?.first_name}, join me in RaveGenie Games to earn rewards by performing tasks 🎉 and much more! \n https://t.me/RaveGenie_Bot/game?start=${user?.user?.referralCode}`,
+                text: story?.description + `https://t.me/RaveGenie_Bot?start=${user?.user?.referralCode}`,
                 widget_link: {
                     url: user?.user?.referralLink,
                     name: "RaveGenie Games",
@@ -71,7 +72,7 @@ function StoriesLayout({ children }: PropsWithChildren) {
     const handleConfirmShareToStory = async () => {
         try {
             if (chat.ok && ["member", "administrator", "creator"].includes(chat.result.status)) {
-                const share = await shareStory(telegramId).unwrap();
+                const share = await shareStory({ telegram_id: telegramId, storyId: story?._id }).unwrap();
                 toast.success(share.message, { className: "text-xs work-sans py-3" });
                 refetchStory();
                 refetchShares();
@@ -86,6 +87,7 @@ function StoriesLayout({ children }: PropsWithChildren) {
             triggerErrorVibration()
         }
     };
+
     return (
         <Fragment>
             {userSuccess && storySuccess && <Drawer open={!story?.hasShared} dismissible={false}>
@@ -113,10 +115,11 @@ function StoriesLayout({ children }: PropsWithChildren) {
                                 Share to Your Story
                             </DrawerTitle>
                             <DrawerDescription className="text-center text-white work-sans">
-                                Hi {user?.user?.username || user?.user?.first_name} 👋,
+                                {story?.description}
+                                {/* Hi {user?.user?.username || user?.user?.first_name} 👋,
                                 welcome to RaveGenie! We'd love for
                                 you to share this to your story, and yes,
-                                you'll be rewarded for it!  + {story?.reward} shares 😀
+                                you'll be rewarded for it!  + {story?.reward} shares 😀 */}
                             </DrawerDescription>
                             <DrawerFooter className="flex flex-row w-full px-0">
                                 <Button
