@@ -9,6 +9,7 @@ import dottedBg from "@assets/images/dotted-bg.png";
 import { useNavigate } from "react-router-dom";
 import { useCheckUsernameQuery } from "@hooks/redux/users";
 import { FiLoader } from "react-icons/fi"
+import { useGetTelegramId } from "@hooks/getTelegramId";
 
 const SCREENS = {
     WELCOME: "welcome-user",
@@ -26,7 +27,7 @@ export default function ZeenAppIntro() {
     const [loading, setLoading] = useState<boolean>(false);
     const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
     const navigate = useNavigate();
-
+    const { telegramId } = useGetTelegramId()
     const provinces = [
         { name: "Obsidia", minShares: 1000, maxShares: 10000 },
         { name: "Platinara", minShares: 10001, maxShares: 20000 },
@@ -57,9 +58,6 @@ export default function ZeenAppIntro() {
         province: assignProvince(randomShares),
     };
 
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const telegramId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id;
     const { data, isLoading, } = useCheckUsernameQuery(telegramId ?? "", {
         skip: !telegramId
     });
@@ -140,7 +138,7 @@ export default function ZeenAppIntro() {
             {currentScreen === SCREENS.REWARDS && (
                 <Rewards user={user} setScreens={setCurrentScreen} />
             )}
-            {currentScreen === SCREENS.SOCIALS && <Socials />}
+            {currentScreen === SCREENS.SOCIALS && <Socials telegram_id={telegramId} />}
         </section>
     );
 }

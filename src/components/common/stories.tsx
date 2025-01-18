@@ -1,4 +1,3 @@
-import { RootState } from "@/lib/store";
 import { Button } from "@components/ui/button";
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerTitle } from "@components/ui/drawer";
 import { Skeleton } from "@components/ui/skeleton";
@@ -8,40 +7,40 @@ import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
 import { triggerErrorVibration } from "@lib/utils";
 import { Fragment, PropsWithChildren } from "react";
-import { useSelector } from "react-redux";
+
 import { toast } from "sonner";
 import {
     useGetUserSharesQuery
 } from "@hooks/redux/shares";
-
+import { useGetTelegramId } from "@hooks/getTelegramId";
 
 function StoriesLayout({ children }: PropsWithChildren) {
 
     const chat_id = "-1002465265495"
-    const users = useSelector((state: RootState) => state.userData);
+    const { telegramId } = useGetTelegramId()
     const { shareToStory } = useTelegramWebApp();
-    const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(users.telegram_id ?? "", {
-        skip: !users.telegram_id,
+    const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(telegramId ?? "", {
+        skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
     const { refetch: refetchShares } = useGetUserSharesQuery(
-        users.telegram_id ?? "",
+        telegramId ?? "",
         {
-            skip: !users.telegram_id,
+            skip: !telegramId,
             refetchOnReconnect: true,
             refetchOnFocus: true,
             refetchOnMountOrArgChange: true,
         }
     );
-    const { data: story, isLoading: loadingStory, isSuccess: storySuccess, refetch: refetchStory } = useGetAllStoryQuery(users.telegram_id ?? "", {
-        skip: !users.telegram_id,
+    const { data: story, isLoading: loadingStory, isSuccess: storySuccess, refetch: refetchStory } = useGetAllStoryQuery(telegramId ?? "", {
+        skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
-    const { data: chat } = useGetChatMemberByIdQuery([chat_id, users.telegram_id], {
+    const { data: chat } = useGetChatMemberByIdQuery([chat_id, telegramId], {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
@@ -72,12 +71,12 @@ function StoriesLayout({ children }: PropsWithChildren) {
     const handleConfirmShareToStory = async () => {
         try {
             if (chat.ok && ["member", "administrator", "creator"].includes(chat.result.status)) {
-                const share = await shareStory(users.telegram_id).unwrap();
+                const share = await shareStory(telegramId).unwrap();
                 toast.success(share.message, { className: "text-xs work-sans py-3" });
                 refetchStory();
                 refetchShares();
             } else {
-                toast.error("Did you subscribe to Ravegenie channel? 😀", { className: "text-xs py-3 work-sans" });
+                toast.error("Did you subscribe to our channel? 😀", { className: "text-xs py-3 work-sans" });
                 triggerErrorVibration()
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

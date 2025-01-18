@@ -37,6 +37,7 @@ import { Skeleton } from "@components/ui/skeleton"
 import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
 import { getUserRank, triggerErrorVibration } from "@/lib/utils";
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
+import { useGetTelegramId } from "@hooks/getTelegramId"
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 // import { AddToHomeScreen } from "@components/common/main-app/task-categories/add-to-homescreen";
@@ -120,10 +121,11 @@ function Profile() {
 
 
     const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
-    const users = useSelector((state: RootState) => state.userData);
+    const { telegramId } = useGetTelegramId()
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>(
         {}
     );
+    const users = useSelector((state: RootState) => state.userData);
     const { data: wealthClasses, isLoading: loadingClasses } = useGetAllWealthClasssQuery(undefined, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
@@ -132,16 +134,16 @@ function Profile() {
     const [updateUserShares, { isLoading: updatingShares }] =
         useUpdateUserSharesMutation();
     const { refetch: refetchShares } = useGetUserSharesQuery(
-        users.telegram_id ?? "",
+        telegramId ?? "",
         {
-            skip: !users.telegram_id,
+            skip: !telegramId,
             refetchOnReconnect: true,
             refetchOnFocus: true,
             refetchOnMountOrArgChange: true,
         }
     );
 
-    const { data: userDataCard, isLoading: loadingCollectedCards } = useGetUsersByIdQuery(users.telegram_id, {
+    const { data: userDataCard, isLoading: loadingCollectedCards } = useGetUsersByIdQuery(telegramId, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
@@ -160,7 +162,7 @@ function Profile() {
     ) => {
         try {
             const response = await updateUserShares({
-                telegram_id: users.telegram_id,
+                telegram_id: telegramId,
                 shares,
                 shareType,
             }).unwrap();

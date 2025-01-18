@@ -35,7 +35,9 @@ export default function SocialsCategory({
     })
     const handleJoinChannel = () => {
         openLink(tasks?.socialUrl, { try_instant_view: false });
-        setIsMember(true);
+        setTimeout(() => {
+            setIsMember(true);
+        }, 2000)
     };
 
 

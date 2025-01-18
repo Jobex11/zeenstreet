@@ -8,11 +8,12 @@ import { setUserDetails } from "@/hooks/redux/slices/usersSlice";
 import { useGetUserSharesQuery } from "@/hooks/redux/shares";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Fragment, PropsWithChildren, useEffect, useState } from "react";
+import { useGetTelegramId } from "@hooks/getTelegramId"
 
 export default function TelegramWrapper({ children }: PropsWithChildren) {
 
     const [isTelegram, setIsTelegram] = useState(true);
-    const [telegramId, setTelegramId] = useState<string | null>(null);
+    const { telegramId } = useGetTelegramId();
     const [telegramUsername, setTelegramUsername] = useState<string | null>(null);
     const [telegramImage, setTelegramImage] = useState<string | null>(null);
     const { closeApp } = useTelegramWebApp();
@@ -41,7 +42,6 @@ export default function TelegramWrapper({ children }: PropsWithChildren) {
             const user = tg.initDataUnsafe?.user;
 
             if (user) {
-                setTelegramId(user.id ?? null);
                 setTelegramUsername(user.username ?? null);
                 setTelegramImage(user.photo_url ?? null);
 

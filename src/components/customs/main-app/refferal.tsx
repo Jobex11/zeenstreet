@@ -1,5 +1,4 @@
 import CardWrapper from "@/components/common/cards/card-wrapper";
-import { RootState } from "@/lib/store";
 import { triggerErrorVibration } from "@/lib/utils";
 import dotsbg from "@assets/images/dotted-bg.png";
 import tier1_img from "@assets/images/icons/tier1_friend.svg";
@@ -32,8 +31,8 @@ import { IoCopyOutline } from "react-icons/io5";
 import { MdInfo } from "react-icons/md";
 import { RiShareLine } from "react-icons/ri";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useSelector } from "react-redux";
 import { toast } from "sonner";
+import { useGetTelegramId } from "@hooks/getTelegramId"
 
 interface Referral {
   userLogo: string;
@@ -49,28 +48,29 @@ function Referral() {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false)
   const [tier1Page, setTier1Page] = useState<number>(1);
   const [tier2Page, setTier2Page] = useState<number>(1);
+  const { telegramId } = useGetTelegramId()
   const limit = 10;
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
-  const users = useSelector((state: RootState) => state.userData);
+
   const btnTabs = [{ name: "Tier 1" }, { name: "Tier 2" }];
 
   const [claimReferralShares, { isLoading: claimingShares }] =
     useCliamReferralSharesMutation();
   const { refetch } = useGetUserSharesQuery(
-    users.telegram_id ?? "",
+    telegramId ?? "",
     {
-      skip: !users.telegram_id,
+      skip: !telegramId,
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true
     }
   );
   const { data: userData, refetch: refetchUserData } = useGetUsersByIdQuery(
-    users.telegram_id ?? "",
+    telegramId ?? "",
     {
-      skip: !users.telegram_id,
+      skip: !telegramId,
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
@@ -78,9 +78,9 @@ function Referral() {
   );
 
   const { data: tier1Data, isLoading: loading } = useGetTier1ReferralQuery(
-    { telegram_id: users.telegram_id, page: tier1Page, limit: limit },
+    { telegram_id: telegramId, page: tier1Page, limit: limit },
     {
-      skip: !users.telegram_id,
+      skip: !telegramId,
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true
@@ -89,17 +89,17 @@ function Referral() {
 
   // Query for tier2 referrals with pagination
   const { data: tier2Data } = useGetTier2ReferralQuery(
-    { telegram_id: users.telegram_id, page: tier2Page, limit: limit },
+    { telegram_id: telegramId, page: tier2Page, limit: limit },
     {
-      skip: !users.telegram_id,
+      skip: !telegramId,
       refetchOnReconnect: true,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
     }
   );
 
-  const { data: referralLink } = useGetReferralLinkQuery(users.telegram_id ?? "", {
-    skip: !users.telegram_id,
+  const { data: referralLink } = useGetReferralLinkQuery(telegramId ?? "", {
+    skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
   });
@@ -133,7 +133,7 @@ function Referral() {
 
   const handleClaimReferralShares = async () => {
     try {
-      const refShares = await claimReferralShares(users.telegram_id).unwrap();
+      const refShares = await claimReferralShares(telegramId).unwrap();
       if (refShares) {
         toast.success(refShares.message, { className: "text-xs work-sans py-3" });
         refetchUserData();

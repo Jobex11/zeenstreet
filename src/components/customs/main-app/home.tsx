@@ -23,8 +23,7 @@ import { FiLoader } from "react-icons/fi";
 import taskImg from "@assets/images/icons/tasks_img.svg";
 import EventsTasksCategory from "@/components/common/main-app/task-categories/events";
 import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
+import { useGetTelegramId } from "@hooks/getTelegramId"
 
 const imageUrls = [
   firstBannerImg,
@@ -35,31 +34,31 @@ const imageUrls = [
 function Home() {
 
   const [selectedFilter, setSelectedFilter] = useState("Events");
-  const users = useSelector((state: RootState) => state.userData);
+  const { telegramId } = useGetTelegramId();
   const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
-  const { data: user, refetch: refetchShares } = useGetUserSharesQuery(users.telegram_id ?? "", { skip: !users.telegram_id, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
-  const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(users.telegram_id ?? "", {
-    skip: !users.telegram_id,
+  const { data: user, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
+  const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
+    skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
 
-  const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(users.telegram_id, {
-    skip: !users.telegram_id,
+  const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
+    skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
 
-  const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(users.telegram_id, {
-    skip: !users.telegram_id,
+  const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(telegramId, {
+    skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
-  const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(users.telegram_id, {
-    skip: !users.telegram_id,
+  const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(telegramId, {
+    skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -104,7 +103,7 @@ function Home() {
             Total shares
           </h1>
           <h1 className="text-3xl font-bold aqum text-white text-center">
-            <ShareFormatter shares={users?.shares} />
+            <ShareFormatter shares={user?.shares} />
           </h1>
           <div className={"mb-5 pb-1 flex items-center gap-4 border-b border-gray-500"}>
             <span className={"work-sans text-white"}>{userRank}</span>
@@ -197,7 +196,7 @@ function Home() {
                       refetchRefTasks();
                       refetchShares()
                     }}
-                    telegram_id={users.telegram_id}
+                    telegram_id={telegramId}
                     type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
@@ -220,7 +219,7 @@ function Home() {
                       refetchSocialTasks();
                       refetchShares()
                     }}
-                    telegram_id={users.telegram_id}
+                    telegram_id={telegramId}
                     type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
@@ -243,7 +242,7 @@ function Home() {
                       refetchEventsTasks();
                       refetchShares()
                     }}
-                    telegram_id={users.telegram_id}
+                    telegram_id={telegramId}
                     special={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}
@@ -265,7 +264,7 @@ function Home() {
                       refetchPartnersTasks();
                       refetchShares()
                     }}
-                    telegram_id={users.telegram_id}
+                    telegram_id={telegramId}
                     special={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
                   />
                 ))}

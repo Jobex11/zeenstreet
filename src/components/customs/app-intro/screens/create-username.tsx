@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { toast } from "sonner";
 import { useCreateUsernameMutation } from "@hooks/redux/users";
 import { triggerErrorVibration } from "@lib/utils";
+import { useGetTelegramId } from "@hooks/getTelegramId";
 
 // Define Zod schema
 const schema = z.object({
@@ -40,7 +41,7 @@ export function CreateUsername({
     mode: "onSubmit",
   });
 
-  const [telegramId, setTelegramId] = useState<string | null>(null);
+  const { telegramId } = useGetTelegramId()
   const [username, setUsername] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -69,16 +70,7 @@ export function CreateUsername({
   }
 
 
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const initData = window.Telegram.WebApp.initDataUnsafe;
-      const user = initData?.user;
 
-      if (user) {
-        setTelegramId(user.id ?? null);
-      }
-    }
-  }, []);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

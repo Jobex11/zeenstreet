@@ -11,8 +11,7 @@ import { toast } from "sonner";
 import { useUpdateUserDataMutation } from "@/hooks/redux/users";
 import Confetti from "react-confetti";
 import useWindowSize from "@hooks/useWindowsize";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
+import { useGetTelegramId } from "@hooks/getTelegramId";
 
 interface RewardsProps {
   shares: number;
@@ -33,16 +32,15 @@ export const Rewards = (
   const [updateShare, { isLoading }] = useUpdateUserSharesMutation();
   const [updateData, { isLoading: updating }] = useUpdateUserDataMutation();
   const { width, height } = useWindowSize();
-  const users = useSelector((state: RootState) => state.userData);
+  const { telegramId } = useGetTelegramId()
 
   const handleUpdateUserShare = async () => {
     try {
-      const shares = await updateShare({ shares: user.shares, telegram_id: users.telegram_id, shareType: "reward_shares" }).unwrap();
-      const updatedUser = await updateData({
-        telegram_id: users.telegram_id,
+      const shares = await updateShare({ shares: user.shares, telegram_id: telegramId, shareType: "reward_shares" }).unwrap();
+      await updateData({
+        telegram_id: telegramId,
         province: user.province
       }).unwrap();
-      console.log("Updated user:", updatedUser);
       if (shares) {
         setShowConfetti(true);
         setTimeout(() => {

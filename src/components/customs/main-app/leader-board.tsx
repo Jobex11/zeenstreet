@@ -7,8 +7,8 @@ import { ScrollArea } from '@components/ui/scroll-area'
 import { Skeleton } from '@components/ui/skeleton'
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo'
 import { useGetAllUsersQuery } from '@hooks/redux/users'
-import { Fragment, useEffect, useState } from 'react'
-// import { useSelector } from 'react-redux'
+import { Fragment, useState } from 'react'
+import { useGetTelegramId } from "@hooks/getTelegramId"
 
 interface User {
     username: string;
@@ -77,7 +77,7 @@ export default function GlobalLeaderboard() {
 
     // const [userPages, setUserPage] = useState<number>(2)
     // const limit = 10
-    const [telegramId, setTelegramId] = useState<string | null>(null);
+    const { telegramId } = useGetTelegramId()
     // const users = useSelector((state: RootState) => state.userData);
     const [activeTab, setActiveTab] = useState<'shares' | 'unlockedCardsCount' | 'referralCount'>('shares');
     const { data: allUsers, isLoading, isSuccess, } = useGetAllUsersQuery(undefined, {
@@ -108,18 +108,6 @@ export default function GlobalLeaderboard() {
     //     }
     // };
 
-    
-  useEffect(() => {
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      const user = tg?.initDataUnsafe?.user;
-      if (user) {
-        setTelegramId(user?.id ?? null);
-
-      }
-    }
-  }, [])
 
     return (
         <div className="flex flex-col h-screen text-white">

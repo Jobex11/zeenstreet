@@ -1,4 +1,4 @@
-import { useState, useMemo, Key, useEffect } from "react";
+import { useState, useMemo, Key } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import trophy from "@assets/images/icons/trophy.png";
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
@@ -11,7 +11,7 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Skeleton } from "@components/ui/skeleton";
-
+import { useGetTelegramId } from "@hooks/getTelegramId"
 
 
 interface Rank {
@@ -33,7 +33,7 @@ function Ranks() {
   const [userPages] = useState<number>(1)
   const limit = 10
   const [emblaRef, embla] = useEmblaCarousel({ dragFree: false, watchDrag: false });
-  const [telegramId, setTelegramId] = useState<string | null>(null);
+  const { telegramId } = useGetTelegramId()
   const { data: allUsers, isLoading: loadingUsers, isSuccess: usersLoaded } = useGetAllUsersQuery([userPages, limit], {
     refetchOnReconnect: true,
     refetchOnFocus: true,
@@ -107,18 +107,6 @@ function Ranks() {
       await embla.scrollNext();
     }
   };
-
-  useEffect(() => {
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      const user = tg.initDataUnsafe?.user;
-      if (user) {
-        setTelegramId(user?.id ?? null);
-
-      }
-    }
-  }, [])
 
   return (
     <div className="flex flex-col min-h-full pb-32 flex-1">

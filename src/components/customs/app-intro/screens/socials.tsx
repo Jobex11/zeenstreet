@@ -11,7 +11,7 @@ import { Button } from "@components/ui/button";
 import { Fade } from "react-awesome-reveal";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-export const Socials = () => {
+export const Socials = ({ telegram_id }: { telegram_id: string | null }) => {
     const navigate = useNavigate()
 
     const socialHandles = [
@@ -53,7 +53,7 @@ export const Socials = () => {
     ];
 
     const loadConfirmedAccounts = () => {
-        const storedState = localStorage.getItem("confirmedAccounts");
+        const storedState = localStorage.getItem(`confirmedAccounts${telegram_id}`);
         return storedState
             ? JSON.parse(storedState)
             : {
@@ -71,8 +71,8 @@ export const Socials = () => {
     });
 
     useEffect(() => {
-        localStorage.setItem("confirmedAccounts", JSON.stringify(confirmedAccounts));
-    }, [confirmedAccounts]);
+        localStorage.setItem(`confirmedAccounts${telegram_id}`, JSON.stringify(confirmedAccounts));
+    }, [confirmedAccounts, telegram_id]);
 
     const allConfirmed = Object.values(confirmedAccounts).every(Boolean);
 
@@ -95,7 +95,6 @@ export const Socials = () => {
         }
     };
 
-    
 
     return (
         <div className="flex flex-col flex-1 justify-self-start w-full min-h-full p-4 relative">
