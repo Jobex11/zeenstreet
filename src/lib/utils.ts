@@ -59,18 +59,18 @@ export const getUnlockDetails = (
 };
 
 
-export const getUserRank = (totalShares: number, rankData: RankData[]): string => {
+export const getUserRank = (totalShares: number | null, rankData: RankData[]): string => {
   if (!rankData || rankData?.length === 0) return "Nobody";
 
   for (const rank of rankData) {
-    if (totalShares >= rank?.min && totalShares <= rank?.max) {
+    if (totalShares && totalShares >= rank?.min && totalShares <= rank?.max) {
       return rank?.rank;
     }
   }
 
   // If totalShares exceeds the maximum range, return the highest rank
   const highestRank = rankData[rankData.length - 1];
-  return totalShares > highestRank.max ? highestRank.rank : "Nobody";
+  return totalShares && totalShares > highestRank.max ? highestRank.rank : "Nobody";
 };
 
 
@@ -215,9 +215,9 @@ export const checkWealthClassUnlock: CheckWealthClassUnlock = (
 
 
 export function triggerErrorVibration() {
-    if (navigator.vibrate) {
-        navigator.vibrate([230]);
-    } else {
-        console.warn("Vibration API is not supported on this device.");
-    }
+  if (navigator.vibrate) {
+    navigator.vibrate([230]);
+  } else {
+    console.warn("Vibration API is not supported on this device.");
+  }
 }

@@ -168,7 +168,7 @@ function Ranks() {
                     <div className="flex flex-col divide-y-2 divide-gray-800">
                       {
                         group?.users?.length > 0 ?
-                          group?.users?.slice(0, 100).map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
+                          group?.users?.map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
                             <div key={user._id} className={`flex mt-3 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
                               <div className="flex items-center gap-3">
                                 <RankImage user={user} telegram_id={user.telegram_id} />

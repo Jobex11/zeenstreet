@@ -102,8 +102,6 @@ export default function ZeenAppIntro() {
     }, [isLoading, data, isFirstTime, navigate, currentScreen]);
 
 
-
-
     const getBackgroundStyles = () => {
         const isRewardsScreen = currentScreen === SCREENS.REWARDS;
         return {

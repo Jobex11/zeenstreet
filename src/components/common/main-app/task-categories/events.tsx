@@ -9,8 +9,8 @@ import { useCompleteEventsTasksMutation } from "@hooks/redux/tasks";
 import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
 import { CountdownTimer } from "../countdown-timer";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@lib/store";
-import { setLinkClicked } from "@hooks/redux/slices/tasksSlice";
+// import { RootState } from "@lib/store";
+import { setLinkClicked, selectLinkClicked } from "@hooks/redux/slices/tasksSlice";
 import { EventsProps } from "@/types/task.type";
 
 
@@ -64,13 +64,15 @@ export default function EventsTasksCategory({
         }
     };
 
-    const clickedLinks = useSelector((state: RootState) => state.tasks.clickedLinks);
-    const hasClickedLink = clickedLinks[tasks._id] || false;
+    // const clickedLinks = useSelector((state: RootState) => state.tasks.clickedLinks);
+    // const hasClickedLink = clickedLinks[tasks._id, telegram_id] || false;
+
+    const hasClickedLink = useSelector(selectLinkClicked(tasks._id, telegram_id));
 
     const handleTaskType = () => {
         openLink(tasks.url, { try_instant_view: false });
         setTimeout(() => {
-            dispatch(setLinkClicked({ taskId: tasks._id + telegram_id }));
+            dispatch(setLinkClicked({ taskId: tasks._id, accountId: telegram_id }));
         }, 5000);
     };
 

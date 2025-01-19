@@ -12,7 +12,7 @@ import { useGetAllRanksQuery } from "@hooks/redux/ranks"
 import { useState, useMemo, Fragment } from "react";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { SlBadge } from "react-icons/sl";
+// import { SlBadge } from "react-icons/sl";
 import { getUserRank, getRankIconColor } from "@lib/utils"
 import ReferralsCategory from "@/components/common/main-app/task-categories/referrals";
 import { NoDataMessage } from "./tasks";
@@ -24,6 +24,9 @@ import taskImg from "@assets/images/icons/tasks_img.svg";
 import EventsTasksCategory from "@/components/common/main-app/task-categories/events";
 import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
 import { useGetTelegramId } from "@hooks/getTelegramId"
+import { FaAward } from "react-icons/fa6";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux"
 
 const imageUrls = [
   firstBannerImg,
@@ -35,6 +38,7 @@ function Home() {
 
   const [selectedFilter, setSelectedFilter] = useState("Events");
   const { telegramId } = useGetTelegramId();
+  const users = useSelector((state: RootState) => state.userData)
   const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
   const { data: user, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
   const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
@@ -43,6 +47,7 @@ function Home() {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
+  console.log("Home", user)
 
   const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
     skip: !telegramId,
@@ -68,7 +73,7 @@ function Home() {
   const userRank = useMemo(
     () =>
       getUserRank(
-        user?.shares,
+        users?.shares,
         ranks?.data?.map(
           (rank: { rank: string; rankRange: { min: number; max: number } }) => ({
             rank: rank.rank,
@@ -77,7 +82,7 @@ function Home() {
           })
         ) || []
       ),
-    [ranks?.data, user?.shares]
+    [ranks?.data, users?.shares]
   );
 
   const rankColor = getRankIconColor(userRank);
@@ -102,12 +107,12 @@ function Home() {
           <h1 className="uppercase aqum font-bold text-lg text-white text-center pt-2">
             Total shares
           </h1>
-          <h1 className="text-3xl font-bold aqum text-white text-center">
-            <ShareFormatter shares={user?.shares} />
+          <h1 className="text-[28px] font-bold aqum text-white text-center">
+            <ShareFormatter shares={users?.shares} />
           </h1>
           <div className={"mb-5 pb-1 flex items-center gap-4 border-b border-gray-500"}>
-            <span className={"work-sans text-white"}>{userRank}</span>
-            <SlBadge color={rankColor} size={25} />
+            <span style={{ color: rankColor }} className={"work-sans text-sm"}>{userRank}</span>
+            <FaAward color={rankColor} size={25} />
           </div>
         </div>
 
