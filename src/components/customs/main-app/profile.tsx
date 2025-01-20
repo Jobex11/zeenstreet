@@ -250,7 +250,6 @@ function Profile() {
         });
     };
 
-
     const wealthClassStatus = determineWealthClassStatus(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards);
 
     const achievement = [
@@ -521,28 +520,26 @@ function Profile() {
                                             }) => (
                                                 <Drawer key={card._id}>
                                                     <DrawerTrigger asChild>
-                                                        <div>
-                                                            <Card
-                                                                style={{
-                                                                    backgroundImage: `url(${wavybg})`,
-                                                                    backgroundRepeat: "no-repeat",
-                                                                    backgroundSize: "cover",
-                                                                }}
-                                                                className="h-24 min-w-40 relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
-                                                            >
-                                                                <img
-                                                                    src={card.image}
-                                                                    loading="lazy"
-                                                                    alt="Card image"
-                                                                    className="h-full w-full object-cover rounded-md"
-                                                                />
-                                                                <div
-                                                                    className={
-                                                                        "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
-                                                                    }
-                                                                />
-                                                            </Card>
-                                                        </div>
+                                                        <Card
+                                                            style={{
+                                                                backgroundImage: `url(${wavybg})`,
+                                                                backgroundRepeat: "no-repeat",
+                                                                backgroundSize: "cover",
+                                                            }}
+                                                            className="h-24 min-w-40 relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
+                                                        >
+                                                            <img
+                                                                src={card.image}
+                                                                loading="lazy"
+                                                                alt="Card image"
+                                                                className="max-h-24 w-full object-contain rounded-md"
+                                                            />
+                                                            <div
+                                                                className={
+                                                                    "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                                                                }
+                                                            />
+                                                        </Card>
                                                     </DrawerTrigger>
                                                     <DrawerContent
                                                         aria-describedby={undefined}

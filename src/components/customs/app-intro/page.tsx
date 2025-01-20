@@ -25,7 +25,7 @@ export default function ZeenAppIntro() {
 
     const [currentScreen, setCurrentScreen] = useState<string>(SCREENS.WELCOME);
     const [loading, setLoading] = useState<boolean>(false);
-    const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
+    // const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
     const navigate = useNavigate();
     const { telegramId } = useGetTelegramId()
     const provinces = [
@@ -62,15 +62,24 @@ export default function ZeenAppIntro() {
         skip: !telegramId
     });
 
-    useEffect(() => {
-        const hasOpenedBefore = localStorage.getItem('hasOpenedBefore');
-        if (hasOpenedBefore) {
-            setIsFirstTime(false);
-        } else {
-            localStorage.setItem('hasOpenedBefore', 'true');
-        }
-    }, []);
 
+    const loadConfirmedAccounts = () => {
+        const storedState = localStorage.getItem(`confirmedAccounts${telegramId}`);
+        return storedState
+            ? JSON.parse(storedState)
+            : { Youtube: false, Telegram: false, X: false };
+    };
+
+    const allConfirmed = Object.values(loadConfirmedAccounts()).every(Boolean);
+
+    // useEffect(() => {
+    //     const hasOpenedBefore = localStorage.getItem("hasOpenedBefore");
+    //     if (hasOpenedBefore) {
+    //         setIsFirstTime(false);
+    //     } else {
+    //         localStorage.setItem("hasOpenedBefore", "true");
+    //     }
+    // }, []);
 
     useEffect(() => {
         if (isLoading) {
@@ -78,39 +87,39 @@ export default function ZeenAppIntro() {
             return;
         }
 
-        if (data?.hasPreferredUsername) {
-            if (!isFirstTime) {
-                // If not first time and has username, show welcome briefly then go to home
-                setLoading(true)
-                setTimeout(() => {
-                    setLoading(false)
-                    navigate("/home");
-                }, TIMEOUT);
+        setLoading(true);
+
+        if (allConfirmed) {
+            if (data?.hasPreferredUsername) {
+                // User has completed socials and has a username
+                navigate("/home");
             } else {
-                // If first time and has username, go through the flow
-                setCurrentScreen(SCREENS.CHECK_ACCOUNT);
-                setLoading(false);
+                // User has completed socials but no username
+                setTimeout(() => {
+                    setCurrentScreen(SCREENS.CREATE_USERNAME);
+                    setLoading(false);
+                }, TIMEOUT);
             }
-        } else if (currentScreen === SCREENS.WELCOME) {
-            setLoading(true);
-            // If no username, start the flow from create username
+        } else {
+            // User has not completed socials
             setTimeout(() => {
-                setCurrentScreen(SCREENS.CREATE_USERNAME);
+                setCurrentScreen(SCREENS.SOCIALS);
                 setLoading(false);
             }, TIMEOUT);
         }
-    }, [isLoading, data, isFirstTime, navigate, currentScreen]);
-
+    }, [isLoading, data, allConfirmed, navigate]);
 
     const getBackgroundStyles = () => {
-        const isRewardsScreen = currentScreen === SCREENS.REWARDS;
+        const isSocialsOrRewards = [SCREENS.SOCIALS, SCREENS.REWARDS].includes(
+            currentScreen
+        );
         return {
-            backgroundImage: isRewardsScreen
+            backgroundImage: isSocialsOrRewards
                 ? `url(${confetti}), url(${dottedBg})`
                 : `url(${dottedBg})`,
-            backgroundRepeat: "no-repeat, no-repeat",
-            backgroundPosition: "top center, bottom center",
-            backgroundSize: isRewardsScreen ? "contain, cover" : "cover, cover",
+            backgroundSize: isSocialsOrRewards ? "auto, cover" : "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
         };
     };
 

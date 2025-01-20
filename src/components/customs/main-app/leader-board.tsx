@@ -78,7 +78,6 @@ export default function GlobalLeaderboard() {
     // const [userPages, setUserPage] = useState<number>(2)
     // const limit = 10
     const { telegramId } = useGetTelegramId()
-    // const users = useSelector((state: RootState) => state.userData);
     const [activeTab, setActiveTab] = useState<'shares' | 'unlockedCardsCount' | 'referralCount'>('shares');
     const { data: allUsers, isLoading, isSuccess, } = useGetAllUsersQuery(undefined, {
         refetchOnReconnect: true,

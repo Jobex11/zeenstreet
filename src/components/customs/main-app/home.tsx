@@ -40,14 +40,14 @@ function Home() {
   const { telegramId } = useGetTelegramId();
   const users = useSelector((state: RootState) => state.userData)
   const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
-  const { data: user, refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
+  const { refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
   const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
     skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
-  console.log("Home", user)
+
 
   const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
     skip: !telegramId,
@@ -103,7 +103,7 @@ function Home() {
         className="flex flex-col py-3 w-full"
       >
         {/* user rewards */}
-        <div className={"flex flex-col items-center gap-2"}>
+        <div className={"flex flex-col items-center gap-1"}>
           <h1 className="uppercase aqum font-bold text-lg text-white text-center pt-2">
             Total shares
           </h1>
@@ -111,7 +111,7 @@ function Home() {
             <ShareFormatter shares={users?.shares} />
           </h1>
           <div className={"mb-5 pb-1 flex items-center gap-4 border-b border-gray-500"}>
-            <span style={{ color: rankColor }} className={"work-sans text-sm"}>{userRank}</span>
+            <span className={"work-sans text-sm text-white"}>{userRank}</span>
             <FaAward color={rankColor} size={25} />
           </div>
         </div>

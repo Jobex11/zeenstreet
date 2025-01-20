@@ -1,4 +1,4 @@
-import { useState, useMemo, Key } from "react";
+import { useState, useMemo, Key, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import trophy from "@assets/images/icons/trophy.png";
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
@@ -11,7 +11,7 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Skeleton } from "@components/ui/skeleton";
-import { useGetTelegramId } from "@hooks/getTelegramId"
+// import { useGetTelegramId } from "@hooks/getTelegramId"
 
 
 interface Rank {
@@ -33,7 +33,8 @@ function Ranks() {
   const [userPages] = useState<number>(1)
   const limit = 10
   const [emblaRef, embla] = useEmblaCarousel({ dragFree: false, watchDrag: false });
-  const { telegramId } = useGetTelegramId()
+  // const { telegramId } = useGetTelegramId()
+  const [telegramId, setTelegramId] = useState<string | null>(null);
   const { data: allUsers, isLoading: loadingUsers, isSuccess: usersLoaded } = useGetAllUsersQuery([userPages, limit], {
     refetchOnReconnect: true,
     refetchOnFocus: true,
@@ -91,12 +92,17 @@ function Ranks() {
     });
   }, [allUsers, loadingUsers, rankRanges, telegramId]);
 
-  const currentUser = (telegram_id: string) => {
-    const isCurrent = telegram_id === telegramId;
-    console.log("Current user check:", { telegram_id, telegramId, isCurrent });
-    return isCurrent;
-  };
+  // const currentUser = (telegram_id: string) => {
+  //   const isCurrent = telegram_id === telegramId;
+  //   console.log("Current user check:", { telegram_id, telegramId, isCurrent });
+  //   return isCurrent;
+  // };
 
+  const currentUser = (telegram_id: string) => {
+    const user = telegram_id === telegramId;
+    console.log("Current user check:", { telegram_id, telegramId, user });
+    return user
+  }
 
   const scrollPrev = async () => {
     if (usersLoaded && ranksLoaded && embla) {
@@ -109,6 +115,15 @@ function Ranks() {
       await embla.scrollNext();
     }
   };
+
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const tgData = window.Telegram.WebApp.initDataUnsafe;
+      if (tgData && tgData.user && tgData.user.id) {
+        setTelegramId(tgData.user.id.toString());
+      }
+    }
+  }, []);
 
   return (
     <div className="flex flex-col min-h-full pb-32 flex-1">
