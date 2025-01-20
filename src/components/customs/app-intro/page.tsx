@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { useCheckUsernameQuery } from "@hooks/redux/users";
 import { FiLoader } from "react-icons/fi"
 import { useGetTelegramId } from "@hooks/getTelegramId";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 const SCREENS = {
     WELCOME: "welcome-user",
@@ -25,9 +27,16 @@ export default function ZeenAppIntro() {
 
     const [currentScreen, setCurrentScreen] = useState<string>(SCREENS.WELCOME);
     const [loading, setLoading] = useState<boolean>(false);
-    // const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
     const navigate = useNavigate();
     const { telegramId } = useGetTelegramId()
+    const confirmedAccounts = useSelector((state: RootState) => state.confirmAccount.confirmedAccounts);
+    const allConfirmed = Object.values(confirmedAccounts).every(Boolean);
+    const { data, isLoading, } = useCheckUsernameQuery(telegramId ?? "", {
+        skip: !telegramId
+    });
+    console.log("Data", data)
+
+
     const provinces = [
         { name: "Obsidia", minShares: 1000, maxShares: 10000 },
         { name: "Platinara", minShares: 10001, maxShares: 20000 },
@@ -58,28 +67,6 @@ export default function ZeenAppIntro() {
         province: assignProvince(randomShares),
     };
 
-    const { data, isLoading, } = useCheckUsernameQuery(telegramId ?? "", {
-        skip: !telegramId
-    });
-
-
-    const loadConfirmedAccounts = () => {
-        const storedState = localStorage.getItem(`confirmedAccounts${telegramId}`);
-        return storedState
-            ? JSON.parse(storedState)
-            : { Youtube: false, Telegram: false, X: false };
-    };
-
-    const allConfirmed = Object.values(loadConfirmedAccounts()).every(Boolean);
-
-    // useEffect(() => {
-    //     const hasOpenedBefore = localStorage.getItem("hasOpenedBefore");
-    //     if (hasOpenedBefore) {
-    //         setIsFirstTime(false);
-    //     } else {
-    //         localStorage.setItem("hasOpenedBefore", "true");
-    //     }
-    // }, []);
 
     useEffect(() => {
         if (isLoading) {
@@ -89,25 +76,29 @@ export default function ZeenAppIntro() {
 
         setLoading(true);
 
-        if (allConfirmed) {
-            if (data?.hasPreferredUsername) {
-                // User has completed socials and has a username
-                navigate("/home");
-            } else {
-                // User has completed socials but no username
-                setTimeout(() => {
-                    setCurrentScreen(SCREENS.CREATE_USERNAME);
-                    setLoading(false);
-                }, TIMEOUT);
-            }
-        } else {
+        if (!allConfirmed) {
             // User has not completed socials
             setTimeout(() => {
                 setCurrentScreen(SCREENS.SOCIALS);
                 setLoading(false);
             }, TIMEOUT);
+            return;
+        }
+
+        if (data?.hasPreferredUsername) {
+            // User has completed socials and has a username
+            setTimeout(() => {
+                navigate("/home");
+            }, TIMEOUT);
+        } else {
+            // User has completed socials but no username
+            setTimeout(() => {
+                setCurrentScreen(SCREENS.CREATE_USERNAME);
+                setLoading(false);
+            }, TIMEOUT);
         }
     }, [isLoading, data, allConfirmed, navigate]);
+
 
     const getBackgroundStyles = () => {
         const isSocialsOrRewards = [SCREENS.SOCIALS, SCREENS.REWARDS].includes(

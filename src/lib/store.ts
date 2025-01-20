@@ -16,6 +16,7 @@ import { storiesApi } from '@hooks/redux/stories';
 import { channelApi } from '@hooks/redux/channels';
 import { tasksSlice } from '@/hooks/redux/slices/tasksSlice';
 import { userSlice } from '@/hooks/redux/slices/usersSlice';
+import { confirmedAccountsSlice } from '@/hooks/redux/slices/onboadingSlice';
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   [channelApi.reducerPath]: channelApi.reducer,
   tasks: tasksSlice.reducer,
   userData: userSlice.reducer,
+  confirmAccount: confirmedAccountsSlice.reducer
 });
 
 
@@ -40,7 +42,7 @@ export const createStore = (telegramId = 'default') => {
   const persistConfig = {
     key: `persist:${telegramId}`,
     storage,
-    whitelist: ['tasks', 'userData'],
+    whitelist: ['tasks', 'userData', "confirmAccount"],
   };
 
   // Persisted reducer

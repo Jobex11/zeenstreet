@@ -532,7 +532,7 @@ function Profile() {
                                                                 src={card.image}
                                                                 loading="lazy"
                                                                 alt="Card image"
-                                                                className="max-h-24 w-full object-contain rounded-md"
+                                                                className="max-h-24 w-full object-cover rounded-md"
                                                             />
                                                             <div
                                                                 className={
@@ -544,7 +544,7 @@ function Profile() {
                                                     <DrawerContent
                                                         aria-describedby={undefined}
                                                         aria-description="dialog"
-                                                        className="flex flex-col max-h-[50%] bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
+                                                        className="flex flex-col max-h-[50%] bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 rounded-lg gap-3"
                                                     >
                                                         <DrawerTitle className="sr-only" />
                                                         <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-3 gap-5">
@@ -610,7 +610,7 @@ function Profile() {
                                             <DrawerContent
                                                 aria-describedby={undefined}
                                                 aria-description="dialog"
-                                                className="flex flex-col min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
+                                                className="flex flex-col min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-3 gap-3"
                                             >
                                                 <DrawerTitle className="sr-only" />
                                                 <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-5 gap-5">

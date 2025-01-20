@@ -10,9 +10,12 @@ import Logo from "@assets/images/icons/ravenenie_logo.png";
 import { Button } from "@components/ui/button";
 import { Fade } from "react-awesome-reveal";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useDispatch } from "react-redux";
+import { setConfirmedSocialAccounts } from "@/hooks/redux/slices/onboadingSlice";
 
 export const Socials = ({ telegram_id }: { telegram_id: string | null }) => {
     const navigate = useNavigate()
+    const dispatch = useDispatch();
 
     const socialHandles = [
         {
@@ -154,7 +157,10 @@ export const Socials = ({ telegram_id }: { telegram_id: string | null }) => {
                 <TextButton
                     name={"Proceed"}
                     disabled={!allConfirmed}
-                    onClick={() => navigate("/home")}
+                    onClick={() => {
+                        dispatch(setConfirmedSocialAccounts(confirmedAccounts));
+                        navigate("/home")
+                    }}
                     className={"uppercase mt-6"}
                 />
             </div>
