@@ -28,14 +28,14 @@ import {
     useUpdateUserSharesMutation,
 } from "@hooks/redux/shares";
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
-import { Key, useMemo, useState } from "react";
+import { Key, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
 import { toast } from "sonner";
 import { Fragment } from "react";
 import { Skeleton } from "@components/ui/skeleton"
 import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
-import { getUserRank, triggerErrorVibration } from "@/lib/utils";
+import { triggerErrorVibration } from "@/lib/utils";
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
 import { useGetTelegramId } from "@hooks/getTelegramId"
 import { useSelector } from "react-redux";
@@ -187,33 +187,19 @@ function Profile() {
 
     const checkIfClaimed = (shareType: string) => claimedRewards[shareType] || false;
 
-    const userRank = useMemo(
-        () =>
-            getUserRank(
-                userDataCard?.user?.shares,
-                ranks?.data?.map(
-                    (rank: { rank: string; rankRange: { min: number; max: number; }; }) => ({
-                        rank: rank.rank,
-                        min: rank.rankRange.min,
-                        max: rank.rankRange.max,
-                    })
-                ) || []
-            ),
-        [ranks?.data, userDataCard?.user?.shares]
-    );
 
     const determineWealthClassStatus = (
-        userRank: string,
+        userShares: number,
         userUnlockedCards: { _id: string; title: string; image: string; wealthClass: string }[]
     ) => {
         return wealthClass?.map((WealthClass) => {
-            // Find the matching wealth class for additional properties
+            // Find matching wealth class data
             const matchingWealthClass = wealthClasses?.data?.find(
-                (cls: { name: string; }) => cls.name === WealthClass.name
+                (cls: { name: string }) => cls.name === WealthClass.name
             );
 
             if (!matchingWealthClass) {
-                // If no matching wealth class is found, return a default structure
+                // Default if wealth class data is missing
                 return {
                     ...WealthClass,
                     img: WealthClass.img,
@@ -225,38 +211,31 @@ function Profile() {
                 };
             }
 
-            // Find the rank range that the user's rank fits into
-            const matchingRank = ranks?.data?.find(
-                (rank: { rankRange: { min: number; max: number; }; rank: string; }) =>
+            // Find the required rank for this wealth class
+            const requiredRank = ranks?.data?.find(
+                (rank: { rankRange: { min: number; max: number } }) =>
                     matchingWealthClass.minRank >= rank.rankRange.min &&
-                    matchingWealthClass.maxRank <= rank.rankRange.max &&
-                    userRank === rank.rank
+                    matchingWealthClass.minRank <= rank.rankRange.max
             );
 
-            // Check if the user's rank falls within the wealth class rank range
-            const hasRequiredRank = !!matchingRank;
+            // Check if the user meets or exceeds the required rank for this class
+            const hasRequiredRank = requiredRank && userShares >= requiredRank.rankRange.min;
 
-            // Count the number of cards unlocked for this wealth class
+            // Count unlocked cards for this wealth class
             const unlockedCardsForClass = userUnlockedCards?.filter(
                 (card) => card.wealthClass === WealthClass.name
             ).length;
 
             const hasRequiredCards = unlockedCardsForClass >= matchingWealthClass.requiredCards;
 
+            // Check if the wealth class is unlocked
             const isUnlocked = hasRequiredRank && hasRequiredCards;
 
-            // Determine the required rank if the current rank does not match
-            const requiredRank = ranks?.data?.find(
-                (rank: { rankRange: { min: number; max: number; }; }) =>
-                    matchingWealthClass.minRank >= rank.rankRange.min &&
-                    matchingWealthClass.maxRank <= rank.rankRange.max
-            )?.rank;
-
-            // Construct the unlock message
+            // Create unlock message
             const unlockMessage = isUnlocked
                 ? `You have unlocked the ${matchingWealthClass.name} class!`
                 : `You need ${matchingWealthClass.requiredCards - unlockedCardsForClass
-                } more cards and rank ${hasRequiredRank ? matchingRank.rank : requiredRank || "a valid rank"
+                } more cards and rank ${requiredRank?.rank || "a valid rank"
                 } to unlock ${matchingWealthClass.name}.`;
 
             return {
@@ -265,12 +244,14 @@ function Profile() {
                 description: WealthClass.description,
                 name: matchingWealthClass.name || WealthClass.name,
                 rewards: matchingWealthClass.sharesReward || WealthClass.rewards,
-                isLocked: isUnlocked,
+                isLocked: isUnlocked, // Ensure `isLocked` reflects the unlock status
                 unlockMessage,
             };
         });
     };
-    const wealthClassStatus = determineWealthClassStatus(userRank, userDataCard?.user?.unlockedCards);
+
+
+    const wealthClassStatus = determineWealthClassStatus(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards);
 
     const achievement = [
         {
@@ -438,37 +419,31 @@ function Profile() {
                                         <DrawerContent
                                             aria-describedby={undefined}
                                             aria-description="dialog"
-                                            className="flex flex-col  min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3"
+                                            className="flex flex-col bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 pb-5 gap-6 rounded-lg shadow-xl"
                                         >
                                             <DrawerTitle className="sr-only" />
-                                            <div className="h-full relative flex flex-col items-center justify-around w-full pb-10  gap-3">
-                                                <DrawerClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
-                                                    <IoIosClose size={30} color="#A4A4A7" />
+                                            <div className="relative flex flex-col items-center justify-center w-full gap-4">
+                                                <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">
+                                                    <IoIosClose size={24} />
                                                 </DrawerClose>
-                                                <div className="h-24 w-24 relative">
+                                                <div className="relative h-28 w-28">
                                                     <img
                                                         src={item.img}
                                                         loading="lazy"
-                                                        alt="Wealth class images"
-                                                        className="h-24 w-24 object-contain object-center rounded-sm"
-                                                    />
-                                                    <div
-                                                        className={
-                                                            "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
-                                                        }
+                                                        alt="Wealth class image"
+                                                        className={`h-full w-full object-cover rounded-full border-4 ${item.isLocked ? "border-orange-500" : "border-gray-600"}  shadow-md`}
                                                     />
                                                 </div>
-                                                <h1 className="text-white work-sans font-semibold text-base capitalize">
+                                                <h1 className="text-white font-semibold text-lg capitalize">
                                                     {item.name}
                                                 </h1>
-                                                <p className="text-white work-sans text-sm text-center max-w-sm">
+                                                <p className="text-gray-300 text-sm text-center max-w-md leading-6">
                                                     {item.description}
                                                 </p>
-                                                <div className={"h-[2px] w-16 bg-gray-400"} />
-                                                <p className="text-white work-sans text-xs text-center max-w-sm">
+                                                <div className="h-[2px] w-20 bg-gradient-to-r from-gray-500 to-gray-800 animate-pulse" />
+                                                <p className="text-gray-400 text-xs text-center max-w-md">
                                                     {item.unlockMessage}
                                                 </p>
-
                                                 <Button
                                                     onClick={() => {
                                                         handleUpdateShares(item.rewards, item.shareType, item.name);
@@ -482,7 +457,9 @@ function Profile() {
                                                         checkIfClaimed(item.shareType) ||
                                                         !item.isLocked
                                                     }
-                                                    className={`bg-[#D36519] hover:bg-orange-500 rounded-lg text-center py-4 h-[50px] w-full text-white work-sans ${(updatingShares || checkIfClaimed(item.shareType) || !item.isLocked) &&
+                                                    className={`bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 rounded-lg py-4 px-6 text-white w-full font-medium shadow-lg transform transition-transform hover:scale-105 ${(updatingShares ||
+                                                        checkIfClaimed(item.shareType) ||
+                                                        !item.isLocked) &&
                                                         "opacity-50 cursor-not-allowed"
                                                         }`}
                                                 >
@@ -491,11 +468,12 @@ function Profile() {
                                                         : checkIfClaimed(item.shareType)
                                                             ? "Shares already Claimed"
                                                             : !item.isLocked
-                                                                ? `+ ${item.rewards} Meet the Requirements first`
-                                                                : `Claim Shares ${item.rewards}`}
+                                                                ? `+ ${item.rewards} Meet the Requirements First`
+                                                                : `Claim ${item.rewards} Shares`}
                                                 </Button>
                                             </div>
                                         </DrawerContent>
+
                                     </Drawer>
                                 )
                             })}

@@ -101,6 +101,11 @@ export default function GlobalLeaderboard() {
         setActiveTab(tab)
     }
 
+    const currentUser = (telegram_id: string) => {
+        const isCurrent = telegram_id === telegramId;
+        console.log("Current user check:", { telegram_id, telegramId, isCurrent });
+        return isCurrent;
+      };
 
     // const loadNextPage = () => {
     //     if (allUsers?.currentPage < allUsers?.totalPages) {
@@ -174,7 +179,7 @@ export default function GlobalLeaderboard() {
             <ScrollArea className="flex-1 h-full px-4 py-2 mt-7 pb-24 overflow-y-auto scroll-smooth">
                 {restUsers?.slice(0, 100).map((user, index) => {
                     return (
-                        <div key={user._id} className={`${user?.telegram_id === telegramId && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
+                        <div key={user._id} className={`${currentUser(user?.telegram_id) && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
                             <div className="flex items-center">
                                 <span className="w-6 text-center">{index + 4}</span>
                                 <MiniImage user={user} />

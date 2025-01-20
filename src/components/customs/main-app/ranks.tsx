@@ -92,9 +92,11 @@ function Ranks() {
   }, [allUsers, loadingUsers, rankRanges, telegramId]);
 
   const currentUser = (telegram_id: string) => {
-    const user = telegram_id === telegramId;
-    return user
-  }
+    const isCurrent = telegram_id === telegramId;
+    console.log("Current user check:", { telegram_id, telegramId, isCurrent });
+    return isCurrent;
+  };
+
 
   const scrollPrev = async () => {
     if (usersLoaded && ranksLoaded && embla) {
