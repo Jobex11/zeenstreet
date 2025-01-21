@@ -10,12 +10,14 @@ import { useTelegramWebApp } from "@/hooks/useTelegramWebapp"
 import { triggerErrorVibration } from "@/lib/utils"
 import { Fragment, type PropsWithChildren, useEffect, useState } from "react"
 import { toast } from "sonner"
+import { useNavigate } from "react-router-dom";
 
 function StoriesLayout({ children }: PropsWithChildren) {
     const chat_id = "-1002465265495"
     const [showSkeleton, setShowSkeleton] = useState(false)
     const { telegramId } = useGetTelegramId()
     const { shareToStory } = useTelegramWebApp()
+    const navigate = useNavigate();
     const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
@@ -32,7 +34,7 @@ function StoriesLayout({ children }: PropsWithChildren) {
         data: story,
         isLoading: loadingStory,
         isSuccess: storySuccess,
-        // refetch: refetchStory,
+        refetch: refetchStory,
     } = useGetAllStoryQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
@@ -52,8 +54,8 @@ function StoriesLayout({ children }: PropsWithChildren) {
             setShowSkeleton(true)
             const timer = setTimeout(() => {
                 setShowSkeleton(false)
-            }, 3000) // Show skeleton for 3 seconds
-            return () => clearTimeout(timer) // Cleanup timer
+            }, 3000) 
+            return () => clearTimeout(timer)
         }
     }, [loadingStory, story, storySuccess, userSuccess])
 
@@ -83,6 +85,8 @@ function StoriesLayout({ children }: PropsWithChildren) {
                 toast.success(share.message, { className: "text-xs work-sans py-3" })
                 refetchShares()
                 refetchChats()
+                refetchStory()
+                navigate(0);
             } else {
                 toast.error("Did you subscribe to our channel? 😀", { className: "text-xs py-3 work-sans" })
                 triggerErrorVibration()

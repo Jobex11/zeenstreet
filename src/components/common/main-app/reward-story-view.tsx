@@ -1,8 +1,8 @@
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerDescription, DrawerTrigger } from "@components/ui/drawer";
 import { HiOutlineGift } from "react-icons/hi";
 import { useGetTelegramId } from "@hooks/getTelegramId";
-import { useRewardForStoryViewsMutation, useGetStoryViewDetailsQuery } from "@hooks/redux/stories";
-import { Fragment } from "react";
+import { useRewardForStoryViewsMutation, useGetStoryViewDetailsQuery, storiesApi } from "@hooks/redux/stories";
+import { Fragment, useEffect } from "react";
 import { Button } from "@components/ui/button";
 import { toast } from "sonner";
 import { triggerErrorVibration } from "@/lib/utils";
@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateClaimedRewards } from "@hooks/redux/slices/rewardsSlice";
 import { RootState } from "@lib/store";
 
-// Define the reward structure
+
 interface RewardMapping {
     views: number;
     rewardShares: number;
@@ -58,6 +58,10 @@ export function RewardForStoryViews() {
             triggerErrorVibration();
         }
     };
+
+    useEffect(() => {
+        dispatch(storiesApi.util.invalidateTags(["Story"]));
+    }, [dispatch])
 
     return (
         <Fragment>
