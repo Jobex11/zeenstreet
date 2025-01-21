@@ -512,7 +512,8 @@ function Profile() {
                                             />
                                         </div>
                                     ) : (
-                                        userDataCard?.user?.unlockedCards.map(
+                                        userDataCard?.user?.unlockedCards &&
+                                        [...userDataCard.user.unlockedCards]?.reverse()?.map(
                                             (card: {
                                                 _id: Key | string | undefined;
                                                 image: string | undefined;

@@ -74,10 +74,16 @@ export default function ZeenAppIntro() {
             return;
         }
 
-        setLoading(true);
+        // First, check the username-related data
+        if (data?.hasPreferredUsername) {
+            // User has a preferred username
+            setTimeout(() => {
+                navigate("/home");
+            }, TIMEOUT);
+            return;
+        }
 
         if (!allConfirmed) {
-            // User has not completed socials
             setTimeout(() => {
                 setCurrentScreen(SCREENS.SOCIALS);
                 setLoading(false);
@@ -85,18 +91,11 @@ export default function ZeenAppIntro() {
             return;
         }
 
-        if (data?.hasPreferredUsername) {
-            // User has completed socials and has a username
-            setTimeout(() => {
-                navigate("/home");
-            }, TIMEOUT);
-        } else {
-            // User has completed socials but no username
-            setTimeout(() => {
-                setCurrentScreen(SCREENS.CREATE_USERNAME);
-                setLoading(false);
-            }, TIMEOUT);
-        }
+        setTimeout(() => {
+            setCurrentScreen(SCREENS.CREATE_USERNAME);
+            setLoading(false);
+        }, TIMEOUT);
+
     }, [isLoading, data, allConfirmed, navigate]);
 
 

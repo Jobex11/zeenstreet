@@ -38,6 +38,7 @@ interface Referral {
   userLogo: string;
   name: string;
   userName: string;
+  accountName:string;
   createdAt: string;
   rewardedShares: string;
   isTier2: boolean;

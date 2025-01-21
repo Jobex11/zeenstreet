@@ -21,7 +21,8 @@ interface Rank {
 }
 
 interface User {
-  username: string;
+  username?: string;
+  accountName: string;
   shares: number;
   telegram_id: string;
   _id: string;
@@ -102,20 +103,14 @@ function Ranks() {
     }
   };
 
+  console.log("All", allUsers)
+
   const scrollNext = async () => {
     if (usersLoaded && ranksLoaded && embla) {
       await embla.scrollNext();
     }
   };
 
-  // useEffect(() => {
-  //   if (window.Telegram && window.Telegram.WebApp) {
-  //     const tgData = window.Telegram.WebApp.initDataUnsafe;
-  //     if (tgData && tgData.user && tgData.user.id) {
-  //       setTelegramId(tgData.user.id.toString());
-  //     }
-  //   }
-  // }, []);
 
   return (
     <div className="flex flex-col min-h-full pb-32 flex-1">
@@ -144,7 +139,7 @@ function Ranks() {
         <div className="relative h-full flex-1 ">
           <div className="embla" ref={emblaRef}>
             <div className="embla__container flex">
-              {usersByRank.map((group: { rank: string | number, users: { username: string; shares: number; telegram_id: string; _id: string; }[]; }, index: Key | null | undefined) => (
+              {usersByRank.map((group: { rank: string | number, users: { accountName: string; username?: string; shares: number; telegram_id: string; _id: string; }[]; }, index: Key | null | undefined) => (
                 <div className="embla__slide w-full " key={index}>
                   <div className="flex flex-col gap-10 flex-1 h-full pb-28">
                     <div
@@ -177,12 +172,12 @@ function Ranks() {
                     <div className="flex flex-col divide-y-2 divide-gray-800">
                       {
                         group?.users?.length > 0 ?
-                          group?.users?.map((user: { username: string; shares: number; telegram_id: string, _id: string }) => (
+                          group?.users?.map((user: { accountName: string; username?: string; shares: number; telegram_id: string, _id: string }) => (
                             <div key={user._id} className={`flex mt-3 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
                               <div className="flex items-center gap-3">
                                 <RankImage user={user} telegram_id={user.telegram_id} />
                                 <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-sm capitalize font-semibold jakarta`}>
-                                  {user.username}
+                                  {user.accountName || user.username}
                                 </h1>
                               </div>
                               <div>
@@ -256,7 +251,7 @@ export const RankImage = ({ telegram_id, user }: ImageProps) => {
         <img
           src={avatarImg}
           loading="lazy"
-          alt={`${user.username}'s Logo`}
+          alt={`${user.accountName}'s Logo`}
           className="h-full w-full rounded-full object-cover object-center"
         />
 

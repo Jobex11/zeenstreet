@@ -12,7 +12,6 @@ import { useGetAllRanksQuery } from "@hooks/redux/ranks"
 import { useState, useMemo, Fragment } from "react";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-// import { SlBadge } from "react-icons/sl";
 import { getUserRank, getRankIconColor } from "@lib/utils"
 import ReferralsCategory from "@/components/common/main-app/task-categories/referrals";
 import { NoDataMessage } from "./tasks";
@@ -27,6 +26,7 @@ import { useGetTelegramId } from "@hooks/getTelegramId"
 import { FaAward } from "react-icons/fa6";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux"
+import { RewardForStoryViews } from "@components/common/main-app/reward-story-view"
 
 const imageUrls = [
   firstBannerImg,
@@ -171,7 +171,8 @@ function Home() {
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
-
+              <div className="h-8 w-[1px] border border-[#E4E4E4]" />
+              <RewardForStoryViews />
             </div>
           </div>
 

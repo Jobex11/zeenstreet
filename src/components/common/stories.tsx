@@ -1,126 +1,129 @@
-import { Button } from "@components/ui/button";
-import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerTitle } from "@components/ui/drawer";
-import { Skeleton } from "@components/ui/skeleton";
-import { useGetTelegramId } from "@hooks/getTelegramId";
-import { useGetChatMemberByIdQuery } from "@hooks/redux/channels";
-import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import { useGetAllStoryQuery, useShareStoryMutation } from "@hooks/redux/stories";
-import { useGetUsersByIdQuery } from "@hooks/redux/users";
-import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
-import { triggerErrorVibration } from "@lib/utils";
-import { Fragment, PropsWithChildren, useEffect, useState } from "react";
-import { toast } from "sonner";
-
+import { Button } from "@/components/ui/button"
+import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerTitle } from "@/components/ui/drawer"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useGetTelegramId } from "@/hooks/getTelegramId"
+import { useGetChatMemberByIdQuery } from "@/hooks/redux/channels"
+import { useGetUserSharesQuery } from "@/hooks/redux/shares"
+import { useGetAllStoryQuery, useShareStoryMutation } from "@/hooks/redux/stories"
+import { useGetUsersByIdQuery } from "@/hooks/redux/users"
+import { useTelegramWebApp } from "@/hooks/useTelegramWebapp"
+import { triggerErrorVibration } from "@/lib/utils"
+import { Fragment, type PropsWithChildren, useEffect, useState } from "react"
+import { toast } from "sonner"
 
 function StoriesLayout({ children }: PropsWithChildren) {
-
-    const chat_id = "-1002465265495";
-    const [showSkeleton, setShowSkeleton] = useState(false);
-    const { telegramId } = useGetTelegramId();
-    const { shareToStory } = useTelegramWebApp();
+    const chat_id = "-1002465265495"
+    const [showSkeleton, setShowSkeleton] = useState(false)
+    const { telegramId } = useGetTelegramId()
+    const { shareToStory } = useTelegramWebApp()
     const { data: user, isSuccess: userSuccess } = useGetUsersByIdQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
-    });
+    })
     const { refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
-    });
-    const { data: story, isLoading: loadingStory, isSuccess: storySuccess, refetch: refetchStory } = useGetAllStoryQuery(telegramId ?? "", {
+    })
+    const {
+        data: story,
+        isLoading: loadingStory,
+        isSuccess: storySuccess,
+        // refetch: refetchStory,
+    } = useGetAllStoryQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
-    });
+    })
     const { data: chat, refetch: refetchChats } = useGetChatMemberByIdQuery([chat_id, telegramId], {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
-    });
+    })
 
-    const [shareStory, { isLoading: checkingStatus }] = useShareStoryMutation();
-
+    const [shareStory, { isLoading: checkingStatus }] = useShareStoryMutation()
 
     useEffect(() => {
         if (!loadingStory && userSuccess && story && storySuccess) {
-            setShowSkeleton(true);
-            setTimeout(() => {
-                setShowSkeleton(false);
-            }, 3000); // 2 seconds delay
+            setShowSkeleton(true)
+            const timer = setTimeout(() => {
+                setShowSkeleton(false)
+            }, 3000) // Show skeleton for 3 seconds
+            return () => clearTimeout(timer) // Cleanup timer
         }
-    }, [loadingStory, story, storySuccess, userSuccess]);
+    }, [loadingStory, story, storySuccess, userSuccess])
 
     const handleShareStory = async () => {
-        if (!story) return;
-        const mediaUrl = story?.image;
+        if (!story) return
+        const mediaUrl = story?.image
         try {
             shareToStory(mediaUrl, {
-                text: story?.description + `https://t.me/RaveGenie_Bot?start=${user?.user?.referralCode}`,
+                text: story?.description,
                 widget_link: {
                     url: user?.user?.referralLink,
                     name: "RaveGenie Games",
                 },
-            });
+            })
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            console.error("Error sharing to story:", error);
-            toast.error("Something went wrong!..", { className: "text-xs work-sans py-3" });
-            triggerErrorVibration();
+            console.error("Error sharing to story:", error)
+            toast.error("Something went wrong!..", { className: "text-xs work-sans py-3" })
+            triggerErrorVibration()
         }
-    };
+    }
 
     const handleConfirmShareToStory = async () => {
         try {
             if (chat.ok && ["member", "administrator", "creator"].includes(chat.result.status)) {
-                const share = await shareStory({ telegram_id: telegramId, storyId: story?._id }).unwrap();
-                toast.success(share.message, { className: "text-xs work-sans py-3" });
-                refetchStory();
-                refetchShares();
-                refetchChats();
+                const share = await shareStory({ telegram_id: telegramId, storyId: story?._id }).unwrap()
+                toast.success(share.message, { className: "text-xs work-sans py-3" })
+                refetchShares()
+                refetchChats()
             } else {
-                toast.error("Did you subscribe to our channel? 😀", { className: "text-xs py-3 work-sans" });
-                triggerErrorVibration();
-                refetchChats();
+                toast.error("Did you subscribe to our channel? 😀", { className: "text-xs py-3 work-sans" })
+                triggerErrorVibration()
+                refetchChats()
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            console.error("Error sharing to story:", error);
-            toast.error(error?.data?.message || error?.data?.error || "Something went wrong!..", { className: "text-xs work-sans py-3" });
-            triggerErrorVibration();
+            console.error("Error sharing to story:", error)
+            toast.error(error?.data?.message || error?.data?.error || "Something went wrong!..", {
+                className: "text-xs work-sans py-3",
+            })
+            triggerErrorVibration()
         }
-    };
+    }
 
-    const isDrawerOpen = story && (!story.hasShared || !story);
+    const shouldShowDrawer = !loadingStory && userSuccess && story
+
     return (
         <Fragment>
-            {!loadingStory && userSuccess && storySuccess && isDrawerOpen && (
-                <Drawer open={!story?.hasShared || !story} dismissible={false}>
+            {shouldShowDrawer && (
+                <Drawer open={true} dismissible={false}>
                     <DrawerContent
                         aria-describedby={undefined}
                         aria-description="show task dialog"
-                        className="flex flex-col max-h-full pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 gap-3"
+                        className="flex flex-col max-h-full pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-4 gap-3"
                     >
-                        {!loadingStory && showSkeleton ? <StorySkeleton /> : userSuccess && storySuccess && (
+                        {showSkeleton ? (
+                            <StorySkeleton />
+                        ) : (
                             <div className="flex flex-col w-full gap-4">
                                 <div className="relative h-[13rem] w-full">
                                     <img
-                                        src={story?.image}
+                                        src={story?.image || "/placeholder.svg"}
                                         loading="lazy"
-                                        alt="Welcome image"
+                                        alt="Story image"
                                         className="h-full w-full object-cover object-bottom rounded-md"
                                     />
                                     <div className="absolute top-0 bottom-0 h-full w-full bg-transparent z-10" />
                                 </div>
-                                <DrawerTitle className="text-center work-sans text-lg text-white">
-                                    Share to Your Story
-                                </DrawerTitle>
-                                <DrawerDescription className="text-center text-white work-sans">
-                                    {story?.description}
-                                </DrawerDescription>
+                                <DrawerTitle className="text-center work-sans text-lg text-white">Share to Your Story</DrawerTitle>
+                                <DrawerDescription className="text-center text-white work-sans">{story?.description}</DrawerDescription>
                                 <DrawerFooter className="flex flex-row w-full px-0">
                                     <Button
                                         disabled={checkingStatus}
@@ -138,19 +141,16 @@ function StoriesLayout({ children }: PropsWithChildren) {
                                     </Button>
                                 </DrawerFooter>
                             </div>
-
                         )}
                     </DrawerContent>
                 </Drawer>
             )}
             {children}
         </Fragment>
-    );
+    )
 }
 
-export default StoriesLayout;
-
-
+export default StoriesLayout
 
 export function StorySkeleton() {
     return (
@@ -164,6 +164,6 @@ export function StorySkeleton() {
                 <Skeleton className="h-12 w-full mt-6 rounded-lg bg-orange-500" />
             </div>
         </Fragment>
-    );
+    )
 }
 

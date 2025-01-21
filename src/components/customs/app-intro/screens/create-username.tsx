@@ -44,8 +44,6 @@ export function CreateUsername({
   const { telegramId } = useGetTelegramId()
   const [username, setUsername] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-
   const [createUsername,] = useCreateUsernameMutation()
 
   const onSubmit = async (data: CreateUsernameFormValues) => {

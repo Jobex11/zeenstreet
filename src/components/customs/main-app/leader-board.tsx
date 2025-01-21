@@ -1,4 +1,3 @@
-// import { RootState } from '@/lib/store'
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png"
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { ShareFormatter } from '@components/common/shareFormatter'
@@ -11,7 +10,8 @@ import { Fragment, useState } from 'react'
 import { useGetTelegramId } from "@hooks/getTelegramId"
 
 interface User {
-    username: string;
+    username?: string;
+    accountName: string;
     shares: number;
     cards: number;
     telegram_id: string;
@@ -52,14 +52,14 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
             {filePath ? <Avatar className={`w-full h-full shadow-2xl relative`}>
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
-                    alt={user.username} />
-                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user.username.slice(0, 2)}</AvatarFallback>
+                    alt={user.accountName} />
+                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user?.accountName?.slice(0, 2) || user?.username?.slice(0, 2)}</AvatarFallback>
                 <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
                 <Avatar className="w-full h-full relative">
                     <AvatarImage
                         src={avatarImg}
-                        alt={user.username} />
+                        alt={user?.accountName} />
                     <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
                 </Avatar>}
 
@@ -104,7 +104,7 @@ export default function GlobalLeaderboard() {
         const isCurrent = telegram_id === telegramId;
         console.log("Current user check:", { telegram_id, telegramId, isCurrent });
         return isCurrent;
-      };
+    };
 
     // const loadNextPage = () => {
     //     if (allUsers?.currentPage < allUsers?.totalPages) {
@@ -148,7 +148,7 @@ export default function GlobalLeaderboard() {
                             {topThree.map((user, index) => (
                                 <div key={user._id} className={`flex flex-col h-full items-center ${index === 0 ? 'order-2' : index === 1 ? 'order-1' : 'order-3'}`}>
                                     <UserImages index={index} user={user} telegram_id={user.telegram_id} />
-                                    <span className="font-medium work-sans capitalize text-[10px] mt-3 line-clamp-1">{user.username.slice(0, 12)}</span>
+                                    <span className="font-medium work-sans capitalize text-[10px] mt-3 line-clamp-1">{user.accountName || user.username}</span>
                                     <span className="text-sm work-sans"><ShareFormatter shares={user[activeTab]} /></span>
                                 </div>
                             ))}
@@ -182,7 +182,7 @@ export default function GlobalLeaderboard() {
                             <div className="flex items-center">
                                 <span className="w-6 text-center">{index + 4}</span>
                                 <MiniImage user={user} />
-                                <span className="ml-2 jakarta font-medium text-sm">{user.username}</span>
+                                <span className="ml-2 jakarta font-medium text-sm">{user?.accountName || user?.username}</span>
                             </div>
                             <span className="text-sm work-sans pr-2"><ShareFormatter shares={user[activeTab]} /></span>
                         </div>
@@ -197,7 +197,7 @@ export default function GlobalLeaderboard() {
 interface MiniImageProps {
     user: {
         telegram_id: string;
-        username: string;
+        accountName: string;
     }
 }
 
@@ -226,14 +226,14 @@ export const MiniImage = ({ user }: MiniImageProps) => {
             {filePath ? <Avatar className="w-12 h-12 relative">
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
-                    alt={user.username} />
-                <AvatarFallback className='uppercase bg-orange-500 text-white jakarta text-lg font-normal'>{user.username.slice(0, 2)}</AvatarFallback>
+                    alt={user.accountName} />
+                <AvatarFallback className='uppercase bg-orange-500 text-white jakarta text-lg font-normal'>{user?.accountName.slice(0, 2)}</AvatarFallback>
                 <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
                 <Avatar className="w-12 h-12 relative">
                     <AvatarImage
                         src={avatarImg}
-                        alt={user.username} />
+                        alt={user.accountName} />
                     <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
                 </Avatar>
             }
@@ -242,34 +242,3 @@ export const MiniImage = ({ user }: MiniImageProps) => {
     )
 
 }
-
-
-
-// export const testUsers = [
-//     { username: "john_doe", shares: 100, telegram_id: "12345", _id: "1" },
-//     { username: "jane_smith", shares: 200, telegram_id: "67890", _id: "2" },
-//     { username: "alex_brown", shares: 50, telegram_id: "54321", _id: "3" },
-//     { username: "maria_gonzalez", shares: 150, telegram_id: "98765", _id: "4" },
-//     { username: "chris_lee", shares: 80, telegram_id: "19283", _id: "5" },
-//     { username: "emma_wilson", shares: 300, telegram_id: "29384", _id: "6" },
-//     { username: "oliver_jones", shares: 120, telegram_id: "37465", _id: "7" },
-//     { username: "sophia_davis", shares: 90, telegram_id: "48576", _id: "8" },
-//     { username: "liam_moore", shares: 200, telegram_id: "59687", _id: "9" },
-//     { username: "ava_miller", shares: 60, telegram_id: "60798", _id: "10" },
-//     { username: "william_taylor", shares: 250, telegram_id: "71809", _id: "11" },
-//     { username: "isabella_anderson", shares: 40, telegram_id: "82910", _id: "12" },
-//     { username: "noah_thompson", shares: 130, telegram_id: "93021", _id: "13" },
-//     { username: "mia_harris", shares: 110, telegram_id: "10432", _id: "14" },
-//     { username: "james_clark", shares: 300, telegram_id: "11543", _id: "15" },
-//     { username: "lucas_white", shares: 70, telegram_id: "12654", _id: "16" },
-//     { username: "amelia_hall", shares: 180, telegram_id: "13765", _id: "17" },
-//     { username: "benjamin_lopez", shares: 220, telegram_id: "14876", _id: "18" },
-//     { username: "elijah_martin", shares: 140, telegram_id: "15987", _id: "19" },
-//     { username: "harper_walker", shares: 90, telegram_id: "16098", _id: "20" },
-//     { username: "james_clark", shares: 300, telegram_id: "11543", _id: "15" },
-//     { username: "lucas_white", shares: 70, telegram_id: "12654", _id: "16" },
-//     { username: "amelia_hall", shares: 180, telegram_id: "13765", _id: "17" },
-//     { username: "benjamin_lopez", shares: 220, telegram_id: "14876", _id: "18" },
-//     { username: "elijah_martin", shares: 140, telegram_id: "15987", _id: "19" },
-//     { username: "harper_walker", shares: 90, telegram_id: "16098", _id: "20" },
-//   ];
