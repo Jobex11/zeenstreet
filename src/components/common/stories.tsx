@@ -13,6 +13,7 @@ import { toast } from "sonner"
 import { useNavigate } from "react-router-dom";
 
 function StoriesLayout({ children }: PropsWithChildren) {
+    
     const chat_id = "-1002465265495"
     const [showSkeleton, setShowSkeleton] = useState(false)
     const { telegramId } = useGetTelegramId()
@@ -54,7 +55,7 @@ function StoriesLayout({ children }: PropsWithChildren) {
             setShowSkeleton(true)
             const timer = setTimeout(() => {
                 setShowSkeleton(false)
-            }, 3000) 
+            }, 3000)
             return () => clearTimeout(timer)
         }
     }, [loadingStory, story, storySuccess, userSuccess])
@@ -64,7 +65,7 @@ function StoriesLayout({ children }: PropsWithChildren) {
         const mediaUrl = story?.image
         try {
             shareToStory(mediaUrl, {
-                text: story?.description,
+                text: story?.description + " " + `${user?.user?.referralLink}`,
                 widget_link: {
                     url: user?.user?.referralLink,
                     name: "RaveGenie Games",
