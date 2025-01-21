@@ -21,11 +21,9 @@ interface RewardMapping {
 export function RewardForStoryViews() {
     const dispatch = useDispatch();
     const { telegramId } = useGetTelegramId();
-
-    // Redux selectors
     const claimedRewards = useSelector((state: RootState) => state.rewards.claimedRewards);
+    const [rewardStory, { isLoading: isCheckingStatus }] = useRewardForStoryViewsMutation();
 
-    // Fetch story details and user data
     const { data: storyDetails } = useGetStoryViewDetailsQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
@@ -33,9 +31,6 @@ export function RewardForStoryViews() {
         refetchOnMountOrArgChange: true,
     });
 
-    const [rewardStory, { isLoading: isCheckingStatus }] = useRewardForStoryViewsMutation();
-
-    // Reward mapping
     const rewardMapping: RewardMapping[] = [
         { views: 10, rewardShares: 100 },
         { views: 20, rewardShares: 1000 },
@@ -43,12 +38,10 @@ export function RewardForStoryViews() {
         { views: 50, rewardShares: 5000 },
     ];
 
-    // Determine the next reward available based on views
     const nextReward = rewardMapping.find(
         (reward) => storyDetails?.views >= reward.views && !claimedRewards.some((rewardItem) => rewardItem.views === reward.views)
     );
 
-    // Handle reward claim
     const handleRewardStoryViews = async () => {
         try {
             const reward = await rewardStory({ telegram_id: telegramId }).unwrap();
@@ -75,7 +68,7 @@ export function RewardForStoryViews() {
                 <DrawerContent
                     aria-describedby={undefined}
                     aria-description="Show reward details"
-                    className="flex flex-col items-center max-h-full text-gray-300 pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-4 gap-3 sm:w-80"
+                    className="flex flex-col items-center max-h-full mx-auto text-gray-300 pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-4 gap-3 sm:w-80"
                 >
                     <div className="relative flex flex-col items-center justify-center w-full gap-4">
                         <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">
@@ -83,7 +76,7 @@ export function RewardForStoryViews() {
                         </DrawerClose>
                     </div>
                     <div>
-                        <img src={storyViewImg} alt="story view image" className={"h-24 w-24 object contain"} />
+                        <img src={storyViewImg} alt="story view image" className={"h-24 w-24 object-contain"} />
                     </div>
                     <DrawerTitle />
                     <DrawerDescription className="text-center text-gray-400 text-sm work-sans">

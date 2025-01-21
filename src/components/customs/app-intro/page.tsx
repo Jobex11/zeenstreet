@@ -32,9 +32,12 @@ export default function ZeenAppIntro() {
     const confirmedAccounts = useSelector((state: RootState) => state.confirmAccount.confirmedAccounts);
     const allConfirmed = Object.values(confirmedAccounts).every(Boolean);
     const { data, isLoading, } = useCheckUsernameQuery(telegramId ?? "", {
-        skip: !telegramId
+        skip: !telegramId,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
     });
-    console.log("Data", data)
+  
 
 
     const provinces = [
@@ -69,34 +72,32 @@ export default function ZeenAppIntro() {
 
 
     useEffect(() => {
-        if (isLoading) {
-            setLoading(true);
-            return;
-        }
+        const welcomeTimeout = setTimeout(() => {
+            if (isLoading) {
+                setLoading(true);
+                return;
+            }
 
-        // First, check the username-related data
-        if (data?.hasPreferredUsername) {
-            // User has a preferred username
-            setTimeout(() => {
+            // Navigate directly to home if username and all accounts are confirmed
+            if (data?.hasPreferredUsername && allConfirmed) {
                 navigate("/home");
-            }, TIMEOUT);
-            return;
-        }
+                return;
+            }
 
-        if (!allConfirmed) {
-            setTimeout(() => {
+            // Check if all accounts are confirmed
+            if (!allConfirmed) {
                 setCurrentScreen(SCREENS.SOCIALS);
-                setLoading(false);
-            }, TIMEOUT);
-            return;
-        }
+                return;
+            }
 
-        setTimeout(() => {
+            // Show create username screen if username is not set
             setCurrentScreen(SCREENS.CREATE_USERNAME);
-            setLoading(false);
-        }, TIMEOUT);
+        }, TIMEOUT); // Delay for the welcome screen
 
+        // Cleanup timeout on unmount
+        return () => clearTimeout(welcomeTimeout);
     }, [isLoading, data, allConfirmed, navigate]);
+
 
 
     const getBackgroundStyles = () => {
