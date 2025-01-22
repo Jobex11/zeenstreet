@@ -24,8 +24,8 @@ export default function ReduxProvider({ children }: PropsWithChildren) {
                 closeButton
                 visibleToasts={2}
                 position='top-right' icons={{
-                    success: <PiConfettiLight />,
-                    error: <MdOutlineMoodBad />
+                    success: <PiConfettiLight size={25} />,
+                    error: <MdOutlineMoodBad size={25} />
                 }} />
             {children}
         </Provider>

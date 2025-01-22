@@ -24,7 +24,7 @@ export function RewardForStoryViews() {
     const claimedRewards = useSelector((state: RootState) => state.rewards.claimedRewards);
     const [rewardStory, { isLoading: isCheckingStatus }] = useRewardForStoryViewsMutation();
 
-    const { data: storyDetails, refetch } = useGetStoryViewDetailsQuery(telegramId ?? "", {
+    const { data: storyDetails, refetch:refetchStoryViews } = useGetStoryViewDetailsQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
@@ -64,9 +64,8 @@ export function RewardForStoryViews() {
 
     useEffect(() => {
         dispatch(storiesApi.util.invalidateTags(["Story"]));
-        refetch()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        refetchStoryViews()
+    }, [dispatch, refetchStoryViews]);
 
     return (
         <Fragment>

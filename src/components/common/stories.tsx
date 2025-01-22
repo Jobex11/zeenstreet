@@ -66,7 +66,7 @@ function StoriesLayout({ children }: PropsWithChildren) {
         const mediaUrl = story?.image
         try {
             shareToStory(mediaUrl, {
-                text: story?.description + `  https://t.me/RaveGenie_Bot?start=${user?.user?.referralCode}`,
+                text: story?.description,
                 widget_link: {
                     url: user?.user?.referralLink,
                     name: "RaveGenie Games",
