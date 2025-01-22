@@ -11,7 +11,8 @@ import storyViewImg from "@assets/images/views.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { updateClaimedRewards } from "@hooks/redux/slices/rewardsSlice";
 import { RootState } from "@lib/store";
-
+// import { FaRegFaceRollingEyes } from "react-icons/fa6";
+import { FaMehRollingEyes } from "react-icons/fa";
 
 interface RewardMapping {
     views: number;
@@ -19,16 +20,18 @@ interface RewardMapping {
 }
 
 export function RewardForStoryViews() {
+    
     const dispatch = useDispatch();
     const { telegramId } = useGetTelegramId();
     const claimedRewards = useSelector((state: RootState) => state.rewards.claimedRewards);
     const [rewardStory, { isLoading: isCheckingStatus }] = useRewardForStoryViewsMutation();
 
-    const { data: storyDetails, refetch:refetchStoryViews } = useGetStoryViewDetailsQuery(telegramId ?? "", {
+    const { data: storyDetails, refetch: refetchStoryDetails } = useGetStoryViewDetailsQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
+        pollingInterval: 20,
     });
 
     const rewardMapping: RewardMapping[] = [
@@ -64,14 +67,16 @@ export function RewardForStoryViews() {
 
     useEffect(() => {
         dispatch(storiesApi.util.invalidateTags(["Story"]));
-        refetchStoryViews()
-    }, [dispatch, refetchStoryViews]);
+    }, [dispatch]);
 
     return (
         <Fragment>
             <Drawer>
-                <DrawerTrigger>
-                    <HiOutlineGift size={25} color={"#d1d5db"} />
+                <DrawerTrigger className={"relative"} onClick={async () => { await refetchStoryDetails() }}>
+                    <Fragment>
+                        <HiOutlineGift size={25} color={"#d1d5db"} />
+                        <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />
+                    </Fragment>
                 </DrawerTrigger>
                 <DrawerContent
                     aria-describedby={undefined}
@@ -83,28 +88,39 @@ export function RewardForStoryViews() {
                             <IoIosClose size={24} />
                         </DrawerClose>
                     </div>
-                    {storyDetails ? (
-                        <Fragment>
-                            <div>
-                                <img src={storyViewImg} alt="story view image" className="h-24 w-24 object-contain" />
-                            </div>
-                            <DrawerTitle />
-                            <DrawerDescription className="text-center text-gray-400 text-sm work-sans">
-                                Earn rewards based on views of your story!
-                            </DrawerDescription>
-                            <div className="flex flex-col items-center justify-center text-white w-full work-sans">
-                                <span className="text-xl font-semibold">
-                                    You have {storyDetails.views ?? 0} view{storyDetails.views === 1 ? "" : "s"}
+                    <Fragment>
+                        <div>
+                            <img src={storyViewImg} alt="story view image" className="h-24 w-24 object-contain" />
+                        </div>
+                        <DrawerTitle className="text-lg font-bold text-white text-center mt-2 tahoma">
+                            View Rewarder
+                        </DrawerTitle>
+                        <DrawerDescription className="text-center text-gray-400 text-sm work-sans px-10">
+                            Earn rewards based on the number of views your story gets!
+                        </DrawerDescription>
+                        <ul className="list-decimal list-inside text-gray-300 work-sans">
+                            <li>10 views will be rewarded with <span className="font-semibold text-orange-500">100 shares</span>.</li>
+                            <li>20 views will be rewarded with <span className="font-semibold text-orange-500">1,000 shares</span>.</li>
+                            <li>30 views will be rewarded with <span className="font-semibold text-orange-500">2,000 shares</span>.</li>
+                            <li>50 views will be rewarded with <span className="font-semibold text-orange-500">5,000 shares</span>.</li>
+                        </ul>
+                        <DrawerDescription className="text-center text-gray-400 text-xs work-sans px-10">
+                            Note: You need to enable privacy settings for this feature to work.!!
+                        </DrawerDescription>
+                        {storyDetails ?
+                            <div className="flex flex-col items-center justify-center text-white w-full work-sans mt-6">
+                                <span className="text-xl font-semibold flex items-center gap-3">
+                                    You have {storyDetails?.views ?? <FaMehRollingEyes />} view{storyDetails?.views === 1 ? "" : "s"}
                                 </span>
                                 <p className="mt-2 text-gray-400 text-center">
-                                    {storyDetails.rewardShares && storyDetails.rewardShares > 0 ? (
+                                    {storyDetails?.rewardShares && storyDetails?.rewardShares > 0 ? (
                                         <Fragment>
-                                            You earned {storyDetails.rewardShares} share
-                                            {storyDetails.rewardShares === 1 ? "" : "s"} 🎉
+                                            You earned {storyDetails?.rewardShares} share
+                                            {storyDetails?.rewardShares === 1 ? "" : "s"} 🎉
                                         </Fragment>
                                     ) : (
                                         <Fragment>
-                                            You haven't earned any shares yet. Keep engaging your friends! 😊
+                                            {storyDetails?.views > 1 && "You haven't earned any shares yet. Keep engaging your friends! 😊"}
                                         </Fragment>
                                     )}
                                 </p>
@@ -120,24 +136,18 @@ export function RewardForStoryViews() {
                                         {isCheckingStatus
                                             ? "Processing..."
                                             : nextReward
-                                                ? `Claim Reward for ${nextReward.views} Views`
+                                                ? `Claim Reward for ${nextReward?.views} Views`
                                                 : "No Reward Available"}
                                     </Button>
                                 </div>
                             </div>
-                        </Fragment>
-                    ) : (
-                        <div className="flex flex-col items-center justify-center text-white w-full work-sans text-center">
-                             <div>
-                                <img src={storyViewImg} alt="story view image" className="h-24 w-24 object-contain" />
-                            </div>
-                            <p className="text-xl font-semibold">No Stories Available</p>
-                            <p className="mt-2 text-gray-400">
-                                The administrators have not created any stories for gamers yet. Please check back in two days!
-                            </p>
-                        </div>
-                    )}
+                            : <div className={"border-t my-3 flex flex-col items-center"}>
+                                <h1 className={"font-semibold text-lg pt-2 work-sans"}>No story at the moment</h1>
+                                <p className={"text-gray-300 work-sans"}>Check in two days</p>
+                            </div>}
+                    </Fragment>
                 </DrawerContent>
+
             </Drawer>
         </Fragment>
     );

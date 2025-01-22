@@ -214,7 +214,7 @@ function Referral() {
                       <DrawerContent
                         aria-describedby={undefined}
                         aria-description="dialog"
-                        className="flex flex-col justify-evenly h-fit pb-8 bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 gap-3">
+                        className="flex flex-col justify-evenly h-fit pb-8 bg-gradient-to-b from-[#292734] to-[#000000] rounded-lg border-none px-3 gap-3">
                         <Button
                           onClick={handleCopyReferralLink}
                           className="flex justify-center py-5 work-sans items-center gap-3 mt-3 bg-[#D25804] hover:bg-orange-500">

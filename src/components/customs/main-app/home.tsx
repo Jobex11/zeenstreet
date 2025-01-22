@@ -145,10 +145,11 @@ function Home() {
 
             <div className="flex items-center gap-3">
               <DropdownMenu>
-                <DropdownMenuTrigger asChild className={"outline-none border-none"}>
-                  <span>
+                <DropdownMenuTrigger className={"outline-none border-none relative"}>
+                  <Fragment>
                     <LazyLoadImage effect="opacity" src={filter} alt="filter" className="" />
-                  </span>
+                    <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />
+                  </Fragment>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-orange-600 rounded text-white flex flex-col-reverse border-none tahoma">
                   {btnTabs.map((tabs) => (

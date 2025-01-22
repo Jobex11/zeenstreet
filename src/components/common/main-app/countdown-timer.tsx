@@ -125,7 +125,7 @@ export const CountdownTimer = ({ timeRemaining, disabled, telegram_id, btnTitle,
                     {timeLeft === 0 ? null : <AiOutlineSwap color="white" size={19} />}
                 </h1>
 
-                <Button disabled={disabled} onClick={onClick} className="bg-orange-500 text-white h-7 tex-[10px] max-w-sm rounded-md hover:bg-orange-600 work-sans">
+                <Button disabled={disabled} onClick={onClick} className="bg-orange-500 text-white h-7 text-[10px] max-w-sm rounded-full hover:bg-orange-600 work-sans">
                     {btnTitle}
                 </Button>
             </div>
