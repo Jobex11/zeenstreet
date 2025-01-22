@@ -4,6 +4,7 @@ import { GiToken } from "react-icons/gi";
 import { Clock } from 'lucide-react'
 import { AiOutlineSwap, AiFillFire } from "react-icons/ai";
 import { formatTime } from "@lib/utils"
+import * as Progress from "@radix-ui/react-progress";
 
 interface Timer {
     timeRemaining: number;
@@ -14,10 +15,10 @@ interface Timer {
     disabled: boolean;
     onClick: () => void;
     btnTitle: string;
-    telegram_id:string;
+    telegram_id: string;
 }
 
-export const CountdownTimer = ({ timeRemaining, disabled,telegram_id, btnTitle, onClick, countdown, _id, shares, baseReward }: Timer) => {
+export const CountdownTimer = ({ timeRemaining, disabled, telegram_id, btnTitle, onClick, countdown, _id, shares, baseReward }: Timer) => {
     const TIMER_KEY = `timer-${telegram_id}`;
     const [progress, setProgress] = useState<number>(0);
 
@@ -70,7 +71,7 @@ export const CountdownTimer = ({ timeRemaining, disabled,telegram_id, btnTitle, 
     return (
         <div>
             <div>
-                <div
+                {/* <div
                     style={{
                         width: "100%",
                         height: "10px",
@@ -88,7 +89,24 @@ export const CountdownTimer = ({ timeRemaining, disabled,telegram_id, btnTitle, 
                             transition: "width 0.3s linear",
                         }}
                     />
-                </div>
+                </div> */}
+
+                <Progress.Root
+                    className="relative h-[10px] w-full overflow-hidden rounded-full bg-white my-1"
+                    style={{
+                        transform: "translateZ(0)",
+                    }}
+                    value={progress|| 0}
+                >
+                    <Progress.Indicator
+                        className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] size-full bg-[#D25804] rounded-r-full transition-transform duration-200"
+                        style={{
+                            transform: `translateX(-${100 - (progress || 0)}%)`,
+                            background:
+                                "linear-gradient(#D25804, #fff0), repeating-linear-gradient(135deg, rgb(232,6,6) 0 7px, #0000 0 20px), #D25804",
+                        }}
+                    />
+                </Progress.Root>
                 <div className="flex items-center justify-between">
                     <span className={`flex items-center justify-start pb-0.5 mt-1 text-[10px] ${timeLeft === 0 ? "text-gray-400" : "text-white"}`}>
                         <Clock className="mr-2 h-5 w-5" />

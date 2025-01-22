@@ -7,7 +7,7 @@ export function useGetTelegramId() {
         if (window.Telegram && window.Telegram.WebApp) {
             const tgData = window.Telegram.WebApp.initDataUnsafe;
             if (tgData && tgData.user && tgData.user.id) {
-                setTelegramId(tgData.user.id.toString());
+                setTelegramId(tgData?.user?.id.toString());
             }
         }
     }, []);

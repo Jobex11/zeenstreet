@@ -9,7 +9,7 @@ import { ShareFormatter } from "@components/common/shareFormatter";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import { useGetAllRanksQuery } from "@hooks/redux/ranks"
-import { useState, useMemo, Fragment } from "react";
+import { useMemo, Fragment } from "react";
 import { IoAdd } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { getUserRank, getRankIconColor } from "@lib/utils"
@@ -27,6 +27,7 @@ import { FaAward } from "react-icons/fa6";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux"
 import { RewardForStoryViews } from "@components/common/main-app/reward-story-view"
+import { useSearchParams } from "react-router-dom";
 
 const imageUrls = [
   firstBannerImg,
@@ -36,7 +37,10 @@ const imageUrls = [
 
 function Home() {
 
-  const [selectedFilter, setSelectedFilter] = useState("Events");
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get("tab") || "Events";
+  const btnTabs = ["Events", "Referral", "Partners", "Social"];
   const { telegramId } = useGetTelegramId();
   const users = useSelector((state: RootState) => state.userData)
   const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
@@ -88,9 +92,8 @@ function Home() {
   const rankColor = getRankIconColor(userRank);
 
   const handleActiveTabs = (name: string) => {
-    setSelectedFilter(name)
-  }
-
+    setSearchParams({ tab: name });
+  };
 
   return (
     <div className="flex flex-col min-h-full">
@@ -142,16 +145,15 @@ function Home() {
 
             <div className="flex items-center gap-3">
               <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger asChild className={"outline-none border-none"}>
                   <span>
                     <LazyLoadImage effect="opacity" src={filter} alt="filter" className="" />
                   </span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-orange-600 rounded text-white flex flex-col-reverse border-none tahoma">
-                  <DropdownMenuItem className={`${selectedFilter === "Events" && "bg-white text-black"}`} onClick={() => handleActiveTabs("Events")} >Events</DropdownMenuItem>
-                  <DropdownMenuItem className={`${selectedFilter === "Referral" && "bg-white text-black"}`} onClick={() => handleActiveTabs("Referral")} >Referral</DropdownMenuItem>
-                  <DropdownMenuItem className={`${selectedFilter === "Social" && "bg-white text-black"}`} onClick={() => handleActiveTabs("Social")} >Social</DropdownMenuItem>
-                  <DropdownMenuItem className={`${selectedFilter === "Partners" && "bg-white text-black"}`} onClick={() => handleActiveTabs("Partners")} >Partners</DropdownMenuItem>
+                  {btnTabs.map((tabs) => (
+                    <DropdownMenuItem key={tabs} className={`${activeTab === tabs && "bg-white text-black"}`} onClick={() => handleActiveTabs(tabs)} >{tabs}</DropdownMenuItem>
+                  ))}
                 </DropdownMenuContent>
               </DropdownMenu>
 
@@ -186,7 +188,7 @@ function Home() {
               </div>}
             </Fragment>
 
-            {selectedFilter === "Referral"
+            {activeTab === "Referral"
               && <Fragment>
                 <NoDataMessage
                   isLoading={isLoadingRef}
@@ -209,7 +211,7 @@ function Home() {
               </Fragment>}
 
 
-            {selectedFilter === "Social"
+            {activeTab === "Social"
               && <Fragment>
                 <NoDataMessage
                   isLoading={isLoadingSocial}
@@ -232,7 +234,7 @@ function Home() {
               </Fragment>}
 
 
-            {selectedFilter === "Events"
+            {activeTab === "Events"
               && <Fragment>
                 <NoDataMessage
                   isLoading={isLoadingEvents}
@@ -254,7 +256,7 @@ function Home() {
                 ))}
               </Fragment>}
 
-            {selectedFilter === "Partners"
+            {activeTab === "Partners"
               && <Fragment>
                 <NoDataMessage
                   isLoading={isLoadingPartners}

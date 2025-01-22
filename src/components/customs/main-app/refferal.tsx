@@ -33,12 +33,14 @@ import { RiShareLine } from "react-icons/ri";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { toast } from "sonner";
 import { useGetTelegramId } from "@hooks/getTelegramId"
+import { HiMiniUsers } from "react-icons/hi2";
+
 
 interface Referral {
   userLogo: string;
   name: string;
   userName: string;
-  accountName:string;
+  accountName: string;
   createdAt: string;
   rewardedShares: string;
   isTier2: boolean;
@@ -54,7 +56,6 @@ function Referral() {
   const [tabs, setTabs] = useState<string>("Tier 1");
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
-
   const btnTabs = [{ name: "Tier 1" }, { name: "Tier 2" }];
 
   const [claimReferralShares, { isLoading: claimingShares }] =
@@ -110,7 +111,7 @@ function Referral() {
     if (referralLink) {
       await navigator.clipboard.writeText(referralLink?.referralLink);
       triggerErrorVibration()
-      toast.info("Referral link copied!", { className: "text-xs work-sans py-3" });
+      toast.success("Referral link copied!", { className: "text-xs work-sans py-3" });
       setOpenDrawer((open) => !open)
     }
   };
@@ -148,7 +149,6 @@ function Referral() {
         className: "text-xs work-sans py-3",
       });
       triggerErrorVibration()
-      console.error("Claiming referral shares error:", error);
     }
   };
 
@@ -200,8 +200,8 @@ function Referral() {
               </CardTitle>
               <div className="flex flex-col items-center">
                 <div className="flex flex-col items-center justify-center">
-                  <h1 className="aqum text-[11px] text-center font-bold text-white pt-2">
-                    Invite Friends
+                  <h1 className="aqum text-[11px] text-center font-bold text-white pt-2 flex items-center gap-2">
+                    Friends <HiMiniUsers size={25} />
                   </h1>
 
                   <div className="flex w-full items-center gap-2">

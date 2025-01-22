@@ -82,7 +82,11 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error("Error confirming membership:", error);
-            toast.error(error?.data?.error || error?.data?.message || "You must join the channel to complete this task!", { className: "text-xs py-3 work-sans" });
+            toast.error(error?.data?.error
+                || error?.data?.message
+                ||
+                "You must join the channel to complete this task!",
+                { className: "text-xs py-3 work-sans" });
             triggerErrorVibration();
         }
     };
@@ -178,7 +182,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
                     <CountdownTimer
                         _id={tasks._id}
                         timeRemaining={tasks.timeRemaining}
-                        disabled={completingPartners  || taskCompleted}
+                        disabled={completingPartners || taskCompleted}
                         btnTitle={btnTitle}
                         telegram_id={user?.user?.telegram_id}
                         onClick={handleButtonClick}

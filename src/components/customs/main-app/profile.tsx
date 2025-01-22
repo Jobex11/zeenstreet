@@ -167,7 +167,6 @@ function Profile() {
                 shareType,
             }).unwrap();
             // console.log({ telegramId:6880808269, shares, shareType });
-            console.log("Shares updated successfully:", response);
             toast.success(response?.message, { className: "text-xs work-sans" });
             setDrawerState((prevState) => ({
                 ...prevState,
@@ -418,7 +417,7 @@ function Profile() {
                                         <DrawerContent
                                             aria-describedby={undefined}
                                             aria-description="dialog"
-                                            className="flex flex-col bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 pb-5 gap-6 rounded-lg shadow-xl"
+                                            className="flex flex-col work-sans bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 pb-5 gap-6 rounded-lg shadow-xl"
                                         >
                                             <DrawerTitle className="sr-only" />
                                             <div className="relative flex flex-col items-center justify-center w-full gap-4">
@@ -481,12 +480,15 @@ function Profile() {
 
                     <div className="flex flex-col gap-7">
                         <div>
-                            <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold flex items-center gap-2">
-                                Cards collected
-                                <span>
-                                    {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length || 0})`}
-                                </span>
-                            </h1>
+                            <div className={"flex items-center justify-between"}>
+                                <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold flex items-center gap-2">
+                                    Cards collected
+                                    <span>
+                                        {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length || 0})`}
+                                    </span>
+                                </h1>
+                                <button type={"button"} disabled className={"text-white work-sans text-sm underline hover:text-gray-400"}>View all</button>
+                            </div>
                             <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">
                                 <Fragment>
                                     {loadingCollectedCards && <div className={"flex items-center gap-4"}>

@@ -8,7 +8,7 @@ import { triggerErrorVibration } from "@/lib/utils";
 import { Badge } from "@components/ui/badge";
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";
 import { RefProps } from "@/types/task.type";
-
+import { HiMiniUsers } from "react-icons/hi2";
 
 export default function ReferralsCategory({ tasks, telegram_id, refetch, type }: RefProps) {
     
@@ -34,7 +34,7 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
             localStorage.removeItem(`countdown-timer${tasks._id}`);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            toast.error(error.data.message || error?.data?.error, { className: "text-xs work-sans py-3" });
+            toast.error(error.data.message || error?.data?.error, { className: "text-xs work-sans py-3", icon:<HiMiniUsers/> });
             triggerErrorVibration()
         }
     };

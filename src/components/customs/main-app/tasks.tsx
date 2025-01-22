@@ -13,16 +13,19 @@ import { useGetReferralTaskQuery } from "@hooks/redux/referrals";
 import { useGetEventsTasksQuery, useGetPartnersTasksQuery, useGetSocialTasksQuery } from "@hooks/redux/tasks";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import * as Progress from "@radix-ui/react-progress";
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useRef } from "react";
 import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
 import { useGetTelegramId } from "@hooks/getTelegramId"
+import { useSearchParams } from "react-router-dom";
 
 function Tasks() {
 
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const { telegramId } = useGetTelegramId()
-    const [tabs, setTabs] = useState<string>("Events");
+    // const [tabs, setTabs] = useState<string>("Events");
+    const [searchParams, setSearchParams] = useSearchParams();
+    const activeTab = searchParams.get("tab") || "Events";
     const btnTabs = ["Events", "Referral", "Partners", "Social"];
 
     const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
@@ -60,10 +63,10 @@ function Tasks() {
     })
 
     const { refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
-    const handleActiveTabs = (name: string) => {
-        setTabs(name)
-    }
 
+    const handleActiveTabs = (name: string) => {
+        setSearchParams({ tab: name });
+    };
     return (
         <div className='flex flex-col min-h-full w-full'>
             <div style={{
@@ -73,7 +76,10 @@ function Tasks() {
             }} className='py-3 h-full px-3 min-w-full '>
                 {/* task header */}
                 <header className="flex flex-col gap-3 w-full">
-                    {isLoadingCards && <Skeleton className={"max-h-32 h-32 w-full bg-slate-700 shadow-2xl"} />}
+                    {isLoadingCards && <div>
+                        <Skeleton className={"max-h-32 h-32 w-full bg-slate-700 shadow-2xl"} />
+                        <Skeleton className={"h-3 w-full bg-slate-700 rounded-full mt-5"} />
+                    </div>}
                     <div className={`relative flex items-center gap-8 pb-5 mb-4 px-2 snap-x snap-mandatory overflow-x-auto`}>
                         {!isLoadingCards && cards?.cards?.length > 0 && cards?.cards?.slice(0, 2).map((card: CardType) => (
                             <Card
@@ -139,9 +145,9 @@ function Tasks() {
                             <Button
                                 key={tab}
                                 onClick={() => handleActiveTabs(tab)}
-                                className={`work-sans max-w-28 object-cover px-10 bg-[#000000] relative hover:bg-transparent capitalize ${tabs === tab ? " border rounded-lg font-semibold text-[#FFFFFF] border-[#F7F7F7] text-sm  w-[117px] h-[39px] " : "w-[88px] h-[31px] rounded-md outline-none ring-0 border-none shadow-none font-normal text-[11px] "}`}>
+                                className={`work-sans max-w-28 object-cover px-10 bg-[#000000] relative hover:bg-transparent capitalize ${activeTab === tab ? " border rounded-lg font-medium text-[#FFFFFF] border-gray-400 text-sm  w-[117px] h-[35px] " : "w-[88px] h-[31px] rounded-md outline-none ring-0 border-none shadow-none font-normal text-[11px] "}`}>
                                 {tab}
-                                {tabs !== tab && <div className='bg-black/10 absolute right-0 left-0 h-full w-full z-10' />}
+                                {activeTab !== tab && <div className='bg-black/10 absolute right-0 left-0 h-full w-full z-10' />}
                             </Button>
                         ))}
                     </div>
@@ -156,7 +162,7 @@ function Tasks() {
                         </div>}
                     </Fragment>
 
-                    {tabs === "Referral"
+                    {activeTab === "Referral"
                         && <Fragment>
                             <NoDataMessage
                                 isLoading={isLoadingRef}
@@ -180,7 +186,7 @@ function Tasks() {
                         </Fragment>}
 
 
-                    {tabs === "Social"
+                    {activeTab === "Social"
                         && <Fragment>
                             <NoDataMessage
                                 isLoading={isLoadingSocial}
@@ -203,7 +209,7 @@ function Tasks() {
                             ))}
                         </Fragment>}
 
-                    {tabs === "Events"
+                    {activeTab === "Events"
                         && <Fragment>
                             <NoDataMessage
                                 isLoading={isLoadingEvents}
@@ -226,7 +232,7 @@ function Tasks() {
                             ))}
                         </Fragment>}
 
-                    {tabs === "Partners"
+                    {activeTab === "Partners"
                         && <Fragment>
                             <NoDataMessage
                                 isLoading={isLoadingPartners}

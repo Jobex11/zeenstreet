@@ -44,7 +44,6 @@ export default function SocialsCategory({
     const handleConfirmMembership = async () => {
         try {
             if (chat.ok && ["member", "administrator", "creator"].includes(chat.result.status)) {
-                // If user is a member, complete the task
                 const completeTask = await complete({
                     taskId: tasks?._id,
                     telegram_id,

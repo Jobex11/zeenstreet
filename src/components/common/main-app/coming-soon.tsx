@@ -18,7 +18,7 @@ const ComingSoon = ({ image, alt, name }: Props) => {
                     />
                 </div>
                 <h1 className="text-3xl font-bold text-white pb-4 work-sans">Coming Soon</h1>
-                <p className="text-gray-100 text-lg work-sans">
+                <p className="text-gray-100 text-base work-sans">
                     We're working hard to bring you something amazing with our {name}.
                 </p>
             </div>

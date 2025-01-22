@@ -11,9 +11,10 @@ import { triggerErrorVibration } from "@/lib/utils"
 import { Fragment, type PropsWithChildren, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom";
+import { BsClockHistory } from "react-icons/bs";
 
 function StoriesLayout({ children }: PropsWithChildren) {
-    
+
     const chat_id = "-1002465265495"
     const [showSkeleton, setShowSkeleton] = useState(false)
     const { telegramId } = useGetTelegramId()
@@ -65,7 +66,7 @@ function StoriesLayout({ children }: PropsWithChildren) {
         const mediaUrl = story?.image
         try {
             shareToStory(mediaUrl, {
-                text: story?.description + " " + `${user?.user?.referralLink}`,
+                text: story?.description + `  https://t.me/RaveGenie_Bot?start=${user?.user?.referralCode}`,
                 widget_link: {
                     url: user?.user?.referralLink,
                     name: "RaveGenie Games",
@@ -87,7 +88,7 @@ function StoriesLayout({ children }: PropsWithChildren) {
                 refetchShares()
                 refetchChats()
                 refetchStory()
-                navigate(0);
+                navigate("/home", { replace: true });
             } else {
                 toast.error("Did you subscribe to our channel? 😀", { className: "text-xs py-3 work-sans" })
                 triggerErrorVibration()
@@ -98,6 +99,7 @@ function StoriesLayout({ children }: PropsWithChildren) {
             console.error("Error sharing to story:", error)
             toast.error(error?.data?.message || error?.data?.error || "Something went wrong!..", {
                 className: "text-xs work-sans py-3",
+                icon: <BsClockHistory />
             })
             triggerErrorVibration()
         }
