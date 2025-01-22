@@ -24,7 +24,7 @@ export function RewardForStoryViews() {
     const claimedRewards = useSelector((state: RootState) => state.rewards.claimedRewards);
     const [rewardStory, { isLoading: isCheckingStatus }] = useRewardForStoryViewsMutation();
 
-    const { data: storyDetails, refetch:refetchStoryViews } = useGetStoryViewDetailsQuery(telegramId ?? "", {
+    const { data: storyDetails } = useGetStoryViewDetailsQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
@@ -63,9 +63,8 @@ export function RewardForStoryViews() {
 
 
     useEffect(() => {
-        dispatch(storiesApi.util.invalidateTags(["Story"]));
-        refetchStoryViews()
-    }, [dispatch, refetchStoryViews]);
+        dispatch(storiesApi.util.invalidateTags(["Story"]))
+    }, [dispatch]);
 
     return (
         <Fragment>
