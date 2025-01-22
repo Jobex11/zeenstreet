@@ -71,26 +71,6 @@ export const CountdownTimer = ({ timeRemaining, disabled, telegram_id, btnTitle,
     return (
         <div>
             <div>
-                {/* <div
-                    style={{
-                        width: "100%",
-                        height: "10px",
-                        backgroundColor: "#ddd",
-                        borderRadius: "5px",
-                        overflow: "hidden",
-                    }}
-                    className={`${timeLeft === 0 && "grayscale-0"}`}
-                >
-                    <div
-                        className="bg-orange-500 rounded-r-full"
-                        style={{
-                            width: `${progress}%`,
-                            height: "100%",
-                            transition: "width 0.3s linear",
-                        }}
-                    />
-                </div> */}
-
                 <Progress.Root
                     className="relative h-[10px] w-full overflow-hidden rounded-full bg-white my-1"
                     style={{

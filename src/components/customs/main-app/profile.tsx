@@ -487,7 +487,7 @@ function Profile() {
                                         {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length || 0})`}
                                     </span>
                                 </h1>
-                                <button type={"button"} disabled className={`${userDataCard?.user?.unlockedCards?.length > 10 ? "visible" :"invisible"} text-white work-sans text-sm underline hover:text-gray-400`}>View all</button>
+                                <button type={"button"} disabled className={` ${userDataCard?.user?.unlockedCards?.length > 10 ? "visible" :"invisible"}text-white work-sans text-sm underline hover:text-gray-400`}>View all</button>
                             </div>
                             <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">
                                 <Fragment>

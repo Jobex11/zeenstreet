@@ -13,13 +13,13 @@ export const useGoldFormatter = (goldAmount: number | null) => {
     };
 
     if (goldAmount && goldAmount < 100_000) {
-      return goldAmount.toLocaleString(); // Format numbers below 100,000 with commas
+      return goldAmount.toLocaleString();
     } else if (goldAmount && goldAmount >= 1_000_000_000) {
-      return formatNumber(goldAmount && goldAmount / 1_000_000_000, "b"); // Billions
+      return formatNumber(goldAmount && goldAmount / 1_000_000_000, "b"); 
     } else if (goldAmount && goldAmount >= 1_000_000) {
-      return formatNumber(goldAmount && goldAmount / 1_000_000, "m"); // Millions
+      return formatNumber(goldAmount && goldAmount / 1_000_000, "m"); 
     } else if (goldAmount && goldAmount >= 100_000) {
-      return formatNumber(goldAmount && goldAmount / 1_000, "k"); // Thousands
+      return formatNumber(goldAmount && goldAmount / 1_000, "k"); 
     }
   }, [goldAmount]);
 };

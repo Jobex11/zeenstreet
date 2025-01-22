@@ -20,7 +20,7 @@ interface RewardMapping {
 }
 
 export function RewardForStoryViews() {
-    
+
     const dispatch = useDispatch();
     const { telegramId } = useGetTelegramId();
     const claimedRewards = useSelector((state: RootState) => state.rewards.claimedRewards);
@@ -81,7 +81,7 @@ export function RewardForStoryViews() {
                 <DrawerContent
                     aria-describedby={undefined}
                     aria-description="Show reward details"
-                    className="flex flex-col items-center max-h-full mx-auto text-gray-300 pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-4 gap-3 sm:w-80"
+                    className="flex flex-col items-center max-h-fit mx-auto text-gray-300 pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-4 gap-3 sm:w-80"
                 >
                     <div className="relative flex flex-col items-center justify-center w-full gap-4">
                         <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">
@@ -98,7 +98,7 @@ export function RewardForStoryViews() {
                         <DrawerDescription className="text-center text-gray-400 text-sm work-sans px-10">
                             Earn rewards based on the number of views your story gets!
                         </DrawerDescription>
-                        <ul className="list-decimal list-inside text-gray-300 work-sans">
+                        <ul className="list-decimal list-inside text-gray-300 work-sans text-sm">
                             <li>10 views will be rewarded with <span className="font-semibold text-orange-500">100 shares</span>.</li>
                             <li>20 views will be rewarded with <span className="font-semibold text-orange-500">1,000 shares</span>.</li>
                             <li>30 views will be rewarded with <span className="font-semibold text-orange-500">2,000 shares</span>.</li>
@@ -107,7 +107,7 @@ export function RewardForStoryViews() {
                         <DrawerDescription className="text-center text-gray-400 text-xs work-sans px-10">
                             Note: You need to enable privacy settings for this feature to work.!!
                         </DrawerDescription>
-                        {storyDetails ?
+                        {!storyDetails ?
                             <div className="flex flex-col items-center justify-center text-white w-full work-sans mt-6">
                                 <span className="text-xl font-semibold flex items-center gap-3">
                                     You have {storyDetails?.views ?? <FaMehRollingEyes />} view{storyDetails?.views === 1 ? "" : "s"}

@@ -1,4 +1,4 @@
-import { useState, useMemo, Key } from "react";
+import { useState, useMemo, useEffect, Key } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import trophy from "@assets/images/icons/trophy.png";
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
@@ -32,6 +32,8 @@ interface User {
 function Ranks() {
 
   const [userPages] = useState<number>(1)
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
   const limit = 10
   const [emblaRef, embla] = useEmblaCarousel({ dragFree: false, watchDrag: false });
   const { telegramId } = useGetTelegramId()
@@ -92,6 +94,22 @@ function Ranks() {
     });
   }, [allUsers, loadingUsers, rankRanges, telegramId]);
 
+  useEffect(() => {
+    if (!embla) return;
+
+    const checkButtons = () => {
+      setCanScrollPrev(embla.canScrollPrev());
+      setCanScrollNext(embla.canScrollNext());
+    };
+
+    embla.on("select", checkButtons);
+    checkButtons();
+
+    return () => {
+      embla.off("select", checkButtons);
+    };
+  }, [embla]);
+
   const currentUser = (telegram_id: string) => {
     const user = telegram_id === telegramId;
     return user
@@ -103,14 +121,12 @@ function Ranks() {
     }
   };
 
-  console.log("All", allUsers)
 
   const scrollNext = async () => {
     if (usersLoaded && ranksLoaded && embla) {
       await embla.scrollNext();
     }
   };
-
 
   return (
     <div className="flex flex-col min-h-full pb-32 flex-1">
@@ -163,7 +179,7 @@ function Ranks() {
                           "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
                         }
                       />
-                      <h2 className="text-center text-lg font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
+                      <h2 className="text-center text-[17px] font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
                         {group.rank}
                       </h2>
                     </div>
@@ -173,7 +189,7 @@ function Ranks() {
                       {
                         group?.users?.length > 0 ?
                           group?.users?.map((user: { accountName: string; username?: string; shares: number; telegram_id: string, _id: string }) => (
-                            <div key={user._id} className={`flex mt-3 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded-lg px-1"} items-center justify-between py-1`}>
+                            <div key={user._id} className={`flex mt-3 ${currentUser(user.telegram_id) && "shadow-2xl bg-white rounded px-1"} items-center justify-between py-1`}>
                               <div className="flex items-center gap-3">
                                 <RankImage user={user} telegram_id={user.telegram_id} />
                                 <h1 className={`${currentUser(user.telegram_id) && "text-black"} text-[#FFFFFF] text-sm capitalize font-semibold jakarta`}>
@@ -198,13 +214,15 @@ function Ranks() {
             </div>
             <button
               onClick={scrollPrev}
-              className="absolute top-1/4 h-10 w-10 flex items-center justify-center left-2 transform -translate-y-1/2 bg-orange-600 text-white active:scale-110 p-2 rounded-full shadow-md hover:bg-orange-700"
+              className={`absolute top-1/4 h-10 w-10 flex items-center justify-center left-2 transform -translate-y-1/2 bg-orange-600 text-white active:scale-110 p-2 rounded-full shadow-md hover:bg-orange-700 ${!canScrollPrev ? "invisible" : "visible"
+                }`}
             >
               <IoIosArrowBack size={20} />
             </button>
+
             <button
               onClick={scrollNext}
-              className="absolute top-1/4 h-10 w-10 flex items-center justify-center right-2 transform -translate-y-1/2 bg-orange-600 text-white active:scale-110 p-2 rounded-full shadow-md hover:bg-orange-700"
+              className={`absolute top-1/4 h-10 w-10 flex items-center justify-center right-2 transform -translate-y-1/2 bg-orange-600 text-white active:scale-110 p-2 rounded-full shadow-md hover:bg-orange-700 ${!canScrollNext ? "invisible" : "visible"}`}
             >
               <IoIosArrowForward size={20} />
             </button>
@@ -212,7 +230,6 @@ function Ranks() {
         </div>
       }
     </div>
-    // </div >
   );
 }
 

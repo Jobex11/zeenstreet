@@ -7,16 +7,17 @@ import { PiConfettiLight } from "react-icons/pi";
 import { useGetTelegramId } from "@hooks/getTelegramId"
 
 export default function ReduxProvider({ children }: PropsWithChildren) {
+    
     const { telegramId } = useGetTelegramId();
-
     const { store } = createStore(telegramId ?? "");
+
     return (
         <Provider store={store}>
             <Toaster richColors
                 expand={false}
                 visibleToasts={2}
                 position='top-right' icons={{
-                    success: <PiConfettiLight size={26} />,
+                    success: <PiConfettiLight size={30} />,
                     error: <MdOutlineMoodBad size={30} />
                 }} />
             {children}
