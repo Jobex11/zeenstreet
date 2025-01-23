@@ -31,13 +31,13 @@ export default function ZeenAppIntro() {
     const { telegramId } = useGetTelegramId()
     const confirmedAccounts = useSelector((state: RootState) => state.confirmAccount.confirmedAccounts);
     const allConfirmed = Object.values(confirmedAccounts).every(Boolean);
-    const { data, isLoading, } = useCheckUsernameQuery(telegramId ?? "", {
+    const { data: users, isLoading, } = useCheckUsernameQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
-  
+
 
 
     const provinces = [
@@ -79,24 +79,24 @@ export default function ZeenAppIntro() {
             }
 
             // Navigate directly to home if username and all accounts are confirmed
-            if (data?.hasPreferredUsername && allConfirmed) {
+            if (!isLoading && users?.hasPreferredUsername && allConfirmed) {
                 navigate("/home");
                 return;
             }
 
             // Check if all accounts are confirmed
-            if (!allConfirmed) {
+            if (!isLoading && users?.hasPreferredUsername && !allConfirmed) {
                 setCurrentScreen(SCREENS.SOCIALS);
                 return;
             }
 
             // Show create username screen if username is not set
             setCurrentScreen(SCREENS.CREATE_USERNAME);
-        }, TIMEOUT); // Delay for the welcome screen
+        }, TIMEOUT);
 
         // Cleanup timeout on unmount
         return () => clearTimeout(welcomeTimeout);
-    }, [isLoading, data, allConfirmed, navigate]);
+    }, [isLoading, allConfirmed, navigate, users]);
 
 
 

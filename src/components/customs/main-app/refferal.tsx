@@ -433,7 +433,7 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
   );
 
   const filePath = isFileSuccess ? filePathData?.result?.file_path : null;
-  const BOT_TOKEN = "7876229498:AAHrtRmfZIau6GznH2xXE8H00y3TASHKy28"
+  const BOT_TOKEN = "7876229498:AAHtNuIYCcpP_kxr_EEVH6aKdIZYlJNTvq4"
   return (
     <Fragment>
       <div className="flex items-center justify-between  py-3 border-b border-[#5F59598A]">
