@@ -107,7 +107,7 @@ export function RewardForStoryViews() {
                         <DrawerDescription className="text-center text-gray-400 text-xs work-sans px-10">
                             Note: You need to enable privacy settings for this feature to work.!!
                         </DrawerDescription>
-                        {!storyDetails ?
+                        {storyDetails ?
                             <div className="flex flex-col items-center justify-center text-white w-full work-sans mt-6">
                                 <span className="text-xl font-semibold flex items-center gap-3">
                                     You have {storyDetails?.views ?? <FaMehRollingEyes />} view{storyDetails?.views === 1 ? "" : "s"}
