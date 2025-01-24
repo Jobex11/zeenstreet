@@ -20,6 +20,7 @@ export default function EventsTasksCategory({
     refetch,
     special,
 }: EventsProps) {
+
     const [taskCompleted, setTaskCompleted] = useState(false);
     const dispatch = useDispatch();
     const { openLink } = useTelegramWebApp();
@@ -28,6 +29,7 @@ export default function EventsTasksCategory({
         refetchOnFocus: true,
     });
     const [complete, { isLoading: completing }] = useCompleteEventsTasksMutation();
+    const TIMER_KEY = `timer-${telegram_id + tasks?._id}`;
 
     useEffect(() => {
         if (user?.user) {
@@ -57,6 +59,7 @@ export default function EventsTasksCategory({
                 className: "text-xs work-sans py-3",
             });
             refetch?.();
+            localStorage.removeItem(TIMER_KEY);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.data.message || error?.data?.error, { className: "text-xs work-sans py-3" });
@@ -64,8 +67,6 @@ export default function EventsTasksCategory({
         }
     };
 
-    // const clickedLinks = useSelector((state: RootState) => state.tasks.clickedLinks);
-    // const hasClickedLink = clickedLinks[tasks._id, telegram_id] || false;
 
     const hasClickedLink = useSelector(selectLinkClicked(tasks._id, telegram_id));
 

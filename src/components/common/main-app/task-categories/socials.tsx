@@ -22,13 +22,13 @@ export default function SocialsCategory({
 
     const { openLink } = useTelegramWebApp();
     const [isMember, setIsMember] = useState(false);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const TIMER_KEY = `timer-${telegram_id + tasks?._id}`;
     const [complete, { isLoading: completing }] = useCompleteSocialTasksMutation();
     const { data: chat } = useGetChatMemberByIdQuery([tasks.chat_id, telegram_id], {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
-        skipPollingIfUnfocused: true
     });
     const { data: user } = useGetUsersByIdQuery(telegram_id, {
         refetchOnReconnect: true, refetchOnFocus: true
@@ -51,7 +51,7 @@ export default function SocialsCategory({
                 toast.success(completeTask.message, { className: "text-xs py-3 work-sans" });
                 dispatch(markTaskAsCompleted(tasks?._id));
                 refetch?.();
-                localStorage.removeItem(`countdown-timer${tasks._id}`);
+                localStorage.removeItem(TIMER_KEY);
             } else {
                 toast.error("You must join the channel to complete this task!", { className: "text-xs py-3 work-sans" });
                 triggerErrorVibration()

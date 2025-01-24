@@ -8,14 +8,29 @@ export const notificationApi = createApi({
     tagTypes: ['Notifications'],
     endpoints: (builder) => ({
         getNotifications: builder.query({
-            query: ([page =1, limit = 10 ]) => ({
+            query: ([page = 1, limit = 10]) => ({
                 url: `/notifications?page=${page}&limit=${limit}`,
                 providesTags: ['Notifications']
             }),
         }),
-
+        sendPingNotification: builder.mutation({
+            query: ({ telegram_id, message }) => ({
+                url: '/send-ping',
+                method: 'POST',
+                body: { telegram_id, message },
+            }),
+        }),
+        checkThrottle: builder.query({
+            query: (telegram_id) => `/throttle/${telegram_id}`,
+        }),
+        getPingedNotifications: builder.query({
+            query: (telegram_id) => `/pinged/${telegram_id}`,
+        }),
     }),
 })
 
 
-export const { useGetNotificationsQuery } = notificationApi
+export const { useGetNotificationsQuery,
+    useSendPingNotificationMutation,
+    useCheckThrottleQuery,
+    useGetPingedNotificationsQuery } = notificationApi

@@ -32,9 +32,9 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
     });
 
     const [completePartners, { isLoading: completingPartners }] = useCompletePartnersTasksMutation();
-    // const [completeSocial, { isLoading: completingSocial }] = useCompleteSocialTasksMutation();
     const clickedLinks = useSelector((state: RootState) => state.tasks.clickedLinks);
     const hasClickedLink = clickedLinks[tasks._id] || false;
+    const TIMER_KEY = `timer-${telegram_id + tasks?._id}`;
 
     const handleJoinSocials = () => {
         openLink(tasks?.url, { try_instant_view: false });
@@ -57,7 +57,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
             }).unwrap();
             toast.success(completePartnersTasks.message, { className: "text-xs work-sans py-3" });
             refetch?.();
-            localStorage.removeItem(`countdown-timer${tasks._id}`);
+            localStorage.removeItem(TIMER_KEY);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.data.message || error?.data?.error, { className: "text-xs work-sans py-3" });
@@ -74,7 +74,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
                 }).unwrap();
                 toast.success(completeTask.message, { className: "text-xs py-3 work-sans" });
                 refetch?.();
-                localStorage.removeItem(`countdown-timer${tasks._id}`);
+                localStorage.removeItem(TIMER_KEY);
             } else {
                 toast.error("You must join the channel to complete this task!", { className: "text-xs py-3 work-sans" });
                 triggerErrorVibration();

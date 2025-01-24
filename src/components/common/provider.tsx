@@ -17,8 +17,8 @@ export default function ReduxProvider({ children }: PropsWithChildren) {
                 expand={false}
                 visibleToasts={2}
                 position='top-right' icons={{
-                    success: <PiConfettiLight size={29} className='mr-3' />,
-                    error: <MdErrorOutline size={29} className='mr-2' />
+                    success: <PiConfettiLight size={29} className='pr-2' />,
+                    error: <MdErrorOutline size={29} className='pr-2' />
                 }} />
             {children}
         </Provider>

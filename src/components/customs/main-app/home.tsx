@@ -1,33 +1,32 @@
-import bell_icon from "@assets/images/bell_icon.png";
+import SendPingNotification from "@/components/common/main-app/send-ping-notification";
+import EventsTasksCategory from "@/components/common/main-app/task-categories/events";
+import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
+import ReferralsCategory from "@/components/common/main-app/task-categories/referrals";
+import SocialsCategory from "@/components/common/main-app/task-categories/socials";
+import { useGetReferralTaskQuery } from "@/hooks/redux/referrals";
+import { useGetEventsTasksQuery, useGetPartnersTasksQuery, useGetSocialTasksQuery } from "@/hooks/redux/tasks";
+import { RootState } from "@/lib/store";
 import firstBannerImg from "@assets/images/cards/Banner1.jpg";
 import secondBannerImg from "@assets/images/cards/Banner2.jpg";
 import thirdBannerImg from "@assets/images/cards/Banner3.jpg";
 import dotsbg from "@assets/images/dotted-bg.png";
 import filter from "@assets/images/icons/filter.svg";
+import taskImg from "@assets/images/icons/tasks_img.svg";
 import CardCarousel from "@components/common/main-app/card-carousel";
+import { RewardForStoryViews } from "@components/common/main-app/reward-story-view";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
+import { useGetTelegramId } from "@hooks/getTelegramId";
+import { useGetAllRanksQuery } from "@hooks/redux/ranks";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
-import { useGetAllRanksQuery } from "@hooks/redux/ranks"
-import { useMemo, Fragment } from "react";
-import { IoAdd } from "react-icons/io5";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import { getUserRank, getRankIconColor } from "@lib/utils"
-import ReferralsCategory from "@/components/common/main-app/task-categories/referrals";
-import { NoDataMessage } from "./tasks";
-import SocialsCategory from "@/components/common/main-app/task-categories/socials";
-import { useGetReferralTaskQuery } from "@/hooks/redux/referrals";
-import { useGetSocialTasksQuery, useGetPartnersTasksQuery, useGetEventsTasksQuery } from "@/hooks/redux/tasks";
-import { FiLoader } from "react-icons/fi";
-import taskImg from "@assets/images/icons/tasks_img.svg";
-import EventsTasksCategory from "@/components/common/main-app/task-categories/events";
-import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
-import { useGetTelegramId } from "@hooks/getTelegramId"
+import { getRankIconColor, getUserRank } from "@lib/utils";
+import { Fragment, useMemo } from "react";
 import { FaAward } from "react-icons/fa6";
-import { RootState } from "@/lib/store";
-import { useSelector } from "react-redux"
-import { RewardForStoryViews } from "@components/common/main-app/reward-story-view"
+import { FiLoader } from "react-icons/fi";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import { NoDataMessage } from "./tasks";
 
 const imageUrls = [
   firstBannerImg,
@@ -159,21 +158,7 @@ function Home() {
               </DropdownMenu>
 
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
-              <DropdownMenu>
-                <DropdownMenuTrigger disabled={true}>
-                  <span><IoAdd color="gray" size={26} /></span>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="left" className="bg-orange-600 rounded text-white border-none tahoma p-2">
-                  <div className="flex items-center gap-4">
-                    <h1 className="text-sm poppins">Send a ping notification<br /> to your team</h1>
-                    <div className="h-10 w-10">
-                      <button>
-                        <LazyLoadImage effect="opacity" src={bell_icon} alt="add" />
-                      </button>
-                    </div>
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <SendPingNotification />
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
               <RewardForStoryViews />
             </div>

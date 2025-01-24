@@ -16,6 +16,7 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
     const { data: user } = useGetUsersByIdQuery(telegram_id, {
         refetchOnReconnect: true, refetchOnFocus: true
     })
+    const TIMER_KEY = `timer-${telegram_id + tasks?._id}`;
     const [complete, { isLoading: completing }] = useCompleteRefTasksMutation();
     const handleCompleteRefTasks = async () => {
         if (taskCompleted) {
@@ -31,7 +32,7 @@ export default function ReferralsCategory({ tasks, telegram_id, refetch, type }:
             }).unwrap();
             toast.success(completeRefTasks.message, { className: "text-xs work-sans py-3" });
             refetch?.();
-            localStorage.removeItem(`countdown-timer${tasks._id}`);
+            localStorage.removeItem(TIMER_KEY);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.data.message || error?.data?.error, { className: "text-xs work-sans py-3", icon:<HiMiniUsers/> });

@@ -11,7 +11,6 @@ import storyViewImg from "@assets/images/views.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { updateClaimedRewards } from "@hooks/redux/slices/rewardsSlice";
 import { RootState } from "@lib/store";
-// import { FaRegFaceRollingEyes } from "react-icons/fa6";
 import { FaMehRollingEyes } from "react-icons/fa";
 
 interface RewardMapping {
@@ -35,10 +34,11 @@ export function RewardForStoryViews() {
     });
 
     const rewardMapping: RewardMapping[] = [
-        { views: 10, rewardShares: 100 },
-        { views: 20, rewardShares: 1000 },
-        { views: 30, rewardShares: 2000 },
-        { views: 50, rewardShares: 5000 },
+        { views: 10, rewardShares: 55 },
+        { views: 40, rewardShares: 350 },
+        { views: 150, rewardShares: 2000 },
+        { views: 500, rewardShares: 75000 },
+        { views: 1000, rewardShares: 10000 },
     ];
 
     const nextReward = rewardMapping.find(
@@ -99,10 +99,9 @@ export function RewardForStoryViews() {
                             Earn rewards based on the number of views your story gets!
                         </DrawerDescription>
                         <ul className="list-decimal list-inside text-gray-300 work-sans text-sm">
-                            <li>10 views will be rewarded with <span className="font-semibold text-orange-500">100 shares</span>.</li>
-                            <li>20 views will be rewarded with <span className="font-semibold text-orange-500">1,000 shares</span>.</li>
-                            <li>30 views will be rewarded with <span className="font-semibold text-orange-500">2,000 shares</span>.</li>
-                            <li>50 views will be rewarded with <span className="font-semibold text-orange-500">5,000 shares</span>.</li>
+                            {rewardMapping.map((rwd) => (
+                                <li key={rwd.rewardShares}>{rwd.views} views will be rewarded with <span className="font-semibold text-orange-500">{rwd.rewardShares} shares</span>.</li>
+                            ))}
                         </ul>
                         <DrawerDescription className="text-center text-gray-400 text-xs work-sans px-10">
                             Note: You need to enable privacy settings for this feature to work.!!

@@ -52,14 +52,14 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
             {filePath ? <Avatar className={`w-full h-full shadow-2xl relative`}>
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
-                    alt={user.accountName} />
+                    alt={user?.accountName || user?.username} />
                 <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user?.accountName?.slice(0, 2) || user?.username?.slice(0, 2)}</AvatarFallback>
                 <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
                 <Avatar className="w-full h-full relative">
                     <AvatarImage
                         src={avatarImg}
-                        alt={user?.accountName} />
+                        alt={user?.accountName || user?.username} />
                     <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
                 </Avatar>}
 
@@ -148,7 +148,7 @@ export default function GlobalLeaderboard() {
                             {topThree.map((user, index) => (
                                 <div key={user._id} className={`flex flex-col h-full items-center ${index === 0 ? 'order-2' : index === 1 ? 'order-1' : 'order-3'}`}>
                                     <UserImages index={index} user={user} telegram_id={user.telegram_id} />
-                                    <span className="font-medium work-sans capitalize text-[10px] mt-3 line-clamp-1">{user.accountName || user.username}</span>
+                                    <span className="font-medium work-sans capitalize text-[10px] mt-3 line-clamp-1">{user?.accountName || user?.username}</span>
                                     <span className="text-sm work-sans"><ShareFormatter shares={user[activeTab]} /></span>
                                 </div>
                             ))}
@@ -198,6 +198,7 @@ interface MiniImageProps {
     user: {
         telegram_id: string;
         accountName: string;
+        username: string;
     }
 }
 
@@ -226,14 +227,14 @@ export const MiniImage = ({ user }: MiniImageProps) => {
             {filePath ? <Avatar className="w-12 h-12 relative">
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
-                    alt={user.accountName} />
-                <AvatarFallback className='uppercase bg-orange-500 text-white jakarta text-lg font-normal'>{user?.accountName.slice(0, 2)}</AvatarFallback>
+                    alt={user.accountName || user.username} />
+                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user?.accountName?.slice(0, 2) || user?.username?.slice(0, 2)}</AvatarFallback>
                 <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
                 <Avatar className="w-12 h-12 relative">
                     <AvatarImage
                         src={avatarImg}
-                        alt={user.accountName} />
+                        alt={user.accountName || user.username} />
                     <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
                 </Avatar>
             }
