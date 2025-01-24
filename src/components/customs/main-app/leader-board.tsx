@@ -10,7 +10,7 @@ import { Fragment, useState } from 'react'
 import { useGetTelegramId } from "@hooks/getTelegramId"
 
 interface User {
-    username?: string;
+    username: string;
     accountName: string;
     shares: number;
     cards: number;
@@ -53,7 +53,7 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
                     alt={user?.accountName || user?.username} />
-                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user?.accountName?.slice(0, 2) || user?.username?.slice(0, 2)}</AvatarFallback>
+                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user && user?.accountName[0] || user?.username[0]}</AvatarFallback>
                 <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
                 <Avatar className="w-full h-full relative">
@@ -228,7 +228,7 @@ export const MiniImage = ({ user }: MiniImageProps) => {
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
                     alt={user.accountName || user.username} />
-                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user?.accountName?.slice(0, 2) || user?.username?.slice(0, 2)}</AvatarFallback>
+                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user && user?.accountName?.slice(0, 2) || user && user?.username?.slice(0, 2)}</AvatarFallback>
                 <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
                 <Avatar className="w-12 h-12 relative">

@@ -97,7 +97,7 @@ function SendPingNotification() {
                                     disabled={buttonDisabled || isSending}
                                     onClick={handleSendPing}
                                     className={"w-full rounded-lg bg-orange-600 hover:bg-orange-500 flex-1 text-white work-sans"}>
-                                    {isSending ? "Processing..." : buttonDisabled ? <Timer remainingTime={remainingTime} setRemainingTime={setRemainingTime} /> : "Send Ping"}</Button>
+                                    {isSending ? "Processing..." : data?.remainingTime > 0 ? <Timer remainingTime={remainingTime} setRemainingTime={setRemainingTime} /> : "Send Ping"}</Button>
                             </div>
                         )}
                     </div>
