@@ -69,6 +69,15 @@ export function RewardForStoryViews() {
         dispatch(storiesApi.util.invalidateTags(["Story"]));
     }, [dispatch]);
 
+
+    const rewardDetails = [
+        { views: "10", rewardShares: "55" },
+        { views: "40", rewardShares: "350" },
+        { views: "150", rewardShares: "2k" },
+        { views: "500", rewardShares: "7.5k" },
+        { views: "1k", rewardShares: "10k" },
+    ];
+
     return (
         <Fragment>
             <Drawer>
@@ -99,7 +108,7 @@ export function RewardForStoryViews() {
                             Earn rewards based on the number of views your story gets!
                         </DrawerDescription>
                         <ul className="list-decimal list-inside text-gray-300 work-sans text-sm">
-                            {rewardMapping.map((rwd) => (
+                            {rewardDetails.map((rwd) => (
                                 <li key={rwd.rewardShares}>{rwd.views} views will be rewarded with <span className="font-semibold text-orange-500">{rwd.rewardShares} shares</span>.</li>
                             ))}
                         </ul>

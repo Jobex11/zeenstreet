@@ -4,10 +4,12 @@ import bell_icon from "@assets/images/bell_icon.png"
 import { Button } from '@components/ui/button'
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerClose, DrawerTitle, DrawerTrigger } from '@components/ui/drawer'
 import { Fragment, useEffect, useState } from 'react'
-import { IoAdd } from 'react-icons/io5'
 import { toast } from "sonner"
 import { FiLoader } from "react-icons/fi"
 import { IoIosClose } from "react-icons/io";
+import { PiBellRingingLight } from "react-icons/pi";
+import { triggerErrorVibration } from '@/lib/utils'
+
 
 function SendPingNotification() {
 
@@ -61,14 +63,18 @@ function SendPingNotification() {
             toast.error(error?.data?.error || error?.data?.message || "Something went wrong Please try again!", {
                 className: "text-xs work-sans py-3",
             })
+            triggerErrorVibration()
         }
     }
 
     return (
         <Fragment>
             <Drawer>
-                <DrawerTrigger>
-                    <span> <IoAdd size={30} color="white" /></span>
+                <DrawerTrigger className={"relative"}>
+                    <Fragment>
+                        <PiBellRingingLight size={30} color="white" />
+                        <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />
+                    </Fragment>
                 </DrawerTrigger>
                 <DrawerContent
                     aria-describedby={undefined}

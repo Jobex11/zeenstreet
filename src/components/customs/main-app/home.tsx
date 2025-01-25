@@ -36,7 +36,6 @@ const imageUrls = [
 
 function Home() {
 
-
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "Events";
   const btnTabs = ["Events", "Referral", "Partners", "Social"];
@@ -50,7 +49,6 @@ function Home() {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
-
 
   const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
     skip: !telegramId,

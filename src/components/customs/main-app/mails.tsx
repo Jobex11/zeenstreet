@@ -252,6 +252,7 @@ interface NotificationData {
     _id: string
     accountName: string
   }
+  title:string
   message: string
   recipients: string[]
   createdAt: string
@@ -270,8 +271,6 @@ export function NotificationCard({ notification }: NotificationCardProps) {
     refetchOnMountOrArgChange: true,
   });
   const fileId = isPhotoSuccess ? photoData?.result?.photos?.[0]?.[2]?.file_id : null;
-
-
   const { data: filePathData, isSuccess: isFileSuccess } = useGetFilePathQuery(fileId, {
     skip: !fileId,
     refetchOnReconnect: true,
@@ -286,11 +285,12 @@ export function NotificationCard({ notification }: NotificationCardProps) {
     <Card className="w-full max-w-2xl work-sans">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3">
         <div className="flex items-center space-x-4">
-          <Avatar>
+          <Avatar className="w-12 h-12 relative">
             <AvatarImage
               src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
               alt={notification.sent_by.accountName} />
             <AvatarFallback>{notification.sent_by.accountName[0]}</AvatarFallback>
+            <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
           </Avatar>
           <div>
             <p className="text-xs font-medium leading-none">{notification.sent_by.accountName}</p>
@@ -301,6 +301,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
       <CardContent className={"px-3"}>
         <div className="grid gap-4">
           <div className="space-y-2">
+            <p>{notification.title}</p>
             <p className="text-xs text-muted-foreground break-words work-sans">{notification.message}</p>
           </div>
         </div>

@@ -1,11 +1,11 @@
 import wavybg from "@assets/images/card_bg.svg";
-import milestone_1 from "@assets/images/milestone_1.png";
-import milestone_2 from "@assets/images/milestone_2.png";
-import milestone_3 from "@assets/images/milestone_3.png";
-import milestone_4 from "@assets/images/milestone_4.png";
-import milestone_5 from "@assets/images/milestone_5.png";
-import milestone_6 from "@assets/images/milestone_6.png";
-import milestone_7 from "@assets/images/milestone_7.png";
+import achievement_1 from "@assets/images/cards/achievement_1.png";
+import achievement_2 from "@assets/images/cards/achievement_2.png";
+import achievement_3 from "@assets/images/cards/achievement_3.png";
+import achievement_4 from "@assets/images/cards/achievement_4.png";
+import achievement_5 from "@assets/images/cards/achievement_5.png";
+import achievement_6 from "@assets/images/cards/achievement_6.png";
+import achievement_7 from "@assets/images/cards/achievement_7.png";
 import cosmic_force from "@assets/images/cards/cosmic.png";
 import earth_force from "@assets/images/cards/earth.png";
 import fire_force from "@assets/images/cards/fire.png";
@@ -40,8 +40,8 @@ import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
 import { useGetTelegramId } from "@hooks/getTelegramId"
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
-// import { AddToHomeScreen } from "@components/common/main-app/task-categories/add-to-homescreen";
-
+import { motion } from "framer-motion"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const wealthClass = [
     {
@@ -243,7 +243,7 @@ function Profile() {
                 description: WealthClass.description,
                 name: matchingWealthClass.name || WealthClass.name,
                 rewards: matchingWealthClass.sharesReward || WealthClass.rewards,
-                isLocked: isUnlocked, // Ensure `isLocked` reflects the unlock status
+                isLocked: isUnlocked,
                 unlockMessage,
             };
         });
@@ -251,67 +251,617 @@ function Profile() {
 
     const wealthClassStatus = determineWealthClassStatus(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards);
 
+    const findIsLocked = (name: string): boolean => {
+        const status = wealthClassStatus.find(item => item.name === name);
+        return status ? status.isLocked : true;
+    };
     const achievement = [
         {
-            isLocked: userDataCard?.user?.referrals?.length !== 10,
-            name: "Refer 10 Friends to unlock",
-            unLockedText: "You unlocked this Achievments by Referring 10 Friends",
-            shareType: "milestone_1",
-            reward: 30,
-            img: milestone_1
+            achievementType: "GROW YOUR TEAM",
+            description: "Get the required number of Tier1 referrals to unlock this achievement!",
+            data: [
+                {
+                    isLocked: userDataCard?.user?.tier1?.length >= 1,
+                    name: "Get 1 Friend",
+                    unLockedText: "You unlocked this achievement by getting your first Tier 1 friend.",
+                    shareType: "achievement_1",
+                    img: achievement_1,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier1?.length >= 10,
+                    name: "Get 10 Friends",
+                    unLockedText: "You unlocked this achievement by getting 10 Tier 1 friends.",
+                    shareType: "achievement_2",
+                    img: achievement_2,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier1?.length >= 25,
+                    name: "Get 25 Friends",
+                    unLockedText: "You unlocked this achievement by getting 25 Tier 1 friends.",
+                    shareType: "achievement_3",
+                    img: achievement_3,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier1?.length >= 50,
+                    name: "Get 50 Friends",
+                    unLockedText: "You unlocked this achievement by getting 50 Tier 1 friends.",
+                    shareType: "achievement_4",
+                    img: achievement_4,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier1?.length >= 100,
+                    name: "Get 100 Friends",
+                    unLockedText: "You unlocked this achievement by getting 100 Tier 1 friends.",
+                    shareType: "achievement_5",
+                    img: achievement_5,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier1?.length >= 250,
+                    name: "Get 250 Friends",
+                    unLockedText: "You unlocked this achievement by getting 250 Tier 1 friends.",
+                    shareType: "achievement_6",
+                    img: achievement_6,
+                },
+            ],
         },
         {
-            isLocked: true,
-            name: "Refer 20 Friends to unlock",
-            unLockedText: "You unlocked this Achievments by Referring 20 Friends",
-            shareType: "milestone_2",
-            reward: 50,
-            img: milestone_2
+            achievementType: "TIER 2 FRIENDS",
+            description: "Get the required number of Tier1 referrals to unlock this achievement!",
+            data: [
+                {
+                    isLocked: userDataCard?.user?.tier2?.length >= 1,
+                    name: "Get 1 Friend",
+                    unLockedText: "You unlocked this achievement by getting your first Tier 2 friend.",
+                    shareType: "achievement_1",
+                    img: achievement_1,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier2?.length >= 10,
+                    name: "Get 10 Friends",
+                    unLockedText: "You unlocked this achievement by getting 10 Tier 2 friends.",
+                    shareType: "achievement_2",
+                    img: achievement_2,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier2?.length >= 50,
+                    name: "Get 50 Friends",
+                    unLockedText: "You unlocked this achievement by getting 50 Tier 2 friends.",
+                    shareType: "achievement_3",
+                    img: achievement_3,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier2?.length >= 100,
+                    name: "Get 100 Friends",
+                    unLockedText: "You unlocked this achievement by getting 100 Tier 2 friends.",
+                    shareType: "achievement_4",
+                    img: achievement_4,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier2?.length >= 500,
+                    name: "Get 500 Friends",
+                    unLockedText: "You unlocked this achievement by getting 500 Tier 2 friends.",
+                    shareType: "achievement_5",
+                    img: achievement_5,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier2?.length >= 1000,
+                    name: "Get 1000 Friends",
+                    unLockedText: "You unlocked this achievement by getting 1000 Tier 2 friends.",
+                    shareType: "achievement_6",
+                    img: achievement_6,
+                },
+                {
+                    isLocked: userDataCard?.user?.tier2?.length >= 5000,
+                    name: "Get 5000 Friends",
+                    unLockedText: "You unlocked this achievement by getting 5000 Tier 2 friends.",
+                    shareType: "achievement_7",
+                    img: achievement_7,
+                },
+            ],
         },
         {
-            isLocked: true,
-            name: "Refer 30 Friends to unlock",
-            unLockedText: "You unlocked this Achievments by Referring 30 Friends",
-            shareType: "milestone_3",
-            reward: 80,
-            img: milestone_3
-        },
-        {
-            isLocked: true,
-            name: "Refer 40 Friends to unlock",
-            unLockedText: "You unlocked this Achievments by Referring 40 Friends",
-            shareType: "milestone_4",
-            reward: 100
-            , img: milestone_4
-        },
-        {
-            isLocked: true,
-            name: "Refer 50 Friends to unlock",
-            unLockedText: "You unlocked this Achievments by Referring 50 Friends",
-            shareType: "milestone_5",
-            reward: 200
-            , img: milestone_5
-        },
-        {
-            isLocked: true,
-            name: "Refer 60 Friends to unlock",
-            unLockedText: "You unlocked this Achievments by Referring 60 Friends",
-            shareType: "milestone_6",
-            reward: 300
-            , img: milestone_6
-        },
-        {
-            isLocked: true,
-            name: "Refer 70 Friends to unlock",
-            unLockedText: "You unlocked this Achievments by Referring 70 Friends",
-            shareType: "milestone_7",
-            reward: 400
-            , img: milestone_7
-        },
-    ];
+            achievementType: "UNLOCK CARDS",
+            description: "Get the total number of cards to unlock this achievement!",
+            data: [
+                {
+                    isLocked: userDataCard?.user?.unlockedCards?.length >= 1,
+                    name: "Unlock 1 Card",
+                    unLockedText: "You unlocked this achievement by unlocking your first card.",
+                    shareType: "achievement_1",
+                    img: achievement_1,
+                },
+                {
+                    isLocked: userDataCard?.user?.unlockedCards?.length >= 5,
+                    name: "Unlock 5 Cards",
+                    unLockedText: "You unlocked this achievement by unlocking 5 cards.",
+                    shareType: "achievement_2",
+                    img: achievement_2,
+                },
+                {
+                    isLocked: userDataCard?.user?.unlockedCards?.length >= 10,
+                    name: "Unlock 10 Cards",
+                    unLockedText: "You unlocked this achievement by unlocking 10 cards.",
+                    shareType: "achievement_3",
+                    img: achievement_3,
+                },
+                {
+                    isLocked: userDataCard?.user?.unlockedCards?.length >= 25,
+                    name: "Unlock 25 Cards",
+                    unLockedText: "You unlocked this achievement by unlocking 25 cards.",
+                    shareType: "achievement_4",
+                    img: achievement_4,
+                },
+                {
+                    isLocked: userDataCard?.user?.unlockedCards?.length >= 50,
+                    name: "Unlock 50 Cards",
+                    unLockedText: "You unlocked this achievement by unlocking 50 cards.",
+                    shareType: "achievement_5",
+                    img: achievement_5,
+                },
+                {
+                    isLocked: userDataCard?.user?.unlockedCards?.length >= 100,
+                    name: "Unlock 100 Cards",
+                    unLockedText: "You unlocked this achievement by unlocking 100 cards.",
+                    shareType: "achievement_6",
+                    img: achievement_6,
+                },
+                {
+                    isLocked: userDataCard?.user?.unlockedCards?.length >= 200,
+                    name: "Unlock 200 Cards",
+                    unLockedText: "You unlocked this achievement by unlocking 200 cards.",
+                    shareType: "achievement_7",
+                    img: achievement_7,
+                },
+                {
+                    title: "TOTAL COMPLETED TASKS",
+                    data: [
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
+                            name: "Complete 10 Tasks",
+                            unLockedText: "You unlocked this achievement by completing tasks.",
+                            shareType: "achievement_1",
+                            img: achievement_1
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 100,
+                            name: "Complete 100 Tasks",
+                            unLockedText: "You unlocked this achievement by completing tasks.",
+                            shareType: "achievement_2",
+                            img: achievement_2
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 250,
+                            name: "Complete 250 Tasks",
+                            unLockedText: "You unlocked this achievement by completing tasks.",
+                            shareType: "achievement_3",
+                            img: achievement_3
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 500,
+                            name: "Complete 500 Tasks",
+                            unLockedText: "You unlocked this achievement by completing tasks.",
+                            shareType: "achievement_4",
+                            img: achievement_4
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 1500,
+                            name: "Complete 1,500 Tasks",
+                            unLockedText: "You unlocked this achievement by completing tasks.",
+                            shareType: "achievement_5",
+                            img: achievement_5
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 3000,
+                            name: "Complete 3,000 Tasks",
+                            unLockedText: "You unlocked this achievement by completing tasks.",
+                            shareType: "achievement_6",
+                            img: achievement_6
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 5000,
+                            name: "Complete 5,000 Tasks",
+                            unLockedText: "You unlocked this achievement by completing tasks.",
+                            shareType: "achievement_7",
+                            img: achievement_7
+                        },
+                    ]
+                },
+                {
+                    title: "SHARES EARNED",
+                    data: [
+                        {
+                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={86315} />,
+                            name: "Earn 500,000 Shares",
+                            unLockedText: "You unlocked this achievement.",
+                            shareType: "achievement_1",
+                            img: achievement_1
+                        },
+                        {
+                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={1000000} />,
+                            name: "Earn 1,000,000 Shares",
+                            unLockedText: "You unlocked this achievement.",
+                            shareType: "achievement_2",
+                            img: achievement_2
+                        },
+                        {
+                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={10000000} />,
+                            name: "Earn 10,000,000 Shares",
+                            unLockedText: "You unlocked this achievement.",
+                            shareType: "achievement_3",
+                            img: achievement_3
+                        },
+                        {
+                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={50000000} />,
+                            name: "Earn 50,000,000 Shares",
+                            unLockedText: "You unlocked this achievement.",
+                            shareType: "achievement_4",
+                            img: achievement_4
+                        },
+                        {
+                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={1000000000} />,
+                            name: "Earn 1,000,000,000 Shares",
+                            unLockedText: "You unlocked this achievement.",
+                            shareType: "achievement_5",
+                            img: achievement_5
+                        },
+                        {
+                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={2000000000} />,
+                            name: "Earn 2,000,000,000 Shares",
+                            unLockedText: "You unlocked this achievement.",
+                            shareType: "achievement_6",
+                            img: achievement_6
+                        },
+                    ]
+                },
+                {
+                    title: "TG STORIES TOTAL VIEWS",
+                    data: []
+                },
+                {
+                    title: "WEALTH CLASS",
+                    data: [
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
+                            name: "Unlock Bottom Feeders",
+                            unLockedText: "You unlocked this achievement by reaching the rank.",
+                            shareType: "achievement_1",
+                            img: achievement_1
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
+                            name: "Unlock Aspirers",
+                            unLockedText: "You unlocked this achievement by reaching the rank.",
+                            shareType: "achievement_2",
+                            img: achievement_2
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
+                            name: "Unlock Stable Earners",
+                            unLockedText: "You unlocked this achievement by reaching the rank.",
+                            shareType: "achievement_3",
+                            img: achievement_3
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
+                            name: "Unlock High Achievers",
+                            unLockedText: "You unlocked this achievement by reaching the rank.",
+                            shareType: "achievement_4",
+                            img: achievement_4
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
+                            name: "Unlock Elite Circle",
+                            unLockedText: "You unlocked this achievement by reaching the rank.",
+                            shareType: "achievement_5",
+                            img: achievement_5
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
+                            name: "Unlock Legacy Wealth",
+                            unLockedText: "You unlocked this achievement by reaching the rank.",
+                            shareType: "achievement_6",
+                            img: achievement_6
+                        },
+                        {
+                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
+                            name: "Unlock Titans",
+                            unLockedText: "You unlocked this achievement by reaching the rank.",
+                            shareType: "achievement_7",
+                            img: achievement_7
+                        },
+                    ]
+                }
 
-    // const disableClaimShareBtn =
-    //     userDataCard?.user?.claimedShares?.["Add to home screen"] || false;
+            ],
+        },
+        {
+            achievementType: "TOTAL COMPLETED TASKS",
+            description: "Complete the required number of  tasks to unlock this achievement!",
+            data: [
+                {
+                    isLocked: userDataCard?.user?.completedTasks?.length >= 30,
+                    name: "30 Tasks",
+                    unLockedText: "You unlocked this achievement by completing 30 Tasks.",
+                    shareType: "achievement_1",
+                    img: achievement_1
+                },
+                {
+                    isLocked: userDataCard?.user?.completedTasks?.length >= 100,
+                    name: "100 Tasks",
+                    unLockedText: "You unlocked this achievement by completing 100 Tasks.",
+                    shareType: "achievement_2",
+                    img: achievement_2
+                },
+                {
+                    isLocked: userDataCard?.user?.completedTasks?.length >= 250,
+                    name: "250 Tasks",
+                    unLockedText: "You unlocked this achievement by completing 250 Tasks.",
+                    shareType: "achievement_3",
+                    img: achievement_3
+                },
+                {
+                    isLocked: userDataCard?.user?.completedTasks?.length >= 500,
+                    name: "500 Tasks",
+                    unLockedText: "You unlocked this achievement by completing 500 Tasks.",
+                    shareType: "achievement_4",
+                    img: achievement_4
+                },
+                {
+                    isLocked: userDataCard?.user?.completedTasks?.length >= 1500,
+                    name: "1.5k Tasks",
+                    unLockedText: "You unlocked this achievement by completing 1500 Tasks.",
+                    shareType: "achievement_5",
+                    img: achievement_5
+                },
+                {
+                    isLocked: userDataCard?.user?.completedTasks?.length >= 3000,
+                    name: "3k Tasks",
+                    unLockedText: "You unlocked this achievement by completing 3000 Tasks.",
+                    shareType: "achievement_6",
+                    img: achievement_6
+                },
+                {
+                    isLocked: userDataCard?.user?.completedTasks?.length >= 5000,
+                    name: "5k Tasks",
+                    unLockedText: "You unlocked this achievement by completing 5000 Tasks.",
+                    shareType: "achievement_7",
+                    img: achievement_7
+                },
+            ]
+        },
+
+        {
+            achievementType: "SHARES EARNED",
+            description: "Reach the required amount of shares to unlock this achievement!",
+            data: [
+                {
+                    isLocked: userDataCard?.user?.shares >= 500000,
+                    name: "500k Shares",
+                    unLockedText: "You unlocked this achievement by reaching  500k Shares.",
+                    shareType: "achievement_1",
+                    img: achievement_1
+                },
+                {
+                    isLocked: userDataCard?.user?.shares >= 1000000,
+                    name: "1m Shares",
+                    unLockedText: "You unlocked this achievement by reaching 1m Shares.",
+                    shareType: "achievement_2",
+                    img: achievement_2
+                },
+                {
+                    isLocked: userDataCard?.user?.shares >= 10000000,
+                    name: "10m Shares",
+                    unLockedText: "You unlocked this achievement by reaching 10m Shares.",
+                    shareType: "achievement_3",
+                    img: achievement_3
+                },
+                {
+                    isLocked: userDataCard?.user?.shares >= 50000000,
+                    name: "50m Shares",
+                    unLockedText: "You unlocked this achievement by reaching  50mShares.",
+                    shareType: "achievement_4",
+                    img: achievement_4
+                },
+                {
+                    isLocked: userDataCard?.user?.shares >= 1000000000,
+                    name: "100m Shares",
+                    unLockedText: "You unlocked this achievement by reaching 100m Shares.",
+                    shareType: "achievement_5",
+                    img: achievement_5
+                },
+                {
+                    isLocked: userDataCard?.user?.shares >= 2000000000,
+                    name: `200m Shares`,
+                    unLockedText: "You unlocked this achievement by reaching 200m Shares.",
+                    shareType: "achievement_6",
+                    img: achievement_6
+                },
+            ]
+        },
+        // {
+        // achievementType: "TG STORIES TOTAL VIEWS",
+        // description:"Complete the required tasks to unlock this achievement!",    
+        // data: []
+        // },
+        {
+            achievementType: "WEALTH CLASS",
+            description: "Unlock the required Wealth Class to unlock this achievement!",
+            data: [
+                {
+                    isLocked: findIsLocked("Bottom Feeders"),
+                    name: "Bottom Feeders",
+                    unLockedText: "You unlocked this achievement by unlocking Bottom Feeders",
+                    shareType: "achievement_1",
+                    img: achievement_1
+                },
+                {
+                    isLocked: findIsLocked("The Aspirers"),
+                    name: "The Aspirers",
+                    unLockedText: "You unlocked this achievement by unlocking The Aspirers",
+                    shareType: "achievement_2",
+                    img: achievement_2
+                },
+                {
+                    isLocked: findIsLocked("Stable Money"),
+                    name: "Stable Money",
+                    unLockedText: "You unlocked this achievement by unlocking Stable Money",
+                    shareType: "achievement_3",
+                    img: achievement_3
+                },
+                {
+                    isLocked: findIsLocked("High Achievers"),
+                    name: "High Achievers",
+                    unLockedText: "You unlocked this achievement by unlocking High Achievers",
+                    shareType: "achievement_4",
+                    img: achievement_4
+                },
+                {
+                    isLocked: findIsLocked("Elite Circle"),
+                    name: "Elite Circle",
+                    unLockedText: "You unlocked this achievement by unlocking Elite Circle",
+                    shareType: "achievement_5",
+                    img: achievement_5
+                },
+                {
+                    isLocked: findIsLocked("Legacy Wealth"),
+                    name: "Legacy Wealth",
+                    unLockedText: "You unlocked this achievement by unlocking Legacy Wealth",
+                    shareType: "achievement_6",
+                    img: achievement_6
+                },
+                {
+                    isLocked: findIsLocked("Titans"),
+                    name: "Titans",
+                    unLockedText: "You unlocked this achievement by unlocking Titans",
+                    shareType: "achievement_7",
+                    img: achievement_7
+                },
+            ]
+        },
+        // {
+        //     achievementType: "WATCH YOUTUBE VIDEOS",
+        //     description: "Watch the required number of youtube videos to unlock this achievement!",
+        //     data: [
+        //         {
+        //             isLocked: false,
+        //             name: "Watch 10 Videos",
+        //             unLockedText: "You unlocked this achievement by watching 10 videos",
+        //             shareType: "achievement_1",
+        //             img: achievement_1
+        //         },
+        //     ]
+        // },
+        // {
+        //     achievementType: "RANK UP",
+        //     description: "Reach the required Rank to unlock this achievement!",
+        //     data: [
+        //         {
+        //             isLocked: false,
+        //             name: "Achieve Analys⁠t ",
+        //             unLockedText: "You unlocked this achievement by Reaching Rank Achieve Analys⁠t",
+        //             shareType: "achievement_1",
+        //             img: achievement_1
+        //         },
+        //         {
+        //             isLocked: false,
+        //             name: "Senior Associate ",
+        //             unLockedText: "You unlocked this achievement by Reaching Rank Senior Associate",
+        //             shareType: "achievement_2",
+        //             img: achievement_2
+        //         },
+        //         {
+        //             isLocked: false,
+        //             name: "Senior Managing Director ",
+        //             unLockedText: "You unlocked this achievement by Reaching Rank Senior Managing Director",
+        //             shareType: "achievement_3",
+        //             img: achievement_3
+        //         },
+        //         {
+        //             isLocked: false,
+        //             name: "Managing Partner ",
+        //             unLockedText: "You unlocked this achievement by Reaching Rank Managing Partner",
+        //             shareType: "achievement_4",
+        //             img: achievement_4
+        //         },
+        //         {
+        //             isLocked: false,
+        //             name: "Chairperson ",
+        //             unLockedText: "You unlocked this achievement by Reaching Rank Chairperson",
+        //             shareType: "achievement_5",
+        //             img: achievement_5
+        //         },
+        //         {
+        //             isLocked: false,
+        //             name: "Financial Mogul ",
+        //             unLockedText: "You unlocked this achievement by Reaching Rank Financial Mogul",
+        //             shareType: "achievement_6",
+        //             img: achievement_6
+        //         },
+        //         {
+        //             isLocked: false,
+        //             name: "Global Financier ",
+        //             unLockedText: "You unlocked this achievement by Reaching Rank Global Financier ",
+        //             shareType: "achievement_6",
+        //             img: achievement_6
+        //         },
+        //     ]
+        // },
+        {
+            achievementType: "PLAY GAME",
+            description: "This feature is coming soon stay tuned!",
+            data: [
+                {
+                    isLocked: false,
+                    name: "Play 10x",
+                    unLockedText: "You unlocked this achievement by Playing 10x",
+                    shareType: "achievement_1",
+                    img: achievement_1
+                },
+                {
+                    isLocked: false,
+                    name: "Play 25x",
+                    unLockedText: "You unlocked this achievement by Playing 25x",
+                    shareType: "achievement_2",
+                    img: achievement_2
+                },
+                {
+                    isLocked: false,
+                    name: "Play 50x",
+                    unLockedText: "You unlocked this achievement by Playing 50x",
+                    shareType: "achievement_3",
+                    img: achievement_3
+                },
+                {
+                    isLocked: false,
+                    name: "Play 100x",
+                    unLockedText: "You unlocked this achievement by Playing 100x",
+                    shareType: "achievement_4",
+                    img: achievement_4
+                },
+                {
+                    isLocked: false,
+                    name: "Play 250x",
+                    unLockedText: "You unlocked this achievement by Playing 250x",
+                    shareType: "achievement_5",
+                    img: achievement_5
+                },
+                {
+                    isLocked: false,
+                    name: "Play 500x",
+                    unLockedText: "You unlocked this achievement by Playing 500x",
+                    shareType: "achievement_6",
+                    img: achievement_6
+                },
+                {
+                    isLocked: false,
+                    name: "Play 1000x",
+                    unLockedText: "You unlocked this achievement by Playing 1000x",
+                    shareType: "achievement_7",
+                    img: achievement_7
+                },
+            ]
+        }
+    ];
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -395,7 +945,7 @@ function Profile() {
                                                     <img
                                                         src={item.img}
                                                         loading="lazy"
-                                                        alt={`wealth class ${item.name}`}
+                                                        alt={`wealth class $ {item.name}`}
                                                         className="h-full w-full object-cover object-center rounded-md"
                                                     />
                                                     {loadingClasses ?
@@ -455,11 +1005,11 @@ function Profile() {
                                                         checkIfClaimed(item.shareType) ||
                                                         !item.isLocked
                                                     }
-                                                    className={`bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 rounded-lg py-4 px-6 text-white w-full font-medium shadow-lg transform transition-transform hover:scale-105 ${(updatingShares ||
+                                                    className={`bg-orange-600 hover:orange-700 rounded-lg py-4 px-6 text-white w-full font-medium shadow-lg transform transition-transform hover:scale-105 ${(updatingShares ||
                                                         checkIfClaimed(item.shareType) ||
                                                         !item.isLocked) &&
                                                         "opacity-50 cursor-not-allowed"
-                                                        }`}
+                                                        } `}
                                                 >
                                                     {updatingShares
                                                         ? "Processing..."
@@ -471,14 +1021,13 @@ function Profile() {
                                                 </Button>
                                             </div>
                                         </DrawerContent>
-
                                     </Drawer>
                                 )
                             })}
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-7">
+                    <div className="flex flex-col gap-5">
                         <div>
                             <div className={"flex items-center justify-between"}>
                                 <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold flex items-center gap-2">
@@ -487,7 +1036,7 @@ function Profile() {
                                         {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length || 0})`}
                                     </span>
                                 </h1>
-                                <button type={"button"} className={`${userDataCard?.user?.unlockedCards?.length >= 10 ? "visible" : "invisible"} text-white work-sans text-sm underline hover:text-gray-400`}>View all</button>
+                                <button type={"button"} className={`${userDataCard?.user?.unlockedCards?.length >= 10 ? "visible" : "invisible"} text - white work - sans text - sm underline hover: text - gray - 400`}>View all</button>
                             </div>
                             <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">
                                 <Fragment>
@@ -514,147 +1063,162 @@ function Profile() {
                                             />
                                         </div>
                                     ) : (
-                                        userDataCard?.user?.unlockedCards &&
-                                        [...userDataCard.user.unlockedCards]?.reverse()?.map(
-                                            (card: {
-                                                _id: Key | string | undefined;
-                                                image: string | undefined;
-                                                title: string | undefined;
-                                            }) => (
-                                                <Drawer key={card._id}>
-                                                    <DrawerTrigger asChild>
-                                                        <Card
-                                                            style={{
-                                                                backgroundImage: `url(${wavybg})`,
-                                                                backgroundRepeat: "no-repeat",
-                                                                backgroundSize: "cover",
-                                                            }}
-                                                            className="h-24 min-w-40 relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
-                                                        >
-                                                            <img
-                                                                src={card.image}
-                                                                loading="lazy"
-                                                                alt="Card image"
-                                                                className="max-h-24 w-full object-cover rounded-md"
-                                                            />
-                                                            <div
-                                                                className={
-                                                                    "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
-                                                                }
-                                                            />
-                                                        </Card>
-                                                    </DrawerTrigger>
-                                                    <DrawerContent
-                                                        aria-describedby={undefined}
-                                                        aria-description="dialog"
-                                                        className="flex flex-col max-h-[50%] bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 rounded-lg gap-3"
-                                                    >
-                                                        <DrawerTitle className="sr-only" />
-                                                        <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-3 gap-5">
-                                                            <DrawerClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
-                                                                <IoIosClose size={30} color="#A4A4A7" />
-                                                            </DrawerClose>
-                                                            <h1 className="text-white jarkata font-semibold text-lg capitalize">
-                                                                {card.title ? card.title : "Card title"}
-                                                            </h1>
-                                                            <div className={"relative"}>
-                                                                <img
-                                                                    src={card.image}
-                                                                    loading="lazy"
-                                                                    alt="Refferal Images"
-                                                                    className="h-full min-w-full object-cover object-center rounded-sm"
-                                                                />
-                                                                <div
-                                                                    className={
-                                                                        "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </DrawerContent>
-                                                </Drawer>
-                                            )
-                                        )
+                                        <ScrollArea className="flex items-center whitespace-nowrap max-w-full ">
+                                            <div className="flex w-max space-x-3 gap-3 pb-5">
+                                                {
+                                                    userDataCard?.user?.unlockedCards &&
+                                                    [...userDataCard.user.unlockedCards]?.reverse()?.map(
+                                                        (card: {
+                                                            _id: Key | string | undefined;
+                                                            image: string | undefined;
+                                                            title: string | undefined;
+                                                        }) => (
+
+                                                            <Drawer key={card._id}>
+                                                                <DrawerTrigger asChild>
+                                                                    <Card
+                                                                        style={{
+                                                                            backgroundImage: `url(${wavybg})`,
+                                                                            backgroundRepeat: "no-repeat",
+                                                                            backgroundSize: "cover",
+                                                                        }}
+                                                                        className="h-24 min-w-40 relative rounded-md flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
+                                                                    >
+                                                                        <img
+                                                                            src={card.image}
+                                                                            loading="lazy"
+                                                                            alt="Card image"
+                                                                            className="max-h-24 w-full object-cover rounded-md"
+                                                                        />
+                                                                        <div
+                                                                            className={
+                                                                                "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                                                                            }
+                                                                        />
+                                                                    </Card>
+                                                                </DrawerTrigger>
+                                                                <DrawerContent
+                                                                    aria-describedby={undefined}
+                                                                    aria-description="dialog"
+                                                                    className="flex flex-col max-h-[50%] bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 rounded-lg gap-3"
+                                                                >
+                                                                    <DrawerTitle className="sr-only" />
+                                                                    <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-3 gap-5">
+                                                                        <DrawerClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
+                                                                            <IoIosClose size={30} color="#A4A4A7" />
+                                                                        </DrawerClose>
+                                                                        <h1 className="text-white jarkata font-semibold text-lg capitalize">
+                                                                            {card.title ? card.title : "Card title"}
+                                                                        </h1>
+                                                                        <div className={"relative"}>
+                                                                            <img
+                                                                                src={card.image}
+                                                                                loading="lazy"
+                                                                                alt="Refferal Images"
+                                                                                className="h-full min-w-full object-cover object-center rounded-sm"
+                                                                            />
+                                                                            <div
+                                                                                className={
+                                                                                    "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                                                                                }
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                </DrawerContent>
+                                                            </Drawer>
+                                                        )
+                                                    )}
+                                            </div>
+                                            <ScrollBar orientation="horizontal" />
+                                        </ScrollArea>
                                     )}
+
                                 </Fragment>
                             </div>
                         </div>
 
                         {/* Achievments */}
                         <div>
-                            <h1 className="text-[#FEFEFF] text-[15px] font-semibold work-sans py-2">
-                                Achievments
-                            </h1>
-                            <div className=" min-h-[171px] border-none min-w-[326px] w-full p-2">
-                                <div className="flex items-center overflow-x-auto max-w-full gap-7 pb-5">
-                                    {achievement.map((a, i) => (
-                                        <Drawer key={i}>
-                                            <DrawerTrigger asChild>
-                                                <div className="flex flex-col items-center gap-3">
-                                                    <div className="flex flex-col relative gap-1 min-w-fit">
-                                                        <img
-                                                            src={a.img}
-                                                            loading="lazy"
-                                                            alt="Refferal Images"
-                                                            className="max-h-[58px] max-w-[46px] object-cover object-center"
-                                                        />
-
-                                                        {a.isLocked &&
-                                                            <div className="absolute h-full w-full rounded-md  bg-black/40 z-20 flex flex-col items-center justify-center">
-                                                                <SlLock size={25} color="white" />
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                    <h1 className="work-sans text-[6px] text-[#FEFEFF] font-medium whitespace-nowrap">
-                                                        {a.name}
-                                                    </h1>
-                                                </div>
-                                            </DrawerTrigger>
-                                            <DrawerContent
-                                                aria-describedby={undefined}
-                                                aria-description="dialog"
-                                                className="flex flex-col min-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-3 gap-3"
-                                            >
-                                                <DrawerTitle className="sr-only" />
-                                                <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-5 gap-5">
-                                                    <DrawerClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
-                                                        <IoIosClose size={30} color="#A4A4A7" />
-                                                    </DrawerClose>
-                                                    <img
-                                                        src={a.img}
-                                                        loading="lazy"
-                                                        alt="Refferal Images"
-                                                        className="h-auto w-auto object-contain object-center"
-                                                    />
-                                                    <h1 className="text-white work-sans font-semibold text-[15px]">
-                                                        {a.isLocked ? a.name : a.unLockedText}
-                                                    </h1>
-                                                </div>
-                                            </DrawerContent>
-                                        </Drawer>
-                                    ))}
-                                </div>
+                            <h1 className="text-[#FEFEFF] text-lg font-semibold work-sans mb-6">Achievements</h1>
+                            <div className="space-y-1">
+                                {achievement.map((group, index) => (
+                                    <div key={index}>
+                                        <h2 className="text-[#FEFEFF] text-sm work-sans mb-2">{group.achievementType}</h2>
+                                        <ScrollArea className="flex items-center whitespace-nowrap max-w-full ">
+                                            <div className="flex w-max space-x-3 gap-2 pb-3">
+                                                {group.data.map((a, i) => (
+                                                    <motion.div key={i} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className={"py-4"}>
+                                                        <Drawer>
+                                                            <DrawerTrigger asChild className={`w-full border ${a.isLocked ? "border-orange-600" : "border-gray-500"} p-2 rounded-md shadow-lg min-w-28  hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#4a4b56]`}>
+                                                                <div className="flex flex-col items-center gap-3 work-sans relative">
+                                                                    <img
+                                                                        src={a.img}
+                                                                        loading="lazy"
+                                                                        alt={`${a.name} achievement`}
+                                                                        className={`h-16 w-16 ${a.isLocked ? "grayscale-0" : "grayscale"} object-contain object-center rounded-md`}
+                                                                    />
+                                                                    {a.isLocked ? (
+                                                                        null
+                                                                    ) : <div className="absolute inset-0 bg-black/50 rounded-md flex flex-col items-center justify-evenly">
+                                                                        <SlLock size={30} className="text-white/80" />
+                                                                        <div />
+                                                                    </div>}
+                                                                    <h3 className="text-[#FEFEFF] text-xs whitespace-nowrap font-medium text-center">{a.name}</h3>
+                                                                </div>
+                                                            </DrawerTrigger>
+                                                            <DrawerContent aria-describedby={undefined}
+                                                                aria-description="dialog" className="bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-t-xl px-6 py-8">
+                                                                <DrawerClose className="absolute top-4 right-4 text-[#A4A4A7] hover:text-white transition-colors">
+                                                                    <IoIosClose size={30} />
+                                                                </DrawerClose>
+                                                                <DrawerTitle className="sr-only" />
+                                                                <div className="flex flex-col items-center gap-6 max-w-sm mx-auto">
+                                                                    <motion.img
+                                                                        src={a.img}
+                                                                        alt={`${a.name} achievement`}
+                                                                        className={`${a.isLocked ? "grayscale-0" : "grayscale"} h-28 w-h-28 object-contain rounded-lg`}
+                                                                        initial={{ opacity: 0, y: 20 }}
+                                                                        animate={{ opacity: 1, y: 0 }}
+                                                                        transition={{ duration: 0.5 }}
+                                                                    />
+                                                                    <motion.h2
+                                                                        className="text-white text-base work-sans font-medium text-center"
+                                                                        initial={{ opacity: 0 }}
+                                                                        animate={{ opacity: 1 }}
+                                                                        transition={{ delay: 0.2, duration: 0.5 }}
+                                                                    >
+                                                                        {a.isLocked ? a.unLockedText : a.name}
+                                                                    </motion.h2>
+                                                                    {!a.isLocked ? (
+                                                                        <motion.p
+                                                                            className="text-[#A4A4A7] text-center"
+                                                                            initial={{ opacity: 0 }}
+                                                                            animate={{ opacity: 1 }}
+                                                                            transition={{ delay: 0.4, duration: 0.5 }}
+                                                                        >
+                                                                            {group.description}
+                                                                        </motion.p>
+                                                                    ) : null}
+                                                                </div>
+                                                            </DrawerContent>
+                                                        </Drawer>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                            <ScrollBar orientation="horizontal" />
+                                        </ScrollArea>
+                                    </div>
+                                ))}
                             </div>
                         </div>
+
                     </div>
-
-                    {/* <div>
-                        <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
-                            Bonus tasks
-                        </h1>
-                        <AddToHomeScreen
-                            refetch={() => {
-                                refetchShares()
-                            }}
-                            telegram_id={telegramId}
-                            disableBtn={disableClaimShareBtn} />
-                    </div> */}
-
                 </div>
             </div>
 
         </div>
     );
+
 }
 
 export default Profile;
