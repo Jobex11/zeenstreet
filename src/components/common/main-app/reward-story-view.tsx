@@ -1,7 +1,7 @@
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerDescription, DrawerTrigger } from "@components/ui/drawer";
 import { HiOutlineGift } from "react-icons/hi";
 import { useGetTelegramId } from "@hooks/getTelegramId";
-import { useRewardForStoryViewsMutation, useGetStoryViewDetailsQuery, storiesApi } from "@hooks/redux/stories";
+import { useRewardForStoryViewsMutation, useGetStoryViewDetailsQuery, storiesApi, useGetAllStoryQuery } from "@hooks/redux/stories";
 import { Fragment, useEffect } from "react";
 import { Button } from "@components/ui/button";
 import { toast } from "sonner";
@@ -24,13 +24,21 @@ export function RewardForStoryViews() {
     const { telegramId } = useGetTelegramId();
     const claimedRewards = useSelector((state: RootState) => state.rewards.claimedRewards);
     const [rewardStory, { isLoading: isCheckingStatus }] = useRewardForStoryViewsMutation();
-
     const { data: storyDetails, refetch: refetchStoryDetails } = useGetStoryViewDetailsQuery(telegramId ?? "", {
         skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         pollingInterval: 20,
+    });
+
+    const {
+        data: story,
+    } = useGetAllStoryQuery(telegramId ?? "", {
+        skip: !telegramId,
+        refetchOnReconnect: true,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
     });
 
     const rewardMapping: RewardMapping[] = [
@@ -83,8 +91,9 @@ export function RewardForStoryViews() {
             <Drawer>
                 <DrawerTrigger className={"relative"} onClick={async () => { await refetchStoryDetails() }}>
                     <Fragment>
-                        <HiOutlineGift size={25} color={"#d1d5db"} />
-                        <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />
+                        <HiOutlineGift size={23} color={"#d1d5db"} />
+                        {storyDetails && <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />}
+
                     </Fragment>
                 </DrawerTrigger>
                 <DrawerContent
@@ -98,8 +107,9 @@ export function RewardForStoryViews() {
                         </DrawerClose>
                     </div>
                     <Fragment>
-                        <div>
+                        <div className={"relative"}>
                             <img src={storyViewImg} alt="story view image" className="h-24 w-24 object-contain" />
+                            <div className="absolute top-0 bottom-0 h-full w-full bg-transparent z-10" />
                         </div>
                         <DrawerTitle className="text-lg font-bold text-white text-center mt-2 tahoma">
                             View Rewarder
@@ -115,44 +125,56 @@ export function RewardForStoryViews() {
                         <DrawerDescription className="text-center text-gray-400 text-xs work-sans px-10">
                             Note: You need to enable privacy settings for this feature to work.!!
                         </DrawerDescription>
-                        {storyDetails ?
-                            <div className="flex flex-col items-center justify-center text-white w-full work-sans mt-6">
-                                <span className="text-xl font-semibold flex items-center gap-3">
-                                    You have {storyDetails?.views ?? <FaMehRollingEyes />} view{storyDetails?.views === 1 ? "" : "s"}
-                                </span>
-                                <p className="mt-2 text-gray-400 text-center">
-                                    {storyDetails?.rewardShares && storyDetails?.rewardShares > 0 ? (
-                                        <Fragment>
-                                            You earned {storyDetails?.rewardShares} share
-                                            {storyDetails?.rewardShares === 1 ? "" : "s"} 🎉
-                                        </Fragment>
-                                    ) : (
-                                        <Fragment>
-                                            {storyDetails?.views > 1 && "You haven't earned any shares yet. Keep engaging your friends! 😊"}
-                                        </Fragment>
-                                    )}
-                                </p>
-                                <div className="mt-4 w-full flex flex-col">
-                                    <Button
-                                        disabled={isCheckingStatus || !nextReward}
-                                        onClick={handleRewardStoryViews}
-                                        className={`w-full text-white work-sans ${isCheckingStatus || !nextReward
-                                            ? "bg-gray-500 cursor-not-allowed"
-                                            : "bg-orange-500 hover:bg-orange-600"
-                                            }`}
-                                    >
-                                        {isCheckingStatus
-                                            ? "Processing..."
-                                            : nextReward
-                                                ? `Claim Reward for ${nextReward?.views} Views`
-                                                : "No Reward Available"}
-                                    </Button>
+                        {story ? (
+                            storyDetails ?
+                                <div className="flex flex-col items-center justify-center text-white w-full work-sans mt-6">
+                                    <span className="text-xl font-semibold flex items-center gap-3">
+                                        You have {storyDetails?.views ?? <FaMehRollingEyes />} view{storyDetails?.views === 1 ? "" : "s"}
+                                    </span>
+                                    <p className="mt-2 text-gray-400 text-center">
+                                        {storyDetails?.rewardShares && storyDetails?.rewardShares > 0 ? (
+                                            <Fragment>
+                                                You earned {storyDetails?.rewardShares} share
+                                                {storyDetails?.rewardShares === 1 ? "" : "s"} 🎉
+                                            </Fragment>
+                                        ) : (
+                                            <Fragment>
+                                                {storyDetails?.views > 1 && "You haven't earned any shares yet. Keep engaging your friends! 😊"}
+                                            </Fragment>
+                                        )}
+                                    </p>
+                                    <div className="mt-4 w-full flex flex-col">
+                                        <Button
+                                            disabled={isCheckingStatus || !nextReward}
+                                            onClick={handleRewardStoryViews}
+                                            className={`w-full text-white work-sans ${isCheckingStatus || !nextReward
+                                                ? "bg-gray-500 cursor-not-allowed"
+                                                : "bg-orange-500 hover:bg-orange-600"
+                                                }`}
+                                        >
+                                            {isCheckingStatus
+                                                ? "Processing..."
+                                                : nextReward
+                                                    ? `Claim Reward for ${nextReward?.views} Views`
+                                                    : "No Reward Available"}
+                                        </Button>
+                                    </div>
                                 </div>
-                            </div>
-                            : <div className={"border-t my-3 flex flex-col items-center"}>
-                                <h1 className={"font-semibold text-lg pt-2 work-sans"}>No story at the moment</h1>
-                                <p className={"text-gray-300 work-sans"}>Check in two days</p>
-                            </div>}
+                                : <div className="border-t my-3 flex flex-col items-center">
+                                    <h1 className="font-semibold text-lg pt-2 work-sans">
+                                        You haven't shared your story!
+                                    </h1>
+                                    <p className="text-gray-300 work-sans">
+                                        Share your story to start earning rewards.
+                                    </p>
+                                </div>
+                        ) : <div className="border-t my-3 flex flex-col items-center">
+                            <h1 className="font-semibold text-lg pt-2 work-sans">
+                                No story at the moment
+                            </h1>
+                            <p className="text-gray-300 work-sans">Check in two days</p>
+                        </div>}
+
                     </Fragment>
                 </DrawerContent>
 

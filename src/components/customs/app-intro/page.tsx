@@ -38,8 +38,6 @@ export default function ZeenAppIntro() {
         refetchOnMountOrArgChange: true,
     });
 
-
-
     const provinces = [
         { name: "Obsidia", minShares: 1000, maxShares: 10000 },
         { name: "Platinara", minShares: 10001, maxShares: 20000 },
@@ -83,15 +81,14 @@ export default function ZeenAppIntro() {
                 navigate("/home");
                 return;
             }
-
-            // Check if all accounts are confirmed
-            if (!isLoading && users?.hasPreferredUsername && !allConfirmed) {
-                setCurrentScreen(SCREENS.SOCIALS);
+            // Show create username screen if username is not set
+            if (!isLoading && !users?.hasPreferredUsername) {
+                setCurrentScreen(SCREENS.CREATE_USERNAME);
                 return;
             }
 
-            // Show create username screen if username is not set
-            setCurrentScreen(SCREENS.CREATE_USERNAME);
+            // Check if all accounts are confirmed
+            setCurrentScreen(SCREENS.SOCIALS);
         }, TIMEOUT);
 
         // Cleanup timeout on unmount

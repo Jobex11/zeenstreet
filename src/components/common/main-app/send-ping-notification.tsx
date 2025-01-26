@@ -72,8 +72,12 @@ function SendPingNotification() {
             <Drawer>
                 <DrawerTrigger className={"relative"}>
                     <Fragment>
-                        <PiBellRingingLight size={30} color="white" />
-                        <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />
+                        <PiBellRingingLight size={23} color="white" />
+                        {
+                            !buttonDisabled &&
+                            <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />
+                        }
+
                     </Fragment>
                 </DrawerTrigger>
                 <DrawerContent
@@ -85,8 +89,9 @@ function SendPingNotification() {
                         <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">
                             <IoIosClose size={24} />
                         </DrawerClose>
-                        <DrawerHeader>
+                        <DrawerHeader className={"relative"}>
                             <img src={bell_icon} alt={"bell icon"} className={"max-h-20 max-w-20 object-contain object-center"} />
+                            <div className="absolute top-0 bottom-0 h-full w-full bg-transparent z-10" />
                         </DrawerHeader>
                         <DrawerTitle className="text-2xl font-semibold text-center text-white">Ping Notifier</DrawerTitle>
                         <DrawerDescription className="text-center text-gray-400">

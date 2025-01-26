@@ -4,14 +4,11 @@ import { lazy, Suspense } from 'react';
 
 // Lazy load the Home component
 const Tasks = lazy(() => import('@components/customs/main-app/tasks'));
-const StoriesLayout = lazy(() => import('@components/common/stories'))
 function TasksPage() {
   return (
     <MainappLayout>
       <Suspense fallback={Loader()}>
-        <StoriesLayout>
           <Tasks />
-        </StoriesLayout>
       </Suspense>
     </MainappLayout>
   );

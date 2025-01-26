@@ -412,166 +412,6 @@ function Profile() {
                     shareType: "achievement_7",
                     img: achievement_7,
                 },
-                {
-                    title: "TOTAL COMPLETED TASKS",
-                    data: [
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
-                            name: "Complete 10 Tasks",
-                            unLockedText: "You unlocked this achievement by completing tasks.",
-                            shareType: "achievement_1",
-                            img: achievement_1
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 100,
-                            name: "Complete 100 Tasks",
-                            unLockedText: "You unlocked this achievement by completing tasks.",
-                            shareType: "achievement_2",
-                            img: achievement_2
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 250,
-                            name: "Complete 250 Tasks",
-                            unLockedText: "You unlocked this achievement by completing tasks.",
-                            shareType: "achievement_3",
-                            img: achievement_3
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 500,
-                            name: "Complete 500 Tasks",
-                            unLockedText: "You unlocked this achievement by completing tasks.",
-                            shareType: "achievement_4",
-                            img: achievement_4
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 1500,
-                            name: "Complete 1,500 Tasks",
-                            unLockedText: "You unlocked this achievement by completing tasks.",
-                            shareType: "achievement_5",
-                            img: achievement_5
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 3000,
-                            name: "Complete 3,000 Tasks",
-                            unLockedText: "You unlocked this achievement by completing tasks.",
-                            shareType: "achievement_6",
-                            img: achievement_6
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 5000,
-                            name: "Complete 5,000 Tasks",
-                            unLockedText: "You unlocked this achievement by completing tasks.",
-                            shareType: "achievement_7",
-                            img: achievement_7
-                        },
-                    ]
-                },
-                {
-                    title: "SHARES EARNED",
-                    data: [
-                        {
-                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={86315} />,
-                            name: "Earn 500,000 Shares",
-                            unLockedText: "You unlocked this achievement.",
-                            shareType: "achievement_1",
-                            img: achievement_1
-                        },
-                        {
-                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={1000000} />,
-                            name: "Earn 1,000,000 Shares",
-                            unLockedText: "You unlocked this achievement.",
-                            shareType: "achievement_2",
-                            img: achievement_2
-                        },
-                        {
-                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={10000000} />,
-                            name: "Earn 10,000,000 Shares",
-                            unLockedText: "You unlocked this achievement.",
-                            shareType: "achievement_3",
-                            img: achievement_3
-                        },
-                        {
-                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={50000000} />,
-                            name: "Earn 50,000,000 Shares",
-                            unLockedText: "You unlocked this achievement.",
-                            shareType: "achievement_4",
-                            img: achievement_4
-                        },
-                        {
-                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={1000000000} />,
-                            name: "Earn 1,000,000,000 Shares",
-                            unLockedText: "You unlocked this achievement.",
-                            shareType: "achievement_5",
-                            img: achievement_5
-                        },
-                        {
-                            isLocked: userDataCard?.user?.shares === <ShareFormatter shares={2000000000} />,
-                            name: "Earn 2,000,000,000 Shares",
-                            unLockedText: "You unlocked this achievement.",
-                            shareType: "achievement_6",
-                            img: achievement_6
-                        },
-                    ]
-                },
-                {
-                    title: "TG STORIES TOTAL VIEWS",
-                    data: []
-                },
-                {
-                    title: "WEALTH CLASS",
-                    data: [
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
-                            name: "Unlock Bottom Feeders",
-                            unLockedText: "You unlocked this achievement by reaching the rank.",
-                            shareType: "achievement_1",
-                            img: achievement_1
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
-                            name: "Unlock Aspirers",
-                            unLockedText: "You unlocked this achievement by reaching the rank.",
-                            shareType: "achievement_2",
-                            img: achievement_2
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
-                            name: "Unlock Stable Earners",
-                            unLockedText: "You unlocked this achievement by reaching the rank.",
-                            shareType: "achievement_3",
-                            img: achievement_3
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
-                            name: "Unlock High Achievers",
-                            unLockedText: "You unlocked this achievement by reaching the rank.",
-                            shareType: "achievement_4",
-                            img: achievement_4
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
-                            name: "Unlock Elite Circle",
-                            unLockedText: "You unlocked this achievement by reaching the rank.",
-                            shareType: "achievement_5",
-                            img: achievement_5
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
-                            name: "Unlock Legacy Wealth",
-                            unLockedText: "You unlocked this achievement by reaching the rank.",
-                            shareType: "achievement_6",
-                            img: achievement_6
-                        },
-                        {
-                            isLocked: userDataCard?.user?.completedTasks?.length === 30,
-                            name: "Unlock Titans",
-                            unLockedText: "You unlocked this achievement by reaching the rank.",
-                            shareType: "achievement_7",
-                            img: achievement_7
-                        },
-                    ]
-                }
-
             ],
         },
         {
@@ -678,11 +518,61 @@ function Profile() {
                 },
             ]
         },
-        // {
-        // achievementType: "TG STORIES TOTAL VIEWS",
-        // description:"Complete the required tasks to unlock this achievement!",    
-        // data: []
-        // },
+        {
+            achievementType: "TOTAL STORY SHARED",
+            description: "Share the required stories to unlock this achievement!",
+            data: [
+                {
+                    isLocked: userDataCard?.user?.sharedStories?.length >= 10,
+                    name: "10 Stories",
+                    unLockedText: "You unlocked this achievement by sharing 10 stories.",
+                    shareType: "achievement_1",
+                    img: achievement_1
+                },
+                {
+                    isLocked: userDataCard?.user?.sharedStories?.length >= 50,
+                    name: "50 Stories",
+                    unLockedText: "You unlocked this achievement by sharing 50 stories.",
+                    shareType: "achievement_2",
+                    img: achievement_2
+                },
+                {
+                    isLocked: userDataCard?.user?.sharedStories?.length >= 100,
+                    name: "100 Stories",
+                    unLockedText: "You unlocked this achievement by sharing 100 stories.",
+                    shareType: "achievement_3",
+                    img: achievement_3
+                },
+                {
+                    isLocked: userDataCard?.user?.sharedStories?.length >= 120,
+                    name: "120 Stories",
+                    unLockedText: "You unlocked this achievement by sharing 120 stories.",
+                    shareType: "achievement_4",
+                    img: achievement_4
+                },
+                {
+                    isLocked: userDataCard?.user?.sharedStories?.length >= 200,
+                    name: "200 Stories",
+                    unLockedText: "You unlocked this achievement by sharing 200 stories.",
+                    shareType: "achievement_5",
+                    img: achievement_5
+                },
+                {
+                    isLocked: userDataCard?.user?.sharedStories?.length >= 500,
+                    name: "500 Stories",
+                    unLockedText: "You unlocked this achievement by sharing 500 stories.",
+                    shareType: "achievement_6",
+                    img: achievement_6
+                },
+                {
+                    isLocked: userDataCard?.user?.sharedStories?.length >= 1000,
+                    name: "1k Stories",
+                    unLockedText: "You unlocked this achievement by sharing 1k stories.",
+                    shareType: "achievement_7",
+                    img: achievement_7
+                },
+            ]
+        },
         {
             achievementType: "WEALTH CLASS",
             description: "Unlock the required Wealth Class to unlock this achievement!",
@@ -862,6 +752,7 @@ function Profile() {
             ]
         }
     ];
+
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -919,113 +810,117 @@ function Profile() {
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
                             Wealth classes
                         </h1>
-                        <div className="min-w-full flex items-center pb-4 gap-4 overflow-x-auto">
-                            {wealthClassStatus?.map((item) => {
-                                return (
-                                    <Drawer
-                                        key={item.name}
-                                        open={drawerState[item.name] || false}
-                                        onOpenChange={() =>
-                                            setDrawerState((prevState) => ({
-                                                ...prevState,
-                                                [item.name]: !prevState[item.name],
-                                            }))
-                                        }
-                                    >
-                                        <DrawerTrigger asChild>
-                                            <div>
-                                                <Card
-                                                    style={{
-                                                        backgroundImage: `url(${wavybg})`,
-                                                        backgroundRepeat: "no-repeat",
-                                                        backgroundSize: "cover",
-                                                    }}
-                                                    className="h-12 min-w-[70px] w-full relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold overflow-hidden"
-                                                >
-                                                    <img
-                                                        src={item.img}
-                                                        loading="lazy"
-                                                        alt={`wealth class $ {item.name}`}
-                                                        className="h-full w-full object-cover object-center rounded-md"
-                                                    />
-                                                    {loadingClasses ?
-                                                        <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
-                                                            <SlLock size={25} color="white" />
-                                                        </div>
-                                                        :
-                                                        !item.isLocked && (
+                        <ScrollArea className="flex items-center whitespace-nowrap max-w-full ">
+                            <div className="flex w-max space-x-2 gap-1 pb-4">
+                                {wealthClassStatus?.map((item) => {
+                                    return (
+                                        <Drawer
+                                            key={item.name}
+                                            open={drawerState[item.name] || false}
+                                            onOpenChange={() =>
+                                                setDrawerState((prevState) => ({
+                                                    ...prevState,
+                                                    [item.name]: !prevState[item.name],
+                                                }))
+                                            }
+                                        >
+                                            <DrawerTrigger asChild>
+                                                <div>
+                                                    <Card
+                                                        style={{
+                                                            backgroundImage: `url(${wavybg})`,
+                                                            backgroundRepeat: "no-repeat",
+                                                            backgroundSize: "cover",
+                                                        }}
+                                                        className="h-12 min-w-[70px] w-full relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold overflow-hidden"
+                                                    >
+                                                        <img
+                                                            src={item.img}
+                                                            loading="lazy"
+                                                            alt={`wealth class $ {item.name}`}
+                                                            className="h-full w-full object-cover object-center rounded-md"
+                                                        />
+                                                        {loadingClasses ?
                                                             <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
                                                                 <SlLock size={25} color="white" />
                                                             </div>
-                                                        )}
-                                                </Card>
-                                                <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1 whitespace-nowrap">
-                                                    {item.name}
-                                                </h1>
-                                            </div>
-                                        </DrawerTrigger>
-                                        <DrawerContent
-                                            aria-describedby={undefined}
-                                            aria-description="dialog"
-                                            className="flex flex-col work-sans bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 pb-5 gap-6 rounded-lg shadow-xl"
-                                        >
-                                            <DrawerTitle className="sr-only" />
-                                            <div className="relative flex flex-col items-center justify-center w-full gap-4">
-                                                <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">
-                                                    <IoIosClose size={24} />
-                                                </DrawerClose>
-                                                <div className="relative h-28 w-28">
-                                                    <img
-                                                        src={item.img}
-                                                        loading="lazy"
-                                                        alt="Wealth class image"
-                                                        className={`h-full w-full object-cover rounded-full border-4 ${item.isLocked ? "border-orange-500" : "border-gray-600"}  shadow-md`}
-                                                    />
+                                                            :
+                                                            !item.isLocked && (
+                                                                <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
+                                                                    <SlLock size={25} color="white" />
+                                                                </div>
+                                                            )}
+                                                    </Card>
+                                                    <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1 whitespace-nowrap">
+                                                        {item.name}
+                                                    </h1>
                                                 </div>
-                                                <h1 className="text-white font-semibold text-lg capitalize">
-                                                    {item.name}
-                                                </h1>
-                                                <p className="text-gray-300 text-sm text-center max-w-md leading-6">
-                                                    {item.description}
-                                                </p>
-                                                <div className="h-[2px] w-20 bg-gradient-to-r from-gray-500 to-gray-800 animate-pulse" />
-                                                <p className="text-gray-400 text-xs text-center max-w-md">
-                                                    {item.unlockMessage}
-                                                </p>
-                                                <Button
-                                                    onClick={() => {
-                                                        handleUpdateShares(item.rewards, item.shareType, item.name);
-                                                        setDrawerState((prevState) => ({
-                                                            ...prevState,
-                                                            [item.name]: false,
-                                                        }));
-                                                    }}
-                                                    disabled={
-                                                        updatingShares ||
-                                                        checkIfClaimed(item.shareType) ||
-                                                        !item.isLocked
-                                                    }
-                                                    className={`bg-orange-600 hover:orange-700 rounded-lg py-4 px-6 text-white w-full font-medium shadow-lg transform transition-transform hover:scale-105 ${(updatingShares ||
-                                                        checkIfClaimed(item.shareType) ||
-                                                        !item.isLocked) &&
-                                                        "opacity-50 cursor-not-allowed"
-                                                        } `}
-                                                >
-                                                    {updatingShares
-                                                        ? "Processing..."
-                                                        : checkIfClaimed(item.shareType)
-                                                            ? "Shares already Claimed"
-                                                            : !item.isLocked
-                                                                ? `+ ${item.rewards} Meet the Requirements First`
-                                                                : `Claim ${item.rewards} Shares`}
-                                                </Button>
-                                            </div>
-                                        </DrawerContent>
-                                    </Drawer>
-                                )
-                            })}
-                        </div>
+                                            </DrawerTrigger>
+                                            <DrawerContent
+                                                aria-describedby={undefined}
+                                                aria-description="dialog"
+                                                className="flex flex-col work-sans bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 pb-5 gap-6 rounded-lg shadow-xl"
+                                            >
+                                                <DrawerTitle className="sr-only" />
+                                                <div className="relative flex flex-col items-center justify-center w-full gap-4">
+                                                    <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">
+                                                        <IoIosClose size={24} />
+                                                    </DrawerClose>
+                                                    <div className="relative h-28 w-28">
+                                                        <img
+                                                            src={item.img}
+                                                            loading="lazy"
+                                                            alt="Wealth class image"
+                                                            className={`h-full w-full object-cover rounded-full border-4 ${item.isLocked ? "border-orange-500" : "border-gray-600"}  shadow-md`}
+                                                        />
+                                                    </div>
+                                                    <h1 className="text-white font-semibold text-lg capitalize">
+                                                        {item.name}
+                                                    </h1>
+                                                    <p className="text-gray-300 text-sm text-center max-w-md leading-6">
+                                                        {item.description}
+                                                    </p>
+                                                    <div className="h-[2px] w-20 bg-gradient-to-r from-gray-500 to-gray-800 animate-pulse" />
+                                                    <p className="text-gray-400 text-xs text-center max-w-md">
+                                                        {item.unlockMessage}
+                                                    </p>
+                                                    <Button
+                                                        onClick={() => {
+                                                            handleUpdateShares(item.rewards, item.shareType, item.name);
+                                                            setDrawerState((prevState) => ({
+                                                                ...prevState,
+                                                                [item.name]: false,
+                                                            }));
+                                                        }}
+                                                        disabled={
+                                                            updatingShares ||
+                                                            checkIfClaimed(item.shareType) ||
+                                                            !item.isLocked
+                                                        }
+                                                        className={`bg-orange-600 hover:orange-700 rounded-lg py-4 px-6 text-white w-full font-medium shadow-lg transform transition-transform hover:scale-105 ${(updatingShares ||
+                                                            checkIfClaimed(item.shareType) ||
+                                                            !item.isLocked) &&
+                                                            "opacity-50 cursor-not-allowed"
+                                                            } `}
+                                                    >
+                                                        {updatingShares
+                                                            ? "Processing..."
+                                                            : checkIfClaimed(item.shareType)
+                                                                ? "Shares already Claimed"
+                                                                : !item.isLocked
+                                                                    ? `+ ${item.rewards} Meet the Requirements First`
+                                                                    : `Claim ${item.rewards} Shares`}
+                                                    </Button>
+                                                </div>
+                                            </DrawerContent>
+                                        </Drawer>
+                                    )
+                                })}
+                            </div>
+                            <ScrollBar orientation="horizontal" />
+                        </ScrollArea>
                     </div>
+
 
                     <div className="flex flex-col gap-5">
                         <div>
@@ -1036,7 +931,7 @@ function Profile() {
                                         {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length || 0})`}
                                     </span>
                                 </h1>
-                                <button type={"button"} className={`${userDataCard?.user?.unlockedCards?.length >= 10 ? "visible" : "invisible"} text - white work - sans text - sm underline hover: text - gray - 400`}>View all</button>
+                                {/* <button type={"button"} className={`${userDataCard?.user?.unlockedCards?.length >= 3 ? "visible" : "invisible"} text - white work - sans text - sm underline hover: text - gray - 400`}>View all</button> */}
                             </div>
                             <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">
                                 <Fragment>
@@ -1075,14 +970,14 @@ function Profile() {
                                                         }) => (
 
                                                             <Drawer key={card._id}>
-                                                                <DrawerTrigger asChild>
+                                                                <DrawerTrigger asChild className="rounded-md border-none">
                                                                     <Card
                                                                         style={{
                                                                             backgroundImage: `url(${wavybg})`,
                                                                             backgroundRepeat: "no-repeat",
                                                                             backgroundSize: "cover",
                                                                         }}
-                                                                        className="h-24 min-w-40 relative rounded-md flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
+                                                                        className="h-24 min-w-40 relative border-none rounded-md flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
                                                                     >
                                                                         <img
                                                                             src={card.image}
@@ -1092,7 +987,7 @@ function Profile() {
                                                                         />
                                                                         <div
                                                                             className={
-                                                                                "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                                                                                "absolute z-20 bg-transparent h-full w-full top-0 rounded-md bottom-0"
                                                                             }
                                                                         />
                                                                     </Card>
@@ -1143,36 +1038,37 @@ function Profile() {
                             <div className="space-y-1">
                                 {achievement.map((group, index) => (
                                     <div key={index}>
-                                        <h2 className="text-[#FEFEFF] text-sm work-sans mb-2">{group.achievementType}</h2>
+                                        <h2 className="text-[#FEFEFF] text-xs work-sans mb-0.5">{group.achievementType}</h2>
                                         <ScrollArea className="flex items-center whitespace-nowrap max-w-full ">
-                                            <div className="flex w-max space-x-3 gap-2 pb-3">
+                                            <div className="flex w-max space-x-2 gap-1 pb-1">
                                                 {group.data.map((a, i) => (
                                                     <motion.div key={i} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className={"py-4"}>
                                                         <Drawer>
-                                                            <DrawerTrigger asChild className={`w-full border ${a.isLocked ? "border-orange-600" : "border-gray-500"} p-2 rounded-md shadow-lg min-w-28  hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#4a4b56]`}>
+                                                            <DrawerTrigger asChild className={`w-full border ${a.isLocked ? "border-orange-600" : "border-gray-500"} p-1.5 rounded-md shadow-lg min-w-[6.5rem]  hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#4a4b56]`}>
                                                                 <div className="flex flex-col items-center gap-3 work-sans relative">
                                                                     <img
                                                                         src={a.img}
                                                                         loading="lazy"
                                                                         alt={`${a.name} achievement`}
-                                                                        className={`h-16 w-16 ${a.isLocked ? "grayscale-0" : "grayscale"} object-contain object-center rounded-md`}
+                                                                        className={`h-14 w-14 ${a.isLocked ? "grayscale-0" : "grayscale"} object-contain object-center rounded-md`}
                                                                     />
                                                                     {a.isLocked ? (
                                                                         null
-                                                                    ) : <div className="absolute inset-0 bg-black/50 rounded-md flex flex-col items-center justify-evenly">
-                                                                        <SlLock size={30} className="text-white/80" />
+                                                                    ) : <div className="absolute inset-0 bg-black/50 rounded-md flex flex-col items-center justify-around">
+                                                                        <SlLock size={28} className="text-white/80" />
                                                                         <div />
                                                                     </div>}
-                                                                    <h3 className="text-[#FEFEFF] text-xs whitespace-nowrap font-medium text-center">{a.name}</h3>
+                                                                    <div className="absolute top-0 bottom-0 h-full w-full bg-transparent z-10" />
+                                                                    <h3 className="text-white text-[10px] whitespace-nowrap font-medium text-center work-sans">{a.name}</h3>
                                                                 </div>
                                                             </DrawerTrigger>
                                                             <DrawerContent aria-describedby={undefined}
                                                                 aria-description="dialog" className="bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-t-xl px-6 py-8">
                                                                 <DrawerClose className="absolute top-4 right-4 text-[#A4A4A7] hover:text-white transition-colors">
-                                                                    <IoIosClose size={30} />
+                                                                    <IoIosClose size={29} />
                                                                 </DrawerClose>
                                                                 <DrawerTitle className="sr-only" />
-                                                                <div className="flex flex-col items-center gap-6 max-w-sm mx-auto">
+                                                                <div className="flex flex-col items-center gap-6 max-w-sm mx-auto relative">
                                                                     <motion.img
                                                                         src={a.img}
                                                                         alt={`${a.name} achievement`}
@@ -1181,6 +1077,7 @@ function Profile() {
                                                                         animate={{ opacity: 1, y: 0 }}
                                                                         transition={{ duration: 0.5 }}
                                                                     />
+                                                                    <div className="absolute top-0 bottom-0 h-full w-full bg-transparent z-10" />
                                                                     <motion.h2
                                                                         className="text-white text-base work-sans font-medium text-center"
                                                                         initial={{ opacity: 0 }}
@@ -1215,7 +1112,6 @@ function Profile() {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 

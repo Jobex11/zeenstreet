@@ -27,6 +27,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { NoDataMessage } from "./tasks";
+import ShareToStory from "@components/common/stories";
+
 
 const imageUrls = [
   firstBannerImg,
@@ -37,7 +39,7 @@ const imageUrls = [
 function Home() {
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = searchParams.get("tab") || "Events";
+  const activeTab = searchParams.get("tab") || "Referral";
   const btnTabs = ["Events", "Referral", "Partners", "Social"];
   const { telegramId } = useGetTelegramId();
   const users = useSelector((state: RootState) => state.userData)
@@ -144,7 +146,7 @@ function Home() {
               <DropdownMenu>
                 <DropdownMenuTrigger className={"outline-none border-none relative"}>
                   <Fragment>
-                    <LazyLoadImage effect="opacity" src={filter} alt="filter" className="" />
+                    <LazyLoadImage effect="opacity" src={filter} alt="filter" className="h-5 w-5" />
                     <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />
                   </Fragment>
                 </DropdownMenuTrigger>
@@ -157,6 +159,8 @@ function Home() {
 
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
               <SendPingNotification />
+              <div className="h-8 w-[1px] border border-[#E4E4E4]" />
+              <ShareToStory/>
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
               <RewardForStoryViews />
             </div>
