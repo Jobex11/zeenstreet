@@ -12,9 +12,9 @@ import { Fragment, type PropsWithChildren } from "react"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom";
 import { BsClockHistory } from "react-icons/bs";
-import { LuShare2 } from "react-icons/lu";
+// import { LuShare2 } from "react-icons/lu";
 import { IoIosClose } from "react-icons/io";
-
+import { GoShareAndroid } from "react-icons/go";
 
 function ShareToStory({ children }: PropsWithChildren) {
 
@@ -115,7 +115,7 @@ function ShareToStory({ children }: PropsWithChildren) {
             >
                 <DrawerTrigger className={"relative"}>
                     <Fragment>
-                        <LuShare2 size={23} color={"#d1d5db"} />
+                        <GoShareAndroid size={23} color={"#d1d5db"} />
                         {story && <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />}
                     </Fragment>
                 </DrawerTrigger>

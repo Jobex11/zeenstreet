@@ -122,7 +122,7 @@ function Home() {
 
         <CardCarousel slides={imageUrls} />
 
-        <div className="flex flex-col pt-10 px-4 gap-5">
+        <div className="flex flex-col pt-5 px-3 gap-5">
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-2 work-sans">
               <h1 className="text-white text-lg font-semibold">Today&apos;s Tasks</h1>
@@ -158,9 +158,9 @@ function Home() {
               </DropdownMenu>
 
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
-              <SendPingNotification />
+                <SendPingNotification />
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
-              <ShareToStory/>
+                <ShareToStory/>
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
               <RewardForStoryViews />
             </div>

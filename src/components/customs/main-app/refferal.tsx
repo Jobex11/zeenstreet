@@ -180,12 +180,16 @@ function Referral() {
         <div className="px-4 flex flex-col gap-5">
           <CardWrapper>
             <CardHeader className="flex flex-col items-center py-0">
-              <div className="h-[84px] w-[92px]">
+              <div className="h-[84px] w-[92px] relative">
                 <img
                   loading="eager"
                   src={logo}
                   alt="zeen streeet logo"
                   className={"min-h-full object-cover object-center w-full"}
+                />
+                <div className={
+                  "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                }
                 />
               </div>
             </CardHeader>

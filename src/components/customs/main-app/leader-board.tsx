@@ -212,7 +212,6 @@ export const MiniImage = ({ user }: MiniImageProps) => {
     });
     const fileId = isPhotoSuccess ? photoData?.result?.photos?.[0]?.[2]?.file_id : null;
 
-
     const { data: filePathData, isSuccess: isFileSuccess } = useGetFilePathQuery(fileId, {
         skip: !fileId,
         refetchOnReconnect: true,
@@ -228,7 +227,7 @@ export const MiniImage = ({ user }: MiniImageProps) => {
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
                     alt={user.accountName || user.username} />
-                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user && user?.accountName?.slice(0, 2) || user && user?.username?.slice(0, 2)}</AvatarFallback>
+                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user && user?.accountName?.slice(0, 1) || user && user?.username?.slice(0, 1)}</AvatarFallback>
                 <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
                 <Avatar className="w-12 h-12 relative">
@@ -239,7 +238,5 @@ export const MiniImage = ({ user }: MiniImageProps) => {
                 </Avatar>
             }
         </Fragment>
-
     )
-
 }

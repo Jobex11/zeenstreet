@@ -281,12 +281,16 @@ export const NoDataMessage: React.FC<NoDataMessageProps> = ({
     if (isLoading || (data?.tasks && data.tasks.length > 0)) return null;
 
     return (
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-2 relative">
             <img
                 src={imageSrc}
                 loading="lazy"
                 alt="no data image"
                 className="h-24 w-24 object-contain object-center"
+            />
+            <div className={
+                "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+            }
             />
             <p className="text-white work-sans text-base text-center">{message}</p>
         </div>

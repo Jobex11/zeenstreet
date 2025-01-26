@@ -1,5 +1,5 @@
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerDescription, DrawerTrigger } from "@components/ui/drawer";
-import { HiOutlineGift } from "react-icons/hi";
+// import { HiOutlineGift } from "react-icons/hi";
 import { useGetTelegramId } from "@hooks/getTelegramId";
 import { useRewardForStoryViewsMutation, useGetStoryViewDetailsQuery, storiesApi, useGetAllStoryQuery } from "@hooks/redux/stories";
 import { Fragment, useEffect } from "react";
@@ -12,6 +12,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateClaimedRewards } from "@hooks/redux/slices/rewardsSlice";
 import { RootState } from "@lib/store";
 import { FaMehRollingEyes } from "react-icons/fa";
+import { IoGiftOutline } from "react-icons/io5";
+
 
 interface RewardMapping {
     views: number;
@@ -91,7 +93,7 @@ export function RewardForStoryViews() {
             <Drawer>
                 <DrawerTrigger className={"relative"} onClick={async () => { await refetchStoryDetails() }}>
                     <Fragment>
-                        <HiOutlineGift size={23} color={"#d1d5db"} />
+                        <IoGiftOutline size={23} color={"#d1d5db"} />
                         {storyDetails && <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />}
 
                     </Fragment>
