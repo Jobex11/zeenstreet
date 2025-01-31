@@ -2,11 +2,11 @@ import { Button } from "@components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import zeenstreetLogo from "@assets/images/icons/zenstreet_logo.png";
 import { useGetUsersByIdQuery } from '@hooks/redux/users';
-import { useTelegramWebApp } from "@hooks/useTelegramWebapp"
+import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "@/hooks/redux/slices/usersSlice";
 import { useGetUserSharesQuery } from "@/hooks/redux/shares";
-import avatarImg from "@assets/images/icons/users_avatar.svg"
+import avatarImg from "@assets/images/icons/users_avatar.svg";
 import { Fragment, PropsWithChildren, useEffect, useState } from "react";
 import { useGetTelegramId } from "@hooks/getTelegramId"
 
