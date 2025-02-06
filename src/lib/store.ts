@@ -14,10 +14,11 @@ import { ranksApi } from '@hooks/redux/ranks';
 import { wealthClassApi } from '@hooks/redux/wealthclass';
 import { storiesApi } from '@hooks/redux/stories';
 import { channelApi } from '@hooks/redux/channels';
-import { tasksSlice } from '@/hooks/redux/slices/tasksSlice';
-import { userSlice } from '@/hooks/redux/slices/usersSlice';
-import { confirmedAccountsSlice } from '@/hooks/redux/slices/onboadingSlice';
-import { rewardsSlice } from "@/hooks/redux/slices/rewardsSlice";
+import { tasksSlice } from '@hooks/redux/slices/tasksSlice';
+import { userSlice } from '@hooks/redux/slices/usersSlice';
+import { confirmedAccountsSlice } from '@hooks/redux/slices/onboadingSlice';
+import { rewardsSlice } from "@hooks/redux/slices/rewardsSlice";
+import { gamesApi } from '@hooks/redux/games';
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   [wealthClassApi.reducerPath]: wealthClassApi.reducer,
   [storiesApi.reducerPath]: storiesApi.reducer,
   [channelApi.reducerPath]: channelApi.reducer,
+  [gamesApi.reducerPath]: gamesApi.reducer,
   tasks: tasksSlice.reducer,
   userData: userSlice.reducer,
   confirmAccount: confirmedAccountsSlice.reducer,
@@ -68,7 +70,8 @@ export const createStore = (telegramId = 'default') => {
         ranksApi.middleware,
         wealthClassApi.middleware,
         storiesApi.middleware,
-        channelApi.middleware
+        channelApi.middleware,
+        gamesApi.middleware
       ),
   });
 

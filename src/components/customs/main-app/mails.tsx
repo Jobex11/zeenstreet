@@ -18,7 +18,7 @@ import { format } from "date-fns"
 import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo'
+import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo';
 
 
 interface NotificationTypes {
@@ -160,13 +160,15 @@ function MailNotification() {
                           key={notification._id}
                           className="py-4 px-2 flex items-center gap-3  border-b border-[#3E3D3D] hover:bg-gray-900 duration-200 inter"
                         >
-                          <div className="rounded-full h-[50px] w-[50px]">
-                            <img
+                          <Avatar className="w-12 h-12 relative">
+                            <AvatarImage
                               src={notification.logo}
-                              alt="Notification Logo"
-                              className="h-full w-full object-cover object-center rounded-full"
-                            />
-                          </div>
+                              alt={notification.logo}
+                              className={"object-cover object-center h-full w-full"}
+                              />
+                            <AvatarFallback>{notification.logo}</AvatarFallback>
+                            <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
+                          </Avatar>
                           <div>
                             <h1 className="text-[10px] font-semibold text-[#FFFFFF] line-clamp-1">
                               {notification.title}
@@ -252,7 +254,7 @@ interface NotificationData {
     _id: string
     accountName: string
   }
-  title:string
+  title: string
   message: string
   recipients: string[]
   createdAt: string

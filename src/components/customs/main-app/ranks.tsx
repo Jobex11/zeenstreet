@@ -1,8 +1,6 @@
-import { useState, useMemo, useEffect, Key } from "react";
+import { useState, useMemo, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import trophy from "@assets/images/icons/trophy.png";
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
-import eclipse from "@assets/images/eclipse.png";
 import { ShareFormatter } from "@components/common/shareFormatter";
 import { useGetAllUsersQuery } from "@hooks/redux/users";
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from "@hooks/redux/tg_photo";
@@ -12,7 +10,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { Skeleton } from "@components/ui/skeleton";
 import { useGetTelegramId } from "@hooks/getTelegramId"
-
+import { rankImages } from "@/constants/ranks/images"
 
 interface Rank {
   rankRange: { min: number; max: number };
@@ -128,6 +126,7 @@ function Ranks() {
     }
   };
 
+
   return (
     <div className="flex flex-col min-h-full pb-32 flex-1">
       {loadingUsers &&
@@ -155,25 +154,27 @@ function Ranks() {
         <div className="relative h-full flex-1 ">
           <div className="embla" ref={emblaRef}>
             <div className="embla__container flex">
-              {usersByRank.map((group: { rank: string | number, users: { accountName: string; username?: string; shares: number; telegram_id: string; _id: string; }[]; }, index: Key | null | undefined) => (
+              {usersByRank.map((group: { rank: string | number, users: { accountName: string; username?: string; shares: number; telegram_id: string; _id: string; }[]; }, index: number) => (
                 <div className="embla__slide w-full " key={index}>
                   <div className="flex flex-col gap-10 flex-1 h-full pb-28">
                     <div
                       style={{
-                        backgroundImage: `url(${eclipse}), url(${sprinkledStars})`,
+                        backgroundImage: `url(${sprinkledStars}), url(${sprinkledStars}),url(${sprinkledStars})`,
                         backgroundRepeat: "no-repeat, no-repeat",
-                        backgroundSize: "cover, cover",
-                        backgroundPosition: "center, center",
+                        backgroundSize: "cover, contain",
+                        backgroundPosition: "left, center, center",
                         backgroundBlendMode: "multiply,multiply ",
                       }}
                       className="h-[240px] flex flex-col relative items-center justify-center w-full rounded-md"
                     >
-                      <img
-                        loading="eager"
-                        src={trophy}
-                        alt="Rank Trophy"
-                        className="h-full w-full object-center object-contain"
-                      />
+                      <div className="h-[150px]">
+                        <img
+                          loading="eager"
+                          src={rankImages[index]}
+                          alt="Rank Trophy"
+                          className="h-full w-full object-center object-contain"
+                        />
+                      </div>
                       <div
                         className={
                           "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
@@ -183,7 +184,6 @@ function Ranks() {
                         {group.rank}
                       </h2>
                     </div>
-
 
                     <div className="flex flex-col divide-y-2 divide-gray-800">
                       {

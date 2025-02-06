@@ -1,18 +1,18 @@
+import { baseUrl } from '@/lib/baseUrl'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
-// Define a service using a base URL and expected endpoints
 export const cardsApi = createApi({
     reducerPath: 'cardsApi',
-    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api/cards" }),
+    baseQuery: fetchBaseQuery({ baseUrl}),
     tagTypes: ['Cards'],
     endpoints: (builder) => ({
         getAllcards: builder.query({
-            query: (telegram_id) => `/users/${telegram_id}`,
+            query: (telegram_id) => `/cards/users/${telegram_id}`,
             providesTags: ['Cards']
         }),
         getNumberOfUnlockedCards: builder.query({
-            query: (telegram_id) => `/unlocked-cards/${telegram_id}`,
+            query: (telegram_id) => `/cards/unlocked-cards/${telegram_id}`,
             providesTags: ['Cards']
         }),
     }),

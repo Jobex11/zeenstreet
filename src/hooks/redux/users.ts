@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseUrl } from '@/lib/baseUrl'
 
-
-// Define a service using a base URL and expected endpoints
+ 
 export const usersApi = createApi({
     reducerPath: 'usersApi',
-    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api" }),
+    baseQuery: fetchBaseQuery({ baseUrl }),
     tagTypes: ['username'],
     endpoints: (builder) => ({
         createUsername: builder.mutation({
@@ -47,7 +47,7 @@ export const usersApi = createApi({
             query: ({ telegram_id, province }) => ({
                 url: `/auth/${telegram_id}/update-user`,
                 method: 'PUT',
-                body: {province} 
+                body: { province }
             }),
             invalidatesTags: ['username'],
         }),

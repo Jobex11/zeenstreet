@@ -1,18 +1,19 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseUrl } from '@/lib/baseUrl'
 
-// Define a service using a base URL and expected endpoints
+ 
 export const storiesApi = createApi({
     reducerPath: 'storiesApi',
-    baseQuery: fetchBaseQuery({ baseUrl: "https://ravegenie-backend.onrender.com/api/story" }),
+    baseQuery: fetchBaseQuery({ baseUrl }),
     tagTypes: ['Story'],
     endpoints: (builder) => ({
         getAllStory: builder.query({
-            query: (telegram_id) => `/${telegram_id}`,
+            query: (telegram_id) => `/story/${telegram_id}`,
             providesTags: ['Story'],
         }),
         shareStory: builder.mutation({
             query: ({ telegram_id, storyId }) => ({
-                url: `/${telegram_id}/share`,
+                url: `/story/${telegram_id}/share`,
                 method: 'PUT',
                 body: { storyId }
             }),
@@ -35,14 +36,14 @@ export const storiesApi = createApi({
             },
         }),
         rewardForStoryViews: builder.mutation({
-            query: ({telegram_id}) => ({
-                url: `/reward-views/${telegram_id}`,
+            query: ({ telegram_id }) => ({
+                url: `/story/reward-views/${telegram_id}`,
                 method: "POST",
             }),
             invalidatesTags: ['Story'],
         }),
         getStoryViewDetails: builder.query({
-            query: (telegram_id) => `/views/${telegram_id}`
+            query: (telegram_id) => `/story/views/${telegram_id}`
         })
     }),
 });

@@ -86,7 +86,7 @@ export default function TelegramWrapper({ children }: PropsWithChildren) {
         }
     }, [dispatch, user, telegramId, telegramUsername, telegramImage, shares?.shares]);
 
-    if(isTelegram) {
+    if(!isTelegram) {
         return <Fragment>{children}</Fragment>
     }
 

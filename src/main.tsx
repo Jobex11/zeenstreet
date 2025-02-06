@@ -6,7 +6,7 @@ import Home from "./pages/home/page";
 import Tasks from "./pages/tasks/page";
 import Marketplace from "./pages/marketplace/page";
 import Teams from "./pages/teams/page";
-import Games from "./pages/games/page";
+import GameScreen from "./pages/games/page";
 import ReduxProvider from "@components/common/provider";
 import ReferralPage from "./pages/referral/page";
 import ProfilePage from "./pages/profile/page";
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/games",
-    element: <Games />,
+    element: <GameScreen />,
   },
   {
     path: "/profile",

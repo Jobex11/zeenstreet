@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export function useGetTelegramId() {
-    const [telegramId, setTelegramId] = useState<string | null>(null);
+    const [telegramId, setTelegramId] = useState<string | null>("6880808269");
 
     useEffect(() => {
         if (window.Telegram && window.Telegram.WebApp) {

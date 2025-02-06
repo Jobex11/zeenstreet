@@ -1,7 +1,5 @@
 import { io } from "socket.io-client";
 
-export const socket = io(
-    process.env.NODE_ENV === "production"
-      ? "https://ravegenie-backend.onrender.com" 
-      : "https://ravegenie-backend.onrender.com"           
-  );
+const socketUrl = 'http://localhost:4000';
+
+export const socket = io(socketUrl);
