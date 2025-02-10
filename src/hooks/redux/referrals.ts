@@ -35,7 +35,9 @@ export const referralsApi = createApi({
             invalidatesTags: ['Referral'],
         }),
         getReferralTask: builder.query({
-            query: (telegram_id) => `/referral/tasks/${telegram_id}`,
+            query: ({ telegram_id, page = 1, limit = 10 }) => ({
+                url: `/referral/tasks/${telegram_id}?page=${page}&limit=${limit}`
+            }),
             providesTags: ['Referral'],
         }),
         completeRefTasks: builder.mutation({

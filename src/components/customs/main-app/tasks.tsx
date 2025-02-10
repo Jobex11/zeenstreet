@@ -18,6 +18,8 @@ import { FiLoader } from "react-icons/fi";
 import { SlLock } from 'react-icons/sl';
 import { useGetTelegramId } from "@hooks/getTelegramId"
 import { useSearchParams } from "react-router-dom";
+import { usePagination } from "@/hooks/usePagination";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 function Tasks() {
 
@@ -26,35 +28,67 @@ function Tasks() {
     const [searchParams, setSearchParams] = useSearchParams();
     const activeTab = searchParams.get("tab") || "Events";
     const btnTabs = ["Events", "Referral", "Partners", "Social"];
+    const limit = 10;
 
-    const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId ?? "", {
-        skip: !telegramId,
-        refetchOnReconnect: true,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-        pollingInterval: 3600
-    })
+    const {
+        page: refTasksPage,
+        handleNextPage: handleRefNextPage,
+        handlePreviousPage: handleRefPreviousPage
+    } = usePagination();
 
-    const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
-        skip: !telegramId,
-        refetchOnReconnect: true,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-    })
-    const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
-        skip: !telegramId,
-        refetchOnReconnect: true,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-    })
+    const {
+        page: socialTasksPage,
+        handleNextPage: handleSocialNextPage,
+        handlePreviousPage: handleSocialPreviousPage
+    } = usePagination();
+    const {
+        page: eventsTasksPage,
+        handleNextPage: handleEventsNextPage,
+        handlePreviousPage: handleEventsPreviousPage
+    } = usePagination();
 
-    const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(telegramId, {
-        skip: !telegramId,
-        refetchOnReconnect: true,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true,
-    })
-    const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(telegramId, {
+    const {
+        page: partnersTasksPage,
+        handleNextPage: handlePartnersNextPage,
+        handlePreviousPage: handlePartnersPreviousPage
+    } = usePagination();
+
+    const { data: cards, isLoading: isLoadingCards, refetch: refetchCards } = useGetAllcardsQuery(telegramId,
+        {
+            skip: !telegramId,
+            refetchOnReconnect: true,
+            refetchOnFocus: true,
+            refetchOnMountOrArgChange: true,
+            pollingInterval: 3600
+        })
+
+    const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(
+        { telegram_id: telegramId, page: refTasksPage, limit: limit },
+        {
+            skip: !telegramId,
+            refetchOnReconnect: true,
+            refetchOnFocus: true,
+            refetchOnMountOrArgChange: true,
+        })
+    const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(
+        { telegram_id: telegramId, page: socialTasksPage, limit: limit },
+        {
+            skip: !telegramId,
+            refetchOnReconnect: true,
+            refetchOnFocus: true,
+            refetchOnMountOrArgChange: true,
+        })
+
+    const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(
+        { telegram_id: telegramId, page: eventsTasksPage, limit: limit },
+        {
+            skip: !telegramId,
+            refetchOnReconnect: true,
+            refetchOnFocus: true,
+            refetchOnMountOrArgChange: true,
+        })
+    const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(
+        { telegram_id: telegramId, page: partnersTasksPage, limit: limit }, {
         skip: !telegramId,
         refetchOnReconnect: true,
         refetchOnFocus: true,
@@ -66,6 +100,8 @@ function Tasks() {
     const handleActiveTabs = (name: string) => {
         setSearchParams({ tab: name });
     };
+
+
     return (
         <div className='flex flex-col min-h-full w-full'>
             <div style={{
@@ -103,7 +139,6 @@ function Tasks() {
                                     </div>
                                 )}
                             </Card>
-
                         ))}
                     </div>
 
@@ -182,6 +217,24 @@ function Tasks() {
                                     type={`${tasks?.countdown !== 0 ? "Special" : ""}`}
                                 />
                             ))}
+                            <div className="flex items-center justify-center gap-5 py-3 h-18">
+                                <button
+                                    disabled={refTasksPage === 1} onClick={() => handleRefPreviousPage(refTasks?.currentPage)}
+                                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${refTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                                        }`}
+                                >
+                                    <IoIosArrowBack />
+                                </button>
+
+                                {/* Next Button */}
+                                <button
+                                    disabled={refTasks?.page >= refTasks?.totalPages} onClick={() => handleRefNextPage(refTasks?.currentPage, refTasks.totalPages)}
+                                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${refTasks?.currentPage >= refTasks?.totalPages ? "opacity-50 cursor-not-allowed" : ""
+                                        }`}
+                                >
+                                    <IoIosArrowForward />
+                                </button>
+                            </div>
                         </Fragment>}
 
 
@@ -206,6 +259,24 @@ function Tasks() {
                                     type={`${tasks?.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
+                            <div className="flex items-center justify-center gap-5 py-3 h-18">
+                                <button
+                                    disabled={socialTasks === 1} onClick={() => handleSocialPreviousPage(socialTasks?.currentPage)}
+                                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${socialTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                                        }`}
+                                >
+                                    <IoIosArrowBack />
+                                </button>
+
+                                {/* Next Button */}
+                                <button
+                                    disabled={socialTasks?.page >= socialTasks?.totalPages} onClick={() => handleSocialNextPage(socialTasks?.currentPage, socialTasks.totalPages)}
+                                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${socialTasks?.currentPage >= socialTasks?.totalPages ? "opacity-50 cursor-not-allowed" : ""
+                                        }`}
+                                >
+                                    <IoIosArrowForward />
+                                </button>
+                            </div>
                         </Fragment>}
 
                     {activeTab === "Events"
@@ -229,6 +300,25 @@ function Tasks() {
                                     special={`${tasks?.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
+
+                            <div className="flex items-center justify-center gap-5 py-3 h-18">
+                                <button
+                                    disabled={eventsTasks === 1} onClick={() => handleEventsPreviousPage(eventsTasks?.currentPage)}
+                                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${eventsTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                                        }`}
+                                >
+                                    <IoIosArrowBack />
+                                </button>
+
+                                {/* Next Button */}
+                                <button
+                                    disabled={eventsTasks?.page >= eventsTasks?.totalPages} onClick={() => handleEventsNextPage(eventsTasks?.currentPage, eventsTasks.totalPages)}
+                                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${eventsTasks?.currentPage >= eventsTasks?.totalPages ? "opacity-50 cursor-not-allowed" : ""
+                                        }`}
+                                >
+                                    <IoIosArrowForward />
+                                </button>
+                            </div>
                         </Fragment>}
 
                     {activeTab === "Partners"
@@ -252,6 +342,25 @@ function Tasks() {
                                     special={`${tasks?.countdown !== 0 ? "Special" : " "}`}
                                 />
                             ))}
+
+                            <div className="flex items-center justify-center gap-5 py-3 h-18">
+                                <button
+                                    disabled={partnersTasks === 1} onClick={() => handlePartnersPreviousPage(partnersTasks?.currentPage)}
+                                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${partnersTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                                        }`}
+                                >
+                                    <IoIosArrowBack />
+                                </button>
+
+                                {/* Next Button */}
+                                <button
+                                    disabled={partnersTasks?.page >= partnersTasks?.totalPages} onClick={() => handlePartnersNextPage(partnersTasks?.currentPage, partnersTasks.totalPages)}
+                                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${partnersTasks?.currentPage >= partnersTasks?.totalPages ? "opacity-50 cursor-not-allowed" : ""
+                                        }`}
+                                >
+                                    <IoIosArrowForward />
+                                </button>
+                            </div>
                         </Fragment>}
                 </div>
             </div>

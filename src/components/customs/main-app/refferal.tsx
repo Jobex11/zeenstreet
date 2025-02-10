@@ -367,7 +367,7 @@ function Referral() {
 
                 {tabs === "Tier 2" && (
                   <Fragment>
-                      <ScrollArea className="h-[350px] px-1 items-center whitespace-nowrap max-w-full">
+                    <ScrollArea className="h-[350px] px-1 items-center whitespace-nowrap max-w-full">
                       {!loading && tier2Data?.tier2.length > 0 ? (
                         tier2Data?.tier2.map(
                           (ref: {

@@ -8,7 +8,7 @@ export const tasksApi = createApi({
     tagTypes: ['Tasks'],
     endpoints: (builder) => ({
         getSocialTasks: builder.query({
-            query: (telegram_id) => `/social-tasks/tasks/${telegram_id}`,
+            query: ({ telegram_id, page = 1, limit = 10 }) => `/social-tasks/tasks/${telegram_id}?page=${page}&limit=${limit}`,
             providesTags: ['Tasks']
         }),
         completeSocialTasks: builder.mutation({
@@ -19,7 +19,7 @@ export const tasksApi = createApi({
             })
         }),
         getPartnersTasks: builder.query({
-            query: (telegram_id) => `/partners/tasks/${telegram_id}`,
+            query: ({ telegram_id, page = 1, limit = 10 }) => `/partners/tasks/${telegram_id}?page=${page}&limit=${limit}`,
             providesTags: ['Tasks']
         }),
         completePartnersTasks: builder.mutation({
@@ -30,7 +30,7 @@ export const tasksApi = createApi({
             })
         }),
         getEventsTasks: builder.query({
-            query: (telegram_id) => `/events/tasks/${telegram_id}`,
+            query: ({ telegram_id, page = 1, limit = 10 }) => `/events/tasks/${telegram_id}?page=${page}&limit=${limit}`,
             providesTags: ['Tasks']
         }),
         completeEventsTasks: builder.mutation({

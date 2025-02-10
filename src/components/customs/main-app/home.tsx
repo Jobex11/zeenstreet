@@ -28,6 +28,8 @@ import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { NoDataMessage } from "./tasks";
 import ShareToStory from "@components/common/stories";
+import { usePagination } from "@/hooks/usePagination";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 
 const imageUrls = [
@@ -42,30 +44,61 @@ function Home() {
   const activeTab = searchParams.get("tab") || "Referral";
   const btnTabs = ["Events", "Referral", "Partners", "Social"];
   const { telegramId } = useGetTelegramId();
+  const limit = 10;
+  const {
+    page: refTasksPage,
+    handleNextPage: handleRefNextPage,
+    handlePreviousPage: handleRefPreviousPage
+  } = usePagination();
+
+  const {
+    page: socialTasksPage,
+    handleNextPage: handleSocialNextPage,
+    handlePreviousPage: handleSocialPreviousPage
+  } = usePagination();
+  const {
+    page: eventsTasksPage,
+    handleNextPage: handleEventsNextPage,
+    handlePreviousPage: handleEventsPreviousPage
+  } = usePagination();
+
+  const {
+    page: partnersTasksPage,
+    handleNextPage: handlePartnersNextPage,
+    handlePreviousPage: handlePartnersPreviousPage
+  } = usePagination();
+
   const users = useSelector((state: RootState) => state.userData)
   const { data: ranks } = useGetAllRanksQuery(undefined, { refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true, });
   const { refetch: refetchShares } = useGetUserSharesQuery(telegramId ?? "", { skip: !telegramId, refetchOnReconnect: true, refetchOnFocus: true, refetchOnMountOrArgChange: true })
-  const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(telegramId ?? "", {
-    skip: !telegramId,
-    refetchOnReconnect: true,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-  })
 
-  const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(telegramId, {
-    skip: !telegramId,
-    refetchOnReconnect: true,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-  })
+  const { data: refTasks, isLoading: isLoadingRef, refetch: refetchRefTasks, isSuccess } = useGetReferralTaskQuery(
+    { telegram_id: telegramId, page: refTasksPage, limit: limit },
+    {
+      skip: !telegramId,
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
+    })
+  const { data: socialTasks, isLoading: isLoadingSocial, refetch: refetchSocialTasks } = useGetSocialTasksQuery(
+    { telegram_id: telegramId, page: socialTasksPage, limit: limit },
+    {
+      skip: !telegramId,
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
+    })
 
-  const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(telegramId, {
-    skip: !telegramId,
-    refetchOnReconnect: true,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-  })
-  const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(telegramId, {
+  const { data: eventsTasks, isLoading: isLoadingEvents, refetch: refetchEventsTasks } = useGetEventsTasksQuery(
+    { telegram_id: telegramId, page: eventsTasksPage, limit: limit },
+    {
+      skip: !telegramId,
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
+    })
+  const { data: partnersTasks, isLoading: isLoadingPartners, refetch: refetchPartnersTasks } = useGetPartnersTasksQuery(
+    { telegram_id: telegramId, page: partnersTasksPage, limit: limit }, {
     skip: !telegramId,
     refetchOnReconnect: true,
     refetchOnFocus: true,
@@ -158,9 +191,9 @@ function Home() {
               </DropdownMenu>
 
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
-                <SendPingNotification />
+              <SendPingNotification />
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
-                <ShareToStory/>
+              <ShareToStory />
               <div className="h-8 w-[1px] border border-[#E4E4E4]" />
               <RewardForStoryViews />
             </div>
@@ -182,20 +215,38 @@ function Home() {
                   isLoading={isLoadingRef}
                   data={refTasks}
                   imageSrc={taskImg}
-                  message="No Available Referral Tasks"
+                  message="No Available Tasks"
                 />
-                {isSuccess && refTasks?.tasks.length > 0 && refTasks?.tasks?.map((tasks: { _id: string; title: string; image: string; shares: number; refCount: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                {isSuccess && refTasks?.tasks?.length > 0 && refTasks?.tasks?.map((tasks: { _id: string; title: string; image: string; shares: number; refCount: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                   <ReferralsCategory
                     key={tasks?._id}
                     tasks={tasks}
-                    refetch={() => {
-                      refetchRefTasks();
-                      refetchShares()
+                    refetch={async () => {
+                      await refetchRefTasks();
+                      await refetchShares()
                     }}
                     telegram_id={telegramId}
-                    type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
+                    type={`${tasks?.countdown !== 0 ? "Special" : ""}`}
                   />
                 ))}
+                <div className="flex items-center justify-center gap-5 py-3 h-18">
+                  <button
+                    disabled={refTasksPage === 1} onClick={() => handleRefPreviousPage(refTasks?.currentPage)}
+                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${refTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                  >
+                    <IoIosArrowBack />
+                  </button>
+
+                  {/* Next Button */}
+                  <button
+                    disabled={refTasks?.page >= refTasks?.totalPages} onClick={() => handleRefNextPage(refTasks?.currentPage, refTasks.totalPages)}
+                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${refTasks?.currentPage >= refTasks?.totalPages ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                  >
+                    <IoIosArrowForward />
+                  </button>
+                </div>
               </Fragment>}
 
 
@@ -207,20 +258,37 @@ function Home() {
                   imageSrc={taskImg}
                   message="No Available Social Tasks"
                 />
-                {socialTasks?.tasks.length > 0 && socialTasks?.tasks?.map((tasks: { _id: string; chat_id: string; image: string; title: string; shares: number; socialUrl: string; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                {socialTasks?.tasks?.length > 0 && socialTasks?.tasks?.map((tasks: { _id: string; chat_id: string; image: string; title: string; shares: number; socialUrl: string; countdown: number; baseReward: number; timeRemaining: number; }) => (
                   <SocialsCategory
                     key={tasks?._id}
                     tasks={tasks}
-                    refetch={() => {
-                      refetchSocialTasks();
-                      refetchShares()
+                    refetch={async () => {
+                      await refetchSocialTasks();
+                      await refetchShares()
                     }}
                     telegram_id={telegramId}
-                    type={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
+                    type={`${tasks?.countdown !== 0 ? "Special" : " "}`}
                   />
                 ))}
-              </Fragment>}
+                <div className="flex items-center justify-center gap-5 py-3 h-18">
+                  <button
+                    disabled={socialTasks === 1} onClick={() => handleSocialPreviousPage(socialTasks?.currentPage)}
+                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${socialTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                  >
+                    <IoIosArrowBack />
+                  </button>
 
+                  {/* Next Button */}
+                  <button
+                    disabled={socialTasks?.page >= socialTasks?.totalPages} onClick={() => handleSocialNextPage(socialTasks?.currentPage, socialTasks.totalPages)}
+                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${socialTasks?.currentPage >= socialTasks?.totalPages ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                  >
+                    <IoIosArrowForward />
+                  </button>
+                </div>
+              </Fragment>}
 
             {activeTab === "Events"
               && <Fragment>
@@ -230,18 +298,37 @@ function Home() {
                   imageSrc={taskImg}
                   message="No Available Events Tasks"
                 />
-                {eventsTasks?.tasks.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string; type: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                {eventsTasks?.tasks?.length > 0 && eventsTasks?.tasks?.map((tasks: { _id: string; url: string; type: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                   <EventsTasksCategory
                     key={tasks?._id}
                     tasks={tasks}
-                    refetch={() => {
-                      refetchEventsTasks();
-                      refetchShares()
+                    refetch={async () => {
+                      await refetchEventsTasks();
+                      await refetchShares()
                     }}
                     telegram_id={telegramId}
-                    special={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
+                    special={`${tasks?.countdown !== 0 ? "Special" : " "}`}
                   />
                 ))}
+
+                <div className="flex items-center justify-center gap-5 py-3 h-18">
+                  <button
+                    disabled={eventsTasks === 1} onClick={() => handleEventsPreviousPage(eventsTasks?.currentPage)}
+                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${eventsTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                  >
+                    <IoIosArrowBack />
+                  </button>
+
+                  {/* Next Button */}
+                  <button
+                    disabled={eventsTasks?.page >= eventsTasks?.totalPages} onClick={() => handleEventsNextPage(eventsTasks?.currentPage, eventsTasks.totalPages)}
+                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${eventsTasks?.currentPage >= eventsTasks?.totalPages ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                  >
+                    <IoIosArrowForward />
+                  </button>
+                </div>
               </Fragment>}
 
             {activeTab === "Partners"
@@ -252,18 +339,37 @@ function Home() {
                   imageSrc={taskImg}
                   message="No Available Partners Tasks"
                 />
-                {partnersTasks?.tasks.length > 0 && partnersTasks?.tasks?.map((tasks: { _id: string; url: string; type: string; chat_id: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
+                {partnersTasks?.tasks?.length > 0 && partnersTasks?.tasks?.map((tasks: { _id: string; url: string; chat_id: string; type: string; image: string; title: string; shares: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                   <PartnersTasksCategory
                     key={tasks?._id}
                     tasks={tasks}
-                    refetch={() => {
-                      refetchPartnersTasks();
-                      refetchShares()
+                    refetch={async () => {
+                      await refetchPartnersTasks();
+                      await refetchShares()
                     }}
                     telegram_id={telegramId}
-                    special={`${tasks?.countdown !== 0 ? "Special" : "Normal"}`}
+                    special={`${tasks?.countdown !== 0 ? "Special" : " "}`}
                   />
                 ))}
+
+                <div className="flex items-center justify-center gap-5 py-3 h-18">
+                  <button
+                    disabled={partnersTasks === 1} onClick={() => handlePartnersPreviousPage(partnersTasks?.currentPage)}
+                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${partnersTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                  >
+                    <IoIosArrowBack />
+                  </button>
+
+                  {/* Next Button */}
+                  <button
+                    disabled={partnersTasks?.page >= partnersTasks?.totalPages} onClick={() => handlePartnersNextPage(partnersTasks?.currentPage, partnersTasks.totalPages)}
+                    className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${partnersTasks?.currentPage >= partnersTasks?.totalPages ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                  >
+                    <IoIosArrowForward />
+                  </button>
+                </div>
               </Fragment>}
           </div>
         </div>
