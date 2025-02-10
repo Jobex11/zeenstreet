@@ -83,7 +83,7 @@ function SendPingNotification() {
                 <DrawerContent
                     aria-describedby={undefined}
                     aria-description="dialog"
-                    className="flex flex-col items-center work-sans bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 pb-5 gap-4 rounded-lg shadow-xl"
+                    className="flex flex-col items-center max-w-xl mx-auto work-sans bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 pb-5 gap-4 rounded-lg shadow-xl"
                 >
                     <div className="relative flex flex-col items-center justify-center w-full gap-4">
                         <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">

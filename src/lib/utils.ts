@@ -84,74 +84,76 @@ export const getUserRank = (totalShares: number | null, rankData: RankData[]): s
 
 export const getRankIconColor = (rank: string): string => {
   switch (rank) {
-    case "Maze Rat":
+    case "Nobody":
       return "#9E9E9E"; // Gray
-    case "Street Runner":
+    case "Velatus":
       return "#FF5722"; // Orange
-    case "Intern":
+    case "Legionary":
       return "#FFC107"; // Amber
-    case "Analyst":
+    case "Decanus":
       return "#03A9F4"; // Light Blue
-    case "Senior Analyst":
+    case "Centurion":
       return "#0288D1"; // Dark Blue
-    case "Broker":
+    case "Tribune i":
       return "#4CAF50"; // Green
-    case "Associate":
+    case "Tribune ii":
       return "#8BC34A"; // Light Green
-    case "Senior Associate":
+    case "Tribune iii":
       return "#CDDC39"; // Lime
-    case "Director":
+    case "Tribune iv":
       return "#FFEB3B"; // Yellow
-    case "Senior Director":
+    case "Praetor i":
       return "#FFC107"; // Deep Amber
-    case "Managing Director (MD)":
+    case "Praetor ii":
       return "#FF9800"; // Deep Orange
-    case "Senior Managing Director":
+    case "Praetor iii":
       return "#FF5722"; // Red Orange
-    case "Partner":
+    case "Praetor iv":
       return "#673AB7"; // Deep Purple
-    case "Senior Partner":
+    case "Legatus i":
       return "#9C27B0"; // Purple
-    case "Group Head":
+    case "Legatus ii":
       return "#E91E63"; // Pink
-    case "Managing Partner":
+    case "Legatus iii":
       return "#F44336"; // Red
-    case "Regional Head":
+    case "Legatus iv":
       return "#2196F3"; // Blue
-    case "Division Head":
+    case "Dominus i":
       return "#3F51B5"; // Indigo
-    case "Chief Executive Officer (CEO)":
+    case "Dominus ii":
       return "#009688"; // Teal
-    case "Chairperson of the Board":
+    case "Dominus iii":
       return "#4CAF50"; // Green
-    case "Wall Street Tycoon":
+    case "Dominus iv":
       return "#8BC34A"; // Light Green
-    case "Investor":
+    case "Consul i":
       return "#CDDC39"; // Lime
-    case "Venture Capitalist":
+    case "Consul ii":
       return "#FFEB3B"; // Yellow
-    case "Financial Mogul":
+    case "Consul iii":
       return "#FFC107"; // Amber
-    case "Market Tycoon":
+    case "Consul iv":
       return "#FF9800"; // Orange
-    case "Master of Wealth":
+    case "Imperator i":
       return "#FF5722"; // Red Orange
-    case "Portfolio Pharaoh":
+    case "Imperator ii":
       return "#795548"; // Brown
-    case "Global Financier":
+    case "Imperator iii":
       return "#607D8B"; // Blue Gray
-    case "Investment Overlord":
+    case "Imperator iv":
       return "#3E2723"; // Dark Brown
-    case "WEF Chairman":
+    case "Supreme Imperator":
       return "#000000"; // Black
-    case "Master of the Market":
+    case "Rex":
       return "#212121"; // Deep Black
-    case "Sovereign Lord":
+    case "Caesar":
       return "#880E4F"; // Dark Magenta
-    case "Omniarch":
+    case "Augustus":
       return "#B71C1C"; // Crimson Red
+    case "Regis Maximus":
+      return "#B0B0B0"; // Default Gray
     default:
-      return "#B0B0B0";
+      return "#B0B0B0"; // Default fallback color
   }
 };
 

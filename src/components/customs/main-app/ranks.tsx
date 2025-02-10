@@ -167,12 +167,12 @@ function Ranks() {
                       }}
                       className="h-[240px] flex flex-col relative items-center justify-center w-full rounded-md"
                     >
-                      <div className="h-[150px]">
+                      <div className="h-44">
                         <img
                           loading="eager"
                           src={rankImages[index]}
                           alt="Rank Trophy"
-                          className="h-full w-full object-center object-contain"
+                          className="h-full w-full object-center mt-3 object-contain"
                         />
                       </div>
                       <div
@@ -180,7 +180,7 @@ function Ranks() {
                           "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
                         }
                       />
-                      <h2 className="text-center text-[17px] font-semibold aqum pb-10 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
+                      <h2 className="text-center text-[17px] font-semibold aqum pt-14 bg-gradient-to-r from-orange-500 via-orange-300 to-pink-500 bg-clip-text text-transparent">
                         {group.rank}
                       </h2>
                     </div>

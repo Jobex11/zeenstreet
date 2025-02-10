@@ -13,6 +13,7 @@ import Decanus from "@assets/ranks/Decanus.png";
 import Imperatori from "@assets/ranks/Imperator.png";
 import Imperatorii from "@assets/ranks/Imperator ii.png";
 import Imperatoriii from "@assets/ranks/Imperator iii.png";
+import Imperatoriv from "@assets/ranks/Imperator iv.png";
 import SupremeImperator from "@assets/ranks/Supreme Imperator.png";
 import Legatusi from "@assets/ranks/Legatus i.png";
 import Legatusii from "@assets/ranks/Legatus ii.png";
@@ -61,6 +62,7 @@ export const rankImages = [
     Imperatori,
     Imperatorii,
     Imperatoriii,
+    Imperatoriv,
     SupremeImperator,
     Rex,
     Caesar,

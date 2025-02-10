@@ -763,7 +763,7 @@ function Profile() {
                 }}
                 className="flex flex-col flex-1 py-3 "
             >
-                <div className="px-4 flex flex-col gap-8 pb-[8rem]">
+                <div className="px-4 flex flex-col gap-3 pb-[5rem]">
                     {/* card */}
                     <div>
                         <CardWrapper className="min-h-32 flex flex-col w-full justify-end p-0">
@@ -808,7 +808,7 @@ function Profile() {
                     {/*wealth class grid  */}
                     <div className="min-w-full">
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
-                            Wealth classes
+                            Wealth Classes
                         </h1>
                         <ScrollArea className="flex items-center whitespace-nowrap max-w-full ">
                             <div className="flex w-max space-x-2 gap-1 pb-4">
@@ -870,6 +870,7 @@ function Profile() {
                                                         <img
                                                             src={item.img}
                                                             loading="lazy"
+                                                            fetchPriority="high"
                                                             alt="Wealth class image"
                                                             className={`h-full w-full object-cover rounded-full border-4 ${item.isLocked ? "border-orange-500" : "border-gray-600"}  shadow-md`}
                                                         />
@@ -922,11 +923,11 @@ function Profile() {
                     </div>
 
 
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-1.5">
                         <div>
                             <div className={"flex items-center justify-between"}>
                                 <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold flex items-center gap-2">
-                                    Cards collected
+                                    Cards Collected
                                     <span>
                                         {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length || 0})`}
                                     </span>
@@ -937,7 +938,7 @@ function Profile() {
                                 <Fragment>
                                     {loadingCollectedCards && <div className={"flex items-center gap-4"}>
                                         {[0, 1, 2, 3, 4, 5].map((ske) => (
-                                            <Skeleton key={ske} className={"h-24 min-w-40 bg-gray-600 shadow-xl"} />
+                                            <Skeleton key={ske} className={"h-48 min-w-40 bg-gray-600 shadow-xl"} />
                                         ))}
                                     </div>}
                                     {userDataCard?.user?.unlockedCards?.length === 0 ? (
@@ -977,13 +978,16 @@ function Profile() {
                                                                             backgroundRepeat: "no-repeat",
                                                                             backgroundSize: "cover",
                                                                         }}
-                                                                        className="h-24 min-w-40 relative border-none rounded-md flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
+                                                                        className="h-48 min-w-[130px] relative border-none rounded-md flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
                                                                     >
                                                                         <img
                                                                             src={card.image}
                                                                             loading="lazy"
+                                                                            fetchPriority="high"
+                                                                            height={160}
+                                                                            width={100}
                                                                             alt="Card image"
-                                                                            className="max-h-24 w-full object-cover rounded-md"
+                                                                            className="h-full min-w-full object-cover object-center rounded-md"
                                                                         />
                                                                         <div
                                                                             className={
@@ -995,7 +999,7 @@ function Profile() {
                                                                 <DrawerContent
                                                                     aria-describedby={undefined}
                                                                     aria-description="dialog"
-                                                                    className="flex flex-col max-h-[50%] bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 rounded-lg gap-3"
+                                                                    className="flex flex-col max-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 rounded-lg gap-3"
                                                                 >
                                                                     <DrawerTitle className="sr-only" />
                                                                     <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-3 gap-5">
@@ -1010,7 +1014,7 @@ function Profile() {
                                                                                 src={card.image}
                                                                                 loading="lazy"
                                                                                 alt="Refferal Images"
-                                                                                className="h-full min-w-full object-cover object-center rounded-sm"
+                                                                                className="h-96 min-w-full object-contain object-center rounded-sm"
                                                                             />
                                                                             <div
                                                                                 className={

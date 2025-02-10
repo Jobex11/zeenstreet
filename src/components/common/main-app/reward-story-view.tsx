@@ -1,5 +1,4 @@
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerDescription, DrawerTrigger } from "@components/ui/drawer";
-// import { HiOutlineGift } from "react-icons/hi";
 import { useGetTelegramId } from "@hooks/getTelegramId";
 import { useRewardForStoryViewsMutation, useGetStoryViewDetailsQuery, storiesApi, useGetAllStoryQuery } from "@hooks/redux/stories";
 import { Fragment, useEffect } from "react";
@@ -101,7 +100,7 @@ export function RewardForStoryViews() {
                 <DrawerContent
                     aria-describedby={undefined}
                     aria-description="Show reward details"
-                    className="flex flex-col items-center max-h-fit mx-auto text-gray-300 pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-4 gap-3 sm:w-80"
+                    className="flex flex-col items-center max-h-fit text-gray-300 pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-4 gap-3 max-w-xl mx-auto"
                 >
                     <div className="relative flex flex-col items-center justify-center w-full gap-4">
                         <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">

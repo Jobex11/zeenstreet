@@ -1,7 +1,7 @@
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png"
 import avatarImg from "@assets/images/icons/users_avatar.svg"
 import { ShareFormatter } from '@components/common/shareFormatter'
-import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar"
+import { Avatar, AvatarImage } from "@components/ui/avatar"
 import { ScrollArea } from '@components/ui/scroll-area'
 import { Skeleton } from '@components/ui/skeleton'
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo'
@@ -52,13 +52,15 @@ const UserImages = ({ telegram_id, index, user }: UserImageProps) => {
             {filePath ? <Avatar className={`w-full h-full shadow-2xl relative`}>
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
+                    fetchPriority="high"
                     alt={user?.accountName || user?.username} />
-                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user && user?.accountName[0] || user?.username[0]}</AvatarFallback>
+                {/* <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user && user?.accountName[0] || user?.username}</AvatarFallback> */}
                 <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
-                <Avatar className="w-full h-full relative">
+                <Avatar className="w-full h-full relative border border-gray-600">
                     <AvatarImage
                         src={avatarImg}
+                        fetchPriority="high"
                         alt={user?.accountName || user?.username} />
                     <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
                 </Avatar>}
@@ -155,7 +157,7 @@ export default function GlobalLeaderboard() {
                         </div>
                     </div>
                 </div>}
-            <div className='flex items-center w-full mt-3 border-t border-gray-700' >
+            <div className={`flex items-center w-full mt-3  ${!isLoading && isSuccess && "border-t border-gray-700"}`} >
                 {isSuccess && tabBtn.map((btn) => (
                     <div key={btn.name} className='flex flex-col w-full'>
                         <button
@@ -175,7 +177,7 @@ export default function GlobalLeaderboard() {
 
 
 
-            <ScrollArea className="flex-1 h-full px-4 py-2 mt-7 pb-24 overflow-y-auto scroll-smooth">
+            <ScrollArea className="flex-1 h-full px-4 pt-1 mt-1 pb-24 overflow-y-auto scroll-smooth">
                 {restUsers?.slice(0, 100).map((user, index) => {
                     return (
                         <div key={user._id} className={`${currentUser(user?.telegram_id) && " rounded-md shadow-2xl text-black bg-white flex items-center justify-between px-2"} flex items-center justify-between py-1 border-b border-white/10`}>
@@ -226,13 +228,15 @@ export const MiniImage = ({ user }: MiniImageProps) => {
             {filePath ? <Avatar className="w-12 h-12 relative">
                 <AvatarImage
                     src={`https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`}
+                    fetchPriority="high"
                     alt={user.accountName || user.username} />
-                <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user && user?.accountName?.slice(0, 1) || user && user?.username?.slice(0, 1)}</AvatarFallback>
+                {/* <AvatarFallback className='uppercase bg-orange-500 text-white aqum text-xl work-sans font-medium'>{user && user?.accountName?.slice(0, 1) || user && user?.username?.slice(0, 1)}</AvatarFallback> */}
                 <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
             </Avatar> :
                 <Avatar className="w-12 h-12 relative">
                     <AvatarImage
                         src={avatarImg}
+                        fetchPriority="high"
                         alt={user.accountName || user.username} />
                     <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
                 </Avatar>

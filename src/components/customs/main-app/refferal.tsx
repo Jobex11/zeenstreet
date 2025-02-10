@@ -9,7 +9,7 @@ import { ShareFormatter } from "@components/common/shareFormatter";
 import { Button } from "@components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
-import { ScrollArea } from '@components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Skeleton } from "@components/ui/skeleton";
 import {
   useCliamReferralSharesMutation,
@@ -26,11 +26,10 @@ import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import useWindowSize from "@hooks/useWindowsize";
 import { Fragment, useState } from "react";
 import Confetti from "react-confetti";
-import { FiLoader } from "react-icons/fi";
 import { IoCopyOutline } from "react-icons/io5";
 import { MdInfo } from "react-icons/md";
 import { RiShareLine } from "react-icons/ri";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { toast } from "sonner";
 import { useGetTelegramId } from "@hooks/getTelegramId"
 import { HiMiniUsers } from "react-icons/hi2";
@@ -158,6 +157,11 @@ function Referral() {
     }
   };
 
+  const loadPreviousTier1Page = () => {
+    if (tier1Data?.page > 1) {
+      setTier1Page((prev) => prev - 1);
+    }
+  };
 
   const handleNextPageTier2 = () => {
     if (tier2Data?.page < tier2Data?.totalPages) {
@@ -165,9 +169,14 @@ function Referral() {
     }
   };
 
+  const loadPreviousTier2Page = () => {
+    if (tier2Data?.page > 1) {
+      setTier2Page((prev) => prev - 1);
+    }
+  };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full">
       {showConfetti && <Confetti width={width} height={height} />}
       <div
         style={{
@@ -175,7 +184,7 @@ function Referral() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
-        className="flex flex-col flex-1 pt-3 "
+        className="flex flex-col pt-3 h-full"
       >
         <div className="px-4 flex flex-col gap-5">
           <CardWrapper>
@@ -286,7 +295,7 @@ function Referral() {
             ))}
           </div>
 
-          <div className="max-h-[500px] overflow-hidden overflow-y-auto pb-[5.5rem] pr-2">
+          <Fragment>
             {loading ? (
               <div className="text-center text-white">
                 <div className={"flex flex-col gap-3"}>
@@ -302,17 +311,7 @@ function Referral() {
               <Fragment>
                 {tabs === "Tier 1" && (
                   <Fragment>
-                    <InfiniteScroll
-                      dataLength={tier1Data?.tier1.length || 0}
-                      next={handleNextPageTier1}
-                      hasMore={tier1Data?.page < tier1Data?.totalPages}
-                      loader={
-                        <div className="flex flex-col items-center justify-center py-3">
-                          <FiLoader size={30} color="white" className="animate-spin" />
-                        </div>}
-                      scrollThreshold={0.9}
-                      scrollableTarget="scrollableDiv"
-                    >
+                    <ScrollArea className="h-fit px-1 items-center whitespace-nowrap max-w-full">
                       {!loading && tier1Data?.tier1.length > 0 ? (
                         tier1Data?.tier1.map(
                           (ref: {
@@ -328,7 +327,7 @@ function Referral() {
                           )
                         )
                       ) : (
-                        <div className="p-4 flex flex-col gap-3 items-center ">
+                        <div className="p-4 flex flex-col gap-3 items-center">
                           <img src={tier1_img} loading="lazy" alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
                           <p
                             className={
@@ -339,58 +338,91 @@ function Referral() {
                           </p>
                         </div>
                       )}
-                    </InfiniteScroll>
+                      <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
+
+                    <div className="flex items-center justify-center gap-5 py-3 h-18">
+                      {/* Previous Button */}
+                      <button
+                        disabled={tier1Data?.page === 1}
+                        className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${tier1Data?.page === 1 ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
+                        onClick={loadPreviousTier1Page}
+                      >
+                        <IoIosArrowBack />
+                      </button>
+
+                      {/* Next Button */}
+                      <button
+                        disabled={tier1Data?.page >= tier1Data?.totalPages}
+                        className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${tier1Data?.page >= tier1Data?.totalPages ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
+                        onClick={handleNextPageTier1}
+                      >
+                        <IoIosArrowForward />
+                      </button>
+                    </div>
                   </Fragment>
                 )}
 
                 {tabs === "Tier 2" && (
                   <Fragment>
-                    <ScrollArea className="flex-1 h-full p-1">
-                      <InfiniteScroll
-                        dataLength={tier2Data?.tier2.length || 0}
-                        next={handleNextPageTier2}
-                        hasMore={tier2Data?.page < tier2Data?.totalPages}
-                        loader={
-                          <div className="flex flex-col items-center justify-center py-3">
-                            <FiLoader size={30} color="white" className="animate-spin" />
-                          </div>}
-                        scrollThreshold={0.9}
-                        scrollableTarget="scrollableDiv"
-                      >
-                        {!loading && tier2Data?.tier2.length > 0 ? (
-                          tier2Data?.tier2.map(
-                            (ref: {
-                              telegram_id: string;
-                              userLogo: string;
-                              username: string;
-                              accountName: string;
-                              province: string;
-                              referredBy: string;
-                              dateJoined: string;
-                              shares: string;
-                            }) => (
-                              <Referrals key={ref.telegram_id} referrals={ref} />
-                            )
+                      <ScrollArea className="h-[350px] px-1 items-center whitespace-nowrap max-w-full">
+                      {!loading && tier2Data?.tier2.length > 0 ? (
+                        tier2Data?.tier2.map(
+                          (ref: {
+                            telegram_id: string;
+                            userLogo: string;
+                            username: string;
+                            accountName: string;
+                            province: string;
+                            referredBy: string;
+                            dateJoined: string;
+                            shares: string;
+                          }) => (
+                            <Referrals key={ref.telegram_id} referrals={ref} />
                           )
-                        ) : (
-                          <div className="p-4 flex flex-col items-center gap-3 pt-3 ">
-                            <img src={tier2_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
-                            <p
-                              className={
-                                "text-white work-sans text-center text-sm max-w-[250px]"
-                              }
-                            >
-                              Your Tier 2 Workforce Will Reside Here
-                            </p>
-                          </div>
-                        )}
-                      </InfiniteScroll>
+                        )
+                      ) : (
+                        <div className="p-4 flex flex-col items-center gap-3 pt-3 ">
+                          <img src={tier2_img} alt="Tier 1 image" className={"h-20 w-20 object-contain object-center"} />
+                          <p
+                            className={
+                              "text-white work-sans text-center text-sm max-w-[250px]"
+                            }
+                          >
+                            Your Tier 2 Workforce Will Reside Here
+                          </p>
+                        </div>
+                      )}
+                      <ScrollBar orientation="horizontal" />
                     </ScrollArea>
+                    <div className="flex items-center justify-center gap-5 py-3 h-18">
+                      {/* Previous Button */}
+                      <button
+                        disabled={tier2Data?.page === 1}
+                        className={`bg-white rounded-full h-6 w-6 active:scale-110 shadow-lg flex items-center justify-center ${tier2Data?.page === 1 ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
+                        onClick={loadPreviousTier2Page}
+                      >
+                        <IoIosArrowBack />
+                      </button>
+
+                      {/* Next Button */}
+                      <button
+                        disabled={tier2Data?.page >= tier2Data?.totalPages}
+                        className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${tier2Data?.page >= tier2Data?.totalPages ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
+                        onClick={handleNextPageTier2}
+                      >
+                        <IoIosArrowForward />
+                      </button>
+                    </div>
                   </Fragment>
                 )}
               </Fragment>
             )}
-          </div>
+          </Fragment>
         </div>
       </div>
     </div>
@@ -440,7 +472,7 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
   const BOT_TOKEN = "7876229498:AAHtNuIYCcpP_kxr_EEVH6aKdIZYlJNTvq4"
   return (
     <Fragment>
-      <div className="flex items-center justify-between  py-3 border-b border-[#5F59598A]">
+      <div className="flex items-center justify-between py-3 border-b border-[#5F59598A]">
         <div className="flex items-center gap-2">
           <div className="h-[50px] w-[50px] rounded-full relative">
             {filePath ? (
@@ -472,11 +504,11 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col gap-1">
-          <h1 className="text-white text-xs font-bold">{referrals.shares}</h1>
-          <span className="flex items-center justify-end text-[11px] work-sans text-[#00D95F]">
+        <div className="flex flex-col items-start justify-start gap-1">
+          <h1 className="text-white text-xs text-left font-bold">{referrals.shares}</h1>
+          <p className="flex items-center text-xs work-sans text-[#00D95F]">
             {referrals.province}
-          </span>
+          </p>
         </div>
       </div>
     </Fragment>

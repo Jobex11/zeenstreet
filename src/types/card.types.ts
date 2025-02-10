@@ -2,7 +2,7 @@
   
   export interface CardType {
     _id: string;
-    image:string;
+    image:string[];
     title:string;
     totalUnlockPoints: number;
     basePoint: number;

@@ -23,7 +23,6 @@ function Tasks() {
 
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const { telegramId } = useGetTelegramId()
-    // const [tabs, setTabs] = useState<string>("Events");
     const [searchParams, setSearchParams] = useSearchParams();
     const activeTab = searchParams.get("tab") || "Events";
     const btnTabs = ["Events", "Referral", "Partners", "Social"];
@@ -84,27 +83,27 @@ function Tasks() {
                         {!isLoadingCards && cards?.cards?.length > 0 && cards?.cards?.slice(0, 2).map((card: CardType) => (
                             <Card
                                 key={card._id}
-                                className={`group bg-slate-800 relative rounded-lg snap-center max-h-32 w-full overflow-hidden ${card.isCurrent ? "min-w-[87%] shadow-xl shadow-slate-700" : "min-w-[70%] shadow-xl"}`}>
-                                <img
-                                    src={card.image}
-                                    alt={`card img ${card.title}`}
-                                    loading="lazy"
-                                    className={`h-32 !w-full object-cover rounded-lg ${card.isCurrent
-                                        ? "duration-200 transition-transform"
-                                        : ""
-                                        }`}
-                                />
+                                className={`group bg-slate-800 relative aspect-video rounded-lg snap-center h-[145px] w-full overflow-hidden ${card.isCurrent ? "min-w-[85%] shadow-xl shadow-slate-700" : "min-w-[70%] shadow-xl"
+                                    }`}
+                            >
+                                <div className="relative w-full h-full">
+                                    <img
+                                        src={card.image[0] || "/src/assets/images/Subheading.png"}
+                                        alt={`card img ${card.title}`}
+                                        fetchPriority="high"
+                                        loading="lazy"
+                                        className={`w-full h-full object-cover rounded-lg  ${card.isCurrent ? "duration-200 transition-transform" : ""
+                                            }`}
+                                    />
+                                </div>
                                 <div className={"absolute h-full w-full bg-transparent z-10 top-0 bottom-0"} />
-                                {card.isCurrent ? (
-                                    null
-                                ) :
-                                    (
-                                        <div className="absolute bg-black/95 z-20 top-0 h-full w-full rounded-md flex flex-col justify-center items-center">
-                                            <SlLock size={50} color="white" />
-                                        </div>
-                                    )
-                                }
+                                {card.isCurrent ? null : (
+                                    <div className="absolute bg-black/95 z-20 top-0 h-full w-full rounded-md flex flex-col justify-center items-center">
+                                        <SlLock size={50} color="white" />
+                                    </div>
+                                )}
                             </Card>
+
                         ))}
                     </div>
 

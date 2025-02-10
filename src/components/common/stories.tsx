@@ -122,7 +122,7 @@ function ShareToStory({ children }: PropsWithChildren) {
                 <DrawerContent
                     aria-describedby={undefined}
                     aria-description="show task dialog"
-                    className="flex flex-col max-h-full pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-4 gap-3"
+                    className="flex flex-col max-h-full max-w-xl mx-auto pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-4 gap-3"
                 >
                      <div className="relative flex flex-col items-center justify-center w-full gap-4">
                         <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">
