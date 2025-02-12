@@ -867,12 +867,20 @@ function Profile() {
                                                         <IoIosClose size={24} />
                                                     </DrawerClose>
                                                     <div className="relative h-28 w-28">
-                                                        <img
+                                                        <motion.img
                                                             src={item.img}
                                                             loading="lazy"
                                                             fetchPriority="high"
                                                             alt="Wealth class image"
+                                                            initial={{ opacity: 0, y: 20 }}
+                                                            animate={{ opacity: 1, y: 0 }}
+                                                            transition={{ duration: 0.5 }}
                                                             className={`h-full w-full object-cover rounded-full border-4 ${item.isLocked ? "border-orange-500" : "border-gray-600"}  shadow-md`}
+                                                        />
+                                                        <div
+                                                            className={
+                                                                "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                                                            }
                                                         />
                                                     </div>
                                                     <h1 className="text-white font-semibold text-lg capitalize">
@@ -1010,11 +1018,14 @@ function Profile() {
                                                                             {card.title ? card.title : "Card title"}
                                                                         </h1>
                                                                         <div className={"relative"}>
-                                                                            <img
+                                                                            <motion.img
                                                                                 src={card.image}
                                                                                 loading="lazy"
                                                                                 alt="Refferal Images"
                                                                                 className="h-96 min-w-full object-contain object-center rounded-sm"
+                                                                                initial={{ opacity: 0, y: 20 }}
+                                                                                animate={{ opacity: 1, y: 0 }}
+                                                                                transition={{ duration: 0.5 }}
                                                                             />
                                                                             <div
                                                                                 className={

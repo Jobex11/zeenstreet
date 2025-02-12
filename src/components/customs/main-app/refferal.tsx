@@ -310,7 +310,7 @@ function Referral() {
             ) : (
               <Fragment>
                 {tabs === "Tier 1" && (
-                  <Fragment>
+                  <div className={"pb-24"}>
                     <ScrollArea className="h-fit px-1 items-center whitespace-nowrap max-w-full">
                       {!loading && tier1Data?.tier1.length > 0 ? (
                         tier1Data?.tier1.map(
@@ -362,12 +362,12 @@ function Referral() {
                         <IoIosArrowForward />
                       </button>
                     </div>
-                  </Fragment>
+                  </div>
                 )}
 
                 {tabs === "Tier 2" && (
-                  <Fragment>
-                    <ScrollArea className="h-[350px] px-1 items-center whitespace-nowrap max-w-full">
+                  <div className={"pb-24"}>
+                    <ScrollArea className="h-fit px-1 items-center whitespace-nowrap max-w-full">
                       {!loading && tier2Data?.tier2.length > 0 ? (
                         tier2Data?.tier2.map(
                           (ref: {
@@ -418,7 +418,7 @@ function Referral() {
                         <IoIosArrowForward />
                       </button>
                     </div>
-                  </Fragment>
+                  </div>
                 )}
               </Fragment>
             )}

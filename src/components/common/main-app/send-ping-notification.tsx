@@ -90,8 +90,12 @@ function SendPingNotification() {
                             <IoIosClose size={24} />
                         </DrawerClose>
                         <DrawerHeader className={"relative"}>
-                            <img src={bell_icon} alt={"bell icon"} className={"max-h-20 max-w-20 object-contain object-center"} />
-                            <div className="absolute top-0 bottom-0 h-full w-full bg-transparent z-10" />
+                            <img src={bell_icon} alt={"bell icon"} className={"h-20 w-20 object-contain object-center"} />
+                            <div
+                                className={
+                                    "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
+                                }
+                            />
                         </DrawerHeader>
                         <DrawerTitle className="text-2xl font-semibold text-center text-white">Ping Notifier</DrawerTitle>
                         <DrawerDescription className="text-center text-gray-400">

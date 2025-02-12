@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { baseUrl } from '@/lib/baseUrl'
 
- 
+
 export const usersApi = createApi({
     reducerPath: 'usersApi',
     baseQuery: fetchBaseQuery({ baseUrl }),
@@ -51,6 +51,20 @@ export const usersApi = createApi({
             }),
             invalidatesTags: ['username'],
         }),
+        connectWallet: builder.mutation({
+            query: ({ telegram_id, walletAddress }) => ({
+                url: `/auth/wallet/connect-wallet`,
+                method: "PUT",
+                body: { telegram_id, walletAddress }
+            })
+        }),
+        disconnectWallet: builder.mutation({
+            query: (telegram_id) => ({
+                url: `/auth/wallet/disconnect-wallet`,
+                method: "PUT",
+                body: telegram_id
+            })
+        })
     }),
 })
 
@@ -60,5 +74,7 @@ export const {
     useCheckUsernameQuery,
     useGetUsersByIdQuery,
     useGetAllUsersQuery,
-    useUpdateUserDataMutation
+    useUpdateUserDataMutation,
+    useConnectWalletMutation,
+    useDisconnectWalletMutation
 } = usersApi
