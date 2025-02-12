@@ -42,6 +42,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { motion } from "framer-motion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import AddReview from "@/components/common/main-app/add-review";
 
 const wealthClass = [
     {
@@ -268,39 +269,46 @@ function Profile() {
                     img: achievement_1,
                 },
                 {
+                    isLocked: userDataCard?.user?.tier1?.length >= 5,
+                    name: "Get 5 Friends",
+                    unLockedText: "You unlocked this achievement by getting your first Tier 5 friends.",
+                    shareType: "achievement_2",
+                    img: achievement_2,
+                },
+                {
                     isLocked: userDataCard?.user?.tier1?.length >= 10,
                     name: "Get 10 Friends",
                     unLockedText: "You unlocked this achievement by getting 10 Tier 1 friends.",
-                    shareType: "achievement_2",
-                    img: achievement_2,
+                    shareType: "achievement_3",
+                    img: achievement_3,
                 },
                 {
                     isLocked: userDataCard?.user?.tier1?.length >= 25,
                     name: "Get 25 Friends",
                     unLockedText: "You unlocked this achievement by getting 25 Tier 1 friends.",
-                    shareType: "achievement_3",
-                    img: achievement_3,
+                    shareType: "achievement_4",
+                    img: achievement_4,
                 },
                 {
                     isLocked: userDataCard?.user?.tier1?.length >= 50,
                     name: "Get 50 Friends",
                     unLockedText: "You unlocked this achievement by getting 50 Tier 1 friends.",
-                    shareType: "achievement_4",
-                    img: achievement_4,
+                    shareType: "achievement_5",
+                    img: achievement_5,
                 },
                 {
                     isLocked: userDataCard?.user?.tier1?.length >= 100,
                     name: "Get 100 Friends",
                     unLockedText: "You unlocked this achievement by getting 100 Tier 1 friends.",
-                    shareType: "achievement_5",
-                    img: achievement_5,
+                    shareType: "achievement_6",
+                    img: achievement_6,
                 },
                 {
                     isLocked: userDataCard?.user?.tier1?.length >= 250,
                     name: "Get 250 Friends",
                     unLockedText: "You unlocked this achievement by getting 250 Tier 1 friends.",
-                    shareType: "achievement_6",
-                    img: achievement_6,
+                    shareType: "achievement_7",
+                    img: achievement_7,
                 },
             ],
         },
@@ -489,32 +497,39 @@ function Profile() {
                     img: achievement_2
                 },
                 {
+                    isLocked: userDataCard?.user?.shares >= 5000000,
+                    name: "5m Shares",
+                    unLockedText: "You unlocked this achievement by reaching 5m Shares.",
+                    shareType: "achievement_3",
+                    img: achievement_3
+                },
+                {
                     isLocked: userDataCard?.user?.shares >= 10000000,
                     name: "10m Shares",
                     unLockedText: "You unlocked this achievement by reaching 10m Shares.",
-                    shareType: "achievement_3",
-                    img: achievement_3
+                    shareType: "achievement_4",
+                    img: achievement_4
                 },
                 {
                     isLocked: userDataCard?.user?.shares >= 50000000,
                     name: "50m Shares",
                     unLockedText: "You unlocked this achievement by reaching  50mShares.",
-                    shareType: "achievement_4",
-                    img: achievement_4
+                    shareType: "achievement_5",
+                    img: achievement_5
                 },
                 {
                     isLocked: userDataCard?.user?.shares >= 1000000000,
                     name: "100m Shares",
                     unLockedText: "You unlocked this achievement by reaching 100m Shares.",
-                    shareType: "achievement_5",
-                    img: achievement_5
+                    shareType: "achievement_6",
+                    img: achievement_6
                 },
                 {
                     isLocked: userDataCard?.user?.shares >= 2000000000,
                     name: `200m Shares`,
                     unLockedText: "You unlocked this achievement by reaching 200m Shares.",
-                    shareType: "achievement_6",
-                    img: achievement_6
+                    shareType: "achievement_7",
+                    img: achievement_7
                 },
             ]
         },
@@ -946,7 +961,7 @@ function Profile() {
                                 <Fragment>
                                     {loadingCollectedCards && <div className={"flex items-center gap-4"}>
                                         {[0, 1, 2, 3, 4, 5].map((ske) => (
-                                            <Skeleton key={ske} className={"h-48 min-w-40 bg-gray-600 shadow-xl"} />
+                                            <Skeleton key={ske} className={"h-48 min-w-[130px] bg-gray-600 shadow-xl"} />
                                         ))}
                                     </div>}
                                     {userDataCard?.user?.unlockedCards?.length === 0 ? (
@@ -1123,8 +1138,20 @@ function Profile() {
                                 ))}
                             </div>
                         </div>
-
                     </div>
+
+                    <div className="flex flex-col bg-[#1E1E1E] p-6 rounded-lg shadow-md max-w-md w-full">
+                        <h1 className="text-white work-sans text-2xl font-semibold mb-2">
+                            Add a Review ⭐
+                        </h1>
+                        <p className="text-gray-400 text-sm mb-4">
+                            Share your thoughts on our mini app and get rewarded!
+                        </p>
+                        <div className="flex justify-center">
+                            <AddReview />
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

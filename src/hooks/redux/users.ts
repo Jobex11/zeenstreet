@@ -64,7 +64,7 @@ export const usersApi = createApi({
                 method: "PUT",
                 body: telegram_id
             })
-        })
+        }),
     }),
 })
 

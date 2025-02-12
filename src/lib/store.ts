@@ -19,6 +19,7 @@ import { userSlice } from '@hooks/redux/slices/usersSlice';
 import { confirmedAccountsSlice } from '@hooks/redux/slices/onboadingSlice';
 import { rewardsSlice } from "@hooks/redux/slices/rewardsSlice";
 import { gamesApi } from '@hooks/redux/games';
+import { reviewsApi } from "@hooks/redux/review"
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   [storiesApi.reducerPath]: storiesApi.reducer,
   [channelApi.reducerPath]: channelApi.reducer,
   [gamesApi.reducerPath]: gamesApi.reducer,
+  [reviewsApi.reducerPath]: reviewsApi.reducer,
   tasks: tasksSlice.reducer,
   userData: userSlice.reducer,
   confirmAccount: confirmedAccountsSlice.reducer,
@@ -71,7 +73,8 @@ export const createStore = (telegramId = 'default') => {
         wealthClassApi.middleware,
         storiesApi.middleware,
         channelApi.middleware,
-        gamesApi.middleware
+        gamesApi.middleware,
+        reviewsApi.middleware
       ),
   });
 

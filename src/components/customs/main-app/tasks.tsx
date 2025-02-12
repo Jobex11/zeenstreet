@@ -119,12 +119,12 @@ function Tasks() {
                         {!isLoadingCards && cards?.cards?.length > 0 && cards?.cards?.slice(0, 2).map((card: CardType) => (
                             <Card
                                 key={card._id}
-                                className={`group bg-slate-800 relative aspect-video rounded-lg snap-center h-[145px] w-full overflow-hidden ${card.isCurrent ? "min-w-[85%] shadow-xl shadow-slate-700" : "min-w-[70%] shadow-xl"
+                                className={`group bg-slate-800 relative aspect-video rounded-lg snap-center h-[140px] w-full overflow-hidden ${card.isCurrent ? "min-w-[85%] shadow-xl shadow-slate-700" : "min-w-[75%] shadow-xl"
                                     }`}
                             >
                                 <div className="relative w-full h-full">
                                     <img
-                                        src={card.image[0] || "/src/assets/images/Subheading.png"}
+                                        src={card.image[1]}
                                         alt={`card img ${card.title}`}
                                         fetchPriority="high"
                                         loading="lazy"
