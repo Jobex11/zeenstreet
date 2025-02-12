@@ -505,8 +505,8 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
           </div>
         </div>
         <div className="flex flex-col items-start justify-start gap-1">
-          <h1 className="text-white text-xs text-left font-bold">{referrals.shares}</h1>
-          <p className="flex items-center text-xs work-sans text-[#00D95F]">
+          <h1 className="text-white text-[10px] text-left font-semibold">{referrals.shares}</h1>
+          <p className="flex items-center text-[10px] work-sans text-[#00D95F]">
             {referrals.province}
           </p>
         </div>

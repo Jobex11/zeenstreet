@@ -19,7 +19,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo';
-
+import AddReview from "@/components/common/main-app/add-review";
 
 interface NotificationTypes {
   _id: string
@@ -97,19 +97,22 @@ function MailNotification() {
         <div className="flex flex-col px-4">
           <div className="flex items-center justify-between py-3 inter">
 
-            <DropdownMenu>
-              <DropdownMenuTrigger className={"outline-none border-none relative"}>
-                <Fragment>
-                  <IoFilterOutline color="white" size={30} />
-                  <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />
-                </Fragment>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-orange-600 rounded text-white flex flex-col border-none work-sans">
-                {btnTabs.map((tabs) => (
-                  <DropdownMenuItem key={tabs} className={`${activeTab === tabs && "bg-white text-black"}`} onClick={() => handleActiveTabs(tabs)} >{tabs}</DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div className="flex items-center gap-x-3">
+              <DropdownMenu>
+                <DropdownMenuTrigger className={"outline-none border-none relative"}>
+                  <Fragment>
+                    <IoFilterOutline color="white" size={30} />
+                    <div className={"h-2 w-2 z-20 bg-orange-600 animate-pulse rounded-full absolute top-0 left-0"} />
+                  </Fragment>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-orange-600 rounded text-white flex flex-col border-none work-sans">
+                  {btnTabs.map((tabs) => (
+                    <DropdownMenuItem key={tabs} className={`${activeTab === tabs && "bg-white text-black"}`} onClick={() => handleActiveTabs(tabs)} >{tabs}</DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <AddReview />
+            </div>
 
             <button
               type="button"
@@ -165,8 +168,8 @@ function MailNotification() {
                               src={notification.logo}
                               alt={notification.logo}
                               className={"object-cover object-center h-full w-full"}
-                              />
-                            <AvatarFallback>{notification.logo}</AvatarFallback>
+                            />
+                            <AvatarFallback className={"uppercase font-bold"}>{notification.logo[0]}</AvatarFallback>
                             <div className={"absolute top-0 w-full h-full z-10 bg-transparent rounded-full"} />
                           </Avatar>
                           <div>

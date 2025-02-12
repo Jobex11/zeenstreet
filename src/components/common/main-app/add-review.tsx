@@ -1,18 +1,18 @@
-import { MdOutlineReviews } from "react-icons/md";
+import { BsStars } from "react-icons/bs";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { triggerErrorVibration } from "@/lib/utils";
 import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetFooter,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet";
+    Drawer,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    // DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer";
 import { useAddReviewMutation } from "@/hooks/redux/review";
 import { useGetUsersByIdQuery } from "@/hooks/redux/users";
 import { useGetTelegramId } from "@/hooks/getTelegramId";
@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { Textarea } from "@/components/ui/textarea"
+import reviewImage from "@assets/images/icons/review_img.svg"
 
 const schema = z.object({
     reviewComment: z
@@ -51,13 +52,19 @@ function AddReview() {
     });
 
     const onSubmit = async (data: CreateReviewsFormValues) => {
+        if (rating === 0) {
+            toast.info("Please select a star rating before submitting your review.", { className: "text-xs work-sans py-3" });
+            triggerErrorVibration();
+            return;
+        }
+
         const payload = { userId: user?.user?._id, comment: data.reviewComment, rating };
         try {
             const addedReview = await addReview(payload).unwrap();
             toast.success(addedReview.message || "Your review has been submitted!", { className: "text-xs work-sans py-3" });
             setComment("");
             setRating(0);
-            setIsOpen(false); 
+            setIsOpen(false);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.log(error);
@@ -67,18 +74,18 @@ function AddReview() {
     };
 
     return (
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-                <button><MdOutlineReviews color="white" size={30} /></button>
-            </SheetTrigger>
-            <SheetContent side={"top"} className={"max-w-xl mx-auto bg-white"}>
-                <SheetHeader>
-                    <SheetTitle>Share Your Review</SheetTitle>
-                    <SheetDescription>
-                        Let us know your thoughts on our mini app!
-                    </SheetDescription>
-                </SheetHeader>
-                <form onSubmit={handleSubmit(onSubmit)} className=" space-y-2">
+        <Drawer open={isOpen} onOpenChange={setIsOpen}>
+            <DrawerTrigger asChild>
+                <button><BsStars color={"orange"} size={30} /></button>
+            </DrawerTrigger>
+            <DrawerContent className={"max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000] pb-3 px-2"}>
+                <DrawerHeader>
+                    <img src={reviewImage} alt="Review image" className={"h-28 w-28 object-contain object-center mx-auto"} />
+                    <DrawerDescription className={"text-white"}>
+                        Share your thoughts on our mini app and get rewarded!
+                    </DrawerDescription>
+                </DrawerHeader>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 min-w-full">
                     <div className="flex items-center justify-center gap-1 mx-auto max-w-xl">
                         {[1, 2, 3, 4, 5].map((star) => (
                             <FaStar
@@ -101,7 +108,7 @@ function AddReview() {
                                     setComment(e.target.value);
                                 }}
                                 placeholder="Write your review here..."
-                                className="bg-gray-100 text-black outline-none resize-none text-sm rounded-md h-20 w-full p-3"
+                                className="bg-transparent text-white outline-none resize-none text-sm rounded-md h-20 w-full p-3"
                             />
                         )}
                     />
@@ -110,14 +117,14 @@ function AddReview() {
                             {errors.reviewComment.message}
                         </p>
                     )}
-                    <SheetFooter>
-                        <Button type="submit" disabled={isLoading} className={"h-11 bg-orange-600 hover:bg-orange-700"}>
-                            {isLoading ? "Submitting..." : "Submit Review"}
+                    <DrawerFooter className={"px-0"}>
+                        <Button type="submit"  disabled={isLoading} className={"h-11 min-w-full bg-orange-600 hover:bg-orange-700"}>
+                            {isLoading ? "Processing..." : "Create Review"}
                         </Button>
-                    </SheetFooter>
+                    </DrawerFooter>
                 </form>
-            </SheetContent>
-        </Sheet>
+            </DrawerContent>
+        </Drawer>
     );
 }
 

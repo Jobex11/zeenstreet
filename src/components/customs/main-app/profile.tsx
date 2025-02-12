@@ -10,7 +10,7 @@ import cosmic_force from "@assets/images/cards/cosmic.png";
 import earth_force from "@assets/images/cards/earth.png";
 import fire_force from "@assets/images/cards/fire.png";
 import metal_force from "@assets/images/cards/metal.png";
-import ice_force from "@assets/images/cards/ice.png";
+// import ice_force from "@assets/images/cards/ice.png";
 import light_force from "@assets/images/cards/Light.png";
 import water_force from "@assets/images/cards/water.png";
 import wave_force from "@assets/images/cards/wave.png";
@@ -42,63 +42,63 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { motion } from "framer-motion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import AddReview from "@/components/common/main-app/add-review";
+
 
 const wealthClass = [
     {
-        shareType: "bottom_feeders",
-        name: "Bottom Feeders",
+        shareType: "wood_force",
+        name: "Wood Force",
         rewards: 500,
         img: wood_force,
         description:
             "For those who rise from the deep, a humble start that they keep.",
     },
     {
-        shareType: "the_aspirers",
-        name: "The Aspirers",
+        shareType: "earth_force",
+        name: "Earth Force",
         rewards: 700,
         img: earth_force,
         description:
             "Dreams take flight and reach the sky, as these souls soar high.",
     },
     {
-        shareType: "stable_money",
-        name: "Stable Money",
+        shareType: "metal_force",
+        name: "Metal Force",
         rewards: 800,
         img: metal_force,
         description:
             "Built on strength, steadfast and sure, wealth that will always endure.",
     },
     {
-        shareType: "high_achievers",
-        name: "High Achievers",
+        shareType: "wind_force",
+        name: "Wind Force",
         rewards: 1000,
         img: wave_force,
         description:
             "With goals in sight, they climb and strive, their success comes alive.",
     },
     {
-        shareType: "elite_circle",
-        name: "Elite Circle",
+        shareType: "ice_force",
+        name: "Ice Force",
         rewards: 1500,
         img: water_force,
         description: "A select few who stand apart, their wisdom flowing like art.",
     },
     {
-        shareType: "legacy_wealth",
-        name: "Legacy Wealth",
+        shareType: "fire_force",
+        name: "Fire Force",
         rewards: 1700,
-        img: ice_force,
+        img: fire_force,
         description: "Built to last, a timeless blend, wealth that will never end.",
     },
-    {
-        shareType: "titans",
-        name: "Titans",
-        rewards: 1800,
-        img: fire_force,
-        description:
-            "Mighty and strong, they rise above, their power known far and wide, like a burning love.",
-    },
+    // {
+    //     shareType: "titans",
+    //     name: "Titans",
+    //     rewards: 1800,
+    //     img: fire_force,
+    //     description:
+    //         "Mighty and strong, they rise above, their power known far and wide, like a burning love.",
+    // },
     {
         shareType: "planet_shakers",
         name: "Planet Shakers",
@@ -593,51 +593,51 @@ function Profile() {
             description: "Unlock the required Wealth Class to unlock this achievement!",
             data: [
                 {
-                    isLocked: findIsLocked("Bottom Feeders"),
-                    name: "Bottom Feeders",
-                    unLockedText: "You unlocked this achievement by unlocking Bottom Feeders",
+                    isLocked: findIsLocked("Wood Force"),
+                    name: "Wood Force",
+                    unLockedText: "You unlocked this achievement by unlocking Wood Force",
                     shareType: "achievement_1",
                     img: achievement_1
                 },
                 {
-                    isLocked: findIsLocked("The Aspirers"),
-                    name: "The Aspirers",
-                    unLockedText: "You unlocked this achievement by unlocking The Aspirers",
+                    isLocked: findIsLocked("Earth Force"),
+                    name: "Earth Force",
+                    unLockedText: "You unlocked this achievement by unlocking Earth Force",
                     shareType: "achievement_2",
                     img: achievement_2
                 },
                 {
-                    isLocked: findIsLocked("Stable Money"),
-                    name: "Stable Money",
-                    unLockedText: "You unlocked this achievement by unlocking Stable Money",
+                    isLocked: findIsLocked("Metal Force"),
+                    name: "Metal Force",
+                    unLockedText: "You unlocked this achievement by unlocking Metal Force",
                     shareType: "achievement_3",
                     img: achievement_3
                 },
                 {
-                    isLocked: findIsLocked("High Achievers"),
-                    name: "High Achievers",
-                    unLockedText: "You unlocked this achievement by unlocking High Achievers",
+                    isLocked: findIsLocked("Wind Force"),
+                    name: "Wind Force",
+                    unLockedText: "You unlocked this achievement by unlocking Wind Force",
                     shareType: "achievement_4",
                     img: achievement_4
                 },
                 {
-                    isLocked: findIsLocked("Elite Circle"),
-                    name: "Elite Circle",
-                    unLockedText: "You unlocked this achievement by unlocking Elite Circle",
+                    isLocked: findIsLocked("Water Force"),
+                    name: "Water Force",
+                    unLockedText: "You unlocked this achievement by unlocking Water Force",
                     shareType: "achievement_5",
                     img: achievement_5
                 },
                 {
-                    isLocked: findIsLocked("Legacy Wealth"),
-                    name: "Legacy Wealth",
-                    unLockedText: "You unlocked this achievement by unlocking Legacy Wealth",
+                    isLocked: findIsLocked("Ice Force"),
+                    name: "Ice Force",
+                    unLockedText: "You unlocked this achievement by unlocking Ice Force",
                     shareType: "achievement_6",
                     img: achievement_6
                 },
                 {
-                    isLocked: findIsLocked("Titans"),
-                    name: "Titans",
-                    unLockedText: "You unlocked this achievement by unlocking Titans",
+                    isLocked: findIsLocked("Fire Force"),
+                    name: "Fire Force",
+                    unLockedText: "You unlocked this achievement by unlocking Fire Force",
                     shareType: "achievement_7",
                     img: achievement_7
                 },
@@ -1139,19 +1139,6 @@ function Profile() {
                             </div>
                         </div>
                     </div>
-
-                    <div className="flex flex-col bg-[#1E1E1E] p-6 rounded-lg shadow-md max-w-md w-full">
-                        <h1 className="text-white work-sans text-2xl font-semibold mb-2">
-                            Add a Review ⭐
-                        </h1>
-                        <p className="text-gray-400 text-sm mb-4">
-                            Share your thoughts on our mini app and get rewarded!
-                        </p>
-                        <div className="flex justify-center">
-                            <AddReview />
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>

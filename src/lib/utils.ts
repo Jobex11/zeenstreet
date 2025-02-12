@@ -94,53 +94,53 @@ export const getRankIconColor = (rank: string): string => {
       return "#03A9F4"; // Light Blue
     case "Centurion":
       return "#0288D1"; // Dark Blue
-    case "Tribune i":
+    case "Tribune I":
       return "#4CAF50"; // Green
-    case "Tribune ii":
+    case "Tribune II":
       return "#8BC34A"; // Light Green
-    case "Tribune iii":
+    case "Tribune III":
       return "#CDDC39"; // Lime
-    case "Tribune iv":
+    case "Tribune IV":
       return "#FFEB3B"; // Yellow
-    case "Praetor i":
+    case "Praetor I":
       return "#FFC107"; // Deep Amber
-    case "Praetor ii":
+    case "Praetor II":
       return "#FF9800"; // Deep Orange
-    case "Praetor iii":
+    case "Praetor III":
       return "#FF5722"; // Red Orange
-    case "Praetor iv":
+    case "Praetor IV":
       return "#673AB7"; // Deep Purple
-    case "Legatus i":
+    case "Legatus I":
       return "#9C27B0"; // Purple
-    case "Legatus ii":
+    case "Legatus II":
       return "#E91E63"; // Pink
-    case "Legatus iii":
+    case "Legatus III":
       return "#F44336"; // Red
-    case "Legatus iv":
+    case "Legatus IV":
       return "#2196F3"; // Blue
-    case "Dominus i":
+    case "Dominus I":
       return "#3F51B5"; // Indigo
-    case "Dominus ii":
+    case "Dominus II":
       return "#009688"; // Teal
-    case "Dominus iii":
+    case "Dominus III":
       return "#4CAF50"; // Green
-    case "Dominus iv":
+    case "Dominus IV":
       return "#8BC34A"; // Light Green
-    case "Consul i":
+    case "Consul I":
       return "#CDDC39"; // Lime
-    case "Consul ii":
+    case "Consul II":
       return "#FFEB3B"; // Yellow
-    case "Consul iii":
+    case "Consul III":
       return "#FFC107"; // Amber
-    case "Consul iv":
+    case "Consul IV":
       return "#FF9800"; // Orange
-    case "Imperator i":
+    case "Imperator I":
       return "#FF5722"; // Red Orange
-    case "Imperator ii":
+    case "Imperator II":
       return "#795548"; // Brown
-    case "Imperator iii":
+    case "Imperator III":
       return "#607D8B"; // Blue Gray
-    case "Imperator iv":
+    case "Imperator IV":
       return "#3E2723"; // Dark Brown
     case "Supreme Imperator":
       return "#000000"; // Black
