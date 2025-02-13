@@ -17,6 +17,7 @@ import { channelApi } from '@hooks/redux/channels';
 import { tasksSlice } from '@hooks/redux/slices/tasksSlice';
 import { userSlice } from '@hooks/redux/slices/usersSlice';
 import { confirmedAccountsSlice } from '@hooks/redux/slices/onboadingSlice';
+import { achievementSlice } from '@hooks/redux/slices/achievementSlice';
 import { rewardsSlice } from "@hooks/redux/slices/rewardsSlice";
 import { gamesApi } from '@hooks/redux/games';
 import { reviewsApi } from "@hooks/redux/review"
@@ -38,6 +39,7 @@ const rootReducer = combineReducers({
   [reviewsApi.reducerPath]: reviewsApi.reducer,
   tasks: tasksSlice.reducer,
   userData: userSlice.reducer,
+  achievements: achievementSlice.reducer,
   confirmAccount: confirmedAccountsSlice.reducer,
   rewards: rewardsSlice.reducer
 
@@ -45,11 +47,11 @@ const rootReducer = combineReducers({
 
 
 export const createStore = (telegramId = 'default') => {
-  // Dynamic persist configuration
+  // Dynamic persist configurations
   const persistConfig = {
     key: `persist:${telegramId}`,
     storage,
-    whitelist: ['tasks', 'userData', "confirmAccount"],
+    whitelist: ['tasks', 'userData', "confirmAccount", "achievements"],
   };
 
   // Persisted reducer

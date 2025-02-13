@@ -1,4 +1,3 @@
-import { BsStars } from "react-icons/bs";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +20,7 @@ import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { Textarea } from "@/components/ui/textarea"
 import reviewImage from "@assets/images/icons/review_img.svg"
+import reviewIcon from "@assets/images/icons/review_icon.png"
 
 const schema = z.object({
     reviewComment: z
@@ -76,9 +76,11 @@ function AddReview() {
     return (
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
             <DrawerTrigger asChild>
-                <button><BsStars color={"orange"} size={30} /></button>
+                <button>
+                    <img src={reviewIcon} className={"h-7 w-7 object-contain object-center"}/>
+                </button>
             </DrawerTrigger>
-            <DrawerContent className={"max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000] pb-3 px-2"}>
+            <DrawerContent className={"max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000] pb-3 px-3"}>
                 <DrawerHeader>
                     <img src={reviewImage} alt="Review image" className={"h-28 w-28 object-contain object-center mx-auto"} />
                     <DrawerDescription className={"text-white"}>

@@ -10,7 +10,7 @@ import cosmic_force from "@assets/images/cards/cosmic.png";
 import earth_force from "@assets/images/cards/earth.png";
 import fire_force from "@assets/images/cards/fire.png";
 import metal_force from "@assets/images/cards/metal.png";
-// import ice_force from "@assets/images/cards/ice.png";
+import ice_force from "@assets/images/cards/ice.png";
 import light_force from "@assets/images/cards/Light.png";
 import water_force from "@assets/images/cards/water.png";
 import wave_force from "@assets/images/cards/wave.png";
@@ -38,10 +38,11 @@ import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
 import { triggerErrorVibration } from "@/lib/utils";
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
 import { useGetTelegramId } from "@hooks/getTelegramId"
-import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { motion } from "framer-motion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useSelector } from "react-redux";
+// import { unlockAchievement, closeDrawer } from "@hooks/redux/slices/achievementSlice";
 
 
 const wealthClass = [
@@ -67,7 +68,7 @@ const wealthClass = [
         rewards: 800,
         img: metal_force,
         description:
-            "Built on strength, steadfast and sure, wealth that will always endure.",
+            "Built on strength, steadfast and sure, power that will always endure.",
     },
     {
         shareType: "wind_force",
@@ -78,10 +79,17 @@ const wealthClass = [
             "With goals in sight, they climb and strive, their success comes alive.",
     },
     {
+        shareType: "water_force",
+        name: "Water Force",
+        rewards: 1900,
+        img: water_force,
+        description: "Mighty and strong, they rise above, their power known far and wide, like a burning love.",
+    },
+    {
         shareType: "ice_force",
         name: "Ice Force",
         rewards: 1500,
-        img: water_force,
+        img: ice_force,
         description: "A select few who stand apart, their wisdom flowing like art.",
     },
     {
@@ -89,31 +97,24 @@ const wealthClass = [
         name: "Fire Force",
         rewards: 1700,
         img: fire_force,
-        description: "Built to last, a timeless blend, wealth that will never end.",
+        description: "Built to last, a timeless blend, force that will never end.",
     },
-    // {
-    //     shareType: "titans",
-    //     name: "Titans",
-    //     rewards: 1800,
-    //     img: fire_force,
-    //     description:
-    //         "Mighty and strong, they rise above, their power known far and wide, like a burning love.",
-    // },
+
     {
-        shareType: "planet_shakers",
-        name: "Planet Shakers",
+        shareType: "light_force",
+        name: "Light Force",
         rewards: 1900,
         img: light_force,
         description:
             "With force and flair, they change the game, their impact is never the same.",
     },
     {
-        shareType: "sovereign_wealth",
-        name: "Sovereign Wealth",
+        shareType: "cosmic_force",
+        name: "Cosmic Force",
         rewards: 2000,
         img: cosmic_force,
         description:
-            "Their wealth is vast, beyond the skies, a legacy that never dies.",
+            "Their power is vast, beyond the skies, a legacy that never dies.",
     },
 ];
 
@@ -127,6 +128,8 @@ function Profile() {
         {}
     );
     const users = useSelector((state: RootState) => state.userData);
+    // const dispatch = useDispatch();
+    // const { unlockedAchievement, isDrawerOpen } = useSelector((state:RootState) => state.achievements);
     const { data: wealthClasses, isLoading: loadingClasses } = useGetAllWealthClasssQuery(undefined, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
@@ -197,7 +200,7 @@ function Profile() {
             const matchingWealthClass = wealthClasses?.data?.find(
                 (cls: { name: string }) => cls.name === WealthClass.name
             );
-
+            console.log("Match", matchingWealthClass)
             if (!matchingWealthClass) {
                 // Default if wealth class data is missing
                 return {
@@ -253,9 +256,10 @@ function Profile() {
     const wealthClassStatus = determineWealthClassStatus(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards);
 
     const findIsLocked = (name: string): boolean => {
-        const status = wealthClassStatus.find(item => item.name === name);
+        const status = wealthClassStatus?.find(item => item.name === name);
         return status ? status.isLocked : true;
     };
+
     const achievement = [
         {
             achievementType: "GROW YOUR TEAM",
@@ -589,8 +593,8 @@ function Profile() {
             ]
         },
         {
-            achievementType: "WEALTH CLASS",
-            description: "Unlock the required Wealth Class to unlock this achievement!",
+            achievementType: "POWER CLASS",
+            description: "Unlock the required Power Class to unlock this achievement!",
             data: [
                 {
                     isLocked: findIsLocked("Wood Force"),
@@ -643,74 +647,6 @@ function Profile() {
                 },
             ]
         },
-        // {
-        //     achievementType: "WATCH YOUTUBE VIDEOS",
-        //     description: "Watch the required number of youtube videos to unlock this achievement!",
-        //     data: [
-        //         {
-        //             isLocked: false,
-        //             name: "Watch 10 Videos",
-        //             unLockedText: "You unlocked this achievement by watching 10 videos",
-        //             shareType: "achievement_1",
-        //             img: achievement_1
-        //         },
-        //     ]
-        // },
-        // {
-        //     achievementType: "RANK UP",
-        //     description: "Reach the required Rank to unlock this achievement!",
-        //     data: [
-        //         {
-        //             isLocked: false,
-        //             name: "Achieve Analys⁠t ",
-        //             unLockedText: "You unlocked this achievement by Reaching Rank Achieve Analys⁠t",
-        //             shareType: "achievement_1",
-        //             img: achievement_1
-        //         },
-        //         {
-        //             isLocked: false,
-        //             name: "Senior Associate ",
-        //             unLockedText: "You unlocked this achievement by Reaching Rank Senior Associate",
-        //             shareType: "achievement_2",
-        //             img: achievement_2
-        //         },
-        //         {
-        //             isLocked: false,
-        //             name: "Senior Managing Director ",
-        //             unLockedText: "You unlocked this achievement by Reaching Rank Senior Managing Director",
-        //             shareType: "achievement_3",
-        //             img: achievement_3
-        //         },
-        //         {
-        //             isLocked: false,
-        //             name: "Managing Partner ",
-        //             unLockedText: "You unlocked this achievement by Reaching Rank Managing Partner",
-        //             shareType: "achievement_4",
-        //             img: achievement_4
-        //         },
-        //         {
-        //             isLocked: false,
-        //             name: "Chairperson ",
-        //             unLockedText: "You unlocked this achievement by Reaching Rank Chairperson",
-        //             shareType: "achievement_5",
-        //             img: achievement_5
-        //         },
-        //         {
-        //             isLocked: false,
-        //             name: "Financial Mogul ",
-        //             unLockedText: "You unlocked this achievement by Reaching Rank Financial Mogul",
-        //             shareType: "achievement_6",
-        //             img: achievement_6
-        //         },
-        //         {
-        //             isLocked: false,
-        //             name: "Global Financier ",
-        //             unLockedText: "You unlocked this achievement by Reaching Rank Global Financier ",
-        //             shareType: "achievement_6",
-        //             img: achievement_6
-        //         },
-        //     ]
-        // },
         {
             achievementType: "PLAY GAME",
             description: "This feature is coming soon stay tuned!",
@@ -823,7 +759,7 @@ function Profile() {
                     {/*wealth class grid  */}
                     <div className="min-w-full">
                         <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
-                            Wealth Classes
+                            Power Classes
                         </h1>
                         <ScrollArea className="flex items-center whitespace-nowrap max-w-full ">
                             <div className="flex w-max space-x-2 gap-1 pb-4">

@@ -60,14 +60,14 @@ export const getUnlockDetails = (
   }
 
   // Determine the rank the user is in
-  const userRank = totalShares >= wealthClass?.minRank ? rank : "Nobody";
+  const userRank = totalShares >= wealthClass?.minRank ? rank : "Proletarius";
 
   return `To unlock ${wealthClass?.name}, you need ${cardsNeeded.toFixed(0)} more cards and ${userRank} rank.`;
 };
 
 
 export const getUserRank = (totalShares: number | null, rankData: RankData[]): string => {
-  if (!rankData || rankData?.length === 0) return "Nobody";
+  if (!rankData || rankData?.length === 0) return "Proletarius";
 
   for (const rank of rankData) {
     if (totalShares && totalShares >= rank?.min && totalShares <= rank?.max) {
@@ -77,14 +77,14 @@ export const getUserRank = (totalShares: number | null, rankData: RankData[]): s
 
   // If totalShares exceeds the maximum range, return the highest rank
   const highestRank = rankData[rankData.length - 1];
-  return totalShares && totalShares > highestRank.max ? highestRank.rank : "Nobody";
+  return totalShares && totalShares > highestRank.max ? highestRank.rank : "Proletarius";
 };
 
 
 
 export const getRankIconColor = (rank: string): string => {
   switch (rank) {
-    case "Nobody":
+    case "Proletarius":
       return "#9E9E9E"; // Gray
     case "Velatus":
       return "#FF5722"; // Orange
