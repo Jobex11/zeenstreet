@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Drawer, DrawerContent, DrawerDescription,DrawerClose, DrawerFooter, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
+import { Drawer, DrawerContent, DrawerDescription, DrawerClose, DrawerFooter, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useGetTelegramId } from "@/hooks/getTelegramId"
 import { useGetChatMemberByIdQuery } from "@/hooks/redux/channels"
@@ -12,14 +12,13 @@ import { Fragment, type PropsWithChildren } from "react"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom";
 import { BsClockHistory } from "react-icons/bs";
-// import { LuShare2 } from "react-icons/lu";
 import { IoIosClose } from "react-icons/io";
 import { GoShareAndroid } from "react-icons/go";
+import storyShareImg from "@assets/images/icons/share_story.svg"
 
 function ShareToStory({ children }: PropsWithChildren) {
 
     const chat_id = "-1002465265495"
-    // const [showSkeleton, setShowSkeleton] = useState(false)
     const { telegramId } = useGetTelegramId()
     const { shareToStory } = useTelegramWebApp()
     const navigate = useNavigate();
@@ -107,10 +106,8 @@ function ShareToStory({ children }: PropsWithChildren) {
         }
     }
 
-    // const shouldShowDrawer = !loadingStory && storySuccess && story
     return (
         <Fragment>
-            {/* {shouldShowDrawer && ( */}
             <Drawer
             >
                 <DrawerTrigger className={"relative"}>
@@ -124,12 +121,12 @@ function ShareToStory({ children }: PropsWithChildren) {
                     aria-description="show task dialog"
                     className="flex flex-col max-h-full max-w-xl mx-auto pb-6 bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-lg px-4 gap-3"
                 >
-                     <div className="relative flex flex-col items-center justify-center w-full gap-4">
+                    <div className="relative flex flex-col items-center justify-center w-full gap-4">
                         <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">
                             <IoIosClose size={24} />
                         </DrawerClose>
                     </div>
-                    
+
                     {story ? (
                         <div className="flex flex-col w-full gap-4">
                             <div className="relative h-[13rem] w-full">
@@ -161,7 +158,8 @@ function ShareToStory({ children }: PropsWithChildren) {
                             </DrawerFooter>
                         </div>
                     ) : (
-                        <div className={"py-5 my-3 flex flex-col items-center"}>
+                        <div className={"pb-5 pt-2 my-3 flex flex-col items-center"}>
+                            <img src={storyShareImg} alt={"Story sharer image"} className={"h-40 w-40 object-contain object-center"} />
                             <h1 className="text-lg font-bold text-orange-500 text-center mt-2 tahoma">
                                 Story Sharer
                             </h1>

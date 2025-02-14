@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
-import CardWrapper from "@components/common/cards/card-wrapper";
+import CardWrapper from "@/components/shared/cards/card-wrapper";
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import { toast } from "sonner";
-import { CountdownTimer } from "../countdown-timer";
+import { CountdownTimer } from "../../../shared/countdown-timer";
 import { triggerErrorVibration } from "@/lib/utils";
 import { Badge } from "@components/ui/badge";
 import RaveLogo from "@assets/images/icons/zenstreet_logo.png";

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
-import Header from './app-header';
-import BottmNavigation from './bottom-nav';
+import Header from '../shared/app-header';
+import BottmNavigation from '../shared/bottom-nav';
 
 function MainappLayout({ children }: PropsWithChildren) {
   return (

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { SiTelegram } from "react-icons/si";
 import { RiTwitterXLine } from "react-icons/ri";
-import { TextButton } from "@components/common/buttons/Textbutton";
+import { TextButton } from "@/components/shared/buttons/Textbutton";
 import {
     Link,
     useNavigate

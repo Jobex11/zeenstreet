@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
-import CardWrapper from "@components/common/cards/card-wrapper";
+import CardWrapper from "@/components/shared/cards/card-wrapper";
 import { toast } from "sonner";
-import { CountdownTimer } from "../countdown-timer";
+import { CountdownTimer } from "../../../shared/countdown-timer";
 import { useCompleteSocialTasksMutation } from "@hooks/redux/tasks";
 import { useTelegramWebApp } from "@hooks/useTelegramWebapp";
 import { triggerErrorVibration } from "@lib/utils";

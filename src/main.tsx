@@ -12,15 +12,15 @@ import ReferralPage from "./pages/referral/page";
 import ProfilePage from "./pages/profile/page";
 import RankPage from "./pages/ranks/page";
 import Notifications from "./pages/main-notification/page";
-import TelegramWrapper from "./components/common/Telegram.app.layout";
+import TelegramWrapper from "./components/layouts/Telegram.app.layout";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import Intro from "./pages/app-intro/page";
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import LeaderBoard from "./pages/leader-board/page";
-import { ErrorBoundary, ErrorBoundaryError } from '@components/common/error-boundary';
+import { ErrorBoundary, ErrorBoundaryError } from '@/components/shared/error-boundary';
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor } from "./lib/store";
-import Loader from "./components/common/Loader";
+import Loader from "./components/shared/Loader";
 
 const router = createBrowserRouter([
   {

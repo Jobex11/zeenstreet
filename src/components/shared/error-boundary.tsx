@@ -53,7 +53,7 @@ export function ErrorBoundaryError(
   };
 
   return (
-    <section className='min-h-screen w-full max-w-screen-sm sm:px-10 flex flex-col mx-auto relative bg-gradient-to-b from-[#292734] to-[#000000] px-2 items-center justify-center'>
+    <section className='h-full flex flex-col relative bg-gradient-to-b from-[#292734] to-[#000000] px-2 pt-10 items-center'>
       <img src={errorImage} alt="Image showing an Enginner" className={"h-48 w-48 object-contain object-center"} />
       <h2 className="text-xl font-semibold text-red-600 work-sans">Something went wrong!</h2>
       <p className="text-gray-300 mt-2 work-sans text-center">

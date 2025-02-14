@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
-import MainappLayout from '@components/common/main-app/main-app-layout';
-import Loader from '@/components/common/Loader';
-import { ErrorBoundary, ErrorBoundaryError } from '@components/common/error-boundary';
+import MainappLayout from '@/components/layouts/main-app-layout';
+import Loader from '@/components/shared/Loader';
+import { ErrorBoundary, ErrorBoundaryError } from '@/components/shared/error-boundary';
 // Lazy load the Home component
 const Home = lazy(() => import('@components/customs/main-app/home'));
 
@@ -14,7 +14,6 @@ function HomePage() {
         </Suspense>
       </MainappLayout>
     </ErrorBoundary>
-
   );
 }
 

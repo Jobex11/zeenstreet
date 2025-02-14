@@ -1,6 +1,6 @@
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png"
 import avatarImg from "@assets/images/icons/users_avatar.svg"
-import { ShareFormatter } from '@components/common/shareFormatter'
+import { ShareFormatter } from '@/components/shared/shareFormatter'
 import { Avatar, AvatarImage } from "@components/ui/avatar"
 import { ScrollArea } from '@components/ui/scroll-area'
 import { Skeleton } from '@components/ui/skeleton'

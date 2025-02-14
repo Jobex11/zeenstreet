@@ -1,4 +1,4 @@
-import { TextButton } from "@components/common/buttons/Textbutton";
+import { TextButton } from "@/components/shared/buttons/Textbutton";
 import { LuCheckCircle } from "react-icons/lu";
 import Logo from "@assets/images/icons/ravenenie_logo.png";
 import { Progress } from "@components/ui/progress";

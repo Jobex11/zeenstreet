@@ -1,6 +1,6 @@
 import visionImage from "@assets/images/vision.png";
 import handwave from "@assets/images/icons/hand-wave.png";
-import { IconButton } from "@components/common/buttons/Iconbutton";
+import { IconButton } from "@/components/shared/buttons/Iconbutton";
 import { Fade } from "react-awesome-reveal";
 import rave from "@assets/images/icons/Rave.png";
 import genie from "@assets/images/icons/GENIE.png";

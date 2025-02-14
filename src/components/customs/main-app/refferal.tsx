@@ -1,14 +1,14 @@
-import CardWrapper from "@/components/common/cards/card-wrapper";
+import CardWrapper from "@/components/shared/cards/card-wrapper";
 import { triggerErrorVibration } from "@/lib/utils";
 import dotsbg from "@assets/images/dotted-bg.png";
 import tier1_img from "@assets/images/icons/tier1_friend.svg";
 import tier2_img from "@assets/images/icons/tier2_friend.svg";
 import avatarImg from "@assets/images/icons/users_avatar.svg";
 import logo from "@assets/images/icons/zenstreet_logo.png";
-import { ShareFormatter } from "@components/common/shareFormatter";
+import { ShareFormatter } from "@/components/shared/shareFormatter";
 import { Button } from "@components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
-import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
+import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle } from "@components/ui/drawer";
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Skeleton } from "@components/ui/skeleton";
 import {
@@ -219,7 +219,7 @@ function Referral() {
 
                   <div className="flex w-full items-center gap-2">
                     <Drawer open={openDrawer} onOpenChange={() => setOpenDrawer(!openDrawer)}>
-                      <DrawerTrigger>
+                      <DrawerTrigger asChild>
                         <Button className="max-w-full px-10 mt-3 bg-[#D25804] hover:bg-orange-500 text-white text-xs font-semibold text-center poppins">
                           Invite Friends
                         </Button>
@@ -234,7 +234,7 @@ function Referral() {
                           Copy referral link
                           <IoCopyOutline color="white" size={33} />
                         </Button>
-
+                        <DrawerTitle className={"sr-only"}>Invite Friends</DrawerTitle>
                         <Button
                           onClick={handleShareReferralLink}
                           className="flex justify-center py-5 work-sans items-center gap-3 bg-[#D25804] hover:bg-orange-500">

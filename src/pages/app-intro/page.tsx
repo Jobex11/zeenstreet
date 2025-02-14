@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
-import Loader from '@/components/common/Loader';
-import { ErrorBoundary, ErrorBoundaryError } from '@components/common/error-boundary';
+import Loader from '@/components/shared/Loader';
+import { ErrorBoundary, ErrorBoundaryError } from '@/components/shared/error-boundary';
 // Lazy load the Home component
 const ZeenAppIntro = lazy(() => import("@components/customs/app-intro/page"));
 

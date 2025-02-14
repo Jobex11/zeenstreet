@@ -16,9 +16,9 @@ import water_force from "@assets/images/cards/water.png";
 import wave_force from "@assets/images/cards/wave.png";
 import wood_force from "@assets/images/cards/wood.png";
 import dotsbg from "@assets/images/dotted-bg.png";
-import CardWrapper from "@/components/common/cards/card-wrapper";
-import { ShareFormatter } from "@components/common/shareFormatter";
-import ConnectTonWallet from "@components/common/ton-connect-btn";
+import CardWrapper from "@/components/shared/cards/card-wrapper";
+import { ShareFormatter } from "@/components/shared/shareFormatter";
+import ConnectTonWallet from "@/components/shared/ton-connect-btn";
 import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import card_empty from "@assets/images/icons/empty_card.svg"

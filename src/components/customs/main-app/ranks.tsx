@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png";
-import { ShareFormatter } from "@components/common/shareFormatter";
+import { ShareFormatter } from "@/components/shared/shareFormatter";
 import { useGetAllUsersQuery } from "@hooks/redux/users";
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from "@hooks/redux/tg_photo";
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
