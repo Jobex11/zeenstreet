@@ -5,6 +5,8 @@ import {
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
+import { Button } from "@/components/ui/button";
+import errorImage from "@assets/images/error_page.svg"
 
 export interface ErrorBoundaryProps extends PropsWithChildren {
   fallback?: ReactNode | ComponentType<{ error: unknown }>;
@@ -16,7 +18,7 @@ interface ErrorBoundaryState {
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = {};
-  
+
   static getDerivedStateFromError: GetDerivedStateFromError<ErrorBoundaryProps, ErrorBoundaryState> = (error) => ({ error });
 
   componentDidCatch(error: Error) {
@@ -43,19 +45,35 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 }
 
 
-export function ErrorBoundaryError({ error }: { error: unknown }) {
+export function ErrorBoundaryError(
+  { error }: { error: unknown }
+) {
+  const handleReload = () => {
+    window.location.reload();
+  };
+
   return (
-    <div>
-      <p>An unhandled error occurred:</p>
-      <blockquote>
-        <code>
-          {error instanceof Error
-            ? error.message
-            : typeof error === 'string'
-              ? error
-              : JSON.stringify(error)}
-        </code>
-      </blockquote>
-    </div>
+    <section className='min-h-screen w-full max-w-screen-sm sm:px-10 flex flex-col mx-auto relative bg-gradient-to-b from-[#292734] to-[#000000] px-2 items-center justify-center'>
+      <img src={errorImage} alt="Image showing an Enginner" className={"h-48 w-48 object-contain object-center"} />
+      <h2 className="text-xl font-semibold text-red-600 work-sans">Something went wrong!</h2>
+      <p className="text-gray-300 mt-2 work-sans text-center">
+        We couldn't load the content. Please check your network and reload the app.
+        If the issue persists, close the app and reopen it. Sorry for the inconvenience.
+      </p>
+      {process.env.NODE_ENV === "development" &&
+        <blockquote className="mt-4 p-3 bg-gray-50 border-l-4 border-red-500 text-sm text-gray-700">
+          <code>
+            {error instanceof Error
+              ? error.message
+              : typeof error === "string"
+                ? error
+                : JSON.stringify(error)}
+          </code>
+        </blockquote>
+      }
+      <Button onClick={handleReload} className="mt-6 bg-[#D25804] hover:bg-orange-700 transition-colors duration-300 min-w-full h-10 rounded-md shadow-md text-white ">
+        Reload the App
+      </Button>
+    </section>
   );
 }

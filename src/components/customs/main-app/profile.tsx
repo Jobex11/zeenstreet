@@ -28,7 +28,7 @@ import {
     useUpdateUserSharesMutation,
 } from "@hooks/redux/shares";
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
-import { Key, useState } from "react";
+import { Key, useState, useMemo } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
 import { toast } from "sonner";
@@ -42,7 +42,6 @@ import { RootState } from "@/lib/store";
 import { motion } from "framer-motion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useSelector } from "react-redux";
-// import { unlockAchievement, closeDrawer } from "@hooks/redux/slices/achievementSlice";
 
 
 const wealthClass = [
@@ -121,15 +120,12 @@ const wealthClass = [
 
 function Profile() {
 
-
     const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
-    const { telegramId } = useGetTelegramId()
+    const { telegramId } = useGetTelegramId();
     const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>(
         {}
     );
     const users = useSelector((state: RootState) => state.userData);
-    // const dispatch = useDispatch();
-    // const { unlockedAchievement, isDrawerOpen } = useSelector((state:RootState) => state.achievements);
     const { data: wealthClasses, isLoading: loadingClasses } = useGetAllWealthClasssQuery(undefined, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
@@ -255,10 +251,13 @@ function Profile() {
 
     const wealthClassStatus = determineWealthClassStatus(userDataCard?.user?.shares, userDataCard?.user?.unlockedCards);
 
-    const findIsLocked = (name: string): boolean => {
-        const status = wealthClassStatus?.find(item => item.name === name);
-        return status ? status.isLocked : true;
-    };
+
+    const findIsLocked = useMemo(() => {
+        return (name: string): boolean => {
+            const status = wealthClassStatus?.find(item => item.name === name);
+            return status ? status.isLocked : true;
+        };
+    }, [wealthClassStatus]);
 
     const achievement = [
         {
@@ -702,7 +701,9 @@ function Profile() {
                 },
             ]
         }
-    ];
+    ]
+
+
 
     return (
         <div className="flex flex-col min-h-full">
@@ -712,7 +713,7 @@ function Profile() {
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
                 }}
-                className="flex flex-col flex-1 py-3 "
+                className={`flex flex-col flex-1 py-3`}
             >
                 <div className="px-4 flex flex-col gap-3 pb-[5rem]">
                     {/* card */}
@@ -826,7 +827,7 @@ function Profile() {
                                                             initial={{ opacity: 0, y: 20 }}
                                                             animate={{ opacity: 1, y: 0 }}
                                                             transition={{ duration: 0.5 }}
-                                                            className={`h-full w-full object-cover rounded-full border-4 ${item.isLocked ? "border-orange-500" : "border-gray-600"}  shadow-md`}
+                                                            className={`h-full w-full object-cover object-center rounded-full border-4 ${item.isLocked ? "border-orange-500" : "border-gray-600"}  shadow-md`}
                                                         />
                                                         <div
                                                             className={
@@ -857,7 +858,7 @@ function Profile() {
                                                             checkIfClaimed(item.shareType) ||
                                                             !item.isLocked
                                                         }
-                                                        className={`bg-orange-600 hover:orange-700 rounded-lg py-4 px-6 text-white w-full font-medium shadow-lg transform transition-transform hover:scale-105 ${(updatingShares ||
+                                                        className={`bg-orange-600 hover:orange-700 rounded-lg py-4 px-6 text-white w-full text-xs h-11 font-medium shadow-lg transform transition-transform hover:scale-105 ${(updatingShares ||
                                                             checkIfClaimed(item.shareType) ||
                                                             !item.isLocked) &&
                                                             "opacity-50 cursor-not-allowed"
@@ -1083,6 +1084,5 @@ function Profile() {
 }
 
 export default Profile;
-
 
 

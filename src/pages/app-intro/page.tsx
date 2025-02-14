@@ -1,14 +1,16 @@
 import { lazy, Suspense } from 'react';
 import Loader from '@/components/common/Loader';
-
+import { ErrorBoundary, ErrorBoundaryError } from '@components/common/error-boundary';
 // Lazy load the Home component
 const ZeenAppIntro = lazy(() => import("@components/customs/app-intro/page"));
 
 function Intro() {
     return (
-        <Suspense fallback={Loader()}>
-            <ZeenAppIntro />
-        </Suspense>
+        <ErrorBoundary fallback={ErrorBoundaryError}>
+            <Suspense fallback={Loader()}>
+                <ZeenAppIntro />
+            </Suspense>
+        </ErrorBoundary>
     );
 }
 

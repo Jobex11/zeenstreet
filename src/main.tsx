@@ -7,7 +7,7 @@ import Tasks from "./pages/tasks/page";
 import Marketplace from "./pages/marketplace/page";
 import Teams from "./pages/teams/page";
 import GameScreen from "./pages/games/page";
-import ReduxProvider from "@components/common/provider";
+import ReduxProvider from "@/providers/redux-provider";
 import ReferralPage from "./pages/referral/page";
 import ProfilePage from "./pages/profile/page";
 import RankPage from "./pages/ranks/page";

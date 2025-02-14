@@ -287,7 +287,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
   const BOT_TOKEN = "7876229498:AAHtNuIYCcpP_kxr_EEVH6aKdIZYlJNTvq4"
 
   return (
-    <Card className="w-full max-w-2xl work-sans">
+    <Card className="w-full max-w-2xl work-sans mt-4">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3">
         <div className="flex items-center space-x-4">
           <Avatar className="w-12 h-12 relative">

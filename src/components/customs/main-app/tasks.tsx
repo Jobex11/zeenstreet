@@ -192,7 +192,7 @@ function Tasks() {
                     <Fragment>
                         {isLoadingRef && isLoadingSocial && isLoadingEvents && isLoadingPartners && <div className="flex flex-col items-center py-5">
                             <FiLoader size={30} color="white" className="animate-spin" />
-                            <p className="text-white work-sans pt-4 text-sm">Updating tasks.....</p>
+                            <p className="text-white work-sans pt-4 text-sm">Checking for new tasks....</p>
                         </div>}
                     </Fragment>
 
