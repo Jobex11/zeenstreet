@@ -42,6 +42,7 @@ function ShareToStory({ children }: PropsWithChildren) {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
+        pollingInterval: 10
     })
     const { data: chat, refetch: refetchChats } = useGetChatMemberByIdQuery([chat_id, telegramId], {
         refetchOnReconnect: true,
