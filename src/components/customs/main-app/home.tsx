@@ -229,7 +229,7 @@ function Home() {
                     type={`${tasks?.countdown !== 0 ? "Special" : ""}`}
                   />
                 ))}
-                <div className="flex items-center justify-center gap-5 py-3 h-18">
+                <div className={`items-center justify-center gap-5 py-3 h-18 ${refTasks?.page > 1 ? "flex" : "hidden"}`}>
                   <button
                     disabled={refTasksPage === 1} onClick={() => handleRefPreviousPage(refTasks?.currentPage)}
                     className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${refTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
@@ -270,7 +270,7 @@ function Home() {
                     type={`${tasks?.countdown !== 0 ? "Special" : " "}`}
                   />
                 ))}
-                <div className="flex items-center justify-center gap-5 py-3 h-18">
+                <div className={`items-center justify-center gap-5 py-3 h-18 ${socialTasks?.page > 1 ? "flex" : "hidden"}`}>
                   <button
                     disabled={socialTasks === 1} onClick={() => handleSocialPreviousPage(socialTasks?.currentPage)}
                     className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${socialTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
@@ -311,7 +311,7 @@ function Home() {
                   />
                 ))}
 
-                <div className="flex items-center justify-center gap-5 py-3 h-18">
+                <div className={`items-center justify-center gap-5 py-3 h-18 ${eventsTasks?.page > 1 ? "flex" : "hidden"}`}>
                   <button
                     disabled={eventsTasks === 1} onClick={() => handleEventsPreviousPage(eventsTasks?.currentPage)}
                     className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${eventsTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
@@ -352,7 +352,7 @@ function Home() {
                   />
                 ))}
 
-                <div className="flex items-center justify-center gap-5 py-3 h-18">
+                <div className={`items-center justify-center gap-5 py-3 h-18 ${partnersTasks?.page > 1 ? "flex" : "hidden"}`}>
                   <button
                     disabled={partnersTasks === 1} onClick={() => handlePartnersPreviousPage(partnersTasks?.currentPage)}
                     className={`bg-white rounded-full active:scale-110 h-6 w-6 shadow-lg flex items-center justify-center ${partnersTasks?.currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
