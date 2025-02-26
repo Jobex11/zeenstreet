@@ -341,7 +341,7 @@ function Referral() {
                       <ScrollBar orientation="horizontal" />
                     </ScrollArea>
 
-                    <div className={`items-center justify-center gap-5 py-3 h-18 ${tier1Data.page > 1 ? "flex" : "hidden"}`}>
+                    <div className={`items-center justify-center gap-5 py-3 h-18 ${tier1Data?.page > 1 ? "flex" : "hidden"}`}>
                       {/* Previous Button */}
                       <button
                         disabled={tier1Data?.page === 1}
@@ -397,7 +397,7 @@ function Referral() {
                       )}
                       <ScrollBar orientation="horizontal" />
                     </ScrollArea>
-                    <div className={`items-center justify-center gap-5 py-3 h-18 ${tier2Data.page > 1 ? "flex" : "hidden"}`}>
+                    <div className={`items-center justify-center gap-5 py-3 h-18 ${tier2Data?.page > 1 ? "flex" : "hidden"}`}>
                       {/* Previous Button */}
                       <button
                         disabled={tier2Data?.page === 1}
