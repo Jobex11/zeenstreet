@@ -232,9 +232,11 @@ function MailNotification() {
                   </div>
                 )}
 
-                {pingedNotification?.data?.map((notification: NotificationData) => (
-                  <NotificationCard key={notification._id} notification={notification} />
-                ))}
+                <div className="pb-12">
+                  {pingedNotification?.data?.map((notification: NotificationData) => (
+                    <NotificationCard key={notification._id} notification={notification} />
+                  ))}
+                </div>
               </Fragment>}
           </Fragment>
         </div>

@@ -15,6 +15,7 @@ import { useInView } from "react-intersection-observer";
 import {
     useConnectWalletMutation,
     useDisconnectWalletMutation,
+    useGetUsersByIdQuery,
 } from "@/hooks/redux/users";
 import { useGetTelegramId } from "@/hooks/getTelegramId";
 import { toast } from "sonner";
@@ -29,10 +30,17 @@ export default function ConnectTonWallet() {
     const [connectWallet] = useConnectWalletMutation();
     const [disconnectWallet] = useDisconnectWalletMutation();
     const { telegramId } = useGetTelegramId();
+    const { data: user } = useGetUsersByIdQuery("6880808269", {
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+        refetchOnReconnect: true,
+    })
+
+    console.log("User", user.user.walletAddress)
 
     const handleWalletConnection = useCallback(
         async (address: string, isInitialLoad = false) => {
-            setTonWalletAddress(address);
+            setTonWalletAddress(user?.user?.walletAddress);
             setIsLoading(false);
 
             if (telegramId) {
@@ -52,7 +60,7 @@ export default function ConnectTonWallet() {
                 }
             }
         },
-        [connectWallet, telegramId]
+        [connectWallet, telegramId, user?.user?.walletAddress]
     );
 
     const handleWalletDisconnection = useCallback(
