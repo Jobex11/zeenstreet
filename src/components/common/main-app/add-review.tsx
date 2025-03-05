@@ -62,9 +62,17 @@ function AddReview() {
         try {
             const addedReview = await addReview(payload).unwrap();
             toast.success(addedReview.message || "Your review has been submitted!", { className: "text-xs work-sans py-3" });
+
+            setTimeout(() => {
+                if (!addedReview.hasBeenRewardedToday) {
+                    toast.info("You've been rewarded with 1k shares for your review!", { className: "text-xs work-sans py-3" });
+                }
+            }, 2000);
+
             setComment("");
             setRating(0);
             setIsOpen(false);
+
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.log(error);
@@ -77,7 +85,7 @@ function AddReview() {
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
             <DrawerTrigger asChild>
                 <button>
-                    <img src={reviewIcon} className={"h-7 w-7 object-contain object-center"}/>
+                    <img src={reviewIcon} className={"h-7 w-7 object-contain object-center"} />
                 </button>
             </DrawerTrigger>
             <DrawerContent className={"max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000] pb-3 px-3"}>
@@ -120,7 +128,7 @@ function AddReview() {
                         </p>
                     )}
                     <DrawerFooter className={"px-0"}>
-                        <Button type="submit"  disabled={isLoading} className={"h-11 min-w-full bg-orange-600 hover:bg-orange-700"}>
+                        <Button type="submit" disabled={isLoading} className={"h-11 min-w-full bg-orange-600 hover:bg-orange-700"}>
                             {isLoading ? "Processing..." : "Create Review"}
                         </Button>
                     </DrawerFooter>

@@ -321,7 +321,7 @@ function Referral() {
                             dateJoined: string;
                             accountName: string;
                             province: string;
-                            shares: string;
+                            shares: number;
                           }) => (
                             <Referrals key={ref.telegram_id} referrals={ref} />
                           )
@@ -378,7 +378,7 @@ function Referral() {
                             province: string;
                             referredBy: string;
                             dateJoined: string;
-                            shares: string;
+                            shares: number;
                           }) => (
                             <Referrals key={ref.telegram_id} referrals={ref} />
                           )
@@ -438,7 +438,7 @@ interface RefferalsProps {
     accountName: string;
     dateJoined: string;
     province: string;
-    shares: string;
+    shares: number;
     referredBy?: string;
     telegram_id?: string;
   };
@@ -505,7 +505,7 @@ export const Referrals = ({ referrals }: RefferalsProps) => {
           </div>
         </div>
         <div className="flex flex-col items-start justify-start gap-1">
-          <h1 className="text-white text-[10px] text-left font-semibold">{referrals.shares}</h1>
+          <h1 className="text-white text-[10px] text-left font-semibold"><ShareFormatter shares={referrals.shares} /></h1>
           <p className="flex items-center text-[10px] work-sans text-[#00D95F]">
             {referrals.province}
           </p>

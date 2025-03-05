@@ -929,7 +929,6 @@ function Profile() {
                                                             image: string | undefined;
                                                             title: string | undefined;
                                                         }) => (
-
                                                             <Drawer key={card._id}>
                                                                 <DrawerTrigger asChild className="rounded-md border-none">
                                                                     <Card
@@ -966,9 +965,6 @@ function Profile() {
                                                                         <DrawerClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
                                                                             <IoIosClose size={30} color="#A4A4A7" />
                                                                         </DrawerClose>
-                                                                        <h1 className="text-white jarkata font-semibold text-lg capitalize">
-                                                                            {card.title ? card.title : "Card title"}
-                                                                        </h1>
                                                                         <div className={"relative"}>
                                                                             <motion.img
                                                                                 src={card.image}
@@ -998,7 +994,6 @@ function Profile() {
                                 </Fragment>
                             </div>
                         </div>
-
                         {/* Achievments */}
                         <div>
                             <h1 className="text-[#FEFEFF] text-lg font-semibold work-sans mb-6">Achievements</h1>
