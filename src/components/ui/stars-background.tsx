@@ -26,7 +26,7 @@ interface StarBackgroundProps {
 }
 
 export const StarsBackground: React.FC<StarBackgroundProps> = ({
-    starDensity = 0.00029,
+    starDensity = 0.00035,
     allStarsTwinkle = true,
     twinkleProbability = 0.9,
     minTwinkleSpeed = 0.5,
