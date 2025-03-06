@@ -12,17 +12,17 @@ export const WelcomeUser = () => {
     return (
         <div
             className="flex flex-col flex-1 justify-stretch w-full gap-3 min-h-full px-4 relative">
-                <div className="flex flex-col pt-2">
-                    <img loading="eager" src={logo} alt="Ravgenie logo" className="h-fit w-40 object-cover object-center" />
-                </div>
-                <Fade cascade>
-                    <h1 className="text-5xl mt-2 font-bold aqum  leading-[60px] uppercase text-[#FFFFFF]">
-                        THE
-                        <br /> FUTURE
-                        <br /> of Gaming.
-                    </h1>
-                </Fade>
-        
+            <div className="flex flex-col pt-2">
+                <img loading="eager" src={logo} alt="Ravgenie logo" className="h-fit w-40 object-contain object-center" />
+            </div>
+            <Fade cascade>
+                <h1 className="text-5xl mt-2 font-bold aqum leading-[60px] uppercase text-[#FFFFFF] relative z-50">
+                    THE
+                    <br /> FUTURE
+                    <br /> of Gaming.
+                </h1>
+            </Fade>
+
 
             <div
                 style={{
@@ -33,7 +33,7 @@ export const WelcomeUser = () => {
                     backgroundBlendMode: "multiply",
                 }}
                 className="absolute bottom-0 right-0 left-0 w-full z-40 h-[65%] overflow-hidden">
-                <LazyLoadImage effect="blur" src={visionImage} alt="vision image" className="min-h-full w-full object-contain object-center" />
+                <LazyLoadImage effect="blur" src={visionImage} alt="vision image" className="min-h-full w-full object-cover object-center" />
             </div>
             <div className="absolute bottom-0 bg-opacity-40 right-0 left-0 w-full z-50 bg-gradient-to-b from-[rgba(0,0,0,0.1)] to-[#000000] flex items-center justify-between p-4">
                 <div className="flex items-center text-white gap-3 text-sm">

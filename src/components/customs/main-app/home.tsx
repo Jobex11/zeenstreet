@@ -9,7 +9,7 @@ import { RootState } from "@/lib/store";
 import firstBannerImg from "@assets/images/cards/Banner1.jpg";
 import secondBannerImg from "@assets/images/cards/Banner2.jpg";
 import thirdBannerImg from "@assets/images/cards/Banner3.jpg";
-import dotsbg from "@assets/images/dotted-bg.png";
+// import dotsbg from "@assets/images/dotted-bg.png";
 import filter from "@assets/images/icons/filter.svg";
 import taskImg from "@assets/images/icons/tasks_img.svg";
 import CardCarousel from "@/components/shared/card-carousel";
@@ -130,11 +130,11 @@ function Home() {
   return (
     <div className="flex flex-col min-h-full">
       <div
-        style={{
-          backgroundImage: `url(${dotsbg})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        }}
+        // style={{
+        //   backgroundImage: `url(${dotsbg})`,
+        //   backgroundRepeat: "no-repeat",
+        //   backgroundSize: "cover",
+        // }}
         className="flex flex-col py-3 w-full"
       >
         {/* user rewards */}

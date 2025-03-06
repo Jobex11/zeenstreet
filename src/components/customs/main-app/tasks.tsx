@@ -2,7 +2,7 @@ import EventsTasksCategory from "@/components/common/main-app/task-categories/ev
 import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
 import SocialsCategory from "@/components/common/main-app/task-categories/socials";
 import { CardType } from "@/types/card.types";
-import dotsbg from "@assets/images/dotted-bg.png";
+// import dotsbg from "@assets/images/dotted-bg.png";
 import taskImg from "@assets/images/icons/tasks_img.svg";
 import ReferralsCategory from "@components/common/main-app/task-categories/referrals";
 import { Button } from '@components/ui/button';
@@ -104,11 +104,13 @@ function Tasks() {
 
     return (
         <div className='flex flex-col min-h-full w-full'>
-            <div style={{
-                backgroundImage: `url(${dotsbg})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover"
-            }} className='py-3 h-full px-3 min-w-full '>
+            <div 
+            // style={{
+            //     backgroundImage: `url(${dotsbg})`,
+            //     backgroundRepeat: "no-repeat",
+            //     backgroundSize: "cover"
+            // }}
+             className='py-3 h-full px-3 min-w-full '>
                 {/* task header */}
                 <header className="flex flex-col gap-3 w-full">
                     {isLoadingCards && <div>

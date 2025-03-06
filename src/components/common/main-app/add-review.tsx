@@ -64,10 +64,11 @@ function AddReview() {
             toast.success(addedReview.message || "Your review has been submitted!", { className: "text-xs work-sans py-3" });
 
             setTimeout(() => {
-                if (!addedReview.hasBeenRewardedToday) {
+                if (!addedReview.rewardedToday) {
                     toast.info("You've been rewarded with 1k shares for your review!", { className: "text-xs work-sans py-3" });
                 }
-            }, 2000);
+                triggerErrorVibration();
+            }, 4000);
 
             setComment("");
             setRating(0);

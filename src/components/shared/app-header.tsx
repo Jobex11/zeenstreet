@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import dotsbg from "@assets/images/dotted-bg.png";
+// import dotsbg from "@assets/images/dotted-bg.png";
 import { Link } from "react-router-dom";
 import { useGetNotificationsQuery } from "@hooks/redux/notifications";
 import avatarImg from "@assets/images/icons/users_avatar.svg";
@@ -10,7 +10,7 @@ import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 
 function Header() {
-  
+
   const [page] = useState(0);
   const [unseenCount, setUnseenCount] = useState(0);
   const limit = 10;
@@ -78,11 +78,12 @@ function Header() {
 
   return (
     <div
-      style={{
-        backgroundImage: `url(${dotsbg})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-      }}
+      // style={{
+      //   backgroundImage: `url(${dotsbg})`,
+      //   backgroundRepeat: "no-repeat",
+      //   backgroundSize: "cover",
+      //   backgroundBlendMode: "multiply"
+      // }}
       className="h-fit w-full top-0 sticky z-50"
     >
       <header className="flex items-center justify-between w-full py-4 px-3 ">

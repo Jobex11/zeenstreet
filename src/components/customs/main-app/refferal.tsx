@@ -1,6 +1,6 @@
 import CardWrapper from "@/components/shared/cards/card-wrapper";
 import { triggerErrorVibration } from "@/lib/utils";
-import dotsbg from "@assets/images/dotted-bg.png";
+// import dotsbg from "@assets/images/dotted-bg.png";
 import tier1_img from "@assets/images/icons/tier1_friend.svg";
 import tier2_img from "@assets/images/icons/tier2_friend.svg";
 import avatarImg from "@assets/images/icons/users_avatar.svg";
@@ -179,11 +179,11 @@ function Referral() {
     <div className="flex flex-col h-full">
       {showConfetti && <Confetti width={width} height={height} />}
       <div
-        style={{
-          backgroundImage: `url(${dotsbg})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        }}
+        // style={{
+        //   backgroundImage: `url(${dotsbg})`,
+        //   backgroundRepeat: "no-repeat",
+        //   backgroundSize: "cover",
+        // }}
         className="flex flex-col pt-3 h-full"
       >
         <div className="px-4 flex flex-col gap-5">

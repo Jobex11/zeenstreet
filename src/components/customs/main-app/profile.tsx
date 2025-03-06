@@ -15,7 +15,7 @@ import light_force from "@assets/images/cards/Light.png";
 import water_force from "@assets/images/cards/water.png";
 import wave_force from "@assets/images/cards/wave.png";
 import wood_force from "@assets/images/cards/wood.png";
-import dotsbg from "@assets/images/dotted-bg.png";
+// import dotsbg from "@assets/images/dotted-bg.png";
 import CardWrapper from "@/components/shared/cards/card-wrapper";
 import { ShareFormatter } from "@/components/shared/shareFormatter";
 import ConnectTonWallet from "@/components/shared/ton-connect-btn";
@@ -703,16 +703,14 @@ function Profile() {
         }
     ]
 
-
-
     return (
         <div className="flex flex-col min-h-full">
             <div
-                style={{
-                    backgroundImage: `url(${dotsbg})`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "cover",
-                }}
+                // style={{
+                //     backgroundImage: `url(${dotsbg})`,
+                //     backgroundRepeat: "no-repeat",
+                //     backgroundSize: "cover",
+                // }}
                 className={`flex flex-col flex-1 py-3`}
             >
                 <div className="px-4 flex flex-col gap-3 pb-[5rem]">
@@ -811,7 +809,7 @@ function Profile() {
                                             <DrawerContent
                                                 aria-describedby={undefined}
                                                 aria-description="dialog"
-                                                className="flex flex-col work-sans bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 pb-5 gap-6 rounded-lg shadow-xl"
+                                                className="flex flex-col work-sans max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 pb-5 gap-6 rounded-lg shadow-xl"
                                             >
                                                 <DrawerTitle className="sr-only" />
                                                 <div className="relative flex flex-col items-center justify-center w-full gap-4">
@@ -958,7 +956,7 @@ function Profile() {
                                                                 <DrawerContent
                                                                     aria-describedby={undefined}
                                                                     aria-description="dialog"
-                                                                    className="flex flex-col max-h-fit bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 rounded-lg gap-3"
+                                                                    className="flex flex-col max-h-fit max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 rounded-lg gap-3"
                                                                 >
                                                                     <DrawerTitle className="sr-only" />
                                                                     <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-3 gap-5">
@@ -1025,7 +1023,7 @@ function Profile() {
                                                                 </div>
                                                             </DrawerTrigger>
                                                             <DrawerContent aria-describedby={undefined}
-                                                                aria-description="dialog" className="bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-t-xl px-6 py-8">
+                                                                aria-description="dialog" className="max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000] border-none rounded-t-xl px-6 py-8">
                                                                 <DrawerClose className="absolute top-4 right-4 text-[#A4A4A7] hover:text-white transition-colors">
                                                                     <IoIosClose size={29} />
                                                                 </DrawerClose>

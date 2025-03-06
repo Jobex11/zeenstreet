@@ -1,4 +1,4 @@
-import dotsbg from "@assets/images/dotted-bg.png";
+// import dotsbg from "@assets/images/dotted-bg.png";
 import { Skeleton } from "@components/ui/skeleton";
 import { useGetNotificationsQuery, useGetPingedNotificationsQuery } from "@hooks/redux/notifications";
 import moment from 'moment';
@@ -87,11 +87,11 @@ function MailNotification() {
   return (
     <div className='flex flex-col h-screen'>
       <div
-        style={{
-          backgroundImage: `url(${dotsbg})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        }}
+        // style={{
+        //   backgroundImage: `url(${dotsbg})`,
+        //   backgroundRepeat: "no-repeat",
+        //   backgroundSize: "cover",
+        // }}
         className='flex flex-col flex-1 py-3'
       >
         <div className="flex flex-col px-4">

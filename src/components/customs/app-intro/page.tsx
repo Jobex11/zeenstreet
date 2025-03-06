@@ -96,7 +96,6 @@ export default function ZeenAppIntro() {
     }, [isLoading, allConfirmed, navigate, users]);
 
 
-
     const getBackgroundStyles = () => {
         const isSocialsOrRewards = [SCREENS.SOCIALS, SCREENS.REWARDS].includes(
             currentScreen
