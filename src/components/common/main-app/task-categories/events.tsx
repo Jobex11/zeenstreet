@@ -121,6 +121,7 @@ export default function EventsTasksCategory({
                         timeRemaining={tasks.timeRemaining}
                         disabled={completing || taskCompleted}
                         btnTitle={btnTitle}
+                        special={special}
                         telegram_id={user?.user?.telegram_id}
                         onClick={handleButtonClick}
                         countdown={tasks.countdown}

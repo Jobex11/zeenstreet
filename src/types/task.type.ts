@@ -13,7 +13,7 @@ interface BaseTask {
 interface PartnerTask extends BaseTask {
     chat_id: string;
     url: string;
-    type: string;
+    type: "Special" | "normal";
 }
 
 interface RefTask extends BaseTask {
@@ -22,7 +22,7 @@ interface RefTask extends BaseTask {
 
 interface EventTask extends BaseTask {
     url: string;
-    type: string;
+    type: "Special" | "normal";
 }
 
 interface SocialTask extends BaseTask {
@@ -39,20 +39,20 @@ interface CommonProps {
 // Specific Props for Each Case
 export interface PartnersProps extends CommonProps {
     tasks: PartnerTask;
-    special: string;
+    special: "Special" | "normal";
 }
 
 export interface RefProps extends CommonProps {
     tasks: RefTask;
-    type: string;
+    type: "Special" | "normal";
 }
 
 export interface EventsProps extends CommonProps {
     tasks: EventTask;
-    special: string;
+    special: "Special" | "normal";
 }
 
 export interface SocialTasksProps extends CommonProps {
     tasks: SocialTask;
-    type?: string;
+    type: "Special" | "normal";
 }

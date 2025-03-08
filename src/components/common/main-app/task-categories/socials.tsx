@@ -107,6 +107,7 @@ export default function SocialsCategory({
                                 ? "Check"
                                 : "Start"}
                         disabled={completing}
+                        special={type}
                         countdown={tasks.countdown}
                         shares={tasks.shares}
                         baseReward={tasks.baseReward}

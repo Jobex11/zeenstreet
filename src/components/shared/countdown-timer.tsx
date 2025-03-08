@@ -16,9 +16,10 @@ interface Timer {
     onClick: () => void;
     btnTitle: string;
     telegram_id: string;
+    special: "Special" | "normal"
 }
 
-export const CountdownTimer = ({ timeRemaining, disabled, telegram_id, btnTitle, onClick, countdown, _id, shares, baseReward }: Timer) => {
+export const CountdownTimer = ({ timeRemaining, disabled, special, telegram_id, btnTitle, onClick, countdown, _id, shares, baseReward }: Timer) => {
     const TIMER_KEY = `timer-${telegram_id}`;
     const [progress, setProgress] = useState<number>(0);
 
@@ -28,7 +29,7 @@ export const CountdownTimer = ({ timeRemaining, disabled, telegram_id, btnTitle,
 
         if (savedTime) {
             const { savedTimeLeft, lastUpdated } = JSON.parse(savedTime);
-            const elapsed = Math.floor((now - lastUpdated) / 1000); // Time elapsed in seconds
+            const elapsed = Math.floor((now - lastUpdated) / 1000);
             const calculatedTimeLeft = Math.max(savedTimeLeft - elapsed, 0);
 
             return Math.min(timeRemaining, calculatedTimeLeft);
@@ -70,13 +71,13 @@ export const CountdownTimer = ({ timeRemaining, disabled, telegram_id, btnTitle,
 
     return (
         <div>
-            <div>
+            <div className={`${special !== "Special" && "hidden"}`}>
                 <Progress.Root
-                    className="relative h-[10px] w-full overflow-hidden rounded-full bg-white my-1"
+                    className={`relative h-[10px] w-full overflow-hidden rounded-full bg-white my-1 `}
                     style={{
                         transform: "translateZ(0)",
                     }}
-                    value={progress|| 0}
+                    value={progress || 0}
                 >
                     <Progress.Indicator
                         className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] size-full bg-[#D25804] rounded-r-full transition-transform duration-200"

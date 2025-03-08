@@ -1,8 +1,15 @@
-import { PropsWithChildren } from 'react';
+import { lazy, PropsWithChildren } from 'react';
 import Header from '../shared/app-header';
 import BottmNavigation from '../shared/bottom-nav';
-import { ShootingStars } from "@components/ui/shooting-stars";
-import { StarsBackground } from "@components/ui/stars-background";
+
+const ShootingStars = lazy(() => 
+  import("@components/ui/shooting-stars").then((mod) => ({ default: mod.ShootingStars }))
+);
+
+const StarsBackground = lazy(() => 
+  import("@components/ui/stars-background").then((mod) => ({ default: mod.StarsBackground }))
+);
+
 
 function MainappLayout({ children }: PropsWithChildren) {
   return (

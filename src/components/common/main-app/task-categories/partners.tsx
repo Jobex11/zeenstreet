@@ -185,6 +185,7 @@ export default function PartnersTasksCategory({ tasks, telegram_id, refetch, spe
                         disabled={completingPartners || taskCompleted}
                         btnTitle={btnTitle}
                         telegram_id={user?.user?.telegram_id}
+                        special={special}
                         onClick={handleButtonClick}
                         countdown={tasks.countdown}
                         shares={tasks.shares}
