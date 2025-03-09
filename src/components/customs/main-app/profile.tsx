@@ -15,7 +15,6 @@ import light_force from "@assets/images/cards/Light.png";
 import water_force from "@assets/images/cards/water.png";
 import wave_force from "@assets/images/cards/wave.png";
 import wood_force from "@assets/images/cards/wood.png";
-import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import card_empty from "@assets/images/icons/empty_card.svg"
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerTrigger } from "@components/ui/drawer";
@@ -27,24 +26,24 @@ import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import { Key, useState, useMemo } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
-import { toast } from "sonner";
 import { Fragment } from "react";
-import { Skeleton } from "@components/ui/skeleton"
 import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
 import { triggerErrorVibration } from "@/lib/utils";
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
 import { useGetTelegramId } from "@hooks/getTelegramId"
 import { RootState } from "@/lib/store";
-import { motion } from "framer-motion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useSelector } from "react-redux";
 import { lazy } from "react";
+import { motion } from "framer-motion"
+import { toast } from "sonner";
 
 const CardWrapper = lazy(() => import("@/components/shared/cards/card-wrapper"));
 const ConnectTonWallet = lazy(() => import("@/components/shared/ton-connect-btn"));
-const ShareFormatter = lazy(() =>
-    import("@/components/shared/shareFormatter").then((mod) => ({ default: mod.ShareFormatter }))
-);
+const ShareFormatter = lazy(() => import("@/components/shared/shareFormatter").then((mod) => ({ default: mod.ShareFormatter })));
+const Skeleton = lazy(() => import("@components/ui/skeleton").then((mod) => ({ default: mod.Skeleton })));
+const Button = lazy(() => import("@components/ui/button").then((mod) => ({ default: mod.Button })));
+
 
 const wealthClass = [
     {

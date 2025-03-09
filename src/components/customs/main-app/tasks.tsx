@@ -1,9 +1,6 @@
 import { usePagination } from "@/hooks/usePagination";
 import { CardType } from "@/types/card.types";
 import taskImg from "@assets/images/icons/tasks_img.svg";
-import { Button } from '@components/ui/button';
-import { Card } from "@components/ui/card";
-import { Skeleton } from "@components/ui/skeleton";
 import { useGetTelegramId } from "@hooks/getTelegramId";
 import { useGetAllcardsQuery } from "@hooks/redux/cards";
 import { useGetReferralTaskQuery } from "@hooks/redux/referrals";
@@ -16,7 +13,15 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { SlLock } from 'react-icons/sl';
 import { useSearchParams } from "react-router-dom";
 
-
+const Button = lazy(() =>
+    import("@components/ui/button").then((mod) => ({ default: mod.Button }))
+);
+const Skeleton = lazy(() =>
+    import("@components/ui/skeleton").then((mod) => ({ default: mod.Skeleton }))
+);
+const Card = lazy(() =>
+    import("@components/ui/card").then((mod) => ({ default: mod.Card }))
+);
 const EventsTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/events"));
 const PartnersTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/partners"));
 const SocialsCategory = lazy(() => import("@/components/common/main-app/task-categories/socials"));
@@ -105,8 +110,8 @@ function Tasks() {
 
     return (
         <div className='flex flex-col min-h-full w-full'>
-            <div 
-             className='py-3 h-full px-3 min-w-full '>
+            <div
+                className='py-3 h-full px-3 min-w-full '>
                 {/* task header */}
                 <header className="flex flex-col gap-3 w-full">
                     {isLoadingCards && <div>

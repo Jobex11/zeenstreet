@@ -1,8 +1,6 @@
-// import dotsbg from "@assets/images/dotted-bg.png";
-import { Skeleton } from "@components/ui/skeleton";
 import { useGetNotificationsQuery, useGetPingedNotificationsQuery } from "@hooks/redux/notifications";
 import moment from 'moment';
-import { Fragment, useState } from "react";
+import { Fragment, lazy, useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
 import { TbBellRinging2 } from "react-icons/tb";
 import { Input } from "@components/ui/input";
@@ -16,10 +14,17 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { GiPingPongBat } from "react-icons/gi";
 import { format } from "date-fns"
 import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo';
-import AddReview from "@/components/common/main-app/add-review";
+
+const Card = lazy(() =>
+  import("@components/ui/card").then((mod) => ({ default: mod.Card }))
+);
+const Skeleton = lazy(() =>
+  import("@components/ui/skeleton").then((mod) => ({ default: mod.Skeleton }))
+);
+const AddReview = lazy(() => import("@/components/common/main-app/add-review"));
 
 interface NotificationTypes {
   _id: string
@@ -78,7 +83,7 @@ function MailNotification() {
     notification.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const hasFilteredResults = filteredNotifications && filteredNotifications.length > 0;
+  const hasFilteredResults = filteredNotifications && filteredNotifications?.length > 0;
 
   const handleActiveTabs = (name: string) => {
     setSearchParams({ tab: name });
@@ -87,11 +92,6 @@ function MailNotification() {
   return (
     <div className='flex flex-col h-screen'>
       <div
-        // style={{
-        //   backgroundImage: `url(${dotsbg})`,
-        //   backgroundRepeat: "no-repeat",
-        //   backgroundSize: "cover",
-        // }}
         className='flex flex-col flex-1 py-3'
       >
         <div className="flex flex-col px-4">
@@ -127,7 +127,7 @@ function MailNotification() {
           <Fragment>
             {activeTab === "In-app Notifications" ?
               <Fragment>
-                <div className={`${notifications?.notifications.length >= 10 ? "block" : "hidden"} relative mb-3`}>
+                <div className={`${notifications?.notifications?.length >= 10 ? "block" : "hidden"} relative mb-3`}>
                   <Input
                     placeholder="Search notifications..."
                     value={searchQuery}

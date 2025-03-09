@@ -1,16 +1,10 @@
-import CardWrapper from "@/components/shared/cards/card-wrapper";
-import { triggerErrorVibration } from "@/lib/utils";
-// import dotsbg from "@assets/images/dotted-bg.png";
 import tier1_img from "@assets/images/icons/tier1_friend.svg";
 import tier2_img from "@assets/images/icons/tier2_friend.svg";
 import avatarImg from "@assets/images/icons/users_avatar.svg";
 import logo from "@assets/images/icons/zenstreet_logo.png";
-import { ShareFormatter } from "@/components/shared/shareFormatter";
-import { Button } from "@components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle } from "@components/ui/drawer";
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
-import { Skeleton } from "@components/ui/skeleton";
 import {
   useCliamReferralSharesMutation,
   useGetReferralLinkQuery,
@@ -24,8 +18,7 @@ import {
 } from "@hooks/redux/tg_photo";
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import useWindowSize from "@hooks/useWindowsize";
-import { Fragment, useState } from "react";
-import Confetti from "react-confetti";
+import { Fragment, lazy, useState } from "react";
 import { IoCopyOutline } from "react-icons/io5";
 import { MdInfo } from "react-icons/md";
 import { RiShareLine } from "react-icons/ri";
@@ -33,7 +26,19 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { toast } from "sonner";
 import { useGetTelegramId } from "@hooks/getTelegramId"
 import { HiMiniUsers } from "react-icons/hi2";
+import { triggerErrorVibration } from "@/lib/utils";
 
+const Skeleton = lazy(() =>
+  import("@components/ui/skeleton").then((mod) => ({ default: mod.Skeleton }))
+);
+const Button = lazy(() =>
+  import("@components/ui/button").then((mod) => ({ default: mod.Button }))
+);
+const ShareFormatter = lazy(() =>
+  import("@/components/shared/shareFormatter").then((mod) => ({ default: mod.ShareFormatter }))
+);
+const Confetti = lazy(() => import("react-confetti"));
+const CardWrapper = lazy(() => import("@/components/shared/cards/card-wrapper"));
 
 interface Referral {
   userLogo: string;

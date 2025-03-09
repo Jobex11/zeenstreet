@@ -1,13 +1,20 @@
 import sprinkledStars from "@assets/images/icons/sprinkled_stars.png"
 import avatarImg from "@assets/images/icons/users_avatar.svg"
-import { ShareFormatter } from '@/components/shared/shareFormatter'
 import { Avatar, AvatarImage } from "@components/ui/avatar"
-import { ScrollArea } from '@components/ui/scroll-area'
-import { Skeleton } from '@components/ui/skeleton'
 import { useGetFilePathQuery, useGetTelegramUserPhotoUrlQuery } from '@hooks/redux/tg_photo'
 import { useGetAllUsersQuery } from '@hooks/redux/users'
-import { Fragment, useState } from 'react'
+import { Fragment, lazy, useState } from 'react'
 import { useGetTelegramId } from "@hooks/getTelegramId"
+
+const ShareFormatter = lazy(() =>
+    import("@/components/shared/shareFormatter").then((mod) => ({ default: mod.ShareFormatter }))
+);
+const Skeleton = lazy(() =>
+    import("@components/ui/skeleton").then((mod) => ({ default: mod.Skeleton }))
+);
+const ScrollArea = lazy(() =>
+    import("@components/ui/scroll-area").then((mod) => ({ default: mod.ScrollArea }))
+);
 
 interface User {
     username: string;

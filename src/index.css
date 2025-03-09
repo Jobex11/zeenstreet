@@ -162,3 +162,11 @@ body,html {
     --slide-size: 100%;
   }
 }
+
+.bg-container {
+    background: url("@assets/images/icons/Rave.png"), url("@assets/images/icons/GENIE.png");
+    background-repeat: no-repeat, no-repeat;
+    background-size: contain, contain;
+    background-position: center, bottom;
+    background-blend-mode: multiply;
+}

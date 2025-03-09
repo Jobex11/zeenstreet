@@ -1,7 +1,7 @@
 import { useGetReferralTaskQuery } from "@/hooks/redux/referrals";
 import { useGetEventsTasksQuery, useGetPartnersTasksQuery, useGetSocialTasksQuery } from "@/hooks/redux/tasks";
+import { usePagination } from "@/hooks/usePagination";
 import { RootState } from "@/lib/store";
-import { lazy } from "react";
 import firstBannerImg from "@assets/images/cards/Banner1.jpg";
 import secondBannerImg from "@assets/images/cards/Banner2.jpg";
 import thirdBannerImg from "@assets/images/cards/Banner3.jpg";
@@ -12,15 +12,14 @@ import { useGetTelegramId } from "@hooks/getTelegramId";
 import { useGetAllRanksQuery } from "@hooks/redux/ranks";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
 import { getRankIconColor, getUserRank } from "@lib/utils";
-import { Fragment, useMemo } from "react";
+import { Fragment, lazy, useMemo } from "react";
 import { FaAward } from "react-icons/fa6";
 import { FiLoader } from "react-icons/fi";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { usePagination } from "@/hooks/usePagination";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { NoDataMessage } from "./tasks"
+import { NoDataMessage } from "./tasks";
 
 const EventsTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/events"));
 const PartnersTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/partners"));

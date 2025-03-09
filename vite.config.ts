@@ -68,8 +68,14 @@ export default defineConfig({
       'tailwindcss-animate',
     ],
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "src/styles/variables.scss";`,
+      },
+    },
+  },
   build: {
-
     rollupOptions: {
       output: {
         manualChunks: {
