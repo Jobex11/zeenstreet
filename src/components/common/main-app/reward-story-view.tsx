@@ -1,7 +1,6 @@
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerDescription, DrawerTrigger } from "@components/ui/drawer";
 import { useGetTelegramId } from "@hooks/getTelegramId";
 import { useRewardForStoryViewsMutation, useGetStoryViewDetailsQuery, storiesApi, 
-    // useGetAllStoryQuery
  } from "@hooks/redux/stories";
 import { Fragment, useEffect } from "react";
 import { Button } from "@components/ui/button";
@@ -21,7 +20,7 @@ interface RewardMapping {
     rewardShares: number;
 }
 
-export function RewardForStoryViews() {
+export default function RewardForStoryViews() {
 
     const dispatch = useDispatch();
     const { telegramId } = useGetTelegramId();
@@ -34,15 +33,6 @@ export function RewardForStoryViews() {
         refetchOnMountOrArgChange: true,
         pollingInterval: 20,
     });
-
-    // const {
-    //     data: story,
-    // } = useGetAllStoryQuery(telegramId ?? "", {
-    //     skip: !telegramId,
-    //     refetchOnReconnect: true,
-    //     refetchOnFocus: true,
-    //     refetchOnMountOrArgChange: true,
-    // });
 
     const rewardMapping: RewardMapping[] = [
         { views: 10, rewardShares: 55 },

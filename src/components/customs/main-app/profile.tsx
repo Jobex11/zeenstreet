@@ -15,10 +15,6 @@ import light_force from "@assets/images/cards/Light.png";
 import water_force from "@assets/images/cards/water.png";
 import wave_force from "@assets/images/cards/wave.png";
 import wood_force from "@assets/images/cards/wood.png";
-// import dotsbg from "@assets/images/dotted-bg.png";
-import CardWrapper from "@/components/shared/cards/card-wrapper";
-import { ShareFormatter } from "@/components/shared/shareFormatter";
-import ConnectTonWallet from "@/components/shared/ton-connect-btn";
 import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import card_empty from "@assets/images/icons/empty_card.svg"
@@ -42,7 +38,13 @@ import { RootState } from "@/lib/store";
 import { motion } from "framer-motion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useSelector } from "react-redux";
+import { lazy } from "react";
 
+const CardWrapper = lazy(() => import("@/components/shared/cards/card-wrapper"));
+const ConnectTonWallet = lazy(() => import("@/components/shared/ton-connect-btn"));
+const ShareFormatter = lazy(() =>
+    import("@/components/shared/shareFormatter").then((mod) => ({ default: mod.ShareFormatter }))
+);
 
 const wealthClass = [
     {
@@ -706,11 +708,6 @@ function Profile() {
     return (
         <div className="flex flex-col min-h-full">
             <div
-                // style={{
-                //     backgroundImage: `url(${dotsbg})`,
-                //     backgroundRepeat: "no-repeat",
-                //     backgroundSize: "cover",
-                // }}
                 className={`flex flex-col flex-1 py-3`}
             >
                 <div className="px-4 flex flex-col gap-3 pb-[5rem]">

@@ -1,20 +1,12 @@
-import SendPingNotification from "@/components/common/main-app/send-ping-notification";
-import EventsTasksCategory from "@/components/common/main-app/task-categories/events";
-import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
-import ReferralsCategory from "@/components/common/main-app/task-categories/referrals";
-import SocialsCategory from "@/components/common/main-app/task-categories/socials";
 import { useGetReferralTaskQuery } from "@/hooks/redux/referrals";
 import { useGetEventsTasksQuery, useGetPartnersTasksQuery, useGetSocialTasksQuery } from "@/hooks/redux/tasks";
 import { RootState } from "@/lib/store";
+import { lazy } from "react";
 import firstBannerImg from "@assets/images/cards/Banner1.jpg";
 import secondBannerImg from "@assets/images/cards/Banner2.jpg";
 import thirdBannerImg from "@assets/images/cards/Banner3.jpg";
-// import dotsbg from "@assets/images/dotted-bg.png";
 import filter from "@assets/images/icons/filter.svg";
 import taskImg from "@assets/images/icons/tasks_img.svg";
-import CardCarousel from "@/components/shared/card-carousel";
-import { RewardForStoryViews } from "@components/common/main-app/reward-story-view";
-import { ShareFormatter } from "@/components/shared/shareFormatter";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@components/ui/dropdown-menu";
 import { useGetTelegramId } from "@hooks/getTelegramId";
 import { useGetAllRanksQuery } from "@hooks/redux/ranks";
@@ -26,11 +18,21 @@ import { FiLoader } from "react-icons/fi";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { NoDataMessage } from "./tasks";
-import ShareToStory from "@/components/common/main-app/stories";
 import { usePagination } from "@/hooks/usePagination";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { NoDataMessage } from "./tasks"
 
+const EventsTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/events"));
+const PartnersTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/partners"));
+const SendPingNotification = lazy(() => import("@/components/common/main-app/send-ping-notification"));
+const SocialsCategory = lazy(() => import("@/components/common/main-app/task-categories/socials"));
+const RewardForStoryViews = lazy(() => import("@/components/common/main-app/reward-story-view"));
+const ReferralsCategory = lazy(() => import("@/components/common/main-app/task-categories/referrals"));
+const CardCarousel = lazy(() => import("@/components/shared/card-carousel"));
+const ShareToStory = lazy(() => import("@/components/common/main-app/stories"));
+const ShareFormatter = lazy(() =>
+  import("@/components/shared/shareFormatter").then((mod) => ({ default: mod.ShareFormatter }))
+);
 
 const imageUrls = [
   firstBannerImg,
@@ -130,11 +132,6 @@ function Home() {
   return (
     <div className="flex flex-col min-h-full">
       <div
-        // style={{
-        //   backgroundImage: `url(${dotsbg})`,
-        //   backgroundRepeat: "no-repeat",
-        //   backgroundSize: "cover",
-        // }}
         className="flex flex-col py-3 w-full"
       >
         {/* user rewards */}
@@ -215,7 +212,7 @@ function Home() {
                   isLoading={isLoadingRef}
                   data={refTasks}
                   imageSrc={taskImg}
-                  message="No Available Tasks"
+                  message="No Available Referral Tasks"
                 />
                 {isSuccess && refTasks?.tasks?.length > 0 && refTasks?.tasks?.map((tasks: { _id: string; title: string; image: string; shares: number; refCount: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                   <ReferralsCategory

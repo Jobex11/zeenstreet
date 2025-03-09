@@ -1,25 +1,26 @@
-import EventsTasksCategory from "@/components/common/main-app/task-categories/events";
-import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
-import SocialsCategory from "@/components/common/main-app/task-categories/socials";
+import { usePagination } from "@/hooks/usePagination";
 import { CardType } from "@/types/card.types";
-// import dotsbg from "@assets/images/dotted-bg.png";
 import taskImg from "@assets/images/icons/tasks_img.svg";
-import ReferralsCategory from "@components/common/main-app/task-categories/referrals";
 import { Button } from '@components/ui/button';
 import { Card } from "@components/ui/card";
 import { Skeleton } from "@components/ui/skeleton";
+import { useGetTelegramId } from "@hooks/getTelegramId";
 import { useGetAllcardsQuery } from "@hooks/redux/cards";
 import { useGetReferralTaskQuery } from "@hooks/redux/referrals";
-import { useGetEventsTasksQuery, useGetPartnersTasksQuery, useGetSocialTasksQuery } from "@hooks/redux/tasks";
 import { useGetUserSharesQuery } from "@hooks/redux/shares";
+import { useGetEventsTasksQuery, useGetPartnersTasksQuery, useGetSocialTasksQuery } from "@hooks/redux/tasks";
 import * as Progress from "@radix-ui/react-progress";
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, lazy, useRef } from "react";
 import { FiLoader } from "react-icons/fi";
-import { SlLock } from 'react-icons/sl';
-import { useGetTelegramId } from "@hooks/getTelegramId"
-import { useSearchParams } from "react-router-dom";
-import { usePagination } from "@/hooks/usePagination";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { SlLock } from 'react-icons/sl';
+import { useSearchParams } from "react-router-dom";
+
+
+const EventsTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/events"));
+const PartnersTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/partners"));
+const SocialsCategory = lazy(() => import("@/components/common/main-app/task-categories/socials"));
+const ReferralsCategory = lazy(() => import("@/components/common/main-app/task-categories/referrals"));
 
 function Tasks() {
 
@@ -105,11 +106,6 @@ function Tasks() {
     return (
         <div className='flex flex-col min-h-full w-full'>
             <div 
-            // style={{
-            //     backgroundImage: `url(${dotsbg})`,
-            //     backgroundRepeat: "no-repeat",
-            //     backgroundSize: "cover"
-            // }}
              className='py-3 h-full px-3 min-w-full '>
                 {/* task header */}
                 <header className="flex flex-col gap-3 w-full">
