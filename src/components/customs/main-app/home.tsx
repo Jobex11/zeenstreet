@@ -42,8 +42,10 @@ const imageUrls = [
 function Home() {
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = searchParams.get("tab") || "Referral";
   const btnTabs = ["Events", "Referral", "Partners", "Social"];
+
+
+
   const { telegramId } = useGetTelegramId();
   const limit = 10;
   const {
@@ -105,7 +107,17 @@ function Home() {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
+  
+  const availableTabs = [
+    { name: "Referral", tasks: refTasks?.tasks?.length },
+    { name: "Social", tasks: socialTasks?.tasks?.length },
+    { name: "Events", tasks: eventsTasks?.tasks?.length },
+    { name: "Partners", tasks: partnersTasks?.tasks?.length }
+  ];
 
+  // Find the first tab with tasks
+  const defaultTab = availableTabs.find(tab => tab.tasks > 0)?.name || "Referral";
+  const activeTab = searchParams.get("tab") || defaultTab;
 
   const userRank = useMemo(
     () =>

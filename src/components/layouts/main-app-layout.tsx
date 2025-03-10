@@ -8,18 +8,20 @@ const StarsBackground = lazy(() =>
   import("@components/ui/stars-background").then((mod) => ({ default: mod.StarsBackground }))
 );
 
-
+ 
 function MainappLayout({ children }: PropsWithChildren) {
   const [showStars, setShowStars] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setShowStars(true), 1000);
+    setTimeout(() => setShowStars(true), 2500);
   }, []);
+  const isProfilePage = window.location.pathname === "/profile"
+
   return (
     <section className='min-h-screen h-screen w-full max-w-screen-sm sm:px-10 flex flex-col flex-1 mx-auto relative bg-gradient-to-b from-[#292734] to-[#000000]'>
       <div className="absolute inset-0 z-0 pointer-events-none">
-        {showStars && <ShootingStars />}
-        {showStars && <StarsBackground />}
+        {!isProfilePage && showStars && <ShootingStars />}
+        {!isProfilePage && showStars && <StarsBackground />}
       </div>
       <Header />
 

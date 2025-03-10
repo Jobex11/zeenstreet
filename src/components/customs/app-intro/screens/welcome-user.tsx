@@ -26,7 +26,7 @@ export const WelcomeUser = () => {
 
             <div
                 className="bg-container absolute bottom-0 right-0 left-0 w-full z-40 h-[65%] overflow-hidden">
-                <LazyLoadImage effect="blur" src={visionImage} alt="vision image" loading="lazy" className="min-h-full w-full object-cover object-center" />
+                <img src={visionImage} alt="vision image" loading="lazy" className="min-h-full w-full object-cover object-center" />
             </div>
             <div className="absolute bottom-0 bg-opacity-40 right-0 left-0 w-full z-50 bg-gradient-to-b from-[rgba(0,0,0,0.1)] to-[#000000] flex items-center justify-between p-4">
                 <div className="flex items-center text-white gap-3 text-sm">

@@ -4,7 +4,6 @@ import {
   type GetDerivedStateFromError,
   type PropsWithChildren,
   type ReactNode,
-  startTransition
 } from 'react';
 import { Button } from "@/components/ui/button";
 import errorImage from "@assets/images/error_page.svg"
@@ -50,9 +49,7 @@ export function ErrorBoundaryError(
   { error }: { error: unknown }
 ) {
   const handleReload = () => {
-    startTransition(() => {
       window.location.reload();
-    })
   };
 
   return (

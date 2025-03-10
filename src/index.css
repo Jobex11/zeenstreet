@@ -170,3 +170,9 @@ body,html {
     background-position: center, bottom;
     background-blend-mode: multiply;
 }
+
+.dots-bg {
+  background: url("@assets/images/dotted-bg.png");
+  background-repeat: repeat;
+  background-size: cover
+}

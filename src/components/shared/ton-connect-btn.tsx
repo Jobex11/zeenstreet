@@ -107,7 +107,7 @@ export default function ConnectTonWallet() {
 
         const unsubscribe = tonConnectUI.onStatusChange(async (wallet) => {
             if (wallet) {
-                await handleWalletConnection(wallet.account.address, false); // Only show toast when status changes
+                await handleWalletConnection(wallet.account.address, false); 
             } else {
                 await handleWalletDisconnection(false);
             }

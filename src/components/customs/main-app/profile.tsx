@@ -1,3 +1,4 @@
+import ConnectTonWallet from "@/components/shared/ton-connect-btn";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { wealthClass } from "@/constants/wealth-class";
 import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
@@ -20,9 +21,8 @@ import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
 import { useSelector } from "react-redux";
 const CardWrapper = lazy(() => import("@/components/shared/cards/card-wrapper"));
-const ConnectTonWallet = lazy(() => import("@/components/shared/ton-connect-btn"));
 const CollectedCards = lazy(() => import("@/components/common/collected-cards"))
-const PowerClass = lazy(() => import("@components/common//power-class"))
+const PowerClass = lazy(() => import("@/components/common/power-class"))
 const ShareFormatter = lazy(() => import("@/components/shared/shareFormatter").then((mod) => ({ default: mod.ShareFormatter })));
 
 
@@ -568,7 +568,7 @@ function Profile() {
     return (
         <div className="flex flex-col min-h-full">
             <div
-                className={`flex flex-col flex-1 py-3`}
+                className={`dots-bg flex flex-col flex-1 py-3`}
             >
                 <div className="px-4 flex flex-col gap-3 pb-[5rem]">
                     {/* card */}

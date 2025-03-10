@@ -53,7 +53,7 @@ export default function SocialsCategory({
                 refetch?.();
                 localStorage.removeItem(TIMER_KEY);
             } else {
-                toast.error("You must join the channel to complete this task!", { className: "text-xs py-3 work-sans" });
+                toast.error("You haven't subscribed to Ravegenie games", { className: "text-xs py-3 work-sans" });
                 triggerErrorVibration()
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
