@@ -127,7 +127,7 @@ function Tasks() {
                             >
                                 <div className="relative w-full h-full">
                                     <img
-                                        src={card.image[0]}
+                                        src={card.image[1]}
                                         alt={`card img ${card.title}`}
                                         fetchPriority="high"
                                         loading="lazy"
