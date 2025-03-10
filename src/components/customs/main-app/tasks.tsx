@@ -205,7 +205,7 @@ function Tasks() {
                                 isLoading={isLoadingRef}
                                 data={refTasks}
                                 imageSrc={taskImg}
-                                message="No Available Tasks"
+                                message="No Available Referral Tasks"
                             />
                             {isSuccess && refTasks?.tasks?.length > 0 && refTasks?.tasks?.map((tasks: { _id: string; title: string; image: string; shares: number; refCount: number; countdown: number; baseReward: number; timeRemaining: number; }) => (
                                 <ReferralsCategory

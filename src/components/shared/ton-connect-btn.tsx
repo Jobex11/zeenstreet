@@ -20,6 +20,7 @@ import {
 import { useGetTelegramId } from "@/hooks/getTelegramId";
 import { toast } from "sonner";
 import walletImage from "@assets/images/icons/wallet_icon.png"
+import { triggerErrorVibration } from "@/lib/utils";
 
 export default function ConnectTonWallet() {
 
@@ -30,7 +31,7 @@ export default function ConnectTonWallet() {
     const [connectWallet] = useConnectWalletMutation();
     const [disconnectWallet] = useDisconnectWalletMutation();
     const { telegramId } = useGetTelegramId();
-    const { data: user } = useGetUsersByIdQuery("6880808269", {
+    const { data: user } = useGetUsersByIdQuery(telegramId, {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
         refetchOnReconnect: true,
@@ -57,6 +58,7 @@ export default function ConnectTonWallet() {
                     toast.error(error?.data?.error || error?.data?.message || "Failed to connect wallet!", {
                         className: "text-xs work-sans py-3"
                     });
+                    triggerErrorVibration()
                 }
             }
         },

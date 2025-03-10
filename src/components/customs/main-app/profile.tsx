@@ -1,4 +1,8 @@
-import wavybg from "@assets/images/card_bg.svg";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { wealthClass } from "@/constants/wealth-class";
+import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
+import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
+import { RootState } from "@/lib/store";
 import achievement_1 from "@assets/images/cards/achievement_1.png";
 import achievement_2 from "@assets/images/cards/achievement_2.png";
 import achievement_3 from "@assets/images/cards/achievement_3.png";
@@ -6,187 +10,44 @@ import achievement_4 from "@assets/images/cards/achievement_4.png";
 import achievement_5 from "@assets/images/cards/achievement_5.png";
 import achievement_6 from "@assets/images/cards/achievement_6.png";
 import achievement_7 from "@assets/images/cards/achievement_7.png";
-import cosmic_force from "@assets/images/cards/cosmic.png";
-import earth_force from "@assets/images/cards/earth.png";
-import fire_force from "@assets/images/cards/fire.png";
-import metal_force from "@assets/images/cards/metal.png";
-import ice_force from "@assets/images/cards/ice.png";
-import light_force from "@assets/images/cards/Light.png";
-import water_force from "@assets/images/cards/water.png";
-import wave_force from "@assets/images/cards/wave.png";
-import wood_force from "@assets/images/cards/wood.png";
-import { Card, CardContent } from "@components/ui/card";
-import card_empty from "@assets/images/icons/empty_card.svg"
+import { CardContent } from "@components/ui/card";
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerTrigger } from "@components/ui/drawer";
-import {
-    useGetUserSharesQuery,
-    useUpdateUserSharesMutation,
-} from "@hooks/redux/shares";
+import { useGetTelegramId } from "@hooks/getTelegramId";
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
-import { Key, useState, useMemo } from "react";
+import { motion } from "framer-motion";
+import { lazy, useMemo } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
-import { Fragment } from "react";
-import { useGetAllWealthClasssQuery } from "@/hooks/redux/wealthclass";
-import { triggerErrorVibration } from "@/lib/utils";
-import { useGetAllRanksQuery } from "@/hooks/redux/ranks";
-import { useGetTelegramId } from "@hooks/getTelegramId"
-import { RootState } from "@/lib/store";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useSelector } from "react-redux";
-import { lazy } from "react";
-import { motion } from "framer-motion"
-import { toast } from "sonner";
-
 const CardWrapper = lazy(() => import("@/components/shared/cards/card-wrapper"));
 const ConnectTonWallet = lazy(() => import("@/components/shared/ton-connect-btn"));
+const CollectedCards = lazy(() => import("@/components/common/collected-cards"))
+const PowerClass = lazy(() => import("@components/common//power-class"))
 const ShareFormatter = lazy(() => import("@/components/shared/shareFormatter").then((mod) => ({ default: mod.ShareFormatter })));
-const Skeleton = lazy(() => import("@components/ui/skeleton").then((mod) => ({ default: mod.Skeleton })));
-const Button = lazy(() => import("@components/ui/button").then((mod) => ({ default: mod.Button })));
-
-
-const wealthClass = [
-    {
-        shareType: "wood_force",
-        name: "Wood Force",
-        rewards: 500,
-        img: wood_force,
-        description:
-            "For those who rise from the deep, a humble start that they keep.",
-    },
-    {
-        shareType: "earth_force",
-        name: "Earth Force",
-        rewards: 700,
-        img: earth_force,
-        description:
-            "Dreams take flight and reach the sky, as these souls soar high.",
-    },
-    {
-        shareType: "metal_force",
-        name: "Metal Force",
-        rewards: 800,
-        img: metal_force,
-        description:
-            "Built on strength, steadfast and sure, power that will always endure.",
-    },
-    {
-        shareType: "wind_force",
-        name: "Wind Force",
-        rewards: 1000,
-        img: wave_force,
-        description:
-            "With goals in sight, they climb and strive, their success comes alive.",
-    },
-    {
-        shareType: "water_force",
-        name: "Water Force",
-        rewards: 1900,
-        img: water_force,
-        description: "Mighty and strong, they rise above, their power known far and wide, like a burning love.",
-    },
-    {
-        shareType: "ice_force",
-        name: "Ice Force",
-        rewards: 1500,
-        img: ice_force,
-        description: "A select few who stand apart, their wisdom flowing like art.",
-    },
-    {
-        shareType: "fire_force",
-        name: "Fire Force",
-        rewards: 1700,
-        img: fire_force,
-        description: "Built to last, a timeless blend, force that will never end.",
-    },
-
-    {
-        shareType: "light_force",
-        name: "Light Force",
-        rewards: 1900,
-        img: light_force,
-        description:
-            "With force and flair, they change the game, their impact is never the same.",
-    },
-    {
-        shareType: "cosmic_force",
-        name: "Cosmic Force",
-        rewards: 2000,
-        img: cosmic_force,
-        description:
-            "Their power is vast, beyond the skies, a legacy that never dies.",
-    },
-];
 
 
 function Profile() {
 
-    const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
     const { telegramId } = useGetTelegramId();
-    const [drawerState, setDrawerState] = useState<{ [key: string]: boolean }>(
-        {}
-    );
     const users = useSelector((state: RootState) => state.userData);
-    const { data: wealthClasses, isLoading: loadingClasses } = useGetAllWealthClasssQuery(undefined, {
+    const { data: wealthClasses } = useGetAllWealthClasssQuery(undefined, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
-    const [updateUserShares, { isLoading: updatingShares }] =
-        useUpdateUserSharesMutation();
-    const { refetch: refetchShares } = useGetUserSharesQuery(
-        telegramId ?? "",
-        {
-            skip: !telegramId,
-            refetchOnReconnect: true,
-            refetchOnFocus: true,
-            refetchOnMountOrArgChange: true,
-        }
-    );
 
-    const { data: userDataCard, isLoading: loadingCollectedCards } = useGetUsersByIdQuery(telegramId, {
+    const { data: userDataCard } = useGetUsersByIdQuery(telegramId, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
+    
     const { data: ranks } = useGetAllRanksQuery(undefined,
         {
             refetchOnReconnect: true,
             refetchOnFocus: true,
             refetchOnMountOrArgChange: true,
         });
-
-    const handleUpdateShares = async (
-        shares: number,
-        shareType: string,
-        itemName: string
-    ) => {
-        try {
-            const response = await updateUserShares({
-                telegram_id: telegramId,
-                shares,
-                shareType,
-            }).unwrap();
-            // console.log({ telegramId:6880808269, shares, shareType });
-            toast.success(response?.message, { className: "text-xs work-sans" });
-            setDrawerState((prevState) => ({
-                ...prevState,
-                [itemName]: false,
-            }));
-            setClaimedRewards((prev) => ({ ...prev, [shareType]: true }));
-            refetchShares();
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            console.error("Error updating shares:", error);
-            toast.error(error?.data?.error || error?.data?.message || "Error updating shares", {
-                className: "text-xs work-sans",
-            });
-            triggerErrorVibration()
-        }
-    };
-
-    const checkIfClaimed = (shareType: string) => claimedRewards[shareType] || false;
-
 
     const determineWealthClassStatus = (
         userShares: number,
@@ -751,243 +612,12 @@ function Profile() {
                         </div>
                     </div>
 
-                    {/*wealth class grid  */}
-                    <div className="min-w-full">
-                        <h1 className="work-sans text-[15px] font-semibold text-[#FEFEFF] pb-2">
-                            Power Classes
-                        </h1>
-                        <ScrollArea className="flex items-center whitespace-nowrap max-w-full ">
-                            <div className="flex w-max space-x-2 gap-1 pb-4">
-                                {wealthClassStatus?.map((item) => {
-                                    return (
-                                        <Drawer
-                                            key={item.name}
-                                            open={drawerState[item.name] || false}
-                                            onOpenChange={() =>
-                                                setDrawerState((prevState) => ({
-                                                    ...prevState,
-                                                    [item.name]: !prevState[item.name],
-                                                }))
-                                            }
-                                        >
-                                            <DrawerTrigger asChild>
-                                                <div>
-                                                    <Card
-                                                        style={{
-                                                            backgroundImage: `url(${wavybg})`,
-                                                            backgroundRepeat: "no-repeat",
-                                                            backgroundSize: "cover",
-                                                        }}
-                                                        className="h-12 min-w-[70px] w-full relative rounded-md border border-gray-300 flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold overflow-hidden"
-                                                    >
-                                                        <img
-                                                            src={item.img}
-                                                            loading="lazy"
-                                                            alt={`wealth class $ {item.name}`}
-                                                            className="h-full w-full object-cover object-center rounded-md"
-                                                        />
-                                                        {loadingClasses ?
-                                                            <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
-                                                                <SlLock size={25} color="white" />
-                                                            </div>
-                                                            :
-                                                            !item.isLocked && (
-                                                                <div className="absolute inset-0 rounded-md bg-black/55 z-20 flex flex-col items-center justify-center">
-                                                                    <SlLock size={25} color="white" />
-                                                                </div>
-                                                            )}
-                                                    </Card>
-                                                    <h1 className="work-sans text-[#FEFEFF] text-[10px] font-normal capitalize text-center pt-1 whitespace-nowrap">
-                                                        {item.name}
-                                                    </h1>
-                                                </div>
-                                            </DrawerTrigger>
-                                            <DrawerContent
-                                                aria-describedby={undefined}
-                                                aria-description="dialog"
-                                                className="flex flex-col work-sans max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000] border-none px-4 pb-5 gap-6 rounded-lg shadow-xl"
-                                            >
-                                                <DrawerTitle className="sr-only" />
-                                                <div className="relative flex flex-col items-center justify-center w-full gap-4">
-                                                    <DrawerClose className="absolute -top-5 right-2 z-40 p-2 bg-gray-800 rounded-full text-white hover:bg-gray-700 transition">
-                                                        <IoIosClose size={24} />
-                                                    </DrawerClose>
-                                                    <div className="relative h-28 w-28">
-                                                        <motion.img
-                                                            src={item.img}
-                                                            loading="lazy"
-                                                            fetchPriority="high"
-                                                            alt="Wealth class image"
-                                                            initial={{ opacity: 0, y: 20 }}
-                                                            animate={{ opacity: 1, y: 0 }}
-                                                            transition={{ duration: 0.5 }}
-                                                            className={`h-full w-full object-cover object-center rounded-full border-4 ${item.isLocked ? "border-orange-500" : "border-gray-600"}  shadow-md`}
-                                                        />
-                                                        <div
-                                                            className={
-                                                                "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <h1 className="text-white font-semibold text-lg capitalize">
-                                                        {item.name}
-                                                    </h1>
-                                                    <p className="text-gray-300 text-sm text-center max-w-md leading-6">
-                                                        {item.description}
-                                                    </p>
-                                                    <div className="h-[2px] w-20 bg-gradient-to-r from-gray-500 to-gray-800 animate-pulse" />
-                                                    <p className="text-gray-400 text-xs text-center max-w-md">
-                                                        {item.unlockMessage}
-                                                    </p>
-                                                    <Button
-                                                        onClick={() => {
-                                                            handleUpdateShares(item.rewards, item.shareType, item.name);
-                                                            setDrawerState((prevState) => ({
-                                                                ...prevState,
-                                                                [item.name]: false,
-                                                            }));
-                                                        }}
-                                                        disabled={
-                                                            updatingShares ||
-                                                            checkIfClaimed(item.shareType) ||
-                                                            !item.isLocked
-                                                        }
-                                                        className={`bg-orange-600 hover:orange-700 rounded-lg py-4 px-6 text-white w-full text-xs h-11 font-medium shadow-lg transform transition-transform hover:scale-105 ${(updatingShares ||
-                                                            checkIfClaimed(item.shareType) ||
-                                                            !item.isLocked) &&
-                                                            "opacity-50 cursor-not-allowed"
-                                                            } `}
-                                                    >
-                                                        {updatingShares
-                                                            ? "Processing..."
-                                                            : checkIfClaimed(item.shareType)
-                                                                ? "Shares already Claimed"
-                                                                : !item.isLocked
-                                                                    ? `+ ${item.rewards} Meet the Requirements First`
-                                                                    : `Claim ${item.rewards} Shares`}
-                                                    </Button>
-                                                </div>
-                                            </DrawerContent>
-                                        </Drawer>
-                                    )
-                                })}
-                            </div>
-                            <ScrollBar orientation="horizontal" />
-                        </ScrollArea>
-                    </div>
+                    {/*power class grid  */}
+                    <PowerClass />
 
 
                     <div className="flex flex-col gap-1.5">
-                        <div>
-                            <div className={"flex items-center justify-between"}>
-                                <h1 className="text-[#FEFEFF] work-sans text-[15px] font-semibold flex items-center gap-2">
-                                    Cards Collected
-                                    <span>
-                                        {userDataCard?.user?.unlockedCards?.length === 0 ? "" : `(${userDataCard?.user?.unlockedCards?.length || 0})`}
-                                    </span>
-                                </h1>
-                                {/* <button type={"button"} className={`${userDataCard?.user?.unlockedCards?.length >= 3 ? "visible" : "invisible"} text - white work - sans text - sm underline hover: text - gray - 400`}>View all</button> */}
-                            </div>
-                            <div className="min-w-full h-full flex-shrink-0 flex items-center pb-4 gap-4 overflow-x-auto">
-                                <Fragment>
-                                    {loadingCollectedCards && <div className={"flex items-center gap-4"}>
-                                        {[0, 1, 2, 3, 4, 5].map((ske) => (
-                                            <Skeleton key={ske} className={"h-48 min-w-[130px] bg-gray-600 shadow-xl"} />
-                                        ))}
-                                    </div>}
-                                    {userDataCard?.user?.unlockedCards?.length === 0 ? (
-                                        <div
-                                            className={
-                                                "flex items-center justify-center relative flex-col gap-2  min-w-full"
-                                            }
-                                        >
-                                            <img src={card_empty} loading="lazy" alt="No card image" className="h-20 w-20 object-contain object-center" />
-
-                                            <p className={"text-sm text-white work-sans text-center"}>
-                                                You don't have any card yet
-                                            </p>
-                                            <div
-                                                className={
-                                                    "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
-                                                }
-                                            />
-                                        </div>
-                                    ) : (
-                                        <ScrollArea className="flex items-center whitespace-nowrap max-w-full ">
-                                            <div className="flex w-max space-x-3 gap-3 pb-5">
-                                                {
-                                                    userDataCard?.user?.unlockedCards &&
-                                                    [...userDataCard.user.unlockedCards]?.reverse()?.map(
-                                                        (card: {
-                                                            _id: Key | string | undefined;
-                                                            image: string | undefined;
-                                                            title: string | undefined;
-                                                        }) => (
-                                                            <Drawer key={card._id}>
-                                                                <DrawerTrigger asChild className="rounded-md border-none">
-                                                                    <Card
-                                                                        style={{
-                                                                            backgroundImage: `url(${wavybg})`,
-                                                                            backgroundRepeat: "no-repeat",
-                                                                            backgroundSize: "cover",
-                                                                        }}
-                                                                        className="h-48 min-w-[130px] relative border-none rounded-md flex flex-col items-center justify-center text-white text-center uppercase aqum font-bold"
-                                                                    >
-                                                                        <img
-                                                                            src={card.image}
-                                                                            loading="lazy"
-                                                                            fetchPriority="high"
-                                                                            height={160}
-                                                                            width={100}
-                                                                            alt="Card image"
-                                                                            className="h-full min-w-full object-cover object-center rounded-md"
-                                                                        />
-                                                                        <div
-                                                                            className={
-                                                                                "absolute z-20 bg-transparent h-full w-full top-0 rounded-md bottom-0"
-                                                                            }
-                                                                        />
-                                                                    </Card>
-                                                                </DrawerTrigger>
-                                                                <DrawerContent
-                                                                    aria-describedby={undefined}
-                                                                    aria-description="dialog"
-                                                                    className="flex flex-col max-h-fit max-w-xl mx-auto bg-gradient-to-b from-[#292734] to-[#000000] border-none px-3 rounded-lg gap-3"
-                                                                >
-                                                                    <DrawerTitle className="sr-only" />
-                                                                    <div className="h-full flex flex-col items-center justify-around w-full pb-10 pt-3 gap-5">
-                                                                        <DrawerClose className=" shadow-none bg-transparent absolute top-2 right-2 z-40 rounded-full text-4xl">
-                                                                            <IoIosClose size={30} color="#A4A4A7" />
-                                                                        </DrawerClose>
-                                                                        <div className={"relative"}>
-                                                                            <motion.img
-                                                                                src={card.image}
-                                                                                loading="lazy"
-                                                                                alt="Refferal Images"
-                                                                                className="h-96 min-w-full object-contain object-center rounded-sm"
-                                                                                initial={{ opacity: 0, y: 20 }}
-                                                                                animate={{ opacity: 1, y: 0 }}
-                                                                                transition={{ duration: 0.5 }}
-                                                                            />
-                                                                            <div
-                                                                                className={
-                                                                                    "absolute z-20 bg-transparent h-full w-full top-0 bottom-0"
-                                                                                }
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                </DrawerContent>
-                                                            </Drawer>
-                                                        )
-                                                    )}
-                                            </div>
-                                            <ScrollBar orientation="horizontal" />
-                                        </ScrollArea>
-                                    )}
-
-                                </Fragment>
-                            </div>
-                        </div>
+                        <CollectedCards />
                         {/* Achievments */}
                         <div>
                             <h1 className="text-[#FEFEFF] text-lg font-semibold work-sans mb-6">Achievements</h1>
@@ -1030,6 +660,7 @@ function Profile() {
                                                                         alt={`${a.name} achievement`}
                                                                         className={`${a.isLocked ? "grayscale-0" : "grayscale"} h-28 w-h-28 object-contain rounded-lg`}
                                                                         initial={{ opacity: 0, y: 20 }}
+                                                                        loading="lazy"
                                                                         animate={{ opacity: 1, y: 0 }}
                                                                         transition={{ duration: 0.5 }}
                                                                     />

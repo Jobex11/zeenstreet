@@ -21,7 +21,7 @@
 
 body,html {
   scroll-behavior: smooth;
-   user-select: none;
+   /* user-select: none; */
 }
 
 .aqum {
