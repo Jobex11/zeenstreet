@@ -1,9 +1,9 @@
 import { lazy, PropsWithChildren, useEffect, useState } from 'react';
 import BottmNavigation from '../shared/bottom-nav';
+import Header from '../shared/app-header';
 const ShootingStars = lazy(() =>
   import("@components/ui/shooting-stars").then((mod) => ({ default: mod.ShootingStars }))
 );
-const Header = lazy(() => import("../shared/app-header"));
 const StarsBackground = lazy(() =>
   import("@components/ui/stars-background").then((mod) => ({ default: mod.StarsBackground }))
 );

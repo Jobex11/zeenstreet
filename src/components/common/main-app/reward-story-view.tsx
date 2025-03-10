@@ -155,10 +155,10 @@ export default function RewardForStoryViews() {
                             </div>
                             :
                             <div className="border-t my-3 flex flex-col items-center">
-                                <h1 className="font-semibold text-lg pt-2 work-sans">
+                                <h1 className="font-semibold text-sm pt-2 work-sans">
                                     You haven't shared your story! | No story yet!
                                 </h1>
-                                <p className="text-gray-300 work-sans">
+                                <p className="text-gray-300 work-sans text-xs">
                                     Share your story to start earning rewards.
                                 </p>
                             </div>}

@@ -1,7 +1,6 @@
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
@@ -10,7 +9,7 @@ import viteImagemin from 'vite-plugin-imagemin';
 
 export default defineConfig({
   define: {
-    'process.env': {}, 
+    'process.env': {},
   },
   base: '/',
   plugins: [
@@ -23,9 +22,6 @@ export default defineConfig({
     viteImagemin({
       optipng: { optimizationLevel: 7 },
     }),
-    // Node.js polyfills
-    nodePolyfills(),
-
     // Image optimization plugin
     ViteImageOptimizer({
       png: { quality: 85 },
@@ -50,15 +46,17 @@ export default defineConfig({
   resolve: {
     alias: {
       'vm': 'vm-browserify',
-      "@": path.resolve(__dirname, "./src/"), 
+      "@": path.resolve(__dirname, "./src/"),
       "@components": path.resolve(__dirname, "./src/components/"),
       "@assets": path.resolve(__dirname, "./src/assets/"),
       "@hooks": path.resolve(__dirname, "./src/hooks/"),
       "@lib": path.resolve(__dirname, "./src/lib/"),
+      "@constants": path.resolve(__dirname, "./src/constants/"),
+      "@providers": path.resolve(__dirname, "./src/providers/"),
     },
   },
   optimizeDeps: {
-    include: ['axios'],   
+    include: ['axios'],
     exclude: [
       'moment',
       'socket.io-client',
@@ -66,14 +64,8 @@ export default defineConfig({
       'clsx',
       'tailwind-merge',
       'tailwindcss-animate',
+      'vm-browserify'
     ],
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@import "src/styles/variables.scss";`,
-      },
-    },
   },
   build: {
     rollupOptions: {
@@ -87,10 +79,10 @@ export default defineConfig({
       ],
     },
     minify: 'terser',
-    chunkSizeWarningLimit: 500, 
+    chunkSizeWarningLimit: 500,
     terserOptions: {
       compress: {
-        drop_console: true,  
+        drop_console: true,
         drop_debugger: true,
       },
     },

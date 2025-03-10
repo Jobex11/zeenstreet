@@ -27,7 +27,7 @@ import { toast } from "sonner";
 import { useGetTelegramId } from "@hooks/getTelegramId"
 import { HiMiniUsers } from "react-icons/hi2";
 import { triggerErrorVibration } from "@/lib/utils";
-
+import Confetti from "react-confetti";
 const Skeleton = lazy(() =>
   import("@components/ui/skeleton").then((mod) => ({ default: mod.Skeleton }))
 );
@@ -37,7 +37,6 @@ const Button = lazy(() =>
 const ShareFormatter = lazy(() =>
   import("@/components/shared/shareFormatter").then((mod) => ({ default: mod.ShareFormatter }))
 );
-const Confetti = lazy(() => import("react-confetti"));
 const CardWrapper = lazy(() => import("@/components/shared/cards/card-wrapper"));
 
 interface Referral {

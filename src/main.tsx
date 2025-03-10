@@ -71,13 +71,13 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <TonConnectUIProvider
-      manifestUrl='https://zeenstreet-ten.vercel.app/tonconnect-manifest.json'
-      actionsConfiguration={{
-        twaReturnUrl: 'https://t.me/RaveGenie_Bot/game'
-      }}
-    >
-      <ErrorBoundary fallback={ErrorBoundaryError}>
+    <ErrorBoundary fallback={ErrorBoundaryError}>
+      <TonConnectUIProvider
+        manifestUrl='https://zeenstreet-ten.vercel.app/tonconnect-manifest.json'
+        actionsConfiguration={{
+          twaReturnUrl: 'https://t.me/RaveGenie_Bot/game'
+        }}
+      >
         <ReduxProvider>
           <PersistGate loading={<Loader />} persistor={persistor}>
             <TelegramWrapper>
@@ -85,8 +85,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             </TelegramWrapper>
           </PersistGate>
         </ReduxProvider>
-      </ErrorBoundary>
-    </TonConnectUIProvider>
+      </TonConnectUIProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 

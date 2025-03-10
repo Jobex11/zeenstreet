@@ -42,8 +42,8 @@ export default function TelegramWrapper({ children }: PropsWithChildren) {
             const user = tg.initDataUnsafe?.user;
 
             if (user) {
-                setTelegramUsername(user.username ?? null);
-                setTelegramImage(user.photo_url ?? null);
+                setTelegramUsername(user?.username ?? null);
+                setTelegramImage(user?.photo_url ?? null);
 
                 // Configure Telegram UI
                 tg.setHeaderColor("#292734");
@@ -67,7 +67,7 @@ export default function TelegramWrapper({ children }: PropsWithChildren) {
     }, []);
 
     useEffect(() => {
-        if (!isFetching && isSuccess && (!user || !user.user)) {
+        if (!isFetching && isSuccess && (!user || !user?.user)) {
             closeApp();
         }
     }, [isFetching, isSuccess, user, closeApp]);

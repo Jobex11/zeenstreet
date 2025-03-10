@@ -37,7 +37,7 @@ export default function ConnectTonWallet() {
         refetchOnReconnect: true,
     })
 
-    console.log("User", user.user.walletAddress)
+    console.log("User", user?.user?.walletAddress)
 
     const handleWalletConnection = useCallback(
         async (address: string, isInitialLoad = false) => {

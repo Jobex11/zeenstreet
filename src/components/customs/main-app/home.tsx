@@ -44,8 +44,6 @@ function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const btnTabs = ["Events", "Referral", "Partners", "Social"];
 
-
-
   const { telegramId } = useGetTelegramId();
   const limit = 10;
   const {

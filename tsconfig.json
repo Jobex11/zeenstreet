@@ -38,6 +38,8 @@
       "@assets/*": ["src/assets/*"],
       "@hooks/*": ["src/hooks/*"],
       "@lib/*": ["src/lib/*"],
+      "@constants": ["src/constants/*"],
+      "@providers": ["src/providers/*"],
     }
   },
 
