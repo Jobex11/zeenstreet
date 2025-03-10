@@ -49,7 +49,7 @@ export function ErrorBoundaryError(
   { error }: { error: unknown }
 ) {
   const handleReload = () => {
-      window.location.reload();
+    window.location.reload();
   };
 
   return (
@@ -60,7 +60,7 @@ export function ErrorBoundaryError(
         We couldn't load the content. Please check your network and reload the app.
         If the issue persists, close the app and reopen it. Sorry for the inconvenience.
       </p>
-      {process.env.NODE_ENV === "development" &&
+      {process.env.NODE_ENV === "development" ?
         <blockquote className="mt-4 p-3 bg-gray-50 border-l-4 border-red-500 text-sm text-gray-700">
           <code>
             {error instanceof Error
@@ -70,7 +70,15 @@ export function ErrorBoundaryError(
                 : JSON.stringify(error)}
           </code>
         </blockquote>
-      }
+        : <blockquote className="mt-4 p-3 bg-gray-50 border-l-4 border-red-500 text-sm text-gray-700">
+          <code>
+            {error instanceof Error
+              ? error.message
+              : typeof error === "string"
+                ? error
+                : JSON.stringify(error)}
+          </code>
+        </blockquote>}
       <Button onClick={handleReload} className="mt-6 bg-[#D25804] work-sans hover:bg-orange-700 transition-colors duration-300 min-w-full h-10 rounded-md shadow-md text-white ">
         Reload the App
       </Button>
