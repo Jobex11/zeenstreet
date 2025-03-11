@@ -5,7 +5,7 @@ import {
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
-import { Button } from "@/components/ui/button";
+import { Button } from "@components/ui/button";
 import errorImage from "@assets/images/error_page.svg"
 
 export interface ErrorBoundaryProps extends PropsWithChildren {
@@ -60,17 +60,8 @@ export function ErrorBoundaryError(
         We couldn't load the content. Please check your network and reload the app.
         If the issue persists, close the app and reopen it. Sorry for the inconvenience.
       </p>
-      {process.env.NODE_ENV === "development" ?
+      {process.env.NODE_ENV === "development" &&
         <blockquote className="mt-4 p-3 bg-gray-50 border-l-4 border-red-500 text-sm text-gray-700">
-          <code>
-            {error instanceof Error
-              ? error.message
-              : typeof error === "string"
-                ? error
-                : JSON.stringify(error)}
-          </code>
-        </blockquote>
-        : <blockquote className="mt-4 p-3 bg-gray-50 border-l-4 border-red-500 text-sm text-gray-700">
           <code>
             {error instanceof Error
               ? error.message

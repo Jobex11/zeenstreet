@@ -20,6 +20,7 @@ import { lazy, useMemo } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
 import { useSelector } from "react-redux";
+
 const CardWrapper = lazy(() => import("@/components/shared/cards/card-wrapper"));
 const CollectedCards = lazy(() => import("@/components/common/collected-cards"))
 const PowerClass = lazy(() => import("@/components/common/power-class"))
@@ -35,6 +36,8 @@ function Profile() {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
+
+  
 
     const { data: userDataCard } = useGetUsersByIdQuery(telegramId, {
         refetchOnReconnect: true,
@@ -565,6 +568,10 @@ function Profile() {
         }
     ]
 
+    if (!users) {
+        return <div>Loading Profile...</div>; 
+      }
+      
     return (
         <div className="flex flex-col min-h-full">
             <div
@@ -578,7 +585,7 @@ function Profile() {
                                 <div className="flex items-center justify-between w-full gap-2">
                                     <div className="h-28 w-28 relative">
                                         <img
-                                            src={users.photo_url ?? ""}
+                                            src={users?.photo_url ?? ""}
                                             loading="lazy"
                                             alt="profile image"
                                             className="w-full h-full object-contain object-center rounded-full"
@@ -592,15 +599,15 @@ function Profile() {
                                     <div className="flex flex-col pb-4">
                                         <h1 className="text-white text-base font-bold aqum">
                                             <span className="line-clamp-1">
-                                                Hi {users.username}
+                                                Hi {users?.username}
                                             </span>
                                         </h1>
                                         <h1 className="work-sans text-[13px] font-medium pb-1 text-[#FEFEFF] line-clamp-1">
-                                            {`@${users.accountName}`}
+                                            {`@${users?.accountName}`}
                                         </h1>
                                         <div className="bg-[#D36519] rounded-md text-white w-full p-2 text-center">
                                             <h1 className="text-xs text-white aqum font-semibold">
-                                                <ShareFormatter shares={users.shares} /> shares
+                                                <ShareFormatter shares={users?.shares} /> shares
                                             </h1>
                                         </div>
                                     </div>

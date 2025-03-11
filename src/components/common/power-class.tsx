@@ -13,11 +13,11 @@ import {
 } from "@hooks/redux/shares";
 import { useGetUsersByIdQuery } from "@hooks/redux/users";
 import { motion } from "framer-motion";
-import { lazy, useState } from "react";
+import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { SlLock } from "react-icons/sl";
 import { toast } from "sonner";
-const Button = lazy(() => import("@components/ui/button").then((mod) => ({ default: mod.Button })));
+import { Button } from "../ui/button";
 
 function PowerClass() {
     const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});

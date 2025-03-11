@@ -1,14 +1,13 @@
 import { lazy, PropsWithChildren, useEffect, useState } from 'react';
 import BottmNavigation from '../shared/bottom-nav';
 import Header from '../shared/app-header';
+
 const ShootingStars = lazy(() =>
   import("@components/ui/shooting-stars").then((mod) => ({ default: mod.ShootingStars }))
 );
 const StarsBackground = lazy(() =>
   import("@components/ui/stars-background").then((mod) => ({ default: mod.StarsBackground }))
-);
-
- 
+); 
 function MainappLayout({ children }: PropsWithChildren) {
   const [showStars, setShowStars] = useState(false);
 

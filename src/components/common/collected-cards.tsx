@@ -4,11 +4,12 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import wavybg from "@assets/images/card_bg.svg";
 import { Card } from "@components/ui/card";
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerTrigger } from "@components/ui/drawer";
-import { Fragment, Key, lazy } from 'react'
+import { Fragment, Key } from 'react'
 import card_empty from "@assets/images/icons/empty_card.svg"
 import { IoIosClose } from 'react-icons/io';
 import { motion } from "framer-motion"
-const Skeleton = lazy(() => import("@components/ui/skeleton").then((mod) => ({ default: mod.Skeleton })));
+import { Skeleton } from '../ui/skeleton';
+
 
 
 function CollectedCards() {
