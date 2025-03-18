@@ -37,8 +37,6 @@ function Profile() {
         refetchOnMountOrArgChange: true,
     });
 
-  
-
     const { data: userDataCard } = useGetUsersByIdQuery(telegramId, {
         refetchOnReconnect: true,
         refetchOnFocus: true,
@@ -182,7 +180,7 @@ function Profile() {
         },
         {
             achievementType: "TIER 2 FRIENDS",
-            description: "Get the required number of Tier1 referrals to unlock this achievement!",
+            description: "Get the required number of Tier2 referrals to unlock this achievement!",
             data: [
                 {
                     isLocked: userDataCard?.user?.tier2?.length >= 1,
@@ -292,7 +290,7 @@ function Profile() {
         },
         {
             achievementType: "TOTAL COMPLETED TASKS",
-            description: "Complete the required number of  tasks to unlock this achievement!",
+            description: "Complete the required number of tasks to unlock this achievement!",
             data: [
                 {
                     isLocked: userDataCard?.user?.completedTasks?.length >= 30,

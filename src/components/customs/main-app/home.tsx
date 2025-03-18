@@ -20,13 +20,13 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { NoDataMessage } from "./tasks";
+import EventsTasksCategory from "@/components/common/main-app/task-categories/events"
+import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
+import SocialsCategory from "@/components/common/main-app/task-categories/socials";
+import ReferralsCategory  from "@/components/common/main-app/task-categories/referrals";
 
-const EventsTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/events"));
-const PartnersTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/partners"));
 const SendPingNotification = lazy(() => import("@/components/common/main-app/send-ping-notification"));
-const SocialsCategory = lazy(() => import("@/components/common/main-app/task-categories/socials"));
 const RewardForStoryViews = lazy(() => import("@/components/common/main-app/reward-story-view"));
-const ReferralsCategory = lazy(() => import("@/components/common/main-app/task-categories/referrals"));
 const CardCarousel = lazy(() => import("@/components/shared/card-carousel"));
 const ShareToStory = lazy(() => import("@/components/common/main-app/stories"));
 const ShareFormatter = lazy(() =>
