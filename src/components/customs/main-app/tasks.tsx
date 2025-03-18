@@ -12,6 +12,10 @@ import { FiLoader } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { SlLock } from 'react-icons/sl';
 import { useSearchParams } from "react-router-dom";
+import EventsTasksCategory from "@/components/common/main-app/task-categories/events"
+import PartnersTasksCategory from "@/components/common/main-app/task-categories/partners";
+import SocialsCategory from "@/components/common/main-app/task-categories/socials";
+import ReferralsCategory  from "@/components/common/main-app/task-categories/referrals";
 
 const Button = lazy(() =>
     import("@components/ui/button").then((mod) => ({ default: mod.Button }))
@@ -22,10 +26,7 @@ const Skeleton = lazy(() =>
 const Card = lazy(() =>
     import("@components/ui/card").then((mod) => ({ default: mod.Card }))
 );
-const EventsTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/events"));
-const PartnersTasksCategory = lazy(() => import("@/components/common/main-app/task-categories/partners"));
-const SocialsCategory = lazy(() => import("@/components/common/main-app/task-categories/socials"));
-const ReferralsCategory = lazy(() => import("@/components/common/main-app/task-categories/referrals"));
+
 
 function Tasks() {
 
