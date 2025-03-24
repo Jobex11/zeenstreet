@@ -1,20 +1,16 @@
-import MainappLayout from "@/components/layouts/main-app-layout";
-import marketImg from "@assets/images/icons/games.svg";
 import { lazy, Suspense } from 'react';
 import Loader from "@/components/shared/Loader";
 import { ErrorBoundary, ErrorBoundaryError } from '@/components/shared/error-boundary';
 // Lazy load the Home component
-const ComingSoon = lazy(() => import("@components/common/main-app/coming-soon"));
+const Games = lazy(() => import("@components/customs/main-app/games"));
 
 function GameScreen() {
   return (
-    <MainappLayout>
       <ErrorBoundary fallback={ErrorBoundaryError}>
         <Suspense fallback={Loader()}>
-          <ComingSoon image={marketImg} alt="an Image showing market place" name="Games" />
+          <Games />
         </Suspense>
       </ErrorBoundary>
-    </MainappLayout>
   );
 }
 

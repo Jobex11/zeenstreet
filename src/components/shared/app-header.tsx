@@ -77,15 +77,7 @@ function Header() {
   };
 
   return (
-    <div
-      // style={{
-      //   backgroundImage: `url(${dotsbg})`,
-      //   backgroundRepeat: "no-repeat",
-      //   backgroundSize: "cover",
-      //   backgroundBlendMode: "multiply"
-      // }}
-      className="h-fit w-full top-0 sticky z-50"
-    >
+    <div className="h-fit w-full top-0 sticky z-50">
       <header className="flex items-center justify-between w-full py-4 px-3 ">
         <div className="flex items-center gap-4">
           <Link to={"/leader-board"}>
