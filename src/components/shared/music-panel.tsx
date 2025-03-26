@@ -1,73 +1,67 @@
-import { useState, useRef, useEffect } from "react"
+import { useRef, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { togglePlay } from "@/hooks/redux/slices/music-slice"
 import { FaClapperboard } from "react-icons/fa6"
-import { HiSpeakerWave } from "react-icons/hi2"
-import { HiSpeakerXMark } from "react-icons/hi2"
+import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2"
+import { Link } from "react-router-dom"
+import { BsCoin } from "react-icons/bs"
+import { RootState } from "@/lib/store"
+import { ShareFormatter } from "./shareFormatter"
 
-function MusicPanel() {
-    const [isPlaying, setIsPlaying] = useState(true)
+interface MusicPanelProps {
+    hide_video_tip: boolean;
+    shares: number;
+}
+
+function MusicPanel({ hide_video_tip, shares = 0.00 }: MusicPanelProps) {
+    const isPlaying = useSelector((state: RootState) => state.music.isPlaying)
+    const dispatch = useDispatch()
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
     useEffect(() => {
-        // Create audio element
         audioRef.current = new Audio(
-            "https://res.cloudinary.com/dfkd7mdhp/video/upload/v1742823008/e9ohsarzn2qzexjprgmv.mp3",
+            "https://res.cloudinary.com/dfkd7mdhp/video/upload/v1742823008/e9ohsarzn2qzexjprgmv.mp3"
         )
-
-        // Optional: Loop the audio
         if (audioRef.current) {
             audioRef.current.loop = true
 
-            // Add event listener to play automatically when ready
             const audioElement = audioRef.current
-
             const handleCanPlayThrough = () => {
-                audioElement
-                    .play()
-                    .then(() => {
-                        setIsPlaying(true)
-                    })
-                    .catch((error) => {
-                        console.error("Auto-play failed:", error)
-                        // Many browsers block autoplay unless there's user interaction
-                        // We keep the state as false if autoplay fails
-                    })
+                if (isPlaying) {
+                    audioElement.play().catch(() => { })
+                } else {
+                    audioElement.pause()
+                }
             }
 
             audioElement.addEventListener("canplaythrough", handleCanPlayThrough)
 
-            // Clean up event listener
             return () => {
                 audioElement.removeEventListener("canplaythrough", handleCanPlayThrough)
                 audioElement.pause()
                 audioRef.current = null
             }
         }
-
-        return () => {
-            if (audioRef.current) {
-                audioRef.current.pause()
-                audioRef.current = null
-            }
-        }
-    }, [])
+    }, [isPlaying]) // Reacts to Redux state
 
     const toggleAudio = () => {
-        if (!audioRef.current) return
-
-        if (isPlaying) {
-            audioRef.current.pause()
-        } else {
-            audioRef.current.play()
-        }
-
-        setIsPlaying(!isPlaying)
+        dispatch(togglePlay()) // Toggle play/pause state globally
     }
 
     return (
-        <div className="h-fit w-full sticky top-auto z-50 bg-transparent">
+        <div className="h-fit w-full absolute top-0 left-0 z-50 py-5">
             <div className="flex items-center justify-between w-full py-2 px-3">
                 <div>
-                    <FaClapperboard color="white" />
+                    {hide_video_tip ? (
+                        <Link to={"#"}>
+                            <FaClapperboard color="white" />
+                        </Link>
+                    ) : (
+                        <div className="flex flex-row items-center gap-1">
+                            <BsCoin color="white" size={23} />
+                            <span className="atkinson font-semibold text-white"><ShareFormatter shares={shares} /></span>
+                        </div>
+                    )}
                 </div>
                 <div onClick={toggleAudio} className="cursor-pointer hover:opacity-80 transition-opacity">
                     {isPlaying ? <HiSpeakerWave color="white" /> : <HiSpeakerXMark color="white" />}
@@ -78,4 +72,3 @@ function MusicPanel() {
 }
 
 export default MusicPanel
-

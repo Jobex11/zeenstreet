@@ -1,39 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Fredoka:wght@300..700&family=Inconsolata:wght@200..900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
-  font-family: 'Aqum'; 
-  src: url('../src/fonts/Aqum-font.ttf') format('truetype'); 
+  font-family: "Aqum";
+  src: url("../src/fonts/Aqum-font.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Tahoma'; 
-  src: url('../src/fonts/Tahoma.ttf') format('truetype'); 
+  font-family: "Tahoma";
+  src: url("../src/fonts/Tahoma.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
-body,html {
+body,
+html {
   scroll-behavior: smooth;
-   /* user-select: none; */
+  /* user-select: none; */
 }
 
 .aqum {
-  font-family: 'Aqum', sans-serif; 
+  font-family: "Aqum", sans-serif;
 }
 
+.inconsolata {
+  font-family: "Inconsolata", monospace;
+}
 .tahoma {
-  font-family: 'Tahoma', sans-serif; 
+  font-family: "Tahoma", sans-serif;
 }
 
 .poppins {
   font-family: "Poppins", sans-serif;
+}
+
+.fredoka {
+  font-family: "Fredoka", sans-serif;
+}
+
+.atkinson {
+  font-family: "Atkinson Hyperlegible", sans-serif;
 }
 
 .work-sans {
@@ -54,7 +66,7 @@ body,html {
 }
 
 .animated-icon {
-  color: #4F46E5;
+  color: #4f46e5;
   opacity: 0.2;
   animation: fade 1s infinite alternate;
 }
@@ -71,13 +83,13 @@ body,html {
 
 @keyframes lineAnimation {
   0% {
-      opacity: 0;
+    opacity: 0;
   }
   50% {
-      opacity: 1;
+    opacity: 1;
   }
   100% {
-      opacity: 0;
+    opacity: 0;
   }
 }
 
@@ -100,7 +112,7 @@ body,html {
 }
 
 .embla__slide {
-  flex: 0 0  var(--slide-size);;
+  flex: 0 0 var(--slide-size);
   padding-left: var(--slide-spacing);
   position: relative;
   min-width: 100%;
@@ -143,7 +155,7 @@ body,html {
   width: 0.4rem;
   height: 0.4rem;
   border-radius: 50%;
-  content: '';
+  content: "";
 }
 
 .embla__dot--selected:after {
@@ -164,15 +176,31 @@ body,html {
 }
 
 .bg-container {
-    background: url("@assets/images/icons/Rave.png"), url("@assets/images/icons/GENIE.png");
-    background-repeat: no-repeat, no-repeat;
-    background-size: contain, contain;
-    background-position: center, bottom;
-    background-blend-mode: multiply;
+  background: url("@assets/images/icons/Rave.png"),
+    url("@assets/images/icons/GENIE.png");
+  background-repeat: no-repeat, no-repeat;
+  background-size: contain, contain;
+  background-position: center, bottom;
+  background-blend-mode: multiply;
 }
 
 .dots-bg {
   background: url("@assets/images/dotted-bg.png");
   background-repeat: repeat;
-  background-size: cover
+  background-size: cover;
+}
+
+.game_phase_1 {
+  background: url("@assets/images/game-logo.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-blend-mode: soft-light;
+}
+
+.game_phase_2 {
+  background: url("@assets/images/Patterns.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }

@@ -230,3 +230,34 @@ export function triggerErrorVibration() {
     console.warn("Vibration API is not supported on this device.");
   }
 }
+
+// Get Button Styles & Text Dynamically
+export const getButtonConfig = ({ gameStatus }: { gameStatus: "waiting" | "qualified" | "closed" }) => {
+  switch (gameStatus) {
+    case "waiting":
+      return { text: "Gain Access", textColor: "text-[#142938]", bgColor: "bg-[#F5A70D] hover:bg-[#f5a80dbb]" };
+    case "qualified":
+      return { text: "Qualified", textColor: "text-white", bgColor: "bg-green-500 hover:bg-green-600" };
+    case "closed":
+      return { text: "Entry Closed", textColor: "text-white", bgColor: "bg-red-500" };
+    default:
+      return { text: "Gain Access", textColor: "text-[#142938]", bgColor: "bg-[#F5A70D] hover:bg-[#f5a80dbb]" };
+  }
+};
+
+
+export const screenVariants = {
+  initial: { opacity: 0, x: 50 },
+  animate: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  exit: { opacity: 0, x: -50, transition: { duration: 0.4 } },
+};
+
+
+export const SCREENS = {
+  WELCOME: "welcome-screen",
+  PHASE_1: "phase_1",
+  PHASE_2: "phase_2",
+  GAME_SCREEN: "game-screen",
+  TIME_UP: "eliminated",
+  CHECK_POINT: "checkpoint",
+};

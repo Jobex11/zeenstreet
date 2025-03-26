@@ -20,6 +20,9 @@ import { confirmedAccountsSlice } from '@hooks/redux/slices/onboadingSlice';
 import { rewardsSlice } from "@hooks/redux/slices/rewardsSlice";
 import { gamesApi } from '@hooks/redux/games';
 import { reviewsApi } from "@hooks/redux/review"
+import { confettiSlice } from '@/hooks/redux/slices/game-confetti';
+import { musicSlice } from '@/hooks/redux/slices/music-slice';
+import { screenSlice } from '@/hooks/redux/slices/game-screens-slice';
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -39,7 +42,10 @@ const rootReducer = combineReducers({
   tasks: tasksSlice.reducer,
   userData: userSlice.reducer,
   confirmAccount: confirmedAccountsSlice.reducer,
-  rewards: rewardsSlice.reducer
+  rewards: rewardsSlice.reducer,
+  confetti: confettiSlice.reducer,
+  music: musicSlice.reducer,
+  screen: screenSlice.reducer
 
 });
 
@@ -49,7 +55,7 @@ export const createStore = (telegramId = 'default') => {
   const persistConfig = {
     key: `persist:${telegramId}`,
     storage,
-    whitelist: ['tasks', 'userData', "confirmAccount"],
+    whitelist: ['tasks', 'userData', "confirmAccount", "confetti", "music", "screen"],
   };
 
   // Persisted reducer
