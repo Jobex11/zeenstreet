@@ -50,7 +50,7 @@ const WordPuzzle = (
     }, [dispatch]);
 
     return (
-        <div className="flex flex-col items-center bg-[#0f0543] min-h-screen px-4 pt-10 text-white relative">
+        <div className="flex flex-col items-center bg-[#0f0543] min-h-screen px-4 py-11 text-white relative" >
             {/* Top Section */}
             <div className="w-full py-5 relative">
                 <div className="flex relative flex-row items-center justify-between gap-1">
@@ -78,9 +78,9 @@ const WordPuzzle = (
             </div>
 
             {/* Image Grid */}
-            <div className="grid grid-cols-2 w-full gap-2">
+            <div className="grid grid-cols-2 w-full gap-3">
                 {images.map((img, index) => (
-                    <div key={index} className="relative bg-slate-800 w-full h-40 rounded-md flex items-center justify-center">
+                    <div key={index} className="relative bg-slate-800 w-full h-28 rounded-md flex items-center justify-center">
                         <img src={img} alt="game hint" className="h-full w-full object-cover rounded-md" />
                         <div className="absolute top-0 h-full w-full bottom-0 bg-transparent" />
                     </div>
@@ -113,6 +113,7 @@ const WordPuzzle = (
             <button className="absolute bottom-36 right-0 mt-4 p-2 bg-red-600 hover:bg-red-500 atkinson font-medium text-white rounded-l-full" onClick={handleClear}>
                 <Delete />
             </button>
+              <button onClick={() => dispatch(setActiveScreen(SCREENS.GAIN_ACCESS))}>back</button>
         </div>
     );
 };

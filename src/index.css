@@ -194,7 +194,7 @@ html {
   background: url("@assets/images/game-logo.png");
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
+  background-position: inherit;
   background-blend-mode: soft-light;
 }
 

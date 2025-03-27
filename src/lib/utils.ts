@@ -257,6 +257,7 @@ export const SCREENS = {
   WELCOME: "welcome-screen",
   PHASE_1: "phase_1",
   PHASE_2: "phase_2",
+  GAIN_ACCESS:"gain-access",
   GAME_SCREEN: "game-screen",
   TIME_UP: "eliminated",
   CHECK_POINT: "checkpoint",

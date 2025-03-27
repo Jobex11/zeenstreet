@@ -9,6 +9,7 @@ import { screenVariants, SCREENS } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
+import GainAccess from "@/components/common/main-app/game/phases/phase_2";
 
 function Games() {
   const activeScreen = useSelector((state: RootState) => state.screen.activeScreen);
@@ -116,6 +117,20 @@ function Games() {
             />
           </motion.div>
         )}
+        {activeScreen === SCREENS.GAIN_ACCESS && (
+          <motion.div
+            key={SCREENS.GAIN_ACCESS}
+            variants={screenVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="flex flex-col h-full"
+          >
+            <GainAccess time={"05h:30m:15s"} status={"waiting"} />
+          </motion.div>
+        )}
+
+
         {activeScreen === SCREENS.GAME_SCREEN && (
           <motion.div
             key={SCREENS.GAME_SCREEN}

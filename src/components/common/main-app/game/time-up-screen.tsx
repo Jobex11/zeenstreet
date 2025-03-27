@@ -4,7 +4,7 @@ import coins_img from "@assets/images/shares-img.png"
 import booster_img from "@assets/images/Booster_img.png"
 import flag_img from "@assets/images/flag_img.png"
 import { Button } from "@/components/ui/button";
-import { useEffect, lazy } from "react";
+import {  lazy } from "react";
 import { useDispatch } from "react-redux";
 import { SCREENS } from "@/lib/utils";
 import { setActiveScreen } from "@/hooks/redux/slices/game-screens-slice";
@@ -35,21 +35,21 @@ function TimeUpScreen({ total_players, end_game, rewards, eliminated_players }: 
         { icon: booster_img, reward: booster }
     ]
 
-    useEffect(() => {
-        setTimeout(() => {
-            dispatch(setActiveScreen(SCREENS.CHECK_POINT));
-        }, 7000);
-    }, [dispatch]);
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         // dispatch(setActiveScreen(SCREENS.CHECK_POINT));
+    //     }, 7000);
+    // }, [dispatch]);
 
     return (
-        <div className="flex flex-col items-center bg-[#0f0543] min-h-screen px-4 pt-10 text-white relative">
+        <div className="flex flex-col items-center bg-[#0f0543] min-h-full px-4 py-10 text-white relative">
             {/* Image Grid */}
             <div className="w-full py-5 relative">
                 <div className="flex relative flex-row items-center justify-between gap-1">
                     {/* Left section */}
                     <div className="flex flex-row items-center gap-1">
                         <User size={25} />
-                        <span className="inconsolata font-semibold text-base "><ShareFormatter shares={total_players} /></span>
+                        <span className="inconsolata font-semibold text-base"><ShareFormatter shares={total_players} /></span>
                     </div>
 
                     {/* Right section */}
@@ -58,12 +58,12 @@ function TimeUpScreen({ total_players, end_game, rewards, eliminated_players }: 
             </div>
 
             <div className={"flex flex-col items-center"}>
-                <h1 className={"atkinson font-semibold text-2xl"}>UhOh! Time's Up</h1>
-                <div>
+                <h1 className={"atkinson font-medium text-2xl"}>UhOh! Time's Up</h1>
+                <div className="h-64">
                     <img
                         src={time_up_img}
                         alt={"an image showing a trophy"}
-                        className={"h-auto w-full object-contain"} />
+                        className={"h-full w-full object-contain"} />
                 </div>
                 <h1 className={"atkinson text-base text-center"}>
                     You and <span className={"text-yellow-600"}><ShareFormatter shares={eliminated_players} /></span> others are eliminated.
@@ -81,8 +81,8 @@ function TimeUpScreen({ total_players, end_game, rewards, eliminated_players }: 
             </div>
 
             <div className={"flex flex-row items-center justify-around w-full gap-10 my-5"}>
-                <Button className={"bg-[#F5A70D] hover:bg-yellow-600 w-44 fredoka text-black px-4"}>Share</Button>
-                <Button className={"bg-green-600 hover:bg-green-500 w-44  text-white fredoka px-4"}>Continue</Button>
+                <Button onClick={() => dispatch(setActiveScreen(SCREENS.GAME_SCREEN))}  className={"bg-[#F5A70D] hover:bg-yellow-600 w-44 fredoka text-black px-4"}>Share</Button>
+                <Button onClick={() => dispatch(setActiveScreen(SCREENS.CHECK_POINT))} className={"bg-green-600 hover:bg-green-500 w-44  text-white fredoka px-4"}>Continue</Button>
             </div>
 
         </div>

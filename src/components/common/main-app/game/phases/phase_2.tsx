@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import GameImageIcon from "@assets/images/game-name.png";
-import { getButtonConfig } from "@/lib/utils";
+import { getButtonConfig, SCREENS } from "@/lib/utils";
+import { useDispatch } from "react-redux";
+import { setActiveScreen } from "@/hooks/redux/slices/game-screens-slice";
 
-interface GamePhase2Props {
+interface GainAccessProps {
     time: string;
     status: "waiting" | "qualified" | "closed";
 }
-function GamePhase2({ status, time }: GamePhase2Props) {
+function GainAccess({ status, time }: GainAccessProps) {
     const [gameStatus, setGameStatus] = useState<"waiting" | "qualified" | "closed">(status);
-
+    const dispatch = useDispatch()
     useEffect(() => {
         setGameStatus(status);
     }, [status]);
@@ -20,6 +22,7 @@ function GamePhase2({ status, time }: GamePhase2Props) {
             // Simulate a successful request
             setTimeout(() => {
                 setGameStatus("qualified");
+                dispatch(setActiveScreen(SCREENS.GAME_SCREEN))
             }, 5000);
         }
     };
@@ -53,4 +56,4 @@ function GamePhase2({ status, time }: GamePhase2Props) {
     );
 }
 
-export default GamePhase2;
+export default GainAccess;
